@@ -3,5 +3,5 @@ version: '1.0'
 
 target-path: "target"
 clean-targets: ["target", "dbt_modules"]
-macro-paths: ['macros']
+macro-paths: ["macros"]
 log-path: "logs"

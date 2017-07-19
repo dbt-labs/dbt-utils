@@ -1,0 +1,9 @@
+{% macro group_by(n) %}
+
+  group by
+    {% for i in range(1, n) %}
+      {{ i }}
+      {% if not loop.last %} , {% endif %}
+   {% endfor %}
+
+{% endmacro %}

@@ -1,40 +1,42 @@
-{% macro union_tables(tables) -%}
+{% macro union_tables(tables, column_override=none) -%}
 
-    {% set table_columns = {} %}
-    {% set column_superset = {} %}
+    {%- set column_override = column_override if column_override is not none else {} %}
 
-    {% for table in tables -%}
+    {%- set table_columns = {} %}
+    {%- set column_superset = {} %}
 
-        {% set _ = table_columns.update({table: []}) %}
+    {%- for table in tables -%}
 
-        {% set table_parts = table.split('.') %}
+        {%- set _ = table_columns.update({table: []}) %}
 
-        {% set cols = adapter.get_columns_in_table(*table_parts) %}
-        {% for col in cols -%}
+        {%- set table_parts = table.split('.') %}
+
+        {%- set cols = adapter.get_columns_in_table(*table_parts) %}
+        {%- for col in cols -%}
 
             {# update the list of columns in this table #}
-            {% set _ = table_columns[table].append(col.column) %}
+            {%- set _ = table_columns[table].append(col.column) %}
 
-            {% if col.column in column_superset -%}
+            {%- if col.column in column_superset -%}
 
-                {% set stored = column_superset[col.column] %}
-                {% if col.is_string() and stored.is_string() and col.string_size() > stored.string_size() -%}
+                {%- set stored = column_superset[col.column] %}
+                {%- if col.is_string() and stored.is_string() and col.string_size() > stored.string_size() -%}
 
-                    {% set _ = column_superset.update({col.column: col}) %}
+                    {%- set _ = column_superset.update({col.column: col}) %}
 
                 {%- endif %}
 
             {%- else -%}
 
-                {% set _ =  column_superset.update({col.column: col}) %}
+                {%- set _ =  column_superset.update({col.column: col}) %}
 
-            {%- endif %}
+            {%- endif -%}
         {%- endfor %}
     {%- endfor %}
 
-    {% set ordered_column_names = column_superset.keys() %}
+    {%- set ordered_column_names = column_superset.keys() %}
 
-    {% for table in tables -%}
+    {%- for table in tables -%}
 
         (
             select
@@ -42,20 +44,12 @@
                 '{{ table }}'::text as _dbt_source_table,
 
                 {% for col_name in ordered_column_names -%}
-                    {% set col = column_superset[col_name] %}
 
-                    {% if col_name in table_columns[table] -%}
+                    {%- set col = column_superset[col_name] %}
+                    {%- set col_type = column_override.get(col.column, col.data_type) %}
+                    {%- set col_name = col_name if col_name in table_columns[table] else 'null' %}
 
-                        {{ col.quoted }}::{{ col.data_type }} as {{ col.quoted }}
-
-                    {%- else -%}
-
-                        null::{{ col.data_type }} as {{ col.quoted }}
-
-                    {%- endif %}
-
-                    {% if not loop.last %},{% endif %}
-
+                    {{ col_name }}::{{ col_type }} as {{ col.quoted }} {% if not loop.last %},{% endif %}
                 {%- endfor %}
 
             from {{ table }}

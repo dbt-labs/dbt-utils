@@ -47,7 +47,7 @@
 
                     {%- set col = column_superset[col_name] %}
                     {%- set col_type = column_override.get(col.column, col.data_type) %}
-                    {%- set col_name = col_name if col_name in table_columns[table] else 'null' %}
+                    {%- set col_name = adapter.quote(col_name) if col_name in table_columns[table] else 'null' %}
 
                     {{ col_name }}::{{ col_type }} as {{ col.quoted }} {% if not loop.last %},{% endif %}
                 {%- endfor %}

@@ -96,7 +96,7 @@ Usage:
 ```
 ---
 ### Web
-#### get_url_parameters ([source](macros/web/get_url_parameters.sql))
+#### get_url_parameter ([source](macros/web/get_url_parameter.sql))
 This macro extracts a url parameter from a column containing a url.
 
 Usage:

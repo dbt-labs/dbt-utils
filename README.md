@@ -69,6 +69,18 @@ model_name:
       - ref('other_table_name')
 
 ```
+
+#### empty ([source](macros/schema_tests/test_empty.sql))
+This schema test asserts that a given model produces zero results.
+
+Usage:
+```
+model_name:
+  constraints:
+    empty:
+      - TRUE
+
+```
 ---
 ### SQL helpers
 #### group_by ([source](macros/sql/groupby.sql))

@@ -5,6 +5,9 @@
 ----
 
 # dbt-utils
+
+Current version: 0.1.0
+
 This package contains macros that can be (re)used across dbt projects.
 
 ## Macros

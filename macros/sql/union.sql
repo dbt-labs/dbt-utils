@@ -9,9 +9,10 @@
 
         {%- set _ = table_columns.update({table: []}) %}
 
-        {%- set table_parts = table.split('.') %}
+        {% set schema = table.schema %}
+        {% set table_name = table.name %}
 
-        {%- set cols = adapter.get_columns_in_table(*table_parts) %}
+        {%- set cols = adapter.get_columns_in_table(schema, table_name) %}
         {%- for col in cols -%}
 
             {# update the list of columns in this table #}

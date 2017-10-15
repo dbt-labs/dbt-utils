@@ -103,7 +103,10 @@ This macro returns the unique values for a column in a given table.
 
 Usage:
 ```
-{{ get_column_values(table=ref('users', column='state', max_records=50) }}
+-- Returns a list of the top 50 states in the `users` table
+{% states = get_column_values(table=ref('users'), column='state', max_records=50) %}
+
+...
 ```
 ---
 ### Web

@@ -99,12 +99,18 @@ Usage:
 ```
 
 #### get_column_values ([source](macros/sql/pivot.sql))
-This macro returns the unique values for a column in a given table.
+This macro returns the unique values for a column in a given table. NOTE: Using untrusted data to build SQL queries
+can lead to [SQL Injection](https://en.wikipedia.org/wiki/SQL_injection). Please only use this macro on trusted datasets,
+or sanitize the data before using it in a susequent query.
 
 Usage:
 ```
 -- Returns a list of the top 50 states in the `users` table
-{% states = fromjson(get_column_values(table=ref('users'), column='state', max_records=50)) %}
+{% set states = fromjson(get_column_values(table=ref('users'), column='state', max_records=50)) %}
+
+{% for state in states %}
+    ...
+{% endfor %}
 
 ...
 ```

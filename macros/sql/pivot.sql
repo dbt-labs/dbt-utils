@@ -1,22 +1,21 @@
 
 {#
-This macro fetches the unique values for `column` in the table `source_ref`
+This macro fetches the unique values for `column` in the table `table`
 
 Arguments:
-    source_ref: A model `ref`, or a schema.table string for the table to query (Required)
+    table: A model `ref`, or a schema.table string for the table to query (Required)
     column: The column to query for unique values
     max_records: If provided, the maximum number of unique records to return (default: none)
-
 #}
 
-{% macro get_column_values(source_ref, column, max_records=none) -%}
+{% macro get_column_values(table, column, max_records=none) -%}
 
     {%- call statement('get_column_values', fetch_result=True) %}
 
         select
             {{ column }} as value
 
-        from {{ source_ref }}
+        from {{ table }}
         group by 1
         order by count(*) desc
 

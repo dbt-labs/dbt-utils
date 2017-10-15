@@ -104,7 +104,7 @@ This macro returns the unique values for a column in a given table.
 Usage:
 ```
 -- Returns a list of the top 50 states in the `users` table
-{% states = get_column_values(table=ref('users'), column='state', max_records=50) %}
+{% states = fromjson(get_column_values(table=ref('users'), column='state', max_records=50)) %}
 
 ...
 ```

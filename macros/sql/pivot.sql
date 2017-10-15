@@ -1,0 +1,38 @@
+
+{#
+This macro fetches the unique values for `column` in the table `source_ref`
+
+Arguments:
+    source_ref: A model `ref`, or a schema.table string for the table to query (Required)
+    column: The column to query for unique values
+    max_records: If provided, the maximum number of unique records to return (default: none)
+
+#}
+
+{% macro get_column_values(source_ref, column, max_records=none) -%}
+
+    {%- call statement('get_column_values', fetch_result=True) %}
+
+        select
+            {{ column }} as value
+
+        from {{ source_ref }}
+        group by 1
+        order by count(*) desc
+
+        {% if max_records is not none %}
+        limit {{ max_records }}
+        {% endif %}
+
+    {%- endcall -%}
+
+    {%- set value_list = load_result('get_column_values') -%}
+
+    {%- if value_list and value_list['data'] -%}
+        {%- set values = value_list['data'] | map(attribute=0) | list %}
+        {{ values | tojson }}
+    {%- else -%}
+        []
+    {%- endif -%}
+
+{%- endmacro %}

@@ -29,7 +29,7 @@ Arguments:
 
     {%- if value_list and value_list['data'] -%}
         {%- set values = value_list['data'] | map(attribute=0) | list %}
-        {{ values | tojson }}
+        {{ tojson(values) }}
     {%- else -%}
         []
     {%- endif -%}

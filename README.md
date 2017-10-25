@@ -87,7 +87,7 @@ This macro generates a `select` statement for each field that exists in the `fro
 
 Usage:
 ```
-{{ macro star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"]) }}
+{{ star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"]) }}
 ```
 
 #### union_tables ([source](macros/sql/union.sql))
@@ -95,7 +95,22 @@ This macro implements an "outer union." The list of tables provided to this macr
 
 Usage:
 ```
-{{ macro union_tables(tables=[ref('table_1', 'table_2')], column_override={"some_field": "varchar(100)"}) }}
+{{ union_tables(tables=[ref('table_1'), ref('table_2')], column_override={"some_field": "varchar(100)"}) }}
+```
+
+#### get_column_values ([source](macros/sql/get_column_values.sql))
+This macro returns the unique values for a column in a given table.
+
+Usage:
+```
+-- Returns a list of the top 50 states in the `users` table
+{% set states = fromjson(get_column_values(table=ref('users'), column='state', max_records=50)) %}
+
+{% for state in states %}
+    ...
+{% endfor %}
+
+...
 ```
 ---
 ### Web
@@ -104,7 +119,7 @@ This macro extracts a url parameter from a column containing a url.
 
 Usage:
 ```
-{{ macro get_url_parameter(field='page_url', url_parameter='utm_source') }}
+{{ get_url_parameter(field='page_url', url_parameter='utm_source') }}
 ```
 
 ----

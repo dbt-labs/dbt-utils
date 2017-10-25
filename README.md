@@ -98,7 +98,7 @@ Usage:
 {{ union_tables(tables=[ref('table_1'), ref('table_2')], column_override={"some_field": "varchar(100)"}) }}
 ```
 
-#### get_column_values ([source](macros/sql/pivot.sql))
+#### get_column_values ([source](macros/sql/get_column_values.sql))
 This macro returns the unique values for a column in a given table.
 
 Usage:

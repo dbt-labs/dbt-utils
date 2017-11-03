@@ -122,6 +122,16 @@ Usage:
 {{ get_url_parameter(field='page_url', url_parameter='utm_source') }}
 ```
 
+---
+### Strings
+#### lower_alpha ([source](macros/strings/lower_alpha.sql))
+This macro removes any non-alphanumeric characters and reverts all characters to lower case.
+
+Usage:
+```
+{{ lower_alpha(arg='email_address') }}
+```
+
 ----
 ### Getting started with dbt
 

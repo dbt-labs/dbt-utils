@@ -72,6 +72,31 @@ model_name:
       - ref('other_table_name')
 
 ```
+
+#### atleast_one ([source](macros/schema_tests/atleast_one.sql))
+This schema test asserts if column has atleast one value. 
+
+Usage:
+```
+model_name:
+  constraints:
+    atleast_one:
+      - column_name
+
+```
+
+#### not_constant ([source](macros/schema_tests/not_constant.sql))
+This schema test asserts if column does not have same value in all rows.
+
+Usage:
+```
+model_name:
+  constraints:
+    not_constant:
+      - column_name
+
+```
+
 ---
 ### SQL helpers
 #### group_by ([source](macros/sql/groupby.sql))

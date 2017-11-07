@@ -1,21 +1,18 @@
+
 {% macro test_not_constant(model, arg) %}
 
 select count(*)
-from
-  (
-  select
-        count(distinct not_constant_field) count_of_distinct_rows
-    from (
-          select
-              {{ arg }} as not_constant_field
 
-          from {{ model }}
+from (
 
-          where {{ arg }} is not null
+    select
+          count(distinct {{ arg }})
 
-         ) not_null_rows
-  ) discount_rows_count
+    from {{ model }}
 
-  where count_of_distinct_rows = 1
+    having count(distinct {{ arg }}) = 1
+
+    ) validation_errors
+
 
 {% endmacro %}

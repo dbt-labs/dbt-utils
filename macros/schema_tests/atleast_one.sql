@@ -1,19 +1,15 @@
 {% macro test_atleast_one(model, arg) %}
 
 select count(*)
+from (
+    select
 
-from
+      count({{ arg }})
 
-  (
-    select *
+    from {{ model }}
 
-    from (
-       select
-        count({{ arg }}) count_of_rows
+    having count({{ arg }}) = 0
 
-        from {{ model }}
-    ) rows_with_values
-
-    where count_of_rows = 0 ) validation_errors
+) validation_errors
 
 {% endmacro %}

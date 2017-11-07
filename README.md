@@ -73,14 +73,14 @@ model_name:
 
 ```
 
-#### atleast_one ([source](macros/schema_tests/atleast_one.sql))
-This schema test asserts if column has atleast one value. 
+#### at_least_one ([source](macros/schema_tests/at_least_one.sql))
+This schema test asserts if column has at least one value. 
 
 Usage:
 ```
 model_name:
   constraints:
-    atleast_one:
+    at_least_one:
       - column_name
 
 ```

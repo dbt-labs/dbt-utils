@@ -1,8 +1,13 @@
 {% macro star(from, except=[]) -%}
 
-    {%- set table_parts = from.split('.') %}
+    {%- if from.name -%}
+        {%- set schema_name, table_name = from.schema, from.name -%}
+    {%- else -%}
+        {%- set schema_name, table_name = (from | string).split(".") -%}
+    {%- endif -%}
+
     {%- set include_cols = [] %}
-    {%- set cols = adapter.get_columns_in_table(*table_parts) %}
+    {%- set cols = adapter.get_columns_in_table(schema_name, table_name) -%}
     {%- for col in cols -%}
 
         {%- if col.column not in except -%}

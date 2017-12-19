@@ -1,5 +1,5 @@
 {% macro split_part(string_text, delimiter_text, part_number) %}
-  {{ adapter_macro('split_part', string_text, delimiter_text, part_number) }}
+  {{ adapter_macro('dbt_utils.split_part', string_text, delimiter_text, part_number) }}
 {% endmacro %}
 
 

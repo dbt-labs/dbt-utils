@@ -72,7 +72,7 @@ model_name:
 ```
 
 #### at_least_one ([source](macros/schema_tests/at_least_one.sql))
-This schema test asserts if column has at least one value. 
+This schema test asserts if column has at least one value.
 
 Usage:
 ```
@@ -93,6 +93,17 @@ model_name:
     not_constant:
       - column_name
 
+```
+
+#### cardinality_equality ([source](macros/schema_tests/cardinality_equality.sql))
+This schema test asserts if values in a given column have exactly the same cardinality as values from a different column in a different model.
+
+Usage:
+```
+model_name:
+  constraints:
+    cardinality_equality:
+    - {from: column_name, to: ref('other_model_name'), field: other_column_name}
 ```
 
 ---

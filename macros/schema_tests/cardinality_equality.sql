@@ -2,18 +2,18 @@
 
 with table_a as (
 select
-  count(1) as num_rows,
-  {{ from }}
+  {{ from }},
+  count(1) as num_rows
 from {{ model }}
-group by 2
+group by 1
 ),
 
 table_b as (
 select
-  count(1) as num_rows,
-  {{ field }}
+  { field }},
+  count(1) as num_rows
 from {{ to }}
-group by 2
+group by 1
 )
 
 select count(1)

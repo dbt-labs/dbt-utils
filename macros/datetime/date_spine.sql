@@ -22,7 +22,7 @@ all_periods as (
 
     select (
         {{
-            dateadd(
+            dbt_utils.dateadd(
                 datepart,
                 "row_number() over () - 1",
                 start_date

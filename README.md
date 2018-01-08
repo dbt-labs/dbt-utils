@@ -23,7 +23,7 @@ This macro adds a time/day interval to the supplied date/timestamp. Note: The `d
 
 Usage:
 ```
-{{ dateadd(datepart='day', interval=1, from_date_or_timestamp='2017-01-01') }}
+{{ dbt_utils.dateadd(datepart='day', interval=1, from_date_or_timestamp='2017-01-01') }}
 ```
 
 #### split_part ([source](macros/cross_db_utils/split_part.sql))
@@ -31,7 +31,7 @@ This macro adds a time/day interval to the supplied date/timestamp. Note: The `d
 
 Usage:
 ```
-{{ split_part(string_text='1,2,3', delimiter_text=',', part_number=1) }}
+{{ dbt_utils.split_part(string_text='1,2,3', delimiter_text=',', part_number=1) }}
 ```
 ---
 ### Date/Time
@@ -40,7 +40,7 @@ This macro returns the sql required to build a date spine.
 
 Usage:
 ```
-{{ date_spine(
+{{ dbt_utils.date_spine(
     table=ref('organizations'),
     datepart="minute",
     start_date="to_date('01/01/2016', 'mm/dd/yyyy')",
@@ -55,7 +55,7 @@ This macro calculates the [haversine distance](http://daynebatten.com/2015/09/la
 
 Usage:
 ```
-{{ haversine_distance(lat1=<float>,lon1=<float>,lat2=<float>,lon2=<float>) }}
+{{ dbt_utils.haversine_distance(lat1=<float>,lon1=<float>,lat2=<float>,lon2=<float>) }}
 ```
 ---
 ### Schema Tests
@@ -66,7 +66,7 @@ Usage:
 ```
 model_name:
   constraints:
-    equality:
+    dbt_utils.equality:
       - ref('other_table_name')
 
 ```
@@ -78,7 +78,7 @@ Usage:
 ```
 model_name:
   constraints:
-    at_least_one:
+    dbt_utils.at_least_one:
       - column_name
 
 ```
@@ -90,7 +90,7 @@ Usage:
 ```
 model_name:
   constraints:
-    not_constant:
+    dbt_utils.not_constant:
       - column_name
 
 ```
@@ -102,7 +102,7 @@ Usage:
 ```
 model_name:
   constraints:
-    cardinality_equality:
+    dbt_utils.cardinality_equality:
     - {from: column_name, to: ref('other_model_name'), field: other_column_name}
 ```
 
@@ -114,7 +114,7 @@ This macro returns the unique values for a column in a given table.
 Usage:
 ```
 -- Returns a list of the top 50 states in the `users` table
-{% set states = fromjson(get_column_values(table=ref('users'), column='state', max_records=50)) %}
+{% set states = fromjson(dbt_utils.get_column_values(table=ref('users'), column='state', max_records=50)) %}
 
 {% for state in states %}
     ...
@@ -130,10 +130,10 @@ exclusion pattern. It's particularly handy paired with `union_tables`.
 Usage:
 ```
 -- Returns a list of tables that match schema.prefix%
-{{ set tables = get_tables_by_prefix('schema', 'prefix')}}
+{{ set tables = dbt_utils.get_tables_by_prefix('schema', 'prefix')}}
 
 -- Returns a list of tables as above, excluding any with underscores
-{{ set tables = get_tables_by_prefix('schema', 'prefix', '%_%')}}
+{{ set tables = dbt_utils.get_tables_by_prefix('schema', 'prefix', '%_%')}}
 ```
 
 #### group_by ([source](macros/sql/groupby.sql))
@@ -141,7 +141,7 @@ This macro build a group by statement for fields 1...N
 
 Usage:
 ```
-{{ group_by(n=3) }} --> group by 1,2,3
+{{ dbt_utils.group_by(n=3) }} --> group by 1,2,3
 ```
 
 #### star ([source](macros/sql/star.sql))
@@ -149,7 +149,7 @@ This macro generates a `select` statement for each field that exists in the `fro
 
 Usage:
 ```
-{{ star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"]) }}
+{{ dbt_utils.star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"]) }}
 ```
 
 #### union_tables ([source](macros/sql/union.sql))
@@ -157,7 +157,7 @@ This macro implements an "outer union." The list of tables provided to this macr
 
 Usage:
 ```
-{{ union_tables(tables=[ref('table_1'), ref('table_2')], column_override={"some_field": "varchar(100)"}) }}
+{{ dbt_utils.union_tables(tables=[ref('table_1'), ref('table_2')], column_override={"some_field": "varchar(100)"}) }}
 ```
 ---
 ### Web
@@ -166,7 +166,7 @@ This macro extracts a url parameter from a column containing a url.
 
 Usage:
 ```
-{{ get_url_parameter(field='page_url', url_parameter='utm_source') }}
+{{ dbt_utils.get_url_parameter(field='page_url', url_parameter='utm_source') }}
 ```
 
 ----

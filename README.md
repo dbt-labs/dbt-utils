@@ -6,7 +6,15 @@
 
 # dbt-utils
 
-This package contains macros that can be (re)used across dbt projects.
+This package contains macros that can be (re)used across dbt projects. To use these macros, add this package as a dependency in your `dbt_project.yml` file:
+
+```yml
+repositories:
+    # Be sure to replace VERSION_NUMBER below!
+    - https://github.com/fishtown-analytics/dbt-utils.git@VERSION_NUMBER
+```
+
+It's a good practice to "tag" your dependencies with version numbers. You can find the latest release of this package [here](https://github.com/fishtown-analytics/dbt-utils/tags).
 
 ## Macros
 ### Cross-database
@@ -15,7 +23,7 @@ This macro returns the current timestamp.
 
 Usage:
 ```
-{{ current_timestamp() }}
+{{ dbt_utils.current_timestamp() }}
 ```
 
 #### dateadd ([source](macros/cross_db_utils/dateadd.sql))

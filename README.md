@@ -108,6 +108,34 @@ model_name:
 
 ---
 ### SQL helpers
+#### get_column_values ([source](macros/sql/get_column_values.sql))
+This macro returns the unique values for a column in a given table.
+
+Usage:
+```
+-- Returns a list of the top 50 states in the `users` table
+{% set states = fromjson(get_column_values(table=ref('users'), column='state', max_records=50)) %}
+
+{% for state in states %}
+    ...
+{% endfor %}
+
+...
+```
+
+#### get_tables_by_prefix ([source](macros/sql/get_tables_by_prefix.sql))
+This macro returns a list of tables that match a given prefix, with an optional
+exclusion pattern. It's particularly handy paired with `union_tables`.
+
+Usage:
+```
+-- Returns a list of tables that match schema.prefix%
+{{ set tables = get_tables_by_prefix('schema', 'prefix')}}
+
+-- Returns a list of tables as above, excluding any with underscores
+{{ set tables = get_tables_by_prefix('schema', 'prefix', '%_%')}}
+```
+
 #### group_by ([source](macros/sql/groupby.sql))
 This macro build a group by statement for fields 1...N
 
@@ -130,21 +158,6 @@ This macro implements an "outer union." The list of tables provided to this macr
 Usage:
 ```
 {{ union_tables(tables=[ref('table_1'), ref('table_2')], column_override={"some_field": "varchar(100)"}) }}
-```
-
-#### get_column_values ([source](macros/sql/get_column_values.sql))
-This macro returns the unique values for a column in a given table.
-
-Usage:
-```
--- Returns a list of the top 50 states in the `users` table
-{% set states = fromjson(get_column_values(table=ref('users'), column='state', max_records=50)) %}
-
-{% for state in states %}
-    ...
-{% endfor %}
-
-...
 ```
 ---
 ### Web

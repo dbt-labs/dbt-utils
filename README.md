@@ -167,6 +167,14 @@ Usage:
 ```
 {{ dbt_utils.union_tables(tables=[ref('table_1'), ref('table_2')], column_override={"some_field": "varchar(100)"}) }}
 ```
+
+#### generate_series ([source](macros/sql/generate_series.sql))
+This macro implements a cross-database mechanism to generate an arbitrarily long list of numbers. Specify the maximum number you'd like in your list and it will create a 1-indexed SQL result set.
+
+Usage:
+```
+{{ dbt_utils.generate_series(upper_bound=1000) }}
+```
 ---
 ### Web
 #### get_url_parameter ([source](macros/web/get_url_parameter.sql))

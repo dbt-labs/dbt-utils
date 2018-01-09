@@ -4,7 +4,7 @@
     {{ exceptions.raise_compiler_error("upper bound must be positive") }}
     {% endif %}
 
-    {% for _ in range(1, upper_bound + 2) %}
+    {% for _ in range(1, 100) %}
        {% if upper_bound <= 2 ** loop.index %}{{ return(loop.index) }}{% endif %}
     {% endfor %}
 

@@ -3,7 +3,7 @@
 {% set formatted_url_parameter = "'" + url_parameter + "='" %}
 
 {{
-    split_part(split_part(field, formatted_url_parameter, 2), "'&'", 1) 
+    dbt_utils.split_part(split_part(field, formatted_url_parameter, 2), "'&'", 1)
 }}
 
 {% endmacro %}

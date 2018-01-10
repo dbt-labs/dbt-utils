@@ -6,7 +6,7 @@ Example:
     Input:
 
     | size | color |
-    +======+=======+
+    |------+-------|
     | S    | red   |
     | S    | blue  |
     | S    | red   |
@@ -16,11 +16,12 @@ Example:
       size,
       {{ pivot('size', ['red', 'blue']) }}
     from <table>
+    group by size
 
     Output:
 
     | size | red | blue |
-    +======+=====+======+
+    |------+-----+------|
     | S    | 2   | 1    |
     | M    | 1   | 0    |
 

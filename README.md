@@ -133,7 +133,7 @@ This macro returns the unique values for a column in a given table.
 Usage:
 ```
 -- Returns a list of the top 50 states in the `users` table
-{% set states = fromjson(dbt_utils.get_column_values(table=ref('users'), column='state', max_records=50)) %}
+{% set states = dbt_utils.get_column_values(table=ref('users'), column='state', max_records=50) %}
 
 {% for state in states %}
     ...

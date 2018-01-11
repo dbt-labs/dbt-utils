@@ -6,6 +6,9 @@ Arguments:
     table: A model `ref`, or a schema.table string for the table to query (Required)
     column: The column to query for unique values
     max_records: If provided, the maximum number of unique records to return (default: none)
+
+Returns:
+    A list of distinct values for the specified columns
 #}
 
 {% macro get_column_values(table, column, max_records=none) -%}
@@ -29,9 +32,9 @@ Arguments:
 
     {%- if value_list and value_list['data'] -%}
         {%- set values = value_list['data'] | map(attribute=0) | list %}
-        {{ tojson(values) }}
+        {{ return(values) }}
     {%- else -%}
-        []
+        {{ return([]) }}
     {%- endif -%}
 
 {%- endmacro %}

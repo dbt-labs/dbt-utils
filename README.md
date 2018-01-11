@@ -79,6 +79,17 @@ model_name:
 
 ```
 
+#### recency ([source](macros/schema_tests/recency.sql))
+This schema test asserts that there is data in the referenced model at least as recent as the defined interval prior to the current timestamp.
+
+Usage:
+```
+model_name:
+    constraints:
+        dbt_utils.recency:
+            - {field: created_at, datepart: day, interval: 1}
+```
+
 #### at_least_one ([source](macros/schema_tests/at_least_one.sql))
 This schema test asserts if column has at least one value.
 

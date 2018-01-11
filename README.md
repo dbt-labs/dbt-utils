@@ -49,7 +49,6 @@ This macro returns the sql required to build a date spine.
 Usage:
 ```
 {{ dbt_utils.date_spine(
-    table=ref('organizations'),
     datepart="minute",
     start_date="to_date('01/01/2016', 'mm/dd/yyyy')",
     end_date="dateadd(week, 1, current_date)"

@@ -186,7 +186,7 @@ Usage:
 
 Example:
 
-    Input: `public.test`
+    Input: public.test
 
     | size | color |
     |------|-------|
@@ -210,15 +210,16 @@ Example:
     | M    | 1   | 0    |
 
 Arguments:
-    column: Column name, required
-    values: List of row values to turn into columns, required
-    alias: Whether to create column aliases, default is True
-    agg: SQL aggregation function, default is sum
-    cmp: SQL value comparison, default is =
-    prefix: Column alias prefix, default is blank
-    suffix: Column alias postfix, default is blank
-    then\_value: Value to use if comparison succeeds, default is 1
-    else\_value: Value to use if comparison fails, default is 0
+
+    - column: Column name, required
+    - values: List of row values to turn into columns, required
+    - alias: Whether to create column aliases, default is True
+    - agg: SQL aggregation function, default is sum
+    - cmp: SQL value comparison, default is =
+    - prefix: Column alias prefix, default is blank
+    - suffix: Column alias postfix, default is blank
+    - then_value: Value to use if comparison succeeds, default is 1
+    - else_value: Value to use if comparison fails, default is 0
 
 ---
 ### Web

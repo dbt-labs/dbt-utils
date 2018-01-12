@@ -175,6 +175,51 @@ Usage:
 ```
 {{ dbt_utils.generate_series(upper_bound=1000) }}
 ```
+
+#### pivot ([source]/(macros/sql/pivot.sql))
+This macro pivots values from rows to columns.
+
+Usage:
+```
+{{ dbt_utils.pivot(<column>, <list of values>) }}
+```
+
+Example:
+
+    Input: `public.test`
+
+    | size | color |
+    |------|-------|
+    | S    | red   |
+    | S    | blue  |
+    | S    | red   |
+    | M    | red   |
+
+    select
+      size,
+      {{ dbt_utils.pivot('size', dbt_utils.get_column_values('public.test',
+                                                             'color')) }}
+    from public.test
+    group by size
+
+    Output:
+
+    | size | red | blue |
+    |------|-----|------|
+    | S    | 2   | 1    |
+    | M    | 1   | 0    |
+
+Arguments:
+    column: Column name, required
+    values: List of row values to turn into columns, required
+    alias: Whether to create column aliases, default is True
+    agg: SQL aggregation function, default is sum
+    cmp: SQL value comparison, default is =
+    prefix: Column alias prefix, default is blank
+    suffix: Column alias postfix, default is blank
+    then\_value: Value to use if comparison succeeds, default is 1
+    else\_value: Value to use if comparison fails, default is 0
+
 ---
 ### Web
 #### get_url_parameter ([source](macros/web/get_url_parameter.sql))

@@ -3,7 +3,7 @@ Pivot values from rows to columns.
 
 Example:
 
-    Input:
+    Input: `public.test`
 
     | size | color |
     |------+-------|
@@ -14,8 +14,9 @@ Example:
 
     select
       size,
-      {{ pivot('size', ['red', 'blue']) }}
-    from <table>
+      {{ dbt_utils.pivot('size', dbt_utils.get_column_values('public.test',
+                                                             'color')) }}
+    from public.test
     group by size
 
     Output:
@@ -29,10 +30,10 @@ Arguments:
     column: Column name, required
     values: List of row values to turn into columns, required
     alias: Whether to create column aliases, default is True
-    op: SQL aggregation function, default is sum
+    agg: SQL aggregation function, default is sum
     cmp: SQL value comparison, default is =
     prefix: Column alias prefix, default is blank
-    postfix: Column alias postfix, default is blank
+    suffix: Column alias postfix, default is blank
     then_value: Value to use if comparison succeeds, default is 1
     else_value: Value to use if comparison fails, default is 0
 #}
@@ -40,14 +41,14 @@ Arguments:
 {% macro pivot(column,
                values,
                alias=True,
-               op='sum',
+               agg='sum',
                cmp='=',
                prefix='',
-               postfix='',
+               suffix='',
                then_value=1,
                else_value=0) %}
   {% for v in values %}
-    {{ op }}(
+    {{ agg }}(
       case
       when {{ column }} {{ cmp }} '{{ v }}'
         then {{ then_value }}
@@ -55,7 +56,7 @@ Arguments:
       end
     )
     {% if alias %}
-      as {{ prefix + v + postfix }}
+      as {{ adapter.quote(prefix ~ v ~ suffix) }}
     {% endif %}
     {% if not loop.last %},{% endif %}
   {% endfor %}

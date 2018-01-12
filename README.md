@@ -176,7 +176,7 @@ Usage:
 {{ dbt_utils.generate_series(upper_bound=1000) }}
 ```
 
-#### pivot ([source]/(macros/sql/pivot.sql))
+#### pivot ([source](macros/sql/pivot.sql))
 This macro pivots values from rows to columns.
 
 Usage:

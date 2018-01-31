@@ -17,8 +17,8 @@
 {% macro bigquery__datediff(first_date, second_date, datepart) %}
 
     date_diff(
-        {{first_date}},
         {{second_date}},
+        {{first_date}},
         {{datepart}}
         )
 

@@ -1,16 +1,21 @@
-{% macro surrogate_key(fields) -%}
+{%- macro surrogate_key() -%}
 
-md5(concat(
+{% set fields = [] %}
 
-    {%- for field in fields %}
+{%- for field in varargs -%}
 
-        coalesce(
-            {{dbt_utils.safe_cast(field, dbt_utils.type_string())}}
-            , '')
-        {% if not loop.last %},{% endif %}
+    {% set _ = fields.append(
+        "coalesce(cast(" ~ field ~ " as " ~ dbt_utils.type_string() ~ "), '')"
+    ) %}
 
-    {%- endfor -%}
+    {% if not loop.last %}
+        {% set _ = fields.append("'-'") %}
+    {% endif %}
 
-))
+{%- endfor -%}
 
-{%- endmacro %}
+md5(
+    {{dbt_utils.concat(fields)}}
+)
+
+{%- endmacro -%}

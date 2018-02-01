@@ -8,9 +8,9 @@
     string
 {% endmacro %}
 
-{% macro redshift__type_string() %}
+{%- macro redshift__type_string() -%}
     varchar
-{% endmacro %}
+{%- endmacro -%}
 
 {% macro postgres__type_string() %}
     varchar

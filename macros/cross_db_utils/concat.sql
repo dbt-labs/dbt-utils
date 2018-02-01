@@ -18,6 +18,6 @@
 {% endmacro %}
 
 
-{% macro snowflake__dateadd(fields) %}
+{% macro snowflake__concat(fields) %}
     {{dbt_utils.alternative_concat(fields)}}
 {% endmacro %}

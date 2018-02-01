@@ -187,11 +187,11 @@ Usage:
 ```
 
 #### surrogate_key ([source](macros/sql/surrogate_key.sql))
-Implements a cross-database way to generate a hashed surrogate key using the array of fields specified.
+Implements a cross-database way to generate a hashed surrogate key using the fields specified.
 
 Usage:
 ```
-{{ dbt_utils.surrogate_key(fields=['field_a', 'field_b'...]) }}
+{{ dbt_utils.surrogate_key('field_a', 'field_b'[,...]) }}
 ```
 
 #### pivot ([source](macros/sql/pivot.sql))

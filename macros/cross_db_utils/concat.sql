@@ -14,14 +14,10 @@
 
 
 {% macro redshift__concat(fields) %}
-
     {{dbt_utils.alternative_concat(fields)}}
-
 {% endmacro %}
 
 
 {% macro snowflake__dateadd(fields) %}
-
     {{dbt_utils.alternative_concat(fields)}}
-
 {% endmacro %}

@@ -14,8 +14,6 @@
 
 {%- endfor -%}
 
-md5(
-    {{dbt_utils.concat(fields)}}
-)
+md5({{dbt_utils.concat(fields)}})
 
 {%- endmacro -%}

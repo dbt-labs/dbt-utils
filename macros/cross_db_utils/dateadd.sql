@@ -18,8 +18,7 @@
 
     date_add(
         {{ from_date_or_timestamp }},
-        {{ interval }},
-        "{{ datepart }}"
+        INTERVAL {{ interval }} {{ datepart }}
         )
 
 {% endmacro %}

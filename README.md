@@ -41,6 +41,25 @@ Usage:
 ```
 {{ dbt_utils.split_part(string_text='1,2,3', delimiter_text=',', part_number=1) }}
 ```
+
+#### date_trunc ([source](macros/cross_db_utils/date_trunc.sql))
+Truncates a date or timestamp to the specified datepart. Note: The `datepart` argument is database-specific.
+
+Usage:
+```
+{{ dbt_utils.date_trunc(datepart, date) }}
+```
+
+#### last_day ([source](macros/cross_db_utils/last_day.sql))
+Gets the last day for a given date and datepart. Notes:
+
+- The `datepart` argument is database-specific.
+- This macro currently only supports dateparts of `month` and `quarter`.
+
+Usage:
+```
+{{ dbt_utils.last_day(date, datepart) }}
+```
 ---
 ### Date/Time
 #### date_spine ([source](macros/datetime/date_spine.sql))

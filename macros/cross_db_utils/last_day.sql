@@ -1,3 +1,8 @@
+/*
+This function has been tested with dateparts of month and quarters. Further
+testing is required to validate that it will work on other dateparts.
+*/
+
 {% macro last_day(date, datepart) %}
   {{ adapter_macro('dbt_utils.last_day', date, datepart) }}
 {% endmacro %}

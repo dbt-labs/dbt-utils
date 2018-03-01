@@ -83,6 +83,19 @@ Usage:
 ```
 {{ dbt_utils.haversine_distance(lat1=<float>,lon1=<float>,lat2=<float>,lon2=<float>) }}
 ```
+
+---
+### Permissions
+#### grant_select_on_schemas ([source](macros/permissions/grant_select_on_schemas.sql))
+This macro gives SELECT access to all tables in all schemata in the specified database to the specified role.
+This can useful, for example, to give the user/role used by dbt access to upstream source tables.
+In that use case, it's best to run this macro in a separate dbt project configured with security admin rights to the database in question.
+
+Usage:
+```
+{{ dbt_utils.grant_select_on_schemas(database_name='MyDB', role_name='MyRole') }}
+```
+
 ---
 ### Schema Tests
 #### equality ([source](macros/schema_tests/equality.sql))

@@ -88,7 +88,7 @@ Usage:
 ### Permissions
 #### grant_select_on_schemas ([source](macros/permissions/grant_select_on_schemas.sql))
 This macro gives SELECT access to all tables in all schemata in the specified database to the specified role.
-This can useful, for example, to give the user/role used by dbt access to upstream source tables.
+This can be useful to give the user/role used by dbt access to upstream source tables.
 In that use case, it's best to run this macro in a separate dbt project configured with security admin rights to the database in question.
 
 Usage:

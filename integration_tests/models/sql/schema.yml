@@ -1,0 +1,53 @@
+
+test_generate_series:
+    constraints:
+        dbt_utils.equality:
+            - ref('data_generate_series')
+
+
+test_get_column_values:
+    constraints:
+        accepted_values:
+            - { field: count_a, values: ['1'] }
+            - { field: count_b, values: ['1'] }
+            - { field: count_c, values: ['1'] }
+            - { field: count_d, values: ['1'] }
+            - { field: count_e, values: ['1'] }
+            - { field: count_f, values: ['1'] }
+            - { field: count_g, values: ['5'] }
+
+test_get_tables_by_prefix_and_union:
+    constraints:
+        not_null:
+            - user_id
+            - event
+
+        unique:
+            - user_id
+
+        dbt_utils.at_least_one:
+            - user_id
+
+test_nullcheck_table:
+    constraints:
+        not_empty_string:
+            - field_1
+            - field_2
+            - field_3
+
+
+test_pivot:
+    constraints:
+        dbt_utils.equality:
+            - ref('data_pivot_expected')
+
+
+test_star:
+    constraints:
+        dbt_utils.equality:
+            - ref('data_star_expected')
+
+test_surrogate_key:
+    constraints:
+        assert_equal:
+            - {actual: actual, expected: expected}

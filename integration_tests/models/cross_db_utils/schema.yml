@@ -1,0 +1,41 @@
+
+test_concat:
+    constraints:
+        assert_equal:
+            - { actual: actual, expected: expected }
+
+test_current_timestamp:
+    constraints:
+        assert_equal:
+            - { actual: actual, expected: expected }
+
+test_date_trunc:
+    constraints:
+        assert_equal:
+            - { actual: actual, expected: expected }
+
+test_dateadd:
+    constraints:
+        assert_equal:
+            - { actual: actual, expected: expected }
+
+test_datediff:
+    constraints:
+        assert_equal:
+            - { actual: actual, expected: expected }
+
+test_last_day:
+    constraints:
+        assert_equal:
+            - { actual: actual, expected: expected }
+
+test_safe_cast:
+    constraints:
+        assert_equal:
+            - { actual: actual, expected: expected }
+
+test_split_part:
+    constraints:
+        assert_equal:
+            - { actual: actual, expected: expected }
+

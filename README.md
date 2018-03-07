@@ -1,9 +1,3 @@
-<p align="center">
-  <img src="etc/dbt-logo.png" alt="dbt logo" />
-</p>
-
-----
-
 # dbt-utils
 
 This package contains macros that can be (re)used across dbt projects. To use these macros, add this package as a dependency in your `dbt_project.yml` file:

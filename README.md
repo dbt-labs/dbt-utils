@@ -1,6 +1,4 @@
-# dbt-utils
-
-This package contains macros that can be (re)used across dbt projects.
+This [dbt](https://github.com/fishtown-analytics/dbt) package contains macros that can be (re)used across dbt projects.
 
 ## Macros
 ### Cross-database

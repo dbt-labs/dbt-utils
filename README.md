@@ -1,14 +1,6 @@
 # dbt-utils
 
-This package contains macros that can be (re)used across dbt projects. To use these macros, add this package as a dependency in your `dbt_project.yml` file:
-
-```yml
-repositories:
-    # Be sure to replace VERSION_NUMBER below!
-    - https://github.com/fishtown-analytics/dbt-utils.git@VERSION_NUMBER
-```
-
-It's a good practice to "tag" your dependencies with version numbers. You can find the latest release of this package [here](https://github.com/fishtown-analytics/dbt-utils/tags).
+This package contains macros that can be (re)used across dbt projects.
 
 ## Macros
 ### Cross-database

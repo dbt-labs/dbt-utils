@@ -129,6 +129,20 @@ model_name:
 
 ---
 ### SQL helpers
+#### index ([source](macros/sql/index.sql))
+This macro creates an index on a given column.
+
+Usage:
+```
+{{
+config({
+    "post-hook": [
+      "{{ index(this, 'id')}};",
+    ],
+    })
+}}
+...
+
 #### get_column_values ([source](macros/sql/get_column_values.sql))
 This macro returns the unique values for a column in a given table.
 

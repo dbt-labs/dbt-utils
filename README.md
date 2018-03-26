@@ -166,11 +166,13 @@ Usage:
 ```
 
 #### star ([source](macros/sql/star.sql))
-This macro generates a `select` statement for each field that exists in the `from` relation. Fields listed in the `except` argument will be excluded from this list.
+This macro generates a list of all fields that exist in the `from` relation, excluding any fields listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with the star macro.
 
 Usage:
 ```
+select
 {{ dbt_utils.star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"]) }}
+from {{ref('my_model')}}
 ```
 
 #### union_tables ([source](macros/sql/union.sql))

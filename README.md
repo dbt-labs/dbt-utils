@@ -1,20 +1,4 @@
-<p align="center">
-  <img src="etc/dbt-logo.png" alt="dbt logo" />
-</p>
-
-----
-
-# dbt-utils
-
-This package contains macros that can be (re)used across dbt projects. To use these macros, add this package as a dependency in your `dbt_project.yml` file:
-
-```yml
-repositories:
-    # Be sure to replace VERSION_NUMBER below!
-    - https://github.com/fishtown-analytics/dbt-utils.git@VERSION_NUMBER
-```
-
-It's a good practice to "tag" your dependencies with version numbers. You can find the latest release of this package [here](https://github.com/fishtown-analytics/dbt-utils/tags).
+This [dbt](https://github.com/fishtown-analytics/dbt) package contains macros that can be (re)used across dbt projects.
 
 ## Macros
 ### Cross-database
@@ -182,11 +166,13 @@ Usage:
 ```
 
 #### star ([source](macros/sql/star.sql))
-This macro generates a `select` statement for each field that exists in the `from` relation. Fields listed in the `except` argument will be excluded from this list.
+This macro generates a list of all fields that exist in the `from` relation, excluding any fields listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with the star macro.
 
 Usage:
 ```
+select
 {{ dbt_utils.star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"]) }}
+from {{ref('my_model')}}
 ```
 
 #### union_tables ([source](macros/sql/union.sql))

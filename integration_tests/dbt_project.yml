@@ -2,7 +2,7 @@
 name: 'dbt_utils_integration_tests'
 version: '1.0'
 
-profile: 'default'
+profile: 'integration_tests'
 
 source-paths: ["models"]
 analysis-paths: ["analysis"] 
@@ -14,6 +14,3 @@ target-path: "target"  # directory which will store compiled SQL files
 clean-targets:         # directories to be removed by `dbt clean`
     - "target"
     - "dbt_modules"
-
-packages:
-    - local: ../

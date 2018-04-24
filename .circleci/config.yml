@@ -18,8 +18,8 @@ jobs:
       - run:
           name: "Setup dbt"
           command: |
-            virtualenv env
-            source env/bin/activate
+            python3 -m venv venv
+            . venv/bin/activate
             pip install dbt
             mkdir -p ~/.dbt
             cp integration_tests/ci/sample.profiles.yml ~/.dbt/profiles.yml
@@ -27,7 +27,7 @@ jobs:
       - run:
           name: "Run tests (postgres)"
           command: |
-            source env/bin/activate
+            . venv/bin/activate
             cd integration_tests
             dbt seed
             dbt run

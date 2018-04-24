@@ -5,3 +5,6 @@ database support:
  - [x] redshift
  - [ ] bigquery (partial)
  - [ ] snowflake (partial)
+
+todo:
+ - [ ] run in CI for at least postgres

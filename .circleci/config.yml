@@ -1,0 +1,25 @@
+
+machine:
+  timezone:
+    America/New_York
+
+  python:
+    version:
+      3.6.1
+
+database:
+  override:
+    - bash integration_tests/ci/setup_db.sh
+
+dependencies:
+  pre:
+    - pip install dbt
+    - mkdir -p ~/.dbt
+    - cp integration_tests/ci/sample.profiles.yml ~/.dbt/profiles.yml
+
+test:
+  override:
+    - cd integration_tests
+    - dbt seed
+    - dbt run
+    - dbt test

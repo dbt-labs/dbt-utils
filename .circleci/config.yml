@@ -1,25 +1,31 @@
 
-machine:
-  timezone:
-    America/New_York
+version: 2
 
-  python:
-    version:
-      3.6.1
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.6.2-stretch-browsers
+      - image: circleci/postgres:9.6.5-alpine-ram
+        environment:
+          CI_DBT_USER: root
+          CI_DBT_PASS: ''
+          CI_DBT_PORT: 5432
+          CI_DBT_DBNAME: circle_test
 
-database:
-  override:
-    - bash integration_tests/ci/setup_db.sh
+    steps:
+      - checkout
 
-dependencies:
-  pre:
-    - pip install dbt
-    - mkdir -p ~/.dbt
-    - cp integration_tests/ci/sample.profiles.yml ~/.dbt/profiles.yml
+      - run:
+          name: "Setup dbt"
+          command: |
+            pip install dbt
+            mkdir -p ~/.dbt
+            cp integration_tests/ci/sample.profiles.yml ~/.dbt/profiles.yml
 
-test:
-  override:
-    - cd integration_tests
-    - dbt seed
-    - dbt run
-    - dbt test
+      - run:
+          name: "Run tests (postgres)"
+          command: |
+            cd integration_tests
+            dbt seed
+            dbt run
+            dbt test

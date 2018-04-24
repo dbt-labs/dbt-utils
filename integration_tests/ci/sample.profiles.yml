@@ -4,7 +4,7 @@
 
 config:
     send_anonymous_usage_stats: False
-    use_colors: False
+    use_colors: True
 
 integration_tests:
   target: ci

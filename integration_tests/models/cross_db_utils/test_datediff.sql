@@ -8,8 +8,8 @@ with data as (
 select
     -- not implemented for postgres
     {% if target.type == 'postgres' %}
-        null as actual,
-        null as expected
+        null::text as actual,
+        null::text as expected
     {% else %}
         case
             when datepart = 'hour' then {{ dbt_utils.datediff('first_date', 'second_date', 'hour') }}

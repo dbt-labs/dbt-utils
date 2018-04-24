@@ -6,7 +6,7 @@ config:
     send_anonymous_usage_stats: False
     use_colors: False
 
-default:
+integration_tests:
   target: ci
   outputs:
     ci:

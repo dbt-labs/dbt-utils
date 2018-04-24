@@ -15,6 +15,9 @@ jobs:
     steps:
       - checkout
 
+      - restore_cache:
+          key: deps1-{{ .Branch }}
+
       - run:
           name: "Setup dbt"
           command: |
@@ -29,6 +32,12 @@ jobs:
           command: |
             . venv/bin/activate
             cd integration_tests
+            dbt deps
             dbt seed
             dbt run
             dbt test
+
+      - save_cache:
+          key: deps1-{{ .Branch }}
+          paths:
+            - "venv"

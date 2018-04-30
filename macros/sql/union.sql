@@ -4,6 +4,7 @@
 
     {%- set table_columns = {} %}
     {%- set column_superset = {} %}
+    {%- set table_rels = {} %}
 
     {%- for table in tables -%}
 
@@ -14,6 +15,9 @@
         {%- else -%}
             {%- set schema, table_name = (table | string).split(".") -%}
         {%- endif -%}
+
+        {% set table_rel = api.Relation.create(schema=schema, identifier=table_name) %}
+        {% set _ = table_rels.update({table: table_rel}) %}
 
         {%- set cols = adapter.get_columns_in_table(schema, table_name) %}
         {%- for col in cols -%}
@@ -40,7 +44,8 @@
 
     {%- set ordered_column_names = column_superset.keys() %}
 
-    {%- for table in tables -%}
+    {%- for table in table_rels -%}
+        {%- set table_rel = table_rels[table] -%}
 
         (
             select
@@ -56,7 +61,7 @@
                     {{ col_name }}::{{ col_type }} as {{ col.quoted }} {% if not loop.last %},{% endif %}
                 {%- endfor %}
 
-            from {{ table }}
+            from {{ table_rel }}
         )
 
         {% if not loop.last %} union all {% endif %}

@@ -1,0 +1,29 @@
+
+data_test_not_constant:
+    constraints:
+        dbt_utils.not_constant:
+            - field
+
+
+data_test_at_least_one:
+    constraints:
+        dbt_utils.at_least_one:
+            - field
+
+
+test_recency:
+    constraints:
+        dbt_utils.recency:
+            - {field: today, datepart: day, interval: 1}
+
+
+data_people:
+    constraints:
+        dbt_utils.equality:
+            - ref('data_people')
+
+
+data_people:
+    constraints:
+        dbt_utils.cardinality_equality:
+            - {from: is_active, to: ref('data_people'), field: is_active}

@@ -1,0 +1,6 @@
+
+
+test_date_spine:
+    constraints:
+        dbt_utils.equality:
+            - ref('data_date_spine')

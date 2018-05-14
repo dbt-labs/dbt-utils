@@ -1,7 +1,7 @@
 {#
 Extracts the subdomain from a column containing a url.
 
-Example Usage:
+Usage:
 
     Input:
 

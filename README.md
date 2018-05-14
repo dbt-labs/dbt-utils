@@ -254,6 +254,17 @@ Usage:
 {{ dbt_utils.get_url_parameter(field='page_url', url_parameter='utm_source') }}
 ```
 
+#### get_subdomain ([source](macros/web/get_subdomain.sql))
+This macro extracts the subdomain from a column containing a url.
+
+Usage:
+```
+select
+  p.id,
+  p.url,
+  {{ dbt_utils.get_subdomain(url='p.url', domain='your-company') }} as subdomain
+from segment.pages p
+```
 ----
 ### Getting started with dbt
 

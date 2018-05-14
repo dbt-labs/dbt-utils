@@ -36,7 +36,7 @@ Arguments:
 
 {%- set formatted_domain = "'." + domain + "'" -%}
 
-{%- set split_one = dbt_utils.split_part(string_text=url, delimiter_text="'https://'", part_number=2) -%}
+{%- set split_one = dbt_utils.split_part(string_text=url, delimiter_text="'://'", part_number=2) -%}
 
 {%- set split_two = dbt_utils.split_part(string_text=split_one, delimiter_text=formatted_domain, part_number=1) -%}
 

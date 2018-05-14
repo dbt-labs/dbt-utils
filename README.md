@@ -255,6 +255,13 @@ Usage:
 ```
 
 ----
+
+### Contributing
+
+We welcome contributions to this repo! To contribute a new feature or a fix, please open a Pull Request with 1) your changes, 2) updated documentation for the `README.md` file, and 3) a working integration test. See [this page](integration_tests/README.md) for more information.
+
+----
+
 ### Getting started with dbt
 
 - [What is dbt]?

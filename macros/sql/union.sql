@@ -10,8 +10,11 @@
 
         {%- set _ = table_columns.update({table: []}) %}
 
-        {% set schema = table.schema %}
-        {% set table_name = table.name %}
+        {%- if table.name -%}
+            {%- set schema, table_name = table.schema, table.name -%}
+        {%- else -%}
+            {%- set schema, table_name = (table | string).split(".") -%}
+        {%- endif -%}
 
         {%- set cols = adapter.get_columns_in_table(schema, table_name) %}
         {%- for col in cols -%}

@@ -1,5 +1,5 @@
 {% macro dateadd(datepart, interval, from_date_or_timestamp) %}
-  {{ adapter_macro('dateadd', datepart, interval, from_date_or_timestamp) }}
+  {{ adapter_macro('dbt_utils.dateadd', datepart, interval, from_date_or_timestamp) }}
 {% endmacro %}
 
 
@@ -18,8 +18,7 @@
 
     date_add(
         {{ from_date_or_timestamp }},
-        {{ interval }},
-        "{{ datepart }}"
+        interval {{ interval }} {{ datepart }}
         )
 
 {% endmacro %}

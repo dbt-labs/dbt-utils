@@ -1,9 +1,9 @@
-{% macro get_url_parameter(field, url_parameter) %}
+{% macro get_url_parameter(field, url_parameter) -%}
 
-{% set formatted_url_parameter = "'" + url_parameter + "='" %}
+{%- set formatted_url_parameter = "'" + url_parameter + "='" -%}
 
-{{
-    split_part(split_part(field, formatted_url_parameter, 2), "'&'", 1) 
-}}
+{%- set split = dbt_utils.split_part(dbt_utils.split_part(field, formatted_url_parameter, 2), "'&'", 1) -%}
 
-{% endmacro %}
+nullif({{ split }},'')
+
+{%- endmacro %}

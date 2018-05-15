@@ -1,5 +1,6 @@
-{% macro union_tables(tables, column_override=none) -%}
+{% macro union_tables(tables, column_override=none, exclude=none) -%}
 
+    {%- set exclude = exclude if exclude is not none else [] %}
     {%- set column_override = column_override if column_override is not none else {} %}
 
     {%- set table_columns = {} %}
@@ -18,6 +19,8 @@
         {%- set cols = adapter.get_columns_in_table(schema, table_name) %}
         {%- for col in cols -%}
 
+        {%- if col.column not in exclude %}
+
             {# update the list of columns in this table #}
             {%- set _ = table_columns[table].append(col.column) %}
 
@@ -35,6 +38,9 @@
                 {%- set _ =  column_superset.update({col.column: col}) %}
 
             {%- endif -%}
+
+        {%- endif -%}
+
         {%- endfor %}
     {%- endfor %}
 

@@ -180,7 +180,11 @@ This macro implements an "outer union." The list of tables provided to this macr
 
 Usage:
 ```
-{{ dbt_utils.union_tables(tables=[ref('table_1'), ref('table_2')], column_override={"some_field": "varchar(100)"}) }}
+{{ dbt_utils.union_tables(
+    tables=[ref('table_1'), ref('table_2')], 
+    column_override={"some_field": "varchar(100)"}, 
+    exclude=["some_other_field"]
+) }}
 ```
 
 #### generate_series ([source](macros/sql/generate_series.sql))

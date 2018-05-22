@@ -16,9 +16,6 @@
 
 
 
-
-
-
 {% macro current_timestamp_in_utc() %}
   {{ adapter_macro('dbt_utils.current_timestamp_in_utc') }}
 {% endmacro %}
@@ -34,10 +31,3 @@
 {% macro postgres__current_timestamp_in_utc() %}
     (current_timestamp at time zone 'utc')::{{dbt_utils.type_timestamp()}}
 {% endmacro %}
-
-
-
-
-
-
-

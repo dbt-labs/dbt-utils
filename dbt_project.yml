@@ -5,5 +5,3 @@ target-path: "target"
 clean-targets: ["target", "dbt_modules"]
 macro-paths: ["macros"]
 log-path: "logs"
-
-profile: snowflake-testing

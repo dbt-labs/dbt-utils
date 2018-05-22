@@ -3,15 +3,11 @@
 {% endmacro %}
 
 {% macro default__current_timestamp() %}
+    current_timestamp::{{dbt_utils.type_timestamp()}}
+{% endmacro %}
+
+{% macro bigquery__current_timestamp() %}
     current_timestamp
-{% endmacro %}
-
-{% macro redshift__current_timestamp() %}
-    current_timestamp::{{dbt_utils.type_timestamp()}}
-{% endmacro %}
-
-{% macro postgres__current_timestamp() %}
-    current_timestamp::{{dbt_utils.type_timestamp()}}
 {% endmacro %}
 
 

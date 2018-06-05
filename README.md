@@ -28,7 +28,7 @@ Usage:
 
 
 #### split_part ([source](macros/cross_db_utils/split_part.sql))
-This macro splits a string of text using the supplied delimiter and returns the supplied part number (base 1).
+This macro splits a string of text using the supplied delimiter and returns the supplied part number (1-indexed).
 
 Usage:
 ```

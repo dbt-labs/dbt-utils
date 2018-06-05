@@ -28,7 +28,7 @@ Usage:
 
 
 #### split_part ([source](macros/cross_db_utils/split_part.sql))
-This macro adds a time/day interval to the supplied date/timestamp. Note: The `datepart` argument is database-specific.
+This macro splits a string of text using the supplied delimiter and returns the supplied part number (1-indexed).
 
 Usage:
 ```

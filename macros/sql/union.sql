@@ -1,5 +1,10 @@
 {% macro union_tables(tables, column_override=none, exclude=none) -%}
 
+    {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
+    {%- if not execute -%}
+        {{ return('') }}
+    {% endif %}
+
     {%- set exclude = exclude if exclude is not none else [] %}
     {%- set column_override = column_override if column_override is not none else {} %}
 

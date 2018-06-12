@@ -1,5 +1,10 @@
 {% macro star(from, except=[]) -%}
 
+    {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
+    {%- if not execute -%}
+        {{ return('') }}
+    {% endif %}
+
     {%- if from.name -%}
         {%- set schema_name, table_name = from.schema, from.name -%}
     {%- else -%}

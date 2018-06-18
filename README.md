@@ -190,8 +190,8 @@ This macro implements an "outer union." The list of tables provided to this macr
 Usage:
 ```
 {{ dbt_utils.union_tables(
-    tables=[ref('table_1'), ref('table_2')], 
-    column_override={"some_field": "varchar(100)"}, 
+    tables=[ref('table_1'), ref('table_2')],
+    column_override={"some_field": "varchar(100)"},
     exclude=["some_other_field"]
 ) }}
 ```
@@ -265,6 +265,53 @@ This macro extracts a url parameter from a column containing a url.
 Usage:
 ```
 {{ dbt_utils.get_url_parameter(field='page_url', url_parameter='utm_source') }}
+```
+---
+### Materializations
+#### insert_by_period ([source](macros/materializations/insert_by_period_materialization.sql))
+`insert_by_period` allows dbt to insert records into a table one period (i.e. day, week) at a time.
+
+This materialization is particularly useful for large models where the initial run can be problematic.
+
+Should a run of a model using this materialization be interrupted, a subsequent run will continue building the target table from where it was interrupted (granted the `--full-refresh` flag is omitted).
+
+Progress is logged in the command line for easy monitoring.
+
+Usage:
+```sql
+{{
+  config(
+    materialized = "insert_by_period",
+    period = "day" -- optional; period to break the model into - if not provided, "week" will be used.
+    -- Must be a valid Datepart (https://docs.aws.amazon.com/redshift/latest/dg/r_Dateparts_for_datetime_functions.html)
+    timestamp_field = "created_at", -- required; the column name of the timestamp field that will be used to break the model into smaller queries
+    start_date = "2018-01-01", -- required; literal date or timestamp - generally choose a date that is earlier than the start of your data
+    stop_date = "2018-06-01", -- optional; literal date or timestamp - if not provided, today's timestamp will be used
+  )
+}}
+
+with events as (
+
+  select *
+  from public.events
+  where __PERIOD_FILTER__ -- This will be replaced with a filter in the materialization code
+
+)
+
+....complex aggregates here....
+
+```
+
+
+Caveats:
+* This materialization is compatible with dbt 0.10.1.
+* This materialization has been written for Redshift.
+* This materialization can only be used for a model where records are not expected to change after they are created.
+* Any model post-hooks that use `{{this}}` will fail using this materialization. For example:
+```yaml
+models:
+    project-name:
+        post-hook: "grant select on {{this}} to db_reader"
 ```
 
 ----

@@ -282,12 +282,10 @@ Usage:
 {{
   config(
     materialized = "insert_by_period",
-    period = "day" -- optional; period to break the model into - if not provided, "week" will be used.
-    -- Must be a valid Datepart (https://docs.aws.amazon.com/redshift/latest/dg/r_Dateparts_for_datetime_functions.html)
-    timestamp_field = "created_at", -- required; the column name of the timestamp field that will be used to break the model into smaller queries
-    start_date = "2018-01-01", -- required; literal date or timestamp - generally choose a date that is earlier than the start of your data
-    stop_date = "2018-06-01", -- optional; literal date or timestamp - if not provided, today's timestamp will be used
-  )
+    period = "day",
+    timestamp_field = "created_at",
+    start_date = "2018-01-01",
+    stop_date = "2018-06-01"
 }}
 
 with events as (
@@ -301,17 +299,25 @@ with events as (
 ....complex aggregates here....
 
 ```
-
+Configuration values:
+* `period`: period to break the model into, must be a valid [datepart](https://docs.aws.amazon.com/redshift/latest/dg/r_Dateparts_for_datetime_functions.html) (default='Week')
+* `timestamp_field`: the column name of the timestamp field that will be used to break the model into smaller queries
+* `start_date`: literal date or timestamp - generally choose a date that is earlier than the start of your data
+* `stop_date`: literal date or timestamp (default=current_timestamp)
 
 Caveats:
 * This materialization is compatible with dbt 0.10.1.
 * This materialization has been written for Redshift.
 * This materialization can only be used for a model where records are not expected to change after they are created.
-* Any model post-hooks that use `{{this}}` will fail using this materialization. For example:
+* Any model post-hooks that use `{{ this }}` will fail using this materialization. For example:
 ```yaml
 models:
     project-name:
-        post-hook: "grant select on {{this}} to db_reader"
+        post-hook: "grant select on {{ this }} to db_reader"
+```
+A useful workaround is to change the above post-hook to:
+```yaml
+        post-hook: "grant select on {{ this.schema }}.{{ this.name }} to db_reader"
 ```
 
 ----

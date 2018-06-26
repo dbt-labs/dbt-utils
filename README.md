@@ -271,7 +271,7 @@ Usage:
 #### insert_by_period ([source](macros/materializations/insert_by_period_materialization.sql))
 `insert_by_period` allows dbt to insert records into a table one period (i.e. day, week) at a time.
 
-This materialization is particularly useful for large models where the initial run can be problematic.
+This materialization is particularly useful for building large tables, especially where the initial run can be problematic.
 
 Should a run of a model using this materialization be interrupted, a subsequent run will continue building the target table from where it was interrupted (granted the `--full-refresh` flag is omitted).
 
@@ -291,7 +291,7 @@ Usage:
 with events as (
 
   select *
-  from public.events
+  from {{ ref('events') }}
   where __PERIOD_FILTER__ -- This will be replaced with a filter in the materialization code
 
 )

@@ -48,6 +48,13 @@
   {%- set stop_date = config.get('stop_date') or '' -%}}
   {%- set period = config.get('period') or 'week' -%}
 
+  {%- if not '__PERIOD_FILTER__' is in sql -%}
+    {%- set error_message -%}
+      Model '{{ model.unique_id }}' does not include the required string '__PERIOD_FILTER__' in its sql
+    {%- endset -%}
+    {{ exceptions.raise_compiler_error(error_message) }}
+  {%- endif -%}
+
   {%- set identifier = model['name'] -%}
 
   {%- set existing_relations = adapter.list_relations(schema=schema) -%}

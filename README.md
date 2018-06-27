@@ -271,7 +271,7 @@ Usage:
 #### insert_by_period ([source](macros/materializations/insert_by_period_materialization.sql))
 `insert_by_period` allows dbt to insert records into a table one period (i.e. day, week) at a time.
 
-This materialization is particularly useful for building large tables, especially where the initial run can be problematic.
+This materialization is appropriate for event data that can be processed in discrete periods. It is similar in concept to the built-in incremental materialization, but has the added benefit of building the model in chunks even during a full-refresh so is particularly useful for models where the initial run can be problematic.
 
 Should a run of a model using this materialization be interrupted, a subsequent run will continue building the target table from where it was interrupted (granted the `--full-refresh` flag is omitted).
 

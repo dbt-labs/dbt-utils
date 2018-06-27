@@ -190,8 +190,8 @@ This macro implements an "outer union." The list of tables provided to this macr
 Usage:
 ```
 {{ dbt_utils.union_tables(
-    tables=[ref('table_1'), ref('table_2')],
-    column_override={"some_field": "varchar(100)"},
+    tables=[ref('table_1'), ref('table_2')], 
+    column_override={"some_field": "varchar(100)"}, 
     exclude=["some_other_field"]
 ) }}
 ```
@@ -249,14 +249,23 @@ Arguments:
 
     - column: Column name, required
     - values: List of row values to turn into columns, required
+    - excluded_values: list of values you do not want pivoted. This should be 
+                     passed in parentheses ie excluded_values=('foo','bar'). 
+                     default is empty
     - alias: Whether to create column aliases, default is True
+    - coalesce: Whether the whole statement should coalesce to 0 
+              ie coalesce(agg(case),0), default is False
     - agg: SQL aggregation function, default is sum
+    - total: Whether all values (except excluded) should be summed for 
+           a total column, default is False
+    - distinct: Whether vals in the agg should be distinct ie count(distinct),
+           default is False
     - cmp: SQL value comparison, default is =
     - prefix: Column alias prefix, default is blank
     - suffix: Column alias postfix, default is blank
     - then_value: Value to use if comparison succeeds, default is 1
-    - else_value: Value to use if comparison fails, default is 0
-
+    - else_value: Value to use if comparison fails, default is null
+#}
 ---
 ### Web
 #### get_url_parameter ([source](macros/web/get_url_parameter.sql))
@@ -266,7 +275,9 @@ Usage:
 ```
 {{ dbt_utils.get_url_parameter(field='page_url', url_parameter='utm_source') }}
 ```
----
+
+----
+
 ### Materializations
 #### insert_by_period ([source](macros/materializations/insert_by_period_materialization.sql))
 `insert_by_period` allows dbt to insert records into a table one period (i.e. day, week) at a time.

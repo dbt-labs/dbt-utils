@@ -48,7 +48,7 @@
   {%- set stop_date = config.get('stop_date') or '' -%}}
   {%- set period = config.get('period') or 'week' -%}
 
-  {%- if not '__PERIOD_FILTER__' is in sql -%}
+  {%- if sql.find('__PERIOD_FILTER__') == -1 -%}
     {%- set error_message -%}
       Model '{{ model.unique_id }}' does not include the required string '__PERIOD_FILTER__' in its sql
     {%- endset -%}

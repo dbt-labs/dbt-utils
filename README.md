@@ -265,7 +265,7 @@ Arguments:
     - suffix: Column alias postfix, default is blank
     - then_value: Value to use if comparison succeeds, default is 1
     - else_value: Value to use if comparison fails, default is null
-#}
+
 ---
 ### Web
 #### get_url_parameter ([source](macros/web/get_url_parameter.sql))

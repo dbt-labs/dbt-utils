@@ -33,7 +33,7 @@ Arguments:
     {{ exclude_col }},
     {%- endfor %}
     cast('{{ col.column }}' as varchar) as field_name,
-    {{ dbt_utils.safe_cast(field={{ col.column }}, type={{ cast_to }}) }} as value
+    {{ dbt_utils.safe_cast(field=col.column, type=cast_to) }} as value
   from {{ table }}
   {% if not loop.last -%}
   union all

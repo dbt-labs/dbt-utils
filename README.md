@@ -258,7 +258,7 @@ Arguments:
     - else_value: Value to use if comparison fails, default is 0
 
 #### unpivot ([source](macros/sql/unpivot.sql))
-This macro pivots values from columns to rows.
+This macro "un-pivots" values from columns to rows.
 
 Usage:
 ```
@@ -274,7 +274,7 @@ Example:
     | 2017-01-01 | S    | red   | complete   |
     | 2017-03-01 | S    | red   | processing |
 
-    {{ dbt_utils.unpivot(ref('orders'), cast_to='varchar', exclude=['status']) }}
+    {{ dbt_utils.unpivot(ref('orders'), cast_to='varchar', exclude=['date','status']) }}
 
     Output:
 

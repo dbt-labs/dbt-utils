@@ -258,7 +258,7 @@ Arguments:
     - else_value: Value to use if comparison fails, default is 0
 
 #### unpivot ([source](macros/sql/unpivot.sql))
-This macro "un-pivots" values from columns to rows.
+This macro "un-pivots" a table from wide format to long format. Functionality is similar to pandas [melt](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.melt.html) function.
 
 Usage:
 ```

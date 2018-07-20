@@ -258,7 +258,9 @@ Arguments:
     - else_value: Value to use if comparison fails, default is 0
 
 #### coalesce_0 ([source](macros/sql/coalesce_0.sql))
-This macro coalesces a given column with `0`, and gives the field the original column name (unless otherwise specified). Table names can be specified as part of the field name, but only the column name will be used as the alias.
+This macro is most useful when mapping NULLs in a column to `0`s without wanting to change the column name.
+It coalesces a given column with `0`, and gives the field the original column name (unless otherwise specified).
+Table names can be specified as part of the field name, but only the column name will be used as the alias.
 
 Usage:
 ```

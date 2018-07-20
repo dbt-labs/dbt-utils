@@ -1,4 +1,4 @@
-name: 'dwall_dbt_utils'
+name: 'dbt_utils'
 version: '0.1.0'
 
 target-path: "target"

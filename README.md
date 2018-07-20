@@ -257,6 +257,40 @@ Arguments:
     - then_value: Value to use if comparison succeeds, default is 1
     - else_value: Value to use if comparison fails, default is 0
 
+#### unpivot ([source](macros/sql/unpivot.sql))
+This macro "un-pivots" a table from wide format to long format. Functionality is similar to pandas [melt](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.melt.html) function.
+
+Usage:
+```
+{{ dbt_utils.unpivot(table=ref('table_name'), cast_to='datatype', exclude=[<list of columns to exclude from unpivot>]) }}
+```
+
+Example:
+
+    Input: orders
+
+    | date       | size | color | status     |
+    |------------|------|-------|------------|
+    | 2017-01-01 | S    | red   | complete   |
+    | 2017-03-01 | S    | red   | processing |
+
+    {{ dbt_utils.unpivot(ref('orders'), cast_to='varchar', exclude=['date','status']) }}
+
+    Output:
+
+    | date       | status     | field_name | value |
+    |------------|------------|------------|-------|
+    | 2017-01-01 | complete   | size       | S     |
+    | 2017-01-01 | complete   | color      | red   |
+    | 2017-03-01 | processing | size       | S     |
+    | 2017-03-01 | processing | color      | red   |
+
+Arguments:
+
+    - table: Table name, required
+    - cast_to: The data type to cast the unpivoted values to, default is varchar
+    - exclude: A list of columns to exclude from the unpivot.
+
 ---
 ### Web
 #### get_url_parameter ([source](macros/web/get_url_parameter.sql))

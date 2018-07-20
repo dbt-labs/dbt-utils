@@ -258,21 +258,18 @@ Arguments:
     - else_value: Value to use if comparison fails, default is 0
 
 #### coalesce_0 ([source](macros/sql/coalesce_0.sql))
-This macro is most useful when mapping NULLs in a column to `0`s without wanting to change the column name.
-It coalesces a given column with `0`, and gives the field the original column name (unless otherwise specified).
+This macro coalesces a given column with `0`, and gives the field the original column name.
 Table names can be specified as part of the field name, but only the column name will be used as the alias.
 
 Usage:
 ```
 {{ dbt_utils.coalesce_0("col1_name") }},
 {{ dbt_utils.coalesce_0("table_name.col2_name") }},
-{{ dbt_utils.coalesce_0('"table_name"."col3_name"'', "col3_alias") }},
 ```
 is compiled to:
 ```
 coalesce(col1_name, 0) as col1_name,
 coalesce(table_name.col2_name, 0) as col2_name,
-coalesce("table_name"."col3_name", 0) as col3_alias,
 ```
 
 ---

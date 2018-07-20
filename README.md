@@ -257,6 +257,21 @@ Arguments:
     - then_value: Value to use if comparison succeeds, default is 1
     - else_value: Value to use if comparison fails, default is 0
 
+#### coalesce_0 ([source](macros/sql/coalesce_0.sql))
+This macro coalesces a given column with `0`, and gives the field the original column name.
+Table names can be specified as part of the field name, but only the column name will be used as the alias.
+
+Usage:
+```
+{{ dbt_utils.coalesce_0("col1_name") }},
+{{ dbt_utils.coalesce_0("table_name.col2_name") }},
+```
+is compiled to:
+```
+coalesce(col1_name, 0) as col1_name,
+coalesce(table_name.col2_name, 0) as col2_name,
+```
+
 ---
 ### Web
 #### get_url_parameter ([source](macros/web/get_url_parameter.sql))

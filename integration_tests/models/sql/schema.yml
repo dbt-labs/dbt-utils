@@ -1,4 +1,10 @@
 
+test_coalesce_0:
+    constraints:
+        dbt_utils.equality:
+            - ref('data_coalesce_0_expected')
+
+
 test_generate_series:
     constraints:
         dbt_utils.equality:

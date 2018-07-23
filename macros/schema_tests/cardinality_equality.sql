@@ -1,10 +1,10 @@
-{% macro test_cardinality_equality(model, from, to) %}
+{% macro test_cardinality_equality(model, to, field) %}
 
-{% set column_name = kwargs.get('column_name', kwargs.get('field')) %}
+{% set column_name = kwargs.get('column_name', kwargs.get('from')) %}
 
 with table_a as (
 select
-  {{ from }},
+  {{ column_name }},
   count(*) as num_rows
 from {{ model }}
 group by 1
@@ -12,7 +12,7 @@ group by 1
 
 table_b as (
 select
-  {{ column_name }},
+  {{ field }},
   count(*) as num_rows
 from {{ to }}
 group by 1

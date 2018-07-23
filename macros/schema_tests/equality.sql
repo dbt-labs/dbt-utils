@@ -1,4 +1,6 @@
-{% macro test_equality(model, arg) %}
+{% macro test_equality(model) %}
+
+{% set model_name = kwargs.get('model_name', kwargs.get('arg')) %}
 
 
 {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
@@ -26,7 +28,7 @@ with a as (
 
 b as (
 
-    select * from {{ arg }}
+    select * from {{ model_name }}
 
 ),
 

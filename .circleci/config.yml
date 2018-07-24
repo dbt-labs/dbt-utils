@@ -1,0 +1,43 @@
+
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.6.2-stretch
+      - image: circleci/postgres:9.6.5-alpine-ram
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: deps1-{{ .Branch }}
+
+      - run:
+          name: "Setup dbt"
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install dbt
+            mkdir -p ~/.dbt
+            cp integration_tests/ci/sample.profiles.yml ~/.dbt/profiles.yml
+
+      - run:
+          name: "Run tests (postgres)"
+          environment:
+            CI_DBT_USER: root
+            CI_DBT_PASS: ''
+            CI_DBT_PORT: 5432
+            CI_DBT_DBNAME: circle_test
+          command: |
+            . venv/bin/activate
+            cd integration_tests
+            dbt deps
+            dbt seed
+            dbt run
+            dbt test
+
+      - save_cache:
+          key: deps1-{{ .Branch }}
+          paths:
+            - "venv"

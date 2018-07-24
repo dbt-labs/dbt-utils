@@ -18,8 +18,17 @@ Usage:
 {{ dbt_utils.dateadd(datepart='day', interval=1, from_date_or_timestamp='2017-01-01') }}
 ```
 
+#### datediff ([source](macros/cross_db_utils/datediff.sql))
+This macro calculates the difference between two dates.
+
+Usage:
+```
+{{ dbt_utils.datediff("'2018-01-01'", "'2018-01-20'", 'day') }}
+```
+
+
 #### split_part ([source](macros/cross_db_utils/split_part.sql))
-This macro adds a time/day interval to the supplied date/timestamp. Note: The `datepart` argument is database-specific.
+This macro splits a string of text using the supplied delimiter and returns the supplied part number (1-indexed).
 
 Usage:
 ```
@@ -180,7 +189,11 @@ This macro implements an "outer union." The list of tables provided to this macr
 
 Usage:
 ```
-{{ dbt_utils.union_tables(tables=[ref('table_1'), ref('table_2')], column_override={"some_field": "varchar(100)"}) }}
+{{ dbt_utils.union_tables(
+    tables=[ref('table_1'), ref('table_2')],
+    column_override={"some_field": "varchar(100)"},
+    exclude=["some_other_field"]
+) }}
 ```
 
 #### generate_series ([source](macros/sql/generate_series.sql))
@@ -244,6 +257,40 @@ Arguments:
     - then_value: Value to use if comparison succeeds, default is 1
     - else_value: Value to use if comparison fails, default is 0
 
+#### unpivot ([source](macros/sql/unpivot.sql))
+This macro "un-pivots" a table from wide format to long format. Functionality is similar to pandas [melt](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.melt.html) function.
+
+Usage:
+```
+{{ dbt_utils.unpivot(table=ref('table_name'), cast_to='datatype', exclude=[<list of columns to exclude from unpivot>]) }}
+```
+
+Example:
+
+    Input: orders
+
+    | date       | size | color | status     |
+    |------------|------|-------|------------|
+    | 2017-01-01 | S    | red   | complete   |
+    | 2017-03-01 | S    | red   | processing |
+
+    {{ dbt_utils.unpivot(ref('orders'), cast_to='varchar', exclude=['date','status']) }}
+
+    Output:
+
+    | date       | status     | field_name | value |
+    |------------|------------|------------|-------|
+    | 2017-01-01 | complete   | size       | S     |
+    | 2017-01-01 | complete   | color      | red   |
+    | 2017-03-01 | processing | size       | S     |
+    | 2017-03-01 | processing | color      | red   |
+
+Arguments:
+
+    - table: Table name, required
+    - cast_to: The data type to cast the unpivoted values to, default is varchar
+    - exclude: A list of columns to exclude from the unpivot.
+
 ---
 ### Web
 #### get_url_parameter ([source](macros/web/get_url_parameter.sql))
@@ -253,8 +300,68 @@ Usage:
 ```
 {{ dbt_utils.get_url_parameter(field='page_url', url_parameter='utm_source') }}
 ```
+---
+### Materializations
+#### insert_by_period ([source](macros/materializations/insert_by_period_materialization.sql))
+`insert_by_period` allows dbt to insert records into a table one period (i.e. day, week) at a time.
+
+This materialization is appropriate for event data that can be processed in discrete periods. It is similar in concept to the built-in incremental materialization, but has the added benefit of building the model in chunks even during a full-refresh so is particularly useful for models where the initial run can be problematic.
+
+Should a run of a model using this materialization be interrupted, a subsequent run will continue building the target table from where it was interrupted (granted the `--full-refresh` flag is omitted).
+
+Progress is logged in the command line for easy monitoring.
+
+Usage:
+```sql
+{{
+  config(
+    materialized = "insert_by_period",
+    period = "day",
+    timestamp_field = "created_at",
+    start_date = "2018-01-01",
+    stop_date = "2018-06-01")
+}}
+
+with events as (
+
+  select *
+  from {{ ref('events') }}
+  where __PERIOD_FILTER__ -- This will be replaced with a filter in the materialization code
+
+)
+
+....complex aggregates here....
+
+```
+Configuration values:
+* `period`: period to break the model into, must be a valid [datepart](https://docs.aws.amazon.com/redshift/latest/dg/r_Dateparts_for_datetime_functions.html) (default='Week')
+* `timestamp_field`: the column name of the timestamp field that will be used to break the model into smaller queries
+* `start_date`: literal date or timestamp - generally choose a date that is earlier than the start of your data
+* `stop_date`: literal date or timestamp (default=current_timestamp)
+
+Caveats:
+* This materialization is compatible with dbt 0.10.1.
+* This materialization has been written for Redshift.
+* This materialization can only be used for a model where records are not expected to change after they are created.
+* Any model post-hooks that use `{{ this }}` will fail using this materialization. For example:
+```yaml
+models:
+    project-name:
+        post-hook: "grant select on {{ this }} to db_reader"
+```
+A useful workaround is to change the above post-hook to:
+```yaml
+        post-hook: "grant select on {{ this.schema }}.{{ this.name }} to db_reader"
+```
 
 ----
+
+### Contributing
+
+We welcome contributions to this repo! To contribute a new feature or a fix, please open a Pull Request with 1) your changes, 2) updated documentation for the `README.md` file, and 3) a working integration test. See [this page](integration_tests/README.md) for more information.
+
+----
+
 ### Getting started with dbt
 
 - [What is dbt]?

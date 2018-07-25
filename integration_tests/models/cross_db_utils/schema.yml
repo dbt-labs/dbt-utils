@@ -24,6 +24,11 @@ test_datediff:
         assert_equal:
             - { actual: actual, expected: expected }
 
+test_hash:
+    constraints:
+        assert_equal:
+            - { actual: actual, expected: expected }
+
 test_last_day:
     constraints:
         assert_equal:

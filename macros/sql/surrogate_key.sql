@@ -14,6 +14,6 @@
 
 {%- endfor -%}
 
-md5({{dbt_utils.concat(fields)}})
+{{dbt_utils.hash(dbt_utils.concat(fields))}}
 
 {%- endmacro -%}

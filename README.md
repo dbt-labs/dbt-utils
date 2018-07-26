@@ -354,6 +354,17 @@ A useful workaround is to change the above post-hook to:
         post-hook: "grant select on {{ this.schema }}.{{ this.name }} to db_reader"
 ```
 
+#### get_subdomain ([source](macros/web/get_subdomain.sql))
+This macro extracts the subdomain from a column containing a url.
+
+Usage:
+```
+select
+  p.id,
+  p.url,
+  {{ dbt_utils.get_subdomain(url='p.url', domain='your-company') }} as subdomain
+from segment.pages p
+```
 ----
 
 ### Contributing

@@ -16,6 +16,7 @@ jobs:
       - run:
           name: "Setup dbt"
           command: |
+            python3 --version
             python3 -m venv venv
             . venv/bin/activate
             dbt --version || echo 'dbt not installed yet'

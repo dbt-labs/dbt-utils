@@ -1,0 +1,29 @@
+version: 2
+models:
+    - name: data_test_not_constant
+      columns:
+        - name: field
+          tests:
+              - dbt_utils.not_constant
+    - name: data_test_at_least_one
+      columns:
+        - name: field
+          tests:
+            - dbt_utils.at_least_one
+    - name: test_recency_v2
+      columns:
+        - name: today
+          tests:
+            - dbt_utils.recency:
+                datepart: day
+                interval: 1
+    - name: data_people
+      columns:
+        - name: is_active
+          tests:
+            - dbt_utils.cardinality_equality:
+                to: ref('data_people')
+                field: is_active
+      tests:
+        - dbt_utils.equality:
+            compare_model: ref('data_people')

@@ -22,6 +22,7 @@ jobs:
             dbt --version || echo 'dbt not installed yet'
             pip install --upgrade dbt
             dbt --version
+            pip freeze
             mkdir -p ~/.dbt
             cp integration_tests/ci/sample.profiles.yml ~/.dbt/profiles.yml
 

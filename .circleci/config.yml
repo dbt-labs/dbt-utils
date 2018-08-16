@@ -16,9 +16,13 @@ jobs:
       - run:
           name: "Setup dbt"
           command: |
+            python3 --version
             python3 -m venv venv
             . venv/bin/activate
-            pip install dbt
+            dbt --version || echo 'dbt not installed yet'
+            pip install --upgrade dbt
+            dbt --version
+            pip freeze
             mkdir -p ~/.dbt
             cp integration_tests/ci/sample.profiles.yml ~/.dbt/profiles.yml
 

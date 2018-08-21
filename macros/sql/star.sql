@@ -1,4 +1,4 @@
-{% macro star(from, alias=False, except=[]) -%}
+{% macro star(from, relation_alias=False, except=[]) -%}
 
     {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
     {%- if not execute -%}
@@ -23,7 +23,7 @@
 
     {%- for col in include_cols %}
 
-        {% if alias %} {{ alias }}.{% endif %}"{{ col }}" {% if not loop.last %},
+        {% if relation_alias %} {{ relation_alias }}.{% endif %}"{{ col }}" {% if not loop.last %},
         {% endif %}
 
     {%- endfor -%}

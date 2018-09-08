@@ -167,11 +167,27 @@ Usage:
 ```
 
 #### group_by ([source](macros/sql/groupby.sql))
-This macro build a group by statement for fields 1...N
+This macro builds a group by statement for fields 1...N
 
 Usage:
 ```
 {{ dbt_utils.group_by(n=3) }} --> group by 1,2,3
+```
+
+#### sql_delimited_list ([source](macros/sql/sql_delimited_list.sql))
+This macro converts a Jinja list to a SQL list.
+Non-strings can be optionally forced to cast to strings using the `override_to_string` argument.
+
+Usage:
+```
+{{ dbt_utils.sql_delimited_list(list=['a', 'b', 'c']) }}
+  --> ('a', 'b', 'c')
+
+{{ dbt_utils.sql_delimited_list(list=[1, 2, 3]) }}
+  --> (1, 2, 3)
+  
+{{ dbt_utils.sql_delimited_list(list=[1, 2, 3], override_to_string=True) }}
+  --> ('1', '2', '3')
 ```
 
 #### star ([source](macros/sql/star.sql))

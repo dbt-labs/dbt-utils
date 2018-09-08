@@ -1,0 +1,4 @@
+string_field,number_field,number_cast_to_string_field
+a,1,'1'
+b,2,'2'
+c,3,'3'

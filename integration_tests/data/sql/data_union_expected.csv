@@ -1,0 +1,6 @@
+_dbt_source_table,id,name,favorite_color
+"""integration_tests"".""data_union_table_1""",1,"drew",
+"""integration_tests"".""data_union_table_1""",2,"bob",
+"""integration_tests"".""data_union_table_1""",3,"alice",
+"""integration_tests"".""data_union_table_2""",1,,"green"
+"""integration_tests"".""data_union_table_2""",2,,"pink"

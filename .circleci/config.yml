@@ -18,7 +18,15 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pip install dbt
+
+            # Temporary fix for 0.11.0 bug -- 0.11.1 is yet unreleased
+            # TODO : Make this use latest from pip once 0.11.1 is out
+            git clone https://github.com/fishtown-analytics/dbt.git
+            cd dbt
+            git checkout dev/lucretia-mott
+            pip install -e .
+            cd ..
+
             mkdir -p ~/.dbt
             cp integration_tests/ci/sample.profiles.yml ~/.dbt/profiles.yml
 

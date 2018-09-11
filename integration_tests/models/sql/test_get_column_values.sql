@@ -3,6 +3,7 @@
 
 
 select
+    {% set columns = columns if columns is iterable else [] %}
     {% for column in columns -%}
 
         sum(case when field = '{{ column }}' then 1 else 0 end) as count_{{ column }}

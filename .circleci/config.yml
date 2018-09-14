@@ -41,8 +41,8 @@ jobs:
             . venv/bin/activate
             cd integration_tests
             dbt deps
-            dbt seed
-            dbt run
+            dbt seed --full-refresh
+            dbt run --full-refresh
             dbt test
 
       - save_cache:

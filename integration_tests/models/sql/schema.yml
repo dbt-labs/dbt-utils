@@ -56,3 +56,8 @@ test_surrogate_key:
     constraints:
         assert_equal:
             - {actual: actual, expected: expected}
+
+test_union:
+    constraints:
+        dbt_utils.equality:
+            - ref('data_union_expected')

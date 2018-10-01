@@ -1,0 +1,4 @@
+test_insert_by_period:
+    constraints:
+        dbt_utils.equality:
+            - ref('expected_insert_by_period')

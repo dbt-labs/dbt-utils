@@ -18,7 +18,9 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
+
             pip install dbt
+
             mkdir -p ~/.dbt
             cp integration_tests/ci/sample.profiles.yml ~/.dbt/profiles.yml
 
@@ -33,8 +35,8 @@ jobs:
             . venv/bin/activate
             cd integration_tests
             dbt deps
-            dbt seed
-            dbt run
+            dbt seed --full-refresh
+            dbt run --full-refresh
             dbt test
 
       - save_cache:

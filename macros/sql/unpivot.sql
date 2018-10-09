@@ -13,6 +13,8 @@ Arguments:
 
   {%- set exclude = exclude if exclude is not none else [] %}
 
+  {%- set include_cols = [] %}
+
   {%- set table_columns = {} %}
 
   {%- set _ = table_columns.update({table: []}) %}
@@ -26,18 +28,22 @@ Arguments:
   {%- set cols = adapter.get_columns_in_table(schema, table_name) %}
 
   {%- for col in cols -%}
+    {%- if col.column not in exclude -%}
+      {% set _ = include_cols.append(col) %}
+    {%- endif %}
+  {%- endfor %}
 
-  {%- if col.column not in exclude -%}
-  select
-    {%- for exclude_col in exclude %}
-    {{ exclude_col }},
-    {%- endfor %}
-    cast('{{ col.column }}' as varchar) as field_name,
-    {{ dbt_utils.safe_cast(field=col.column, type=cast_to) }} as value
-  from {{ table }}
-  {% if not loop.last -%}
-  union all
-  {% endif -%}
-  {%- endif -%}
+  {%- for col in include_cols -%}
+
+    select
+      {%- for exclude_col in exclude %}
+        {{ exclude_col }},
+      {%- endfor %}
+      cast('{{ col.column }}' as varchar) as field_name,
+      {{ dbt_utils.safe_cast(field=col.column, type=cast_to) }} as value
+    from {{ table }}
+    {% if not loop.last -%}
+      union all
+    {% endif -%}
   {%- endfor -%}
 {%- endmacro %}

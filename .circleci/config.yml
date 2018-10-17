@@ -36,8 +36,8 @@ jobs:
             cd integration_tests
             dbt deps
             dbt seed --full-refresh
-            dbt run --full-refresh
-            dbt test
+            dbt run --full-refresh --exclude test_insert_by_period
+            dbt test --exclude test_insert_by_period
 
       - save_cache:
           key: deps1-{{ .Branch }}

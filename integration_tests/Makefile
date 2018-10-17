@@ -1,8 +1,8 @@
 
 test-postgres:
 	dbt seed --target postgres
-	dbt run --target postgres
-	dbt test --target postgres
+	dbt run --target postgres --exclude test_insert_by_period
+	dbt test --target postgres --exclude test_insert_by_period
 
 test-redshift:
 	dbt seed --target redshift

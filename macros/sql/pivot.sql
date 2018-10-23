@@ -49,8 +49,10 @@ Arguments:
                else_value=0) %}
 
   {% if not values %}
-    {%- set msg = "No values could be found in column " ~ column ~ ". Pivot macro failed." -%}
-    {{log(modules.datetime.datetime.now().strftime('%H:%M:%S') ~ " | " ~ msg, info=True)}}
+    {% if execute %}
+      {%- set msg = "No values to pivot in column " ~ column ~ ". Pivot macro failed." -%}
+      {{log(modules.datetime.datetime.now().strftime('%H:%M:%S') ~ " | " ~ msg, info=True)}}
+    {% endif %}
     null as pivot_failure
   {% else %}
   {% for v in values %}

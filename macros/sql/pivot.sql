@@ -59,7 +59,7 @@ Arguments:
     )
     {% if alias %}
       {% if slug %}
-        {% let v = v|replace(' ', '_')|lower|trim %}
+        {% let v = v|trim|replace(' ', '_') %}
       {% endif %}
       as {{ adapter.quote(prefix ~ v ~ suffix) }}
     {% endif %}

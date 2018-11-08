@@ -30,6 +30,7 @@ Arguments:
     column: Column name, required
     values: List of row values to turn into columns, required
     alias: Whether to create column aliases, default is True
+    slug: Whether to slugify row values when generating column aliases, default is False
     agg: SQL aggregation function, default is sum
     cmp: SQL value comparison, default is =
     prefix: Column alias prefix, default is blank
@@ -41,6 +42,7 @@ Arguments:
 {% macro pivot(column,
                values,
                alias=True,
+               slug=False,
                agg='sum',
                cmp='=',
                prefix='',
@@ -56,6 +58,9 @@ Arguments:
       end
     )
     {% if alias %}
+      {% if slug %}
+        {% let v = v|replace(' ', '_')|lower|trim %}
+      {% endif %}
       as {{ adapter.quote(prefix ~ v ~ suffix) }}
     {% endif %}
     {% if not loop.last %},{% endif %}

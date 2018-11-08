@@ -250,6 +250,7 @@ Arguments:
     - column: Column name, required
     - values: List of row values to turn into columns, required
     - alias: Whether to create column aliases, default is True
+    - slug: Whether to slugify row values when generating column aliases, default is False
     - agg: SQL aggregation function, default is sum
     - cmp: SQL value comparison, default is =
     - prefix: Column alias prefix, default is blank

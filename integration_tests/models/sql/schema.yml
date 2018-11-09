@@ -41,6 +41,11 @@ test_pivot:
         dbt_utils.equality:
             - ref('data_pivot_expected')
 
+test_pivot_slug:
+    constraints:
+        dbt_utils.equality:
+            - ref('data_pivot_slug_expected')
+
 test_unpivot:
     constraints:
         dbt_utils.equality:

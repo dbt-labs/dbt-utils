@@ -4,4 +4,4 @@ models:
   - name: test_insert_by_period
     tests:
       - dbt_utils.equality:
-          arg: ref('expected_insert_by_period')
+          compare_model: ref('expected_insert_by_period')

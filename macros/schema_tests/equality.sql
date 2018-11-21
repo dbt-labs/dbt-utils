@@ -1,6 +1,6 @@
 {% macro test_equality(model) %}
 
-{% set compare_model = kwargs.get('compare_model', kwargs.get('arg')) %}
+{% set compare_model = kwargs.get('compare_model', kwargs.get('compare_model')) %}
 
 
 {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}

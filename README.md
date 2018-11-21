@@ -89,7 +89,7 @@ models:
   - name: model_name
     tests:
       - dbt_utils.equality:
-          arg: ref('other_table_name')
+          compare_model: ref('other_table_name')
 
 ```
 

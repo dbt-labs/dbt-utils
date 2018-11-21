@@ -93,6 +93,21 @@ models:
 
 ```
 
+#### expression_is_true ([source](macros/schema_tests/expression_is_true.sql))
+This schema test asserts that a valid sql expression is true for all records. This is useful when checking integrity across columns, for example, that a total is equal to the sum of its parts, or that at least once column is true.
+
+Usage:
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "col_a + col_b = total"
+
+```
+
 #### recency ([source](macros/schema_tests/recency.sql))
 This schema test asserts that there is data in the referenced model at least as recent as the defined interval prior to the current timestamp.
 

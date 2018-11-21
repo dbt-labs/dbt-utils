@@ -118,7 +118,6 @@ version: 2
 
 models:
   - name: model_name
-    description: description
     columns:
       - name: col_name
         tests:
@@ -152,11 +151,12 @@ version: 2
 
 models:
   - name: model_name
-    tests:
-      - dbt_utils.cardinality_equality:
-          field: other_column_name
-          from: column_name
-          to: ref('other_model_name')
+    columns:
+      - name: from_column
+        tests:
+          - dbt_utils.cardinality_equality:
+              field: other_column_name
+              to: ref('other_model_name')
 
 ```
 

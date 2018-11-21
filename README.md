@@ -139,7 +139,7 @@ models:
     columns:
       - name: column_name
         tests:
-        - dbt_utils.not_constant
+          - dbt_utils.not_constant
 
 ```
 

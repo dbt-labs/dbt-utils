@@ -1,6 +1,8 @@
+version: 2
 
-test_urls:
-    constraints:
-        assert_equal:
-            - {actual: actual, expected: expected}
-
+models:
+  - name: test_urls
+    tests:
+      - assert_equal:
+          actual: actual
+          expected: expected

@@ -78,17 +78,17 @@ models:
   - name: test_pivot
     tests:
       - dbt_utils.equality:
-          arg: ref('data_pivot_expected')
+          compare_model: ref('data_pivot_expected')
         
   - name: test_unpivot
     tests:
       - dbt_utils.equality:
-          arg: ref('data_unpivot_expected')
+          compare_model: ref('data_unpivot_expected')
         
   - name: test_star
     tests:
       - dbt_utils.equality:
-          arg: ref('data_star_expected')
+          compare_model: ref('data_star_expected')
           
   - name: test_surrogate_key
     tests:
@@ -99,4 +99,4 @@ models:
   - name: test_union
     tests:
       - dbt_utils.equality:
-          arg: ref('data_union_expected')
+          compare_model: ref('data_union_expected')

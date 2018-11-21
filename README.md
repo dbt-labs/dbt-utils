@@ -94,7 +94,7 @@ models:
 ```
 
 #### expression_is_true ([source](macros/schema_tests/expression_is_true.sql))
-This schema test asserts that a valid sql expression is true for all records. This is useful when checking integrity across columns, for example, that a total is equal to the sum of its parts, or that at least once column is true.
+This schema test asserts that a valid sql expression is true for all records. This is useful when checking integrity across columns, for example, that a total is equal to the sum of its parts, or that at least one column is true.
 
 Usage:
 ```yaml

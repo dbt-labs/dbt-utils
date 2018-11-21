@@ -82,11 +82,14 @@ Usage:
 This schema test asserts the equality of two relations.
 
 Usage:
-```
-model_name:
-  constraints:
-    dbt_utils.equality:
-      - ref('other_table_name')
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    tests:
+      - dbt_utils.equality:
+          arg: ref('other_table_name')
 
 ```
 
@@ -94,22 +97,33 @@ model_name:
 This schema test asserts that there is data in the referenced model at least as recent as the defined interval prior to the current timestamp.
 
 Usage:
-```
-model_name:
-    constraints:
-        dbt_utils.recency:
-            - {field: created_at, datepart: day, interval: 1}
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    tests:   
+      - dbt_utils.recency:
+          datepart: day
+          field: created_at
+          interval: 1
 ```
 
 #### at_least_one ([source](macros/schema_tests/at_least_one.sql))
 This schema test asserts if column has at least one value.
 
 Usage:
-```
-model_name:
-  constraints:
-    dbt_utils.at_least_one:
-      - column_name
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    description: description
+    columns:
+      - name: col_name
+        tests:
+          - dbt_utils.at_least_one
+      
 
 ```
 
@@ -117,11 +131,15 @@ model_name:
 This schema test asserts if column does not have same value in all rows.
 
 Usage:
-```
-model_name:
-  constraints:
-    dbt_utils.not_constant:
-      - column_name
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    columns:
+      - name: column_name
+        tests:
+        - dbt_utils.not_constant
 
 ```
 
@@ -129,11 +147,17 @@ model_name:
 This schema test asserts if values in a given column have exactly the same cardinality as values from a different column in a different model.
 
 Usage:
-```
-model_name:
-  constraints:
-    dbt_utils.cardinality_equality:
-    - {from: column_name, to: ref('other_model_name'), field: other_column_name}
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    tests:
+      - dbt_utils.cardinality_equality:
+          field: other_column_name
+          from: column_name
+          to: ref('other_model_name')
+
 ```
 
 ---

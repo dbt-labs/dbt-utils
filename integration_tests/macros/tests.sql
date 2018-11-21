@@ -8,6 +8,8 @@ select count(*) from {{ model }} where {{ actual }} != {{ expected }}
 
 {% macro test_not_empty_string(model, arg) %}
 
-select count(*) from {{ model }} where {{ arg }} = ''
+{% set column_name = kwargs.get('column_name', kwargs.get('arg')) %}
+
+select count(*) from {{ model }} where {{ column_name }} = ''
 
 {% endmacro %}

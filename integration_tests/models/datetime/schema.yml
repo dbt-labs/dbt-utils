@@ -1,6 +1,6 @@
-
-
-test_date_spine:
-    constraints:
-        dbt_utils.equality:
-            - ref('data_date_spine')
+version: 2
+models:
+- name: test_date_spine
+  tests:
+  - dbt_utils.equality:
+      arg: ref('data_date_spine')

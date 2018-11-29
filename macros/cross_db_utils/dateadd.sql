@@ -17,7 +17,7 @@
 {% macro bigquery__dateadd(datepart, interval, from_date_or_timestamp) %}
 
     date_add(
-        {{ from_date_or_timestamp }},
+        cast( {{ from_date_or_timestamp }} as date),
         interval {{ interval }} {{ datepart }}
         )
 

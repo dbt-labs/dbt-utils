@@ -14,3 +14,12 @@ target-path: "target"  # directory which will store compiled SQL files
 clean-targets:         # directories to be removed by `dbt clean`
     - "target"
     - "dbt_modules"
+
+seeds:
+  integration_tests:
+    enabled: True
+
+    data_url_host:
+      column_types:
+        original_url: varchar(100)
+        parsed_url: varchar(100)

@@ -1,6 +1,8 @@
 name: 'dbt_utils'
 version: '0.1.0'
 
+profile: 'realself'
+
 target-path: "target"
 clean-targets: ["target", "dbt_modules"]
 macro-paths: ["macros"]

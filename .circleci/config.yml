@@ -10,6 +10,11 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          run: setup_creds
+          command: |
+            echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
+
       - restore_cache:
           key: deps1-{{ .Branch }}
 
@@ -25,7 +30,7 @@ jobs:
             cp integration_tests/ci/sample.profiles.yml ~/.dbt/profiles.yml
 
       - run:
-          name: "Run tests (postgres)"
+          name: "Run Tests - Postgres"
           environment:
             CI_DBT_USER: root
             CI_DBT_PASS: ''
@@ -34,10 +39,46 @@ jobs:
           command: |
             . venv/bin/activate
             cd integration_tests
-            dbt deps
-            dbt seed --full-refresh
-            dbt run --full-refresh --exclude test_insert_by_period
-            dbt test --exclude test_insert_by_period
+            dbt deps --target postgres
+            dbt run --target postgres --full-refresh
+            dbt test --target postgres
+
+      - run:
+          name: "Run Tests - Redshift"
+          command: |
+            . venv/bin/activate
+            echo `pwd`
+            cd integration_tests
+            dbt deps --target redshift
+            dbt seed --target redshift --full-refresh
+            dbt run --target redshift
+            dbt test --target redshift
+
+      - run:
+          name: "Run Tests - Snowflake"
+          command: |
+            . venv/bin/activate
+            echo `pwd`
+            cd integration_tests
+            dbt deps --target snowflake
+            dbt seed --target snowflake --full-refresh
+            dbt run --target snowflake
+            dbt test --target snowflake
+
+      - run:
+          name: "Run Tests - BigQuery"
+          environment:
+              GCLOUD_SERVICE_KEY_PATH: "/home/circleci/gcloud-service-key.json"
+
+          command: |
+            . venv/bin/activate
+            echo `pwd`
+            cd integration_tests
+            dbt deps --target bigquery
+            dbt seed --target bigquery --full-refresh
+            dbt run --target bigquery
+            dbt test --target bigquery
+
 
       - save_cache:
           key: deps1-{{ .Branch }}

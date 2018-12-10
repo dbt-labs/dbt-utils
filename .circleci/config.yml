@@ -40,7 +40,8 @@ jobs:
             . venv/bin/activate
             cd integration_tests
             dbt deps --target postgres
-            dbt run --target postgres --full-refresh
+            dbt seed --target postgres --full-refresh
+            dbt run --target postgres
             dbt test --target postgres
 
       - run:

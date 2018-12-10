@@ -2,7 +2,7 @@
 name: 'dbt_utils_integration_tests'
 version: '1.0'
 
-profile: 'realself'
+profile: 'integration_tests'
 
 source-paths: ["models"]
 analysis-paths: ["analysis"] 

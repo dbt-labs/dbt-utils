@@ -23,7 +23,7 @@
 
     {%- for col in include_cols %}
 
-        {% if relation_alias %} {{ relation_alias }}.{% endif %}"{{ col }}" {% if not loop.last %},
+        {% if relation_alias %} {{ relation_alias }}.{% endif %} {{ col }} {% if not loop.last %},
         {% endif %}
 
     {%- endfor -%}

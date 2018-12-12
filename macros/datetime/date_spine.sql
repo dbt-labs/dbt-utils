@@ -44,13 +44,13 @@ with rawdata as (
 all_periods as (
 
     select (
-        {{
+        cast({{
             dbt_utils.dateadd(
                 datepart,
                 "row_number() over (order by 1) - 1",
                 start_date
             )
-        }}
+        }} as date)
     ) as date_{{datepart}}
     from rawdata
 

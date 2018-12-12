@@ -18,7 +18,58 @@
 
 
 
--- core SQL
+{% if target.type == 'bigquery' %}
+
+with a as (
+
+    select * from {{ model }}
+
+),
+
+b as (
+
+    select * from {{ compare_model }}
+
+),
+
+a_minus_b as (
+
+    select {{dest_cols_csv}} from a
+    except distinct -- use except distinct on bigquery only
+    select {{dest_cols_csv}} from b
+
+),
+
+b_minus_a as (
+
+    select {{dest_cols_csv}} from b
+    except distinct
+    select {{dest_cols_csv}} from a
+
+),
+
+unioned as (
+
+    select * from a_minus_b
+    union all
+    select * from b_minus_a
+
+),
+
+final as (
+
+    select (select count(*) from unioned) +
+        (select abs(
+            (select count(*) from a_minus_b) -
+            (select count(*) from b_minus_a)
+            ))
+        as count
+
+)
+
+select count from final
+    
+{% else %}
 
 with a as (
 
@@ -69,6 +120,5 @@ final as (
 
 select count from final
 
-
-
+{% endif %}
 {% endmacro %}

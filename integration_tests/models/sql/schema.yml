@@ -12,7 +12,7 @@ models:
         tests:
           - accepted_values:
               values:
-                - '1'
+                - 1
             
       - name: count_b
         tests:

@@ -2,6 +2,55 @@
 
 {% set column_name = kwargs.get('column_name', kwargs.get('from')) %}
 
+
+{% if target.type == 'bigquery' %}
+
+with table_a as (
+select
+  {{ column_name }},
+  count(*) as num_rows
+from {{ model }}
+group by 1
+),
+
+table_b as (
+select
+  {{ field }},
+  count(*) as num_rows
+from {{ to }}
+group by 1
+),
+
+except_a as (
+  select *
+  from table_a
+  except distinct
+  select *
+  from table_b
+),
+
+except_b as (
+  select *
+  from table_b
+  except distinct
+  select *
+  from table_a
+),
+
+unioned as (
+  select *
+  from except_a
+  union all
+  select *
+  from except_b
+)
+
+select count(*)
+from unioned
+
+
+{% else %}
+
 with table_a as (
 select
   {{ column_name }},
@@ -45,4 +94,5 @@ unioned as (
 select count(*)
 from unioned
 
+{% endif %}
 {% endmacro %}

@@ -1,13 +1,12 @@
 {% macro get_tables_by_prefix(schema, prefix, exclude='') %}
+  {{ return(adapter_macro('dbt_utils.get_tables_by_prefix', schema, prefix, exclude)) }}
+{% endmacro %}
+
+{% macro default__get_tables_by_prefix(schema, prefix, exclude='') %}
 
     {%- call statement('tables', fetch_result=True) %}
 
-        select
-            distinct table_schema || '.' || table_name as ref
-        from information_schema.tables
-        where table_schema = '{{ schema }}'
-        and table_name ilike '{{ prefix }}%'
-        and table_name not ilike '{{ exclude }}'
+      {{ dbt_utils.get_tables_by_prefix_sql(schema, prefix, exclude) }}
 
     {%- endcall -%}
 
@@ -19,5 +18,6 @@
     {%- else -%}
         {{ return([]) }}
     {%- endif -%}
-
+    
 {% endmacro %}
+

@@ -28,12 +28,6 @@ from nulled
 
 {% else %}
 
-with nulled as (
-    
-    {{ dbt_utils.nullcheck_table(tbl.schema, tbl.name) }}
-    
-)
-
 select 
 
     field_1::varchar as field_1,

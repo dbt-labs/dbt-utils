@@ -1,8 +1,4 @@
 {% macro get_tables_by_prefix(schema, prefix, exclude='') %}
-  {{ return(adapter_macro('dbt_utils.get_tables_by_prefix', schema, prefix, exclude)) }}
-{% endmacro %}
-
-{% macro default__get_tables_by_prefix(schema, prefix, exclude='') %}
 
     {%- call statement('tables', fetch_result=True) %}
 

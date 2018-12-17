@@ -16,11 +16,11 @@
 
 {% macro bigquery__datediff(first_date, second_date, datepart) %}
 
-        timestamp_diff(cast(
-            {{second_date}} as timestamp),
-        {{first_date}},
+    datetime_diff(
+        cast({{second_date}} as datetime),
+        cast({{first_date}} as datetime),
         {{datepart}}
-        )
+    ) 
 
 {% endmacro %}
 

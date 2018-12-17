@@ -16,24 +16,22 @@ clean-targets:         # directories to be removed by `dbt clean`
     - "dbt_modules"
     
 seeds:
-  core:
-    enabled: true
-
-    data_datediff:
-      column_types:
-        first_date: timestamp
-        second_date: timestamp
+    dbt_utils_integration_tests:
+        enabled: true
         
-    data_dateadd:
-      column_types:
-        from_time: timestamp
+        cross_db:
+            data_date_trunc:
+                column_types:
+                    updated_at: timestamp
+                    day: date
+                    month: date
         
-    data_date_trunc:
-      column_types:
-        updated_at: timestamp
-        
-        
-        
-            
-            
-        
+            data_dateadd:
+                column_types:
+                    from_time: timestamp
+                    result: timestamp
+                    
+            data_datediff:
+                column_types:
+                    first_date: timestamp
+                    second_date: timestamp

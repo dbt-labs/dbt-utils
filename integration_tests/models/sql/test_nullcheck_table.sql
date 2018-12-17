@@ -1,14 +1,17 @@
 {{ config( materialized = "table" ) }}
  
+-- TO DO: remove if-statement
+ 
 {% set tbl = ref('data_nullcheck_table') %}
 
-{% if target.type == 'bigquery' %}
 
 with nulled as (
 
     {{ dbt_utils.nullcheck_table(tbl.schema, tbl.name) }}
 
 )
+
+{% if target.type == 'bigquery' %}
 
 select
 
@@ -27,12 +30,6 @@ select
 from nulled
 
 {% else %}
-
-with nulled as (
-
-    {{ dbt_utils.nullcheck_table(tbl.schema, tbl.name) }}
-
-)
 
 select 
 

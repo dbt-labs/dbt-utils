@@ -33,5 +33,7 @@ select
     field_1::varchar as field_1,
     field_2::varchar as field_2,
     field_3::varchar as field_3
+    
+from nulled
 
 {% endif %}

@@ -16,10 +16,6 @@
 {% set dest_columns = adapter.get_columns_in_table(schema, model_a_name) %}
 {% set dest_cols_csv = dest_columns | map(attribute='quoted') | join(', ') %}
 
-
-
--- core SQL
-
 with a as (
 
     select * from {{ model }}
@@ -35,7 +31,7 @@ b as (
 a_minus_b as (
 
     select {{dest_cols_csv}} from a
-    except
+    {{ dbt_utils.except() }}
     select {{dest_cols_csv}} from b
 
 ),
@@ -43,7 +39,7 @@ a_minus_b as (
 b_minus_a as (
 
     select {{dest_cols_csv}} from b
-    except
+    {{ dbt_utils.except() }}
     select {{dest_cols_csv}} from a
 
 ),
@@ -68,7 +64,5 @@ final as (
 )
 
 select count from final
-
-
 
 {% endmacro %}

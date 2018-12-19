@@ -7,5 +7,10 @@
 {% endmacro %}
 
 {% macro bigquery__date_trunc(datepart, date) %}
-    date_trunc({{date}}, {{datepart}})
+    timestamp_trunc(
+        cast({{date}} as timestamp), 
+        {{datepart}}
+    )
+    
+
 {% endmacro %}

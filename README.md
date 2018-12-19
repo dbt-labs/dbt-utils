@@ -78,6 +78,21 @@ Usage:
 ```
 ---
 ### Schema Tests
+#### equal_rowcount ([source](macros/schema_tests/equal_rowcount.sql))
+This schema test asserts the that two relations have the same number of rows.
+
+Usage:
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('other_table_name')
+
+```
+
 #### equality ([source](macros/schema_tests/equality.sql))
 This schema test asserts the equality of two relations.
 

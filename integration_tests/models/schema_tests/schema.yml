@@ -24,7 +24,12 @@ models:
           datepart: day
           field: today
           interval: 1
-        
+
+  - name: test_equal_rowcount
+    tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('test_equal_rowcount')
+      
   - name: data_people
     columns:
       - name: is_active

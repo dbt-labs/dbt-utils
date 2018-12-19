@@ -1,4 +1,4 @@
-{% macro test_equalrowcount(model) %}
+{% macro test_equal_rowcount(model) %}
 
 {% set compare_model = kwargs.get('compare_model', kwargs.get('arg')) %}
 

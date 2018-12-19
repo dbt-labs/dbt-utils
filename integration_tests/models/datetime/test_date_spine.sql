@@ -11,6 +11,11 @@ with date_spine as (
     {% if target.type == 'postgres' %}
         {{ log("WARNING: Not testing - datediff macro is unsupported on Postgres", info=True) }}
         select * from {{ ref('data_date_spine') }}
+        
+    {% elif target.type == 'bigquery' %}
+        select cast(date_day as date) as date_day
+        from ({{ dbt_utils.date_spine("day", "'2018-01-01'", "'2018-01-10'") }})
+    
     {% else %}
         {{ dbt_utils.date_spine("day", "'2018-01-01'", "'2018-01-10'") }}
     {% endif %}

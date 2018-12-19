@@ -2,12 +2,7 @@
 
     {%- call statement('tables', fetch_result=True) %}
 
-        select
-            distinct table_schema || '.' || table_name as ref
-        from information_schema.tables
-        where table_schema = '{{ schema }}'
-        and table_name ilike '{{ prefix }}%'
-        and table_name not ilike '{{ exclude }}'
+      {{ dbt_utils.get_tables_by_prefix_sql(schema, prefix, exclude) }}
 
     {%- endcall -%}
 
@@ -19,5 +14,6 @@
     {%- else -%}
         {{ return([]) }}
     {%- endif -%}
-
+    
 {% endmacro %}
+

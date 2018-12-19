@@ -19,6 +19,6 @@
     split(
         {{ string_text }},
         {{ delimiter_text }}
-        )[offset({{ part_number - 1 }})]
+        )[safe_offset({{ part_number - 1 }})]
 
 {% endmacro %}

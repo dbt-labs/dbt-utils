@@ -14,3 +14,24 @@ target-path: "target"  # directory which will store compiled SQL files
 clean-targets:         # directories to be removed by `dbt clean`
     - "target"
     - "dbt_modules"
+    
+seeds:
+    dbt_utils_integration_tests:
+        enabled: true
+        
+        cross_db:
+            data_date_trunc:
+                column_types:
+                    updated_at: timestamp
+                    day: date
+                    month: date
+        
+            data_dateadd:
+                column_types:
+                    from_time: timestamp
+                    result: timestamp
+                    
+            data_datediff:
+                column_types:
+                    first_date: timestamp
+                    second_date: timestamp

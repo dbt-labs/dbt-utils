@@ -11,7 +11,7 @@
     
 {%- endmacro -%}
 
-{% macro bigquery__substr(string_text, length_expression) %}
+{% macro bigquery__right(string_text, length_expression) %}
 
     substr(
         {{ string_text }},

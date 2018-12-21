@@ -1,12 +1,4 @@
-{% macro test_equal_rowcount(model) %}
-
-{% set compare_model = kwargs.get('compare_model', kwargs.get('arg')) %}
-
-{#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
-{%- if not execute -%}
-    {{ return('') }}
-{% endif %}
-
+{% macro test_equal_rowcount(model, compare_model) %}
 with a as (
 
     select count(*) as count_a from {{ model }}

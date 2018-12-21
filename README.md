@@ -93,6 +93,23 @@ models:
 
 ```
 
+#### equal_sum ([source](macros/schema_tests/equal_sum.sql))
+This schema test asserts that two columns sum up to the same total.
+
+Usage:
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    columns:
+        - name: field
+          tests:
+              - dbt_utils.equal_sum:
+                  compare_model: ref('same_or_other_table_name')
+                  compare_column: other_field
+```
+
 #### equality ([source](macros/schema_tests/equality.sql))
 This schema test asserts the equality of two relations.
 

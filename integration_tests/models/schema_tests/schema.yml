@@ -30,6 +30,14 @@ models:
       - dbt_utils.equal_rowcount:
           compare_model: ref('test_equal_rowcount')
       
+  - name: test_equal_sum
+    columns:
+        - name: field
+          tests:
+              - dbt_utils.equal_sum:
+                  compare_model: ref('test_equal_sum')
+                  compare_column: field
+
   - name: data_people
     columns:
       - name: is_active

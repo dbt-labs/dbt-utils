@@ -25,18 +25,28 @@ models:
           field: today
           interval: 1
 
-  - name: test_equal_rowcount
+  - name: test_equal_expression
     tests:
-      - dbt_utils.equal_rowcount:
-          compare_model: ref('test_equal_rowcount')
-      
-  - name: test_equal_sum
-    columns:
-        - name: field
-          tests:
-              - dbt_utils.equal_sum:
-                  compare_model: ref('test_equal_sum')
-                  compare_column: field
+      - dbt_utils.equal_expression:
+          expression: count(*)
+          compare_model: ref('test_equal_expression')
+      - dbt_utils.equal_expression:
+          expression: count(*)
+          compare_model: ref('test_equal_expression')
+          group_by: [date_col]
+      - dbt_utils.equal_expression:
+          expression: sum(col_a)
+          compare_model: ref('test_equal_expression')
+      - dbt_utils.equal_expression:
+          expression: sum(col_a)
+          compare_expression: sum(col_b)
+          group_by: [date_col]
+      - dbt_utils.equal_expression:
+          expression: sum(col_a)
+          compare_expression: sum(col_b)
+          compare_model: ref('test_equal_expression')
+          group_by: [date_col]
+          tol: 0.1
 
   - name: data_people
     columns:

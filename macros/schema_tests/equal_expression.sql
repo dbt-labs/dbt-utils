@@ -1,10 +1,8 @@
 {% macro get_columns(group_by) %}
-{% set i = 1 %}
     {% if group_by %}
         {% for g in group_by %}
-            {{ g }} as col_{{ i }}
+            {{ g }} as col_{{ loop.index }}
             {%- if not loop.last %}, {% endif -%}
-            {% set i = i + 1 %}
         {% endfor %}
     {% endif %}
 {% endmacro %}

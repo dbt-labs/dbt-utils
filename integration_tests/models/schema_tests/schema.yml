@@ -47,6 +47,10 @@ models:
           compare_model: ref('test_equal_expression')
           group_by: [date_col]
           tol: 0.1
+      - dbt_utils.equal_expression:
+          expression: sum(col_b)
+          compare_model: ref('test_equal_expression')
+          group_by: [date_col, col_a]
 
   - name: data_people
     columns:

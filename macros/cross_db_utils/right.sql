@@ -15,7 +15,7 @@
 
     substr(
         {{ string_text }},
-        - {{ length_expression }}
+        -1 * ({{ length_expression }})
     )
 
 {%- endmacro -%}

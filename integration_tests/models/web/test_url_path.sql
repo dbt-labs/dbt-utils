@@ -6,7 +6,7 @@ with data as (
 
 select
 
-    {{ dbt_utils.get_url_path('original_url') }} as actual,
-    parsed_path as expected
+    coalesce({{ dbt_utils.get_url_path('original_url') }}, '') as actual,
+    coalesce(parsed_path, '') as expected
     
 from data

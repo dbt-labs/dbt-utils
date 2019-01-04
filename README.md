@@ -354,6 +354,23 @@ Usage:
 ```
 {{ dbt_utils.get_url_parameter(field='page_url', url_parameter='utm_source') }}
 ```
+
+#### get_url_host ([source](macros/web/get_url_host.sql))
+This macro extracts a hostname from a column containing a url.
+
+Usage:
+```
+{{ dbt_utils.get_url_host(field='page_url') }}
+```
+
+#### get_url_path ([source](macros/web/get_url_path.sql))
+This macro extracts a page path from a column containing a url.
+
+Usage:
+```
+{{ dbt_utils.get_url_host(field='page_url') }}
+```
+
 ---
 ### Materializations
 #### insert_by_period ([source](macros/materializations/insert_by_period_materialization.sql))

@@ -63,8 +63,8 @@ jobs:
             cd integration_tests
             dbt deps --target snowflake
             dbt seed --target snowflake --full-refresh
-            dbt run --target snowflake --exclude test_unpivot
-            dbt test --target snowflake --exclude test_unpivot
+            dbt run --target snowflake
+            dbt test --target snowflake
 
       - run:
           name: "Run Tests - BigQuery"

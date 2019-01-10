@@ -1,6 +1,6 @@
-id,name,favorite_color
-1,"drew",
-2,"bob",
-3,"alice",
-1,,"green"
-2,,"pink"
+id,name,favorite_color,favorite_number
+1,"drew",,pi
+2,"bob",,e
+3,"alice",,4
+1,,"green",7
+2,,"pink",13

@@ -56,15 +56,14 @@
         (
             select
 
-                {{ dbt_utils.safe_cast(dbt_utils.string_literal(table), dbt_utils.type_string()) }} as _dbt_source_table,
+                cast({{ dbt_utils.string_literal(table) }} as {{ dbt_utils.type_string() }}) as _dbt_source_table,
 
                 {% for col_name in ordered_column_names -%}
 
                     {%- set col = column_superset[col_name] %}
                     {%- set col_type = column_override.get(col.column, col.data_type) %}
                     {%- set col_name = adapter.quote(col_name) if col_name in table_columns[table] else 'null' %}
-
-                    {{ dbt_utils.safe_cast(col_name, col_type) }} as {{ col.quoted }} {% if not loop.last %},{% endif %}
+                    cast({{ col_name }} as {{ col_type }}) as {{ col.quoted }} {% if not loop.last %},{% endif %}
                 {%- endfor %}
 
             from {{ table }}

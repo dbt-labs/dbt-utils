@@ -1,4 +1,4 @@
-id,name
-1,drew
-2,bob
-3,alice
+id,name,favorite_number
+1,drew,pi
+2,bob,e
+3,alice,4

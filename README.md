@@ -4,13 +4,15 @@ This [dbt](https://github.com/fishtown-analytics/dbt) package contains macros th
 
 To use dbt-utils:
 
-1. Reference the package in your dbt project by creating a `packages.yml` file, which should contain the following:
+1. Reference the package in your dbt project by creating a `packages.yml` file, which should look something like:
 
   ```
   packages:
     - git: "https://github.com/fishtown-analytics/dbt-utils.git"
-      revision: master
+      revision: 0.1.22
   ```
+The revision key pins the dependency on a specific release of dbt-utils. Consult the [releases](https://github.com/fishtown-analytics/dbt-utils/releases) for information about the latest release.
+
 2. Install the package by executing `dbt deps`
 
 Detailed information on packages can be found in dbt's documentation in the [Package Management](https://docs.getdbt.com/docs/package-management) section.

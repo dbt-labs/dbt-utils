@@ -57,7 +57,7 @@
 
   {%- set identifier = model['name'] -%}
 
-  {%- set old_relation = adapter.get_relation(schema=schema, identifier=identifier) -%}
+  {%- set old_relation = adapter.get_relation(database=database, schema=schema, identifier=identifier) -%}
   {%- set target_relation = api.Relation.create(identifier=identifier, schema=schema, type='table') -%}
 
   {%- set non_destructive_mode = (flags.NON_DESTRUCTIVE == True) -%}
@@ -108,7 +108,7 @@
   {%- set stop_timestamp = load_result('period_boundaries')['data'][0][1] | string -%}
   {%- set num_periods = load_result('period_boundaries')['data'][0][2] | int -%}
 
-  {% set target_columns = adapter.get_columns_in_table(schema, identifier) %}
+  {% set target_columns = adapter.get_columns_in_relation(target_relation) %}
   {%- set target_cols_csv = target_columns | map(attribute='quoted') | join(', ') -%}
   {%- set loop_vars = {'sum_rows_inserted': 0} -%}
 
@@ -132,8 +132,7 @@
     {%- endcall %}
 
     {{adapter.expand_target_column_types(temp_table=tmp_identifier,
-                                         to_schema=schema,
-                                         to_table=identifier)}}
+                                         to_relation=target_relation)}}
     {%- set name = 'main-' ~ i -%}
     {% call statement(name, fetch_result=True) -%}
       insert into {{target_relation}} ({{target_cols_csv}})

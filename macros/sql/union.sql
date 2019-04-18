@@ -22,7 +22,7 @@
             {%- set schema, table_name = (table | string).split(".") -%}
         {%- endif -%}
 
-        {%- set cols = adapter.get_columns_in_table(schema, table_name) %}
+        {%- set cols = adapter.get_columns_in_relation(this) %}
         {%- for col in cols -%}
 
         {%- if col.column not in exclude %}

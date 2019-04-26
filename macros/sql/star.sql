@@ -5,14 +5,8 @@
         {{ return('') }}
     {% endif %}
 
-    {%- if from.name -%}
-        {%- set schema_name, table_name = from.schema, from.name -%}
-    {%- else -%}
-        {%- set schema_name, table_name = (from | string).split(".") -%}
-    {%- endif -%}
-
     {%- set include_cols = [] %}
-    {%- set cols = adapter.get_columns_in_table(schema_name, table_name) -%}
+    {%- set cols = adapter.get_columns_in_relation(from) -%}
     {%- for col in cols -%}
 
         {%- if col.column not in except -%}

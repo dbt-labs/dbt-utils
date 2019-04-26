@@ -5,7 +5,7 @@
 {% macro default__get_tables_by_prefix_sql(schema, prefix, exclude='') %}
 
         select distinct 
-            table_schema || '.' || table_name as ref
+            table_schema, table_name
         from information_schema.tables
         where table_schema = '{{ schema }}'
         and table_name ilike '{{ prefix }}%'
@@ -17,7 +17,7 @@
 {% macro bigquery__get_tables_by_prefix_sql(schema, prefix, exclude='') %}
     
         select distinct
-            concat(dataset_id, '.', table_id) as ref
+            dataset_id as table_schema, table_id as table_name
 
         from {{schema}}.__TABLES_SUMMARY__
         where dataset_id = '{{schema}}'

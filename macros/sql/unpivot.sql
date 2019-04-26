@@ -19,13 +19,7 @@ Arguments:
 
   {%- set _ = table_columns.update({table: []}) %}
 
-  {%- if table.name -%}
-    {%- set schema, table_name = table.schema, table.name -%}
-  {%- else -%}
-    {%- set schema, table_name = (table | string).split(".") -%}
-  {%- endif -%}
-
-  {%- set cols = adapter.get_columns_in_table(schema, table_name) %}
+  {%- set cols = adapter.get_columns_in_relation(table) %}
 
   {%- for col in cols -%}
     {%- if col.column.lower() not in exclude|map('lower') -%}

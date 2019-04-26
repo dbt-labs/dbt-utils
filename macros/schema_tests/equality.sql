@@ -9,11 +9,7 @@
 {% endif %}
 
 -- setup
-
-{% set schema = model.schema %}
-{% set model_a_name = model.name %}
-
-{% set dest_columns = adapter.get_columns_in_table(schema, model_a_name) %}
+{% set dest_columns = adapter.get_columns_in_relation(model) %}
 {% set dest_cols_csv = dest_columns | map(attribute='quoted') | join(', ') %}
 
 with a as (

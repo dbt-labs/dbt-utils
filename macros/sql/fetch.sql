@@ -1,5 +1,5 @@
 {% macro fetch(sql) %}
-{# This macro returns a dictionary of the form {column_name: [results]} #}
+{# This macro returns a dictionary of the form {column_name: (tuple_of_results)} #}
 
     {%- call statement('get_sql_results', fetch_result=True) -%}
 
@@ -11,8 +11,8 @@
     
     {%- if execute -%}
         {% set sql_results_table = load_result('get_sql_results').table.columns %}
-        {% for column, column_values in sql_results_table.items() %}
-            {% do sql_results.update({column: column_values.values()}) %}
+        {% for column_name, column in sql_results_table.items() %}
+            {% do sql_results.update({column_name: column.values()}) %}
         {% endfor %}
     {%- endif -%}
     

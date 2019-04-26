@@ -5,7 +5,7 @@
 {% macro default__get_tables_by_prefix_sql(schema, prefix, exclude='') %}
 
         select distinct 
-            table_schema, table_name
+            table_schema as "table_schema", table_name as "table_name"
         from information_schema.tables
         where table_schema = '{{ schema }}'
         and table_name ilike '{{ prefix }}%'

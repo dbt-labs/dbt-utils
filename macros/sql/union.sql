@@ -16,6 +16,7 @@
 
         {%- set _ = table_columns.update({table: []}) %}
 
+        {%- do dbt_utils._is_relation(table, 'union_tables') -%}
         {%- set cols = adapter.get_columns_in_relation(table) %}
         {%- for col in cols -%}
 

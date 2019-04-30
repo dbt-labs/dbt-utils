@@ -1,4 +1,6 @@
 {% macro star(from, relation_alias=False, except=[]) -%}
+    
+    {%- do dbt_utils._is_relation(from, 'star') -%}
 
     {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
     {%- if not execute -%}

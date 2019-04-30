@@ -9,6 +9,7 @@
 {% endif %}
 
 -- setup
+{%- do dbt_utils._is_relation(model, 'test_equality') -%}
 {% set dest_columns = adapter.get_columns_in_relation(model) %}
 {% set dest_cols_csv = dest_columns | map(attribute='quoted') | join(', ') %}
 

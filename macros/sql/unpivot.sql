@@ -4,7 +4,7 @@ Pivot values from columns to rows.
 Example Usage: {{ dbt_utils.unpivot(table=ref('users'), cast_to='integer', exclude=['id','created_at']) }}
 
 Arguments:
-    table: Table name, required.
+    table: Relation object, required.
     cast_to: The datatype to cast all unpivoted columns to. Default is varchar.
     exclude: A list of columns to exclude from the unpivot operation. Default is none.
 #}
@@ -19,6 +19,7 @@ Arguments:
 
   {%- set _ = table_columns.update({table: []}) %}
 
+  {%- do dbt_utils._is_relation(table, 'unpivot') -%}
   {%- set cols = adapter.get_columns_in_relation(table) %}
 
   {%- for col in cols -%}

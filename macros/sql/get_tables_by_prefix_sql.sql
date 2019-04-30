@@ -6,7 +6,7 @@
 
         select distinct 
             table_schema as "table_schema", table_name as "table_name"
-        from {{adapter.quote(database)}}.information_schema.tables
+        from {{database}}.information_schema.tables
         where table_schema = '{{ schema }}'
         and table_name ilike '{{ prefix }}%'
         and table_name not ilike '{{ exclude }}'

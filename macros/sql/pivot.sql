@@ -36,6 +36,7 @@ Arguments:
     suffix: Column alias postfix, default is blank
     then_value: Value to use if comparison succeeds, default is 1
     else_value: Value to use if comparison fails, default is 0
+    quote_identifiers: Whether surround column aliases with double quotes, default is true
 #}
 
 {% macro pivot(column,
@@ -46,7 +47,8 @@ Arguments:
                prefix='',
                suffix='',
                then_value=1,
-               else_value=0) %}
+               else_value=0,
+               quote_identifiers=True) %}
   {% for v in values %}
     {{ agg }}(
       case
@@ -56,7 +58,11 @@ Arguments:
       end
     )
     {% if alias %}
-      as {{ adapter.quote(prefix ~ v ~ suffix) }}
+      {% if quote_identifiers %}
+            as {{ adapter.quote(prefix ~ v ~ suffix) }}
+      {% else %}
+        as {{prefix ~ v ~ suffix }}
+      {% endif %}
     {% endif %}
     {% if not loop.last %},{% endif %}
   {% endfor %}

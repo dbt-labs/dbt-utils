@@ -16,13 +16,8 @@
 
         {%- set _ = table_columns.update({table: []}) %}
 
-        {%- if table.name -%}
-            {%- set schema, table_name = table.schema, table.name -%}
-        {%- else -%}
-            {%- set schema, table_name = (table | string).split(".") -%}
-        {%- endif -%}
-
-        {%- set cols = adapter.get_columns_in_table(schema, table_name) %}
+        {%- do dbt_utils._is_relation(table, 'union_tables') -%}
+        {%- set cols = adapter.get_columns_in_relation(table) %}
         {%- for col in cols -%}
 
         {%- if col.column not in exclude %}

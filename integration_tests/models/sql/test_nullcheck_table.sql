@@ -7,7 +7,7 @@
 
 with nulled as (
 
-    {{ dbt_utils.nullcheck_table(tbl.schema, tbl.name) }}
+    {{ dbt_utils.nullcheck_table(tbl) }}
 
 )
 

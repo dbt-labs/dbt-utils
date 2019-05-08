@@ -258,7 +258,7 @@ from {{ref('my_model')}}
 ```
 
 #### union_tables ([source](macros/sql/union.sql))
-This macro implements an "outer union." The list of tables provided to this macro will be unioned together, and any columns exclusive to a subset of these tables will be filled with `null` where not present. The `column_override` argument is used to explicitly assign the column type for a set of columns. The `source_column_name` argument is used to change the name of the`_dbt_source_table` field.
+This macro implements an "outer union." The list of relations provided to this macro will be unioned together, and any columns exclusive to a subset of these tables will be filled with `null` where not present. The `column_override` argument is used to explicitly assign the column type for a set of columns. The `source_column_name` argument is used to change the name of the`_dbt_source_table` field.
 
 Usage:
 ```

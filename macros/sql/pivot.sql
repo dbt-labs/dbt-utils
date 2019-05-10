@@ -36,7 +36,7 @@ Arguments:
     suffix: Column alias postfix, default is blank
     then_value: Value to use if comparison succeeds, default is 1
     else_value: Value to use if comparison fails, default is 0
-    quote_identifiers: Whether surround column aliases with double quotes, default is true
+    quote_identifiers: Whether to surround column aliases with double quotes, default is true
 #}
 
 {% macro pivot(column,

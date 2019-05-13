@@ -330,6 +330,7 @@ Arguments:
     - suffix: Column alias postfix, default is blank
     - then_value: Value to use if comparison succeeds, default is 1
     - else_value: Value to use if comparison fails, default is 0
+    - quote_identifiers: Whether to surround column aliases with double quotes, default is true
 
 #### unpivot ([source](macros/sql/unpivot.sql))
 This macro "un-pivots" a table from wide format to long format. Functionality is similar to pandas [melt](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.melt.html) function.

@@ -59,7 +59,7 @@ Returns:
         {%- set values = value_list['data'] | map(attribute=0) | list %}
         {{ return(values) }}
     {%- else -%}
-        {{ return(['']) }}
+        {{ return([]) }}
     {%- endif -%}
 
 {%- endmacro %}

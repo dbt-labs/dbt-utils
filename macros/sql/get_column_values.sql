@@ -18,23 +18,21 @@ Returns:
     {% endif %}
 {#--  #}
 
-    {%- set table_name = table -%}
-
-    {%- set table_value = adapter.get_relation(database=table_name.database,
-                                          schema=table_name.schema,
-                                         identifier=table_name.identifier) -%}
+    {%- set table_value = adapter.get_relation(database=table.database,
+                                          schema=table.schema,
+                                         identifier=table.identifier) -%}
 
     {%- call statement('get_column_values', fetch_result=true) %}
 
         {%- if not table_value and fail -%}
 
-          {{ log("Table doesn't exist..", info=True) }}
+          {{ log("Table doesn't exist..") }}
           {{ exceptions.raise_compiler_error("Table to pull columns from doesn't exist. Try running " ~ table ~ " and its dependencies first.") }}
 
         {%- elif not table_value and not fail -%}
 
-          {{ log("Table doesn't exist..", info=True) }}
-          {{ log("Trying to not fail", info=True) }}
+          {{ log("Table doesn't exist..") }}
+          {{ log("Trying to not fail..") }}
 
           select '{{default}}' as value
 

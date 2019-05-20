@@ -26,7 +26,7 @@ Returns:
 
         {%- if not table_value and fail -%}
 
-          {{ exceptions.raise_compiler_error("Table to pull columns from doesn't exist. Try running " ~ table ~ " and its dependencies first.") }}
+          {{ exceptions.raise_compiler_error("In get_column_values(): relation " ~ table ~ " does not exist and no default value was provided.") }}
 
         {%- elif not table_value and not fail -%}
 

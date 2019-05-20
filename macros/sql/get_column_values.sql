@@ -10,7 +10,7 @@ Returns:
     A list of distinct values for the specified columns
 #}
 
-{% macro get_columns(table, column, max_records=none, fail=True, default='blank') -%}
+{% macro get_columns(table, column, max_records=none, default=none) -%}
 
 {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
     {%- if not execute -%}
@@ -24,16 +24,16 @@ Returns:
 
     {%- call statement('get_column_values', fetch_result=true) %}
 
-        {%- if not table_value and fail -%}
+        {%- if not table_value and default is none -%}
 
           {{ exceptions.raise_compiler_error("In get_column_values(): relation " ~ table ~ " does not exist and no default value was provided.") }}
 
-        {%- elif not table_value and not fail -%}
+        {%- elif not table_value and default is not none -%}
 
           {{ log("Table doesn't exist..") }}
           {{ log("Trying to not fail..") }}
 
-          select '{{default}}' as value
+          {{ return(default) }}
 
         {%- else -%}
 
@@ -58,7 +58,7 @@ Returns:
         {%- set values = value_list['data'] | map(attribute=0) | list %}
         {{ return(values) }}
     {%- else -%}
-        {{ return([]) }}
+        {{ return(default) }}
     {%- endif -%}
 
 {%- endmacro %}

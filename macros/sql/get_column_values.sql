@@ -26,7 +26,6 @@ Returns:
 
         {%- if not table_value and fail -%}
 
-          {{ log("Table doesn't exist..") }}
           {{ exceptions.raise_compiler_error("Table to pull columns from doesn't exist. Try running " ~ table ~ " and its dependencies first.") }}
 
         {%- elif not table_value and not fail -%}

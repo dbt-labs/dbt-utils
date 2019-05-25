@@ -1,4 +1,4 @@
-{% set columns = dbt_utils.get_column_values(ref('data_get_column_values_not_real'), 'field', default=[]) %}
+{% set columns = dbt_utils.get_column_values('data_get_column_values_not_real', 'field', default=[]) %}
 
 {% if target.type == 'snowflake' %}
 

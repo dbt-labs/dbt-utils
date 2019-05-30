@@ -9,7 +9,7 @@ To use dbt-utils:
   ```
   packages:
     - git: "https://github.com/fishtown-analytics/dbt-utils.git"
-      revision: 0.1.22
+      revision: 0.1.23
   ```
 The revision key pins the dependency on a specific release of dbt-utils. Consult the [releases](https://github.com/fishtown-analytics/dbt-utils/releases) for information about the latest release.
 

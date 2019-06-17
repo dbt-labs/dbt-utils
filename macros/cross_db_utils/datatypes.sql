@@ -65,3 +65,17 @@
 {% macro bigquery__type_bigint() %}
     int64
 {% endmacro %}
+
+{# int  -------------------------------------------------     #}
+
+{% macro type_int() %}
+  {{ adapter_macro('dbt_utils.type_int') }}
+{% endmacro %}
+
+{% macro default__type_int() %}
+    int
+{% endmacro %}
+
+{% macro bigquery__type_int() %}
+    int64
+{% endmacro %}

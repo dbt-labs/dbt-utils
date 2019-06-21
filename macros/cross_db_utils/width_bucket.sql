@@ -5,27 +5,27 @@
 
 {% macro default__width_bucket(expr, min_value, max_value, num_buckets) -%}
 
-    {% set bucket_width -%}
+    {% set bin_size -%}
     (( {{ max_value }} - {{ min_value }} ) / {{ num_buckets }} )
-    {% endset %}
+    {%- endset %}
     (
         -- to break ties when the amount is eaxtly at the bucket egde
         case
-            when mod(
-                        {{ dbt_utils.safe_cast(expr, 'numeric') }}, 
-                        {{ dbt_utils.safe_cast(bucket_width, 'numeric') }}
+            when (
+                {{ dbt_utils.safe_cast(expr, 'decimal(28,6)') }} %
+                {{ dbt_utils.safe_cast(bin_size, 'decimal(28,6)') }}
                     ) = 0
             then 1
             else 0
         end
     ) +
       -- Anything over max_value goes the N+1 bucket
-        least(
-            ceil(
-                ({{ expr }} - {{ min_value }})/{{ bucket_width }}
-            ),
-            {{ num_buckets }} + 1
-        )
+    least(
+        ceil(
+            ({{ expr }} - {{ min_value }})/{{ bin_size }}
+        ),
+        {{ num_buckets }} + 1
+    )
 {%- endmacro %}
 
 {% macro snowflake__width_bucket(expr, min_value, max_value, num_buckets) %}

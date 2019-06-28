@@ -1,7 +1,6 @@
-{% macro test_expression_is_true(model) %}
+{% macro test_expression_is_true(model, condition='true') %}
 
 {% set expression = kwargs.get('expression', kwargs.get('arg')) %}
-{% set condition = kwargs.get('condition', 'true') %}
 
 with meet_condition as (
 

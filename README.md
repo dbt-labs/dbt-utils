@@ -128,6 +128,23 @@ models:
 
 ```
 
+The macro accepts an optional parameter `condition` that allows for asserting
+the `expression` on a subset of all records.
+
+Usage:
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "col_a + col_b = total"
+          condition: "created_at > '2018-12-31'"
+
+```
+
+
 #### recency ([source](macros/schema_tests/recency.sql))
 This schema test asserts that there is data in the referenced model at least as recent as the defined interval prior to the current timestamp.
 

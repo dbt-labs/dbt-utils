@@ -7,7 +7,7 @@
         select distinct 
             table_schema as "table_schema", table_name as "table_name"
         from {{database}}.information_schema.tables
-        where table_schema = '{{ schema }}'
+        where table_schema ilike '{{ schema }}'
         and table_name ilike '{{ prefix }}%'
         and table_name not ilike '{{ exclude }}'
 

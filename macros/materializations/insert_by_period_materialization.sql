@@ -119,7 +119,7 @@
 
     {%- set tmp_identifier = model['name'] ~ '__dbt_incremental_period' ~ i ~ '_tmp' -%}
     {%- set tmp_relation = api.Relation.create(identifier=tmp_identifier,
-                                             schema=schema, type='table') -%}
+                                               schema=schema, type='table') -%}
     {% call statement() -%}
       {% set tmp_table_sql = dbt_utils.get_period_sql(target_cols_csv,
                                                        sql,
@@ -131,7 +131,7 @@
       {{dbt.create_table_as(True, tmp_relation, tmp_table_sql)}}
     {%- endcall %}
 
-    {{adapter.expand_target_column_types(temp_table=tmp_identifier,
+    {{adapter.expand_target_column_types(from_relation=tmp_relation,
                                          to_relation=target_relation)}}
     {%- set name = 'main-' ~ i -%}
     {% call statement(name, fetch_result=True) -%}

@@ -24,11 +24,11 @@ Returns:
 
     {%- call statement('get_column_values', fetch_result=true) %}
 
-        {%- if not table_value and default is none -%}
+        {%- if not target_relation and default is none -%}
 
           {{ exceptions.raise_compiler_error("In get_column_values(): relation " ~ table ~ " does not exist and no default value was provided.") }}
 
-        {%- elif not table_value and default is not none -%}
+        {%- elif not target_relation and default is not none -%}
 
           {{ log("Table doesn't exist..") }}
           {{ log("Trying to not fail..") }}

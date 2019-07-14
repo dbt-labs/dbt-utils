@@ -50,15 +50,6 @@ models:
               values:
                 - '5'
 
-  - name: test_get_column_values_model_does_not_exist_with_default
-    columns:
-      - name: count_
-        tests:
-          - accepted_values:
-              values:
-                - '0'
-
-
   - name: test_get_tables_by_prefix_and_union
     columns:
       - name: event

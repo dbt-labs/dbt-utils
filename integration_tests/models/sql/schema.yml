@@ -90,9 +90,9 @@ models:
           compare_model: ref('data_pivot_expected')
 
   - name: test_unpivot_original_api
-     tests:
-       - dbt_utils.equality:
-           compare_model: ref('data_unpivot_original_api_expected')
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_unpivot_original_api_expected')
 
   - name: test_unpivot
     tests:

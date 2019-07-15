@@ -10,7 +10,7 @@ Returns:
     A list of distinct values for the specified columns
 #}
 
-{% macro get_columns(table, column, max_records=none, default=none) -%}
+{% macro get_column_values(table, column, max_records=none, default=none) -%}
 
 {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
     {%- if not execute -%}
@@ -40,7 +40,7 @@ Returns:
             select
                 {{ column }} as value
 
-            from {{ table }}
+            from {{ target_relation }}
             group by 1
             order by count(*) desc
 

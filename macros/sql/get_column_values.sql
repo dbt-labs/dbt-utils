@@ -30,7 +30,7 @@ Returns:
 
         {%- elif not target_relation and default is not none -%}
 
-          {{ log("Table doesn't exist..") }}
+          {{ log("Relation " ~ table ~ " does not exist. Returning the default value: " ~ default) }}
 
           {{ return(default) }}
 

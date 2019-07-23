@@ -1,8 +1,9 @@
-{% macro nullcheck_table(schema, table) %}
+{% macro nullcheck_table(relation) %}
 
-  {% set cols = adapter.get_columns_in_table(schema, table) %}
+  {%- do dbt_utils._is_relation(relation, 'nullcheck_table') -%}
+  {% set cols = adapter.get_columns_in_relation(relation) %}
 
-  select {{ nullcheck(cols) }}
-  from {{schema}}.{{table}}
+  select {{ dbt_utils.nullcheck(cols) }}
+  from {{relation}}
   
 {% endmacro %}

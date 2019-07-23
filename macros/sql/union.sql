@@ -1,6 +1,13 @@
-{% macro union_tables(tables, column_override=none) -%}
+{% macro union_tables(tables, column_override=none, exclude=none, source_column_name=none) -%}
 
+    {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
+    {%- if not execute -%}
+        {{ return('') }}
+    {% endif %}
+
+    {%- set exclude = exclude if exclude is not none else [] %}
     {%- set column_override = column_override if column_override is not none else {} %}
+    {%- set source_column_name = source_column_name if source_column_name is not none else '_dbt_source_table' %}
 
     {%- set table_columns = {} %}
     {%- set column_superset = {} %}
@@ -9,14 +16,11 @@
 
         {%- set _ = table_columns.update({table: []}) %}
 
-        {%- if table.name -%}
-            {%- set schema, table_name = table.schema, table.name -%}
-        {%- else -%}
-            {%- set schema, table_name = (table | string).split(".") -%}
-        {%- endif -%}
-
-        {%- set cols = adapter.get_columns_in_table(schema, table_name) %}
+        {%- do dbt_utils._is_relation(table, 'union_tables') -%}
+        {%- set cols = adapter.get_columns_in_relation(table) %}
         {%- for col in cols -%}
+
+        {%- if col.column not in exclude %}
 
             {# update the list of columns in this table #}
             {%- set _ = table_columns[table].append(col.column) %}
@@ -35,6 +39,9 @@
                 {%- set _ =  column_superset.update({col.column: col}) %}
 
             {%- endif -%}
+
+        {%- endif -%}
+
         {%- endfor %}
     {%- endfor %}
 
@@ -45,15 +52,14 @@
         (
             select
 
-                '{{ table }}'::text as _dbt_source_table,
+                cast({{ dbt_utils.string_literal(table) }} as {{ dbt_utils.type_string() }}) as {{ source_column_name }},
 
                 {% for col_name in ordered_column_names -%}
 
                     {%- set col = column_superset[col_name] %}
                     {%- set col_type = column_override.get(col.column, col.data_type) %}
                     {%- set col_name = adapter.quote(col_name) if col_name in table_columns[table] else 'null' %}
-
-                    {{ col_name }}::{{ col_type }} as {{ col.quoted }} {% if not loop.last %},{% endif %}
+                    cast({{ col_name }} as {{ col_type }}) as {{ col.quoted }} {% if not loop.last %},{% endif %}
                 {%- endfor %}
 
             from {{ table }}

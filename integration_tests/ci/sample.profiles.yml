@@ -1,0 +1,49 @@
+
+# HEY! This file is used in the dbt-utils integrations tests with CircleCI.
+# You should __NEVER__ check credentials into version control. Thanks for reading :)
+
+config:
+    send_anonymous_usage_stats: False
+    use_colors: True
+
+integration_tests:
+  target: postgres
+  outputs:
+    postgres:
+      type: postgres
+      host: localhost
+      user: "{{ env_var('CI_DBT_USER') }}"
+      pass: "{{ env_var('CI_DBT_PASS') }}"
+      port: "{{ env_var('CI_DBT_PORT') }}"
+      dbname: "{{ env_var('CI_DBT_DBNAME') }}"
+      schema: dbt_utils_integration_tests_postgres
+      threads: 1
+
+    redshift:
+      type: redshift
+      host: "{{ env_var('CI_REDSHIFT_DBT_HOST') }}"
+      user: "{{ env_var('CI_REDSHIFT_DBT_USER') }}"
+      pass: "{{ env_var('CI_REDSHIFT_DBT_PASS') }}"
+      dbname: "{{ env_var('CI_REDSHIFT_DBT_DBNAME') }}"
+      port: 5439
+      schema: dbt_utils_integration_tests_redshift
+      threads: 1
+
+    bigquery:
+      type: bigquery
+      method: service-account
+      keyfile: "{{ env_var('GCLOUD_SERVICE_KEY_PATH') }}"
+      project: 'dbt-integration-tests'
+      schema: dbt_utils_integration_tests_bigquery
+      threads: 1
+
+    snowflake:
+      type: snowflake
+      account: "{{ env_var('CI_SNOWFLAKE_DBT_ACCOUNT') }}"
+      user: "{{ env_var('CI_SNOWFLAKE_DBT_USER') }}"
+      password: "{{ env_var('CI_SNOWFLAKE_DBT_PASS') }}"
+      role: "{{ env_var('CI_SNOWFLAKE_DBT_ROLE') }}"
+      database: "{{ env_var('CI_SNOWFLAKE_DBT_DATABASE') }}"
+      warehouse: "{{ env_var('CI_SNOWFLAKE_DBT_WAREHOUSE') }}"
+      schema: dbt_utils_integration_tests_snowflake
+      threads: 1

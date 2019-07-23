@@ -1,14 +1,16 @@
-{% macro test_at_least_one(model, arg) %}
+{% macro test_at_least_one(model) %}
+
+{% set column_name = kwargs.get('column_name', kwargs.get('arg')) %}
 
 select count(*)
 from (
     select
 
-      count({{ arg }})
+      count({{ column_name }})
 
     from {{ model }}
 
-    having count({{ arg }}) = 0
+    having count({{ column_name }}) = 0
 
 ) validation_errors
 

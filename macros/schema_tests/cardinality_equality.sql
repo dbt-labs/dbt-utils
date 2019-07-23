@@ -1,8 +1,11 @@
-{% macro test_cardinality_equality(model, from, to, field) %}
+{% macro test_cardinality_equality(model, to, field) %}
+
+{% set column_name = kwargs.get('column_name', kwargs.get('from')) %}
+
 
 with table_a as (
 select
-  {{ from }},
+  {{ column_name }},
   count(*) as num_rows
 from {{ model }}
 group by 1
@@ -19,7 +22,7 @@ group by 1
 except_a as (
   select *
   from table_a
-  except
+  {{ dbt_utils.except() }}
   select *
   from table_b
 ),
@@ -27,7 +30,7 @@ except_a as (
 except_b as (
   select *
   from table_b
-  except
+  {{ dbt_utils.except() }}
   select *
   from table_a
 ),

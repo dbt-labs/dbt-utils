@@ -1,13 +1,14 @@
-{% macro star(from, except=[]) -%}
+{% macro star(from, relation_alias=False, except=[]) -%}
+    
+    {%- do dbt_utils._is_relation(from, 'star') -%}
 
-    {%- if from.name -%}
-        {%- set schema_name, table_name = from.schema, from.name -%}
-    {%- else -%}
-        {%- set schema_name, table_name = (from | string).split(".") -%}
-    {%- endif -%}
+    {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
+    {%- if not execute -%}
+        {{ return('') }}
+    {% endif %}
 
     {%- set include_cols = [] %}
-    {%- set cols = adapter.get_columns_in_table(schema_name, table_name) -%}
+    {%- set cols = adapter.get_columns_in_relation(from) -%}
     {%- for col in cols -%}
 
         {%- if col.column not in except -%}
@@ -18,7 +19,7 @@
 
     {%- for col in include_cols %}
 
-        "{{ col }}" {% if not loop.last %},
+        {% if relation_alias %} {{ relation_alias }}.{% endif %} {{ dbt_utils.identifier(col) }} {% if not loop.last %},
         {% endif %}
 
     {%- endfor -%}

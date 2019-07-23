@@ -4,7 +4,7 @@
     {{ exceptions.raise_compiler_error("upper bound must be positive") }}
     {% endif %}
 
-    {% for _ in range(1, upper_bound + 2) %}
+    {% for _ in range(1, 100) %}
        {% if upper_bound <= 2 ** loop.index %}{{ return(loop.index) }}{% endif %}
     {% endfor %}
 
@@ -15,17 +15,9 @@
 
     {% set n = dbt_utils.get_powers_of_two(upper_bound) %}
 
-    with
-
-    {% for i in range(n) %}
-
-    p{{i}} as (
+    with p as (
         select 0 as generated_number union all select 1
-    ) {% if not loop.last %},{% endif %}
-
-    {% endfor %}
-
-    , unioned as (
+    ), unioned as (
 
     select
 
@@ -39,7 +31,7 @@
     from
 
     {% for i in range(n) %}
-    p{{i}}
+    p as p{{i}}
     {% if not loop.last %} cross join {% endif %}
     {% endfor %}
 

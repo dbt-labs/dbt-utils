@@ -31,7 +31,6 @@ Returns:
         {%- elif not target_relation and default is not none -%}
 
           {{ log("Table doesn't exist..") }}
-          {{ log("Trying to not fail..") }}
 
           {{ return(default) }}
 

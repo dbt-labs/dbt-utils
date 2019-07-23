@@ -1,4 +1,4 @@
-{% set columns = dbt_utils.get_column_values(ref('sample'), 'sample_column', default='') %}
+{% set columns = dbt_utils.get_column_values(ref('example_column'), 'sample_column', default='') %}
 
 {% if target.type == 'snowflake' %}
 

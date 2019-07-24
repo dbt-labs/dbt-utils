@@ -216,11 +216,12 @@ models:
 ### SQL helpers
 #### get_column_values ([source](macros/sql/get_column_values.sql))
 This macro returns the unique values for a column in a given table.
+It takes an options `default` argument for compiling when relation does not already exist. 
 
 Usage:
 ```
 -- Returns a list of the top 50 states in the `users` table
-{% set states = dbt_utils.get_column_values(table=ref('users'), column='state', max_records=50) %}
+{% set states = dbt_utils.get_column_values(table=ref('users'), column='state', max_records=50, default=[]) %}
 
 {% for state in states %}
     ...

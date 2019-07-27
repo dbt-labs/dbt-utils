@@ -300,7 +300,7 @@ Usage:
 
 Example:
 
-    Input: public.test
+    Input: orders
 
     | size | color |
     |------|-------|
@@ -311,9 +311,11 @@ Example:
 
     select
       size,
-      {{ dbt_utils.pivot('color', dbt_utils.get_column_values('public.test',
-                                                             'color')) }}
-    from public.test
+      {{ dbt_utils.pivot(
+          'color',
+          dbt_utils.get_column_values(ref('orders'), 'color')
+      ) }}
+    from {{ ref('orders') }}
     group by size
 
     Output:

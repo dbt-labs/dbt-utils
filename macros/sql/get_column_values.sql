@@ -18,9 +18,7 @@ Returns:
     {% endif %}
 {#--  #}
 
-    {%- set target_relation = adapter.get_relation(database=table.database,
-                                          schema=table.schema,
-                                         identifier=table.identifier) -%}
+    {%- set target_relation = table -%}
 
     {%- call statement('get_column_values', fetch_result=true) %}
 

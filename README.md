@@ -215,8 +215,8 @@ models:
 ---
 ### SQL helpers
 #### get_column_values ([source](macros/sql/get_column_values.sql))
-This macro returns the unique values for a column in a given table.
-It takes an options `default` argument for compiling when relation does not already exist. 
+This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/api-variable#section-relation).
+It takes an options `default` argument for compiling when the relation does not already exist.
 
 Usage:
 ```

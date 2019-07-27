@@ -343,7 +343,14 @@ This macro "un-pivots" a table from wide format to long format. Functionality is
 
 Usage:
 ```
-{{ dbt_utils.unpivot(table=ref('table_name'), cast_to='datatype', exclude=[<list of columns to exclude from unpivot>], remove=[<list of columns to remove>], field_name=<column name for field>, value_name=<column name for value>) }}
+{{ dbt_utils.unpivot(
+  table=ref('table_name'),
+  cast_to='datatype',
+  exclude=[<list of columns to exclude from unpivot>],
+  remove=[<list of columns to remove>],
+  field_name=<column name for field>,
+  value_name=<column name for value>
+) }}
 ```
 
 Example:

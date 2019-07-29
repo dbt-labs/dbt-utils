@@ -215,8 +215,8 @@ models:
 ---
 ### SQL helpers
 #### get_column_values ([source](macros/sql/get_column_values.sql))
-This macro returns the unique values for a column in a given table.
-It takes an options `default` argument for compiling when relation does not already exist. 
+This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/api-variable#section-relation).
+It takes an options `default` argument for compiling when the relation does not already exist.
 
 Usage:
 ```
@@ -300,7 +300,7 @@ Usage:
 
 Example:
 
-    Input: public.test
+    Input: orders
 
     | size | color |
     |------|-------|
@@ -311,9 +311,11 @@ Example:
 
     select
       size,
-      {{ dbt_utils.pivot('color', dbt_utils.get_column_values('public.test',
-                                                             'color')) }}
-    from public.test
+      {{ dbt_utils.pivot(
+          'color',
+          dbt_utils.get_column_values(ref('orders'), 'color')
+      ) }}
+    from {{ ref('orders') }}
     group by size
 
     Output:
@@ -341,7 +343,14 @@ This macro "un-pivots" a table from wide format to long format. Functionality is
 
 Usage:
 ```
-{{ dbt_utils.unpivot(table=ref('table_name'), cast_to='datatype', exclude=[<list of columns to exclude from unpivot>], remove=[<list of columns to remove>], field_name=<column name for field>, value_name=<column name for value>) }}
+{{ dbt_utils.unpivot(
+  table=ref('table_name'),
+  cast_to='datatype',
+  exclude=[<list of columns to exclude from unpivot>],
+  remove=[<list of columns to remove>],
+  field_name=<column name for field>,
+  value_name=<column name for value>
+) }}
 ```
 
 Example:

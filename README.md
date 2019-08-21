@@ -237,10 +237,14 @@ exclusion pattern. It's particularly handy paired with `union_tables`.
 Usage:
 ```
 -- Returns a list of tables that match schema.prefix%
-{{ set tables = dbt_utils.get_tables_by_prefix('schema', 'prefix')}}
+{% set tables = dbt_utils.get_tables_by_prefix('schema', 'prefix') %}
 
 -- Returns a list of tables as above, excluding any with underscores
-{{ set tables = dbt_utils.get_tables_by_prefix('schema', 'prefix', '%_%')}}
+{% set tables = dbt_utils.get_tables_by_prefix('schema', 'prefix', '%_%') %}
+
+-- Example using the union_tables macro
+{% set event_tables = dbt_utils.get_tables_by_prefix('events', 'event_') %}
+{{ dbt_utils.union_tables(tables = event_tables) }}
 ```
 
 #### group_by ([source](macros/sql/groupby.sql))

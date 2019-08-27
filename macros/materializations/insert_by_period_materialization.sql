@@ -84,10 +84,7 @@
 
   -- `begin` happens here, so `commit` after it to finish the transaction
   {{run_hooks(pre_hooks, inside_transaction=True)}}
-  {% call statement() -%}
-    begin; -- make extra sure we've closed out the transaction
-    commit;
-  {%- endcall %}
+  {{ adapter.commit() }}
 
   -- build model
   {% if force_create or old_relation is none -%}
@@ -112,7 +109,6 @@
   {%- set target_cols_csv = target_columns | map(attribute='quoted') | join(', ') -%}
   {%- set loop_vars = {'sum_rows_inserted': 0} -%}
 
-  -- commit each period as a separate transaction
   {% for i in range(num_periods) -%}
     {%- set msg = "Running for " ~ period ~ " " ~ (i + 1) ~ " of " ~ (num_periods) -%}
     {{ dbt_utils.log_info(msg) }}
@@ -120,19 +116,22 @@
     {%- set tmp_identifier = model['name'] ~ '__dbt_incremental_period' ~ i ~ '_tmp' -%}
     {%- set tmp_relation = api.Relation.create(identifier=tmp_identifier,
                                                schema=schema, type='table') -%}
+    {% set tmp_table_sql = dbt_utils.get_period_sql(target_cols_csv,
+                                                    sql,
+                                                    timestamp_field,
+                                                    period,
+                                                    start_timestamp,
+                                                    stop_timestamp,
+                                                    i) %}
+
+    -- statement() will begin or re-use an existing transaction
     {% call statement() -%}
-      {% set tmp_table_sql = dbt_utils.get_period_sql(target_cols_csv,
-                                                       sql,
-                                                       timestamp_field,
-                                                       period,
-                                                       start_timestamp,
-                                                       stop_timestamp,
-                                                       i) %}
       {{dbt.create_table_as(True, tmp_relation, tmp_table_sql)}}
     {%- endcall %}
 
     {{adapter.expand_target_column_types(from_relation=tmp_relation,
                                          to_relation=target_relation)}}
+
     {%- set name = 'main-' ~ i -%}
     {% call statement(name, fetch_result=True) -%}
       insert into {{target_relation}} ({{target_cols_csv}})
@@ -142,6 +141,7 @@
           from {{tmp_relation.include(schema=False)}}
       );
     {%- endcall %}
+
     {%- set rows_inserted = (load_result('main-' ~ i)['status'].split(" "))[2] | int -%}
     {%- set sum_rows_inserted = loop_vars['sum_rows_inserted'] + rows_inserted -%}
     {%- if loop_vars.update({'sum_rows_inserted': sum_rows_inserted}) %} {% endif -%}
@@ -149,18 +149,13 @@
     {%- set msg = "Ran for " ~ period ~ " " ~ (i + 1) ~ " of " ~ (num_periods) ~ "; " ~ rows_inserted ~ " records inserted" -%}
     {{ dbt_utils.log_info(msg) }}
 
+    -- commit each period as a separate transaction
+    {{ adapter.commit() }}
   {%- endfor %}
-
-  {% call statement() -%}
-    begin;
-  {%- endcall %}
 
   {{run_hooks(post_hooks, inside_transaction=True)}}
 
-  {% call statement() -%}
-    commit;
-  {%- endcall %}
-
+  --This will call commit
   {{run_hooks(post_hooks, inside_transaction=False)}}
 
   {%- set status_string = "INSERT " ~ loop_vars['sum_rows_inserted'] -%}

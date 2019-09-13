@@ -9,7 +9,8 @@
 {% set actual_dictionary=dbt_utils.fetch(
     "select * from {{ ref('data_fetch') }}"
 ) %}
-{% if actual_dictionary == expected_dictionary %}
+
+{% if actual_dictionary | lower == expected_dictionary | lower %}
     {# Return 0 rows for the test to pass #}
     select 1 where false
 {% else %}

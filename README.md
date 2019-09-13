@@ -219,18 +219,7 @@ Usage:
 -- Returns a dictionary of the users table where the state is California
 {% set ___ = dbt_utils.fetch("select * from ref{{'users'}} where state = 'CA' ") %}
 ```
-#### get_column_from_sql ([source](macros/sql/get_column_from_sql.sql))
-This macro returns a list of all values for a column that is specified by a sql query.
 
-Usage:
-```
--- Returns a list of phone numbers for users in California
-{% set phone_nums = dbt_utils.get_column_from_sql("select * from ref{{'users'}} where state = 'CA' ","phone") %}
-
-{% for phone in phone_nums %}
-    ...
-{% endfor %}
-```
 #### get_column_values ([source](macros/sql/get_column_values.sql))
 This macro returns the unique values for a column in a given table.
 

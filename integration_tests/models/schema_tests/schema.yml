@@ -17,7 +17,10 @@ models:
     tests:
       - dbt_utils.expression_is_true:
           expression: col_a + col_b = 1
-        
+      - dbt_utils.expression_is_true:
+          expression: col_a = 0.5
+          condition: col_b = 0.5
+
   - name: test_recency
     tests:
       - dbt_utils.recency:

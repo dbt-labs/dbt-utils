@@ -1,21 +1,7 @@
 This [dbt](https://github.com/fishtown-analytics/dbt) package contains macros that can be (re)used across dbt projects.
 
-## Getting started
-
-To use dbt-utils:
-
-1. Reference the package in your dbt project by creating a `packages.yml` file, which should look something like:
-
-  ```
-  packages:
-    - git: "https://github.com/fishtown-analytics/dbt-utils.git"
-      revision: 0.1.22
-  ```
-The revision key pins the dependency on a specific release of dbt-utils. Consult the [releases](https://github.com/fishtown-analytics/dbt-utils/releases) for information about the latest release.
-
-2. Install the package by executing `dbt deps`
-
-Detailed information on packages can be found in dbt's documentation in the [Package Management](https://docs.getdbt.com/docs/package-management) section.
+## Installation Instructions
+Check [dbt Hub](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/) for the latest installation instructions, or [read the docs](https://docs.getdbt.com/docs/package-management) for more information on installing packages.
 
 ----
 
@@ -142,6 +128,23 @@ models:
 
 ```
 
+The macro accepts an optional parameter `condition` that allows for asserting
+the `expression` on a subset of all records.
+
+Usage:
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "col_a + col_b = total"
+          condition: "created_at > '2018-12-31'"
+
+```
+
+
 #### recency ([source](macros/schema_tests/recency.sql))
 This schema test asserts that there is data in the referenced model at least as recent as the defined interval prior to the current timestamp.
 
@@ -221,12 +224,13 @@ Usage:
 ```
 
 #### get_column_values ([source](macros/sql/get_column_values.sql))
-This macro returns the unique values for a column in a given table.
+This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/api-variable#section-relation).
+It takes an options `default` argument for compiling when the relation does not already exist.
 
 Usage:
 ```
 -- Returns a list of the top 50 states in the `users` table
-{% set states = dbt_utils.get_column_values(table=ref('users'), column='state', max_records=50) %}
+{% set states = dbt_utils.get_column_values(table=ref('users'), column='state', max_records=50, default=[]) %}
 
 {% for state in states %}
     ...
@@ -242,10 +246,14 @@ exclusion pattern. It's particularly handy paired with `union_tables`.
 Usage:
 ```
 -- Returns a list of tables that match schema.prefix%
-{{ set tables = dbt_utils.get_tables_by_prefix('schema', 'prefix')}}
+{% set tables = dbt_utils.get_tables_by_prefix('schema', 'prefix') %}
 
 -- Returns a list of tables as above, excluding any with underscores
-{{ set tables = dbt_utils.get_tables_by_prefix('schema', 'prefix', '%_%')}}
+{% set tables = dbt_utils.get_tables_by_prefix('schema', 'prefix', '%_%') %}
+
+-- Example using the union_tables macro
+{% set event_tables = dbt_utils.get_tables_by_prefix('events', 'event_') %}
+{{ dbt_utils.union_tables(tables = event_tables) }}
 ```
 
 #### group_by ([source](macros/sql/groupby.sql))
@@ -267,7 +275,7 @@ from {{ref('my_model')}}
 ```
 
 #### union_tables ([source](macros/sql/union.sql))
-This macro implements an "outer union." The list of tables provided to this macro will be unioned together, and any columns exclusive to a subset of these tables will be filled with `null` where not present. The `column_override` argument is used to explicitly assign the column type for a set of columns. The `source_column_name` argument is used to change the name of the`_dbt_source_table` field.
+This macro implements an "outer union." The list of relations provided to this macro will be unioned together, and any columns exclusive to a subset of these tables will be filled with `null` where not present. The `column_override` argument is used to explicitly assign the column type for a set of columns. The `source_column_name` argument is used to change the name of the`_dbt_source_table` field.
 
 Usage:
 ```
@@ -305,7 +313,7 @@ Usage:
 
 Example:
 
-    Input: public.test
+    Input: orders
 
     | size | color |
     |------|-------|
@@ -316,9 +324,11 @@ Example:
 
     select
       size,
-      {{ dbt_utils.pivot('color', dbt_utils.get_column_values('public.test',
-                                                             'color')) }}
-    from public.test
+      {{ dbt_utils.pivot(
+          'color',
+          dbt_utils.get_column_values(ref('orders'), 'color')
+      ) }}
+    from {{ ref('orders') }}
     group by size
 
     Output:
@@ -339,13 +349,21 @@ Arguments:
     - suffix: Column alias postfix, default is blank
     - then_value: Value to use if comparison succeeds, default is 1
     - else_value: Value to use if comparison fails, default is 0
+    - quote_identifiers: Whether to surround column aliases with double quotes, default is true
 
 #### unpivot ([source](macros/sql/unpivot.sql))
 This macro "un-pivots" a table from wide format to long format. Functionality is similar to pandas [melt](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.melt.html) function.
 
 Usage:
 ```
-{{ dbt_utils.unpivot(table=ref('table_name'), cast_to='datatype', exclude=[<list of columns to exclude from unpivot>]) }}
+{{ dbt_utils.unpivot(
+  table=ref('table_name'),
+  cast_to='datatype',
+  exclude=[<list of columns to exclude from unpivot>],
+  remove=[<list of columns to remove>],
+  field_name=<column name for field>,
+  value_name=<column name for value>
+) }}
 ```
 
 Example:
@@ -372,7 +390,10 @@ Arguments:
 
     - table: Table name, required
     - cast_to: The data type to cast the unpivoted values to, default is varchar
-    - exclude: A list of columns to exclude from the unpivot.
+    - exclude: A list of columns to exclude from the unpivot operation but keep in the resulting table.
+    - remove: A list of columns to remove from the resulting table.
+    - field_name: column name in the resulting table for field
+    - value_name: column name in the resulting table for value
 
 ---
 ### Web
@@ -401,6 +422,37 @@ Usage:
 ```
 
 ---
+### Logger
+#### pretty_time ([source](macros/logger/pretty_time.sql))
+This macro returns a string of the current timestamp, optionally taking a datestring format.
+```sql
+{#- This will return a string like '14:50:34' -#}
+{{ dbt_utils.pretty_time() }}
+
+{#- This will return a string like '2019-05-02 14:50:34' -#}
+{{ dbt_utils.pretty_time(format='%Y-%m-%d %H:%M:%S') }}
+```
+
+#### pretty_log_format ([source](macros/logger/pretty_log_format.sql))
+This macro formats the input in a way that will print nicely to the command line when you `log` it.
+```sql
+{#- This will return a string like:
+"11:07:31 + my pretty message"
+-#}
+
+{{ dbt_utils.pretty_log_format("my pretty message") }}
+```
+### log_info ([source](macros/logger/log_info.sql))
+This macro logs a formatted message (with a timestamp) to the command line.
+```sql
+{{ log_info(dbt_utils.log_info("my pretty message")) }}
+```
+
+```
+11:07:28 | 1 of 1 START table model analytics.fct_orders........................ [RUN]
+11:07:31 + my pretty message
+```
+
 ### Materializations
 #### insert_by_period ([source](macros/materializations/insert_by_period_materialization.sql))
 `insert_by_period` allows dbt to insert records into a table one period (i.e. day, week) at a time.

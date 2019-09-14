@@ -7,7 +7,7 @@
 } %}
 
 {% set actual_dictionary=dbt_utils.fetch(
-    "select * from {{ ref('data_fetch') }}"
+    "select * from" ~ ref('data_fetch')
 ) %}
 
 {% if actual_dictionary['col_1'] | map('int',default=none) | list != expected_dictionary['col_1'] %}

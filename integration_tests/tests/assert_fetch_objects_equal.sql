@@ -11,14 +11,20 @@
 ) %}
 
 {% if actual_dictionary['col_1'] | map('int',default=none) | list != expected_dictionary['col_1'] %}
+{{ log(actual_dictionary['col_1'] | map('int',default=none) | list, info=True) }}
+{{ log(expected_dictionary['col_1'], info=True) }}
  {# select > 0 rows for test to fail  #}
     select 1
 
 {% elif actual_dictionary['col_2'] | list != expected_dictionary['col_2']%}
+{{ log(actual_dictionary['col_2'] | list, info=True) }}
+{{ log(expected_dictionary['col_2'], info=True) }}
  {# select > 0 rows for test to fail  #}
     select 1
 
 {% elif actual_dictionary['col_3'] | map('int',default=none) | list != expected_dictionary['col_3'] %}
+{{ log(actual_dictionary['col_3'] | map('int',default=none) | list, info=True) }}
+{{ log(expected_dictionary['col_3'], info=True) }}
  {# select > 0 rows for test to fail  #}
     select 1
 

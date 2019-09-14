@@ -220,7 +220,7 @@ This macro returns a dictionary from a sql query.
 Usage:
 ```
 -- Returns a dictionary of the users table where the state is California
-{% set ___ = dbt_utils.fetch("select * from" ~ ref('users') ~ "where state = 'CA' ") %}
+{% set california_users = dbt_utils.fetch("select * from" ~ ref('users') ~ "where state = 'CA' ") %}
 ```
 
 #### get_column_values ([source](macros/sql/get_column_values.sql))

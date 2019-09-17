@@ -1,20 +1,24 @@
 
 test-postgres:
+	dbt compile --target postgres
 	dbt seed --target postgres --full-refresh
 	dbt run --target postgres --full-refresh --exclude test_insert_by_period
 	dbt test --target postgres --exclude test_insert_by_period
 
 test-redshift:
+	dbt compile --target redshift
 	dbt seed --target redshift --full-refresh
 	dbt run --target redshift --full-refresh
 	dbt test --target redshift
 
 test-snowflake:
+	dbt compile --target snowflake
 	dbt seed --target snowflake --full-refresh
 	dbt run --target snowflake --full-refresh
 	dbt test --target snowflake
 
 test-bigquery:
+	dbt compile --target bigquery
 	dbt seed --target bigquery --full-refresh
 	dbt run --target bigquery --full-refresh
 	dbt test --target bigquery

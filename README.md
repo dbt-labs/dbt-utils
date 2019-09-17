@@ -200,10 +200,9 @@ version: 2
 models:
   - name: model_name
     columns:
-      - name: from_column
+      - name: id
         tests:
           - relationships_where:
-              from: id
               to: ref('other_model_name')
               field: client_id
               from_condition: id <> '4ca448b8-24bf-4b88-96c6-b1609499c38b'

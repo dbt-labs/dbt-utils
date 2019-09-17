@@ -1,8 +1,8 @@
 {% macro test_relationships_where(model, to, field) %}
 
 {% set column_name = kwargs.get('column_name', kwargs.get('from')) %}
-{% set from_condition = kwargs.get('from_condition', True) %}
-{% set to_condition = kwargs.get('to_condition', True) %}
+{% set from_condition = kwargs.get('from_condition', "true") %}
+{% set to_condition = kwargs.get('to_condition', "true") %}
 
 with left_table as (
 

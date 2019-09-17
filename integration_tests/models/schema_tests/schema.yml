@@ -29,7 +29,7 @@ models:
     tests:
       - dbt_utils.equal_rowcount:
           compare_model: ref('test_equal_rowcount')
-      
+
   - name: data_people
     columns:
       - name: is_active
@@ -37,3 +37,13 @@ models:
           - dbt_utils.cardinality_equality:
               field: is_active
               to: ref('data_people')
+
+  - name: data_test_relationships_where_table_2
+    columns:
+      - name: id
+        tests:
+          - relationships_where:
+              from: id
+              to: ref('data_test_relationships_where_table_1')
+              field: id
+              from_condition: id <> '4'

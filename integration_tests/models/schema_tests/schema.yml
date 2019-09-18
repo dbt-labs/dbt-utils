@@ -49,4 +49,4 @@ models:
               from: id
               to: ref('data_test_relationships_where_table_1')
               field: id
-              from_condition: id <> '4'
+              from_condition: id <> 4

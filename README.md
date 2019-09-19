@@ -230,6 +230,24 @@ Usage:
 ...
 ```
 
+#### get_column_names_from_sql ([source](macros/sql/get_column_names_from_sql.sql))
+This macro returns a list of column names (_not_ `Column`[objects](https://docs.getdbt.com/docs/api-variable#section-column)) for the results of a provided query.
+
+This macro is useful when you need to iterate through columns in a CTE (including an ephemeral model) since the information_schema cannot be queried. If you need to find the columns in a [Relation](https://docs.getdbt.com/docs/api-variable#section-relation) (generally a table or view), you should use [get_columns_in_relation](https://docs.getdbt.com/docs/adapter#section-get_columns_in_relation) instead.
+
+```sql
+{% set query_sql %}
+select * from {{ ref('my_ephemeral_model') }}
+{% endset %}
+{% set column_names=get_columns_in_relation(query_sql) %}
+
+select
+{% for column_name in column_names %}
+  {{ column_name }} as my_{{ column_name }} {{ ", " if not loop.last }}
+{% endfor %}
+from {{ ref('my_ephemeral_model') }}
+
+```
 #### get_tables_by_prefix ([source](macros/sql/get_tables_by_prefix.sql))
 This macro returns a list of tables that match a given prefix, with an optional
 exclusion pattern. It's particularly handy paired with `union_tables`.

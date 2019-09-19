@@ -3,7 +3,7 @@
 
 
 {% if target.type in ('snowflake') %}
-    {% do expected_columns.upper() %}
+{% set expected_columns=('COL_A', 'COL_B') %}
 {% endif %}
 
 {% set query_sql="select 1 as col_a, 2 as col_b limit 1" %}

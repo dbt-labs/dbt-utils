@@ -239,7 +239,7 @@ This macro is useful when you need to iterate through columns in a CTE (includin
 {% set query_sql %}
 select * from {{ ref('my_ephemeral_model') }}
 {% endset %}
-{% set column_names=get_columns_in_relation(query_sql) %}
+{% set column_names=get_column_names_from_sql(query_sql) %}
 
 select
 {% for column_name in column_names %}

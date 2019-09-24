@@ -212,6 +212,25 @@ models:
 
 ```
 
+#### relationships_where ([source](macros/schema_tests/relationships_where.sql))
+This test validates the referential integrity between two tables (same as the core relationships schema test) with an added predicate to filter out some rows from the test. This is useful to exclude records such as test entities, rows created in the last X minutes/hours to account for temporary gaps due to ETL limitations, etc.
+
+Usage:
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    columns:
+      - name: id
+        tests:
+          - dbt_utils.relationships_where:
+              to: ref('other_model_name')
+              field: client_id
+              from_condition: id <> '4ca448b8-24bf-4b88-96c6-b1609499c38b'
+
+```
+
 ---
 ### SQL helpers
 #### get_column_values ([source](macros/sql/get_column_values.sql))

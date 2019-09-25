@@ -20,7 +20,7 @@ This macro adds a time/day interval to the supplied date/timestamp. Note: The `d
 
 Usage:
 ```
-{{ dbt_utils.dateadd(datepart='day', interval=1, from_date_or_timestamp='2017-01-01') }}
+{{ dbt_utils.dateadd(datepart='day', interval=1, from_date_or_timestamp="'2017-01-01'") }}
 ```
 
 #### datediff ([source](macros/cross_db_utils/datediff.sql))

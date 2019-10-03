@@ -287,11 +287,14 @@ from {{ref('my_model')}}
 #### union_tables ([source](macros/sql/union.sql))
 This macro implements an "outer union." The list of relations provided to this macro will be unioned together, and any columns exclusive to a subset of these tables will be filled with `null` where not present. The `column_override` argument is used to explicitly assign the column type for a set of columns. The `source_column_name` argument is used to change the name of the`_dbt_source_table` field.
 
+The arguments `include` and `exclude` can be provided to whitelist or blacklist columns respectively. `exclude` takes precidence if a column is specified in both `include` and `exclude`.
+
 Usage:
 ```
 {{ dbt_utils.union_tables(
     tables=[ref('table_1'), ref('table_2')],
     column_override={"some_field": "varchar(100)"},
+    include=["some_included_field"],
     exclude=["some_other_field"],
     source_column_name='custom_source_column_name'
 ) }}
@@ -326,7 +329,7 @@ Example:
     Input: orders
 
     | size | color |
-    |------|-------|
+    | ---- | ----- |
     | S    | red   |
     | S    | blue  |
     | S    | red   |
@@ -344,7 +347,7 @@ Example:
     Output:
 
     | size | red | blue |
-    |------|-----|------|
+    | ---- | --- | ---- |
     | S    | 2   | 1    |
     | M    | 1   | 0    |
 
@@ -381,7 +384,7 @@ Example:
     Input: orders
 
     | date       | size | color | status     |
-    |------------|------|-------|------------|
+    | ---------- | ---- | ----- | ---------- |
     | 2017-01-01 | S    | red   | complete   |
     | 2017-03-01 | S    | red   | processing |
 
@@ -390,7 +393,7 @@ Example:
     Output:
 
     | date       | status     | field_name | value |
-    |------------|------------|------------|-------|
+    | ---------- | ---------- | ---------- | ----- |
     | 2017-01-01 | complete   | size       | S     |
     | 2017-01-01 | complete   | color      | red   |
     | 2017-03-01 | processing | size       | S     |

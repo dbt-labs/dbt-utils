@@ -1,10 +1,11 @@
-{% macro union_tables(tables, column_override=none, exclude=none, source_column_name=none) -%}
+{% macro union_tables(tables, column_override=none, include=none, exclude=none, source_column_name=none) -%}
 
     {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
     {%- if not execute -%}
         {{ return('') }}
     {% endif %}
 
+    {%- set include = include if include is not none else [] %}
     {%- set exclude = exclude if exclude is not none else [] %}
     {%- set column_override = column_override if column_override is not none else {} %}
     {%- set source_column_name = source_column_name if source_column_name is not none else '_dbt_source_table' %}
@@ -20,6 +21,7 @@
         {%- set cols = adapter.get_columns_in_relation(table) %}
         {%- for col in cols -%}
 
+        {%- if include|length == 0 or col.column in include %}
         {%- if col.column not in exclude %}
 
             {# update the list of columns in this table #}
@@ -40,6 +42,7 @@
 
             {%- endif -%}
 
+        {%- endif -%}
         {%- endif -%}
 
         {%- endfor %}

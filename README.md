@@ -231,6 +231,49 @@ models:
 
 ```
 
+#### mutually_exclusive_ranges ([source](macros/schema_tests/test_mutually_exclusive_ranges.sql))
+This test confirms that for a given lower_bound_column and upper_bound_column,
+the ranges of between the lower and upper bounds do not overlap with the ranges
+of another row.
+
+**Usage:**
+```yaml
+version: 2
+
+models:
+  # test that age ranges do not overlap
+  - name: age_brackets
+    tests:
+      - dbt_utils.mutually_exclusive_ranges:
+          lower_bound_column: min_age
+          upper_bound_column: max_age
+          collectively_exhaustive: true
+
+  # test that each customer can only have one subscription at a time
+  - name: subcriptions
+    tests:
+      - dbt_utils.mutually_exclusive_ranges:
+          lower_bound_column: started_at
+          upper_bound_column: ended_at
+          partition_by: customer_id
+          collectively_exhaustive: false
+```
+**Args:**
+* `lower_bound_column` (required): The name of the column that is the lower value
+* `upper_bound_column` (required): The name of the column that is the upper value
+* `partition_by` (optional): If a subset of records should be mutually exclusive
+(e.g. all periods for a single subscription_id are mutually exclusive), use this
+argument to indicate which column to partition by. `default=none`
+* `collectively_exhaustive` (optional): True if the upper bound of one row should
+be the lower bound of the next row. `default=false`
+
+**Understanding `collectively_exhaustive`:**
+Take the example of subscriptions, where a customer can only have one subscription
+at a time. This customer may have periods where they _do not_ have any active
+subscription, in which case the ranges would not overlap, but they might.
+Setting `collectively_exhaustive=false` means that the test will pass whether
+the ranges are collectively exhaustive or not (i.e. there are gaps).
+
 ---
 ### SQL helpers
 #### get_column_values ([source](macros/sql/get_column_values.sql))

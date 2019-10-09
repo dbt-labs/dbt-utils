@@ -50,3 +50,18 @@ models:
               to: ref('data_test_relationships_where_table_1')
               field: id
               from_condition: id <> 4
+
+  - name: data_test_mutually_exclusive_ranges0
+    tests:
+      - dbt_utils.mutually_exclusive_ranges:
+          lower_bound_column: lower_bound
+          upper_bound_column: upper_bound
+          collectively_exhaustive: true
+
+  - name: data_test_mutually_exclusive_ranges1
+    tests:
+      - dbt_utils.mutually_exclusive_ranges:
+          lower_bound_column: valid_from
+          upper_bound_column: valid_to
+          partition_by: subscription_id
+          collectively_exhaustive: false

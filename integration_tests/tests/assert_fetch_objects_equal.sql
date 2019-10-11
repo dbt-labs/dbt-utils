@@ -10,26 +10,44 @@
     "select * from " ~ ref('data_fetch')
 ) %}
 
-{% if actual_dictionary['col_1'] | map('int',default=none) | list != expected_dictionary['col_1'] %}
-{{ log(actual_dictionary['col_1'] | map('int',default=none) | list, info=True) }}
-{{ log(expected_dictionary['col_1'], info=True) }}
+{% if target.type == 'snowflake' %}
+
+{% if actual_dictionary['COL_1'] | map('int',default=none) | list != expected_dictionary['col_1'] %}
  {# select > 0 rows for test to fail  #}
     select 1
 
-{% elif actual_dictionary['col_2'] | list != expected_dictionary['col_2']%}
-{{ log(actual_dictionary['col_2'] | list, info=True) }}
-{{ log(expected_dictionary['col_2'], info=True) }}
+{% elif actual_dictionary['COL_2'] | list != expected_dictionary['col_2']%}
  {# select > 0 rows for test to fail  #}
     select 1
 
-{% elif actual_dictionary['col_3'] | map('int',default=none) | list != expected_dictionary['col_3'] %}
-{{ log(actual_dictionary['col_3'] | map('int',default=none) | list, info=True) }}
-{{ log(expected_dictionary['col_3'], info=True) }}
+{% elif actual_dictionary['COL_3'] | map('int',default=none) | list != expected_dictionary['col_3'] %}
  {# select > 0 rows for test to fail  #}
     select 1
 
 {% else %}
  {# select 0 rows for test to pass  #}
     select 1 limit 0
+
+{% endif %}
+
+{% else %}
+
+{% if actual_dictionary['col_1'] | map('int',default=none) | list != expected_dictionary['col_1'] %}
+ {# select > 0 rows for test to fail  #}
+    select 1
+
+{% elif actual_dictionary['col_2'] | list != expected_dictionary['col_2']%}
+ {# select > 0 rows for test to fail  #}
+    select 1
+
+{% elif actual_dictionary['col_3'] | map('int',default=none) | list != expected_dictionary['col_3'] %}
+ {# select > 0 rows for test to fail  #}
+    select 1
+
+{% else %}
+ {# select 0 rows for test to pass  #}
+    select 1 limit 0
+
+{% endif %}
 
 {% endif %}

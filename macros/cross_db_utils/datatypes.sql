@@ -79,3 +79,30 @@
 {% macro bigquery__type_int() %}
     int64
 {% endmacro %}
+
+{# datetime  -------------------------------------------------     #}
+
+{%- macro type_datetime() -%}
+  {{ adapter_macro('dbt_utils.type_datetime') }}
+{%- endmacro -%}
+
+{%- macro default__type_datetime() -%}
+    datetime
+{%- endmacro -%}
+
+{%- macro bigquery__type_datetime() -%}
+    datetime
+{%- endmacro -%}
+
+{%- macro redshift__type_datetime() -%}
+    datetime
+{%- endmacro -%}
+
+{%- macro postgres__type_datetime() -%}
+    datetime
+{%- endmacro -%}
+
+{%- macro snowflake__type_datetime() -%}
+    datetime
+{%- endmacro -%}
+

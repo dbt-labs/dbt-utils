@@ -20,7 +20,7 @@
  {# select > 0 rows for test to fail  #}
     select 1
 
-{% elif actual_dictionary['COL_3'] | map('int',default=none) | list != expected_dictionary['col_3'] %}
+{% elif actual_dictionary['COL_3'] | map('float',default=none) | list != expected_dictionary['col_3'] %}
  {# select > 0 rows for test to fail  #}
     select 1
 
@@ -40,7 +40,7 @@
  {# select > 0 rows for test to fail  #}
     select 1
 
-{% elif actual_dictionary['col_3'] | map('int',default=none) | list != expected_dictionary['col_3'] %}
+{% elif actual_dictionary['col_3'] | map('float',default=none) | list != expected_dictionary['col_3'] %}
  {# select > 0 rows for test to fail  #}
     select 1
 

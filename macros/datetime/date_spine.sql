@@ -60,7 +60,7 @@ filtered as (
 
     select *
     from all_periods
-    where date_{{datepart}} <= {{ dbt_utils.safe_cast(end_date, dbt_utils.datatypes.datetime()) }}
+    where date_{{datepart}} <= {{ dbt_utils.safe_cast(end_date, dbt_utils.type_datetime()) }}
 
 )
 

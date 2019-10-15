@@ -19,36 +19,45 @@ with calc as (
         lead({{ lower_bound_column }}) over (
             {{ partition_clause }}
             order by {{ lower_bound_column }}
-        ) as next_lower_bound
+        ) as next_lower_bound,
+
+        row_number() over (
+            {{ partition_clause }}
+            order by {{ lower_bound_column }}
+        ) = 1 as is_first_record,
+
+        row_number() over (
+            {{ partition_clause }}
+            order by {{ lower_bound_column }} desc
+        ) = 1 as is_last_record
 
     from {{ model }}
 
 ),
 
 validation_errors as (
-    -- we want to return records where our assumptions are NOT true, so we'll use
-    -- the `not` function here so we can write our assumptions nore cleanly
+    -- We want to return records where one of our assumptions fails, so we'll use
+    -- the `not` function with `and` statements so we can write our assumptions nore cleanly
     select * from calc
-    where (
-        -- lower_bound should always be before upper_bound
-        not(lower_bound < upper_bound)
+    where not(
+        -- For each record: lower_bound should be < upper_bound.
+        (lower_bound < upper_bound)
 
-        -- upper_bound should always be before/the same as the next lower_bound
-        -- (coalesce it to handle null cases for the last record)
-        or not(
-            coalesce(
-                upper_bound {{ allow_gaps_operator }} next_lower_bound,
-                true
-            )
+        -- For each record: upper_bound <= the next lower_bound.
+        -- Coalesce it to handle null cases for the last record.
+        and coalesce(
+            upper_bound {{ allow_gaps_operator }} next_lower_bound,
+            is_last_record,
+            false
         )
 
-        -- lower_bound should always be the after/the same as the previous upper_bound
-        -- (coalesce it to handle null cases for the first record
-        or not(
-            coalesce(
-                previous_upper_bound {{ allow_gaps_operator }} lower_bound,
-                true
-            )
+        -- For each record: lower_bound >= previous_upper_bound.
+        -- Switch the order of this statement to use the same operator.
+        -- Coalesce it to handle null cases for the first record
+        and coalesce(
+            previous_upper_bound {{ allow_gaps_operator }} lower_bound,
+            is_first_record,
+            false
         )
     )
 )

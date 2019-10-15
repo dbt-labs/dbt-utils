@@ -231,7 +231,7 @@ models:
 
 ```
 
-#### mutually_exclusive_ranges ([source](macros/schema_tests/test_mutually_exclusive_ranges.sql))
+#### mutually_exclusive_ranges ([source](macros/schema_tests/mutually_exclusive_ranges.sql))
 This test confirms that for a given lower_bound_column and upper_bound_column,
 the ranges of between the lower and upper bounds do not overlap with the ranges
 of another row.

@@ -247,7 +247,7 @@ models:
       - dbt_utils.mutually_exclusive_ranges:
           lower_bound_column: min_age
           upper_bound_column: max_age
-          collectively_exhaustive: true
+          allow_gaps: false
 
   # test that each customer can only have one subscription at a time
   - name: subcriptions
@@ -256,7 +256,7 @@ models:
           lower_bound_column: started_at
           upper_bound_column: ended_at
           partition_by: customer_id
-          collectively_exhaustive: false
+          allow_gaps: true
 ```
 **Args:**
 * `lower_bound_column` (required): The name of the column that is the lower value
@@ -264,15 +264,7 @@ models:
 * `partition_by` (optional): If a subset of records should be mutually exclusive
 (e.g. all periods for a single subscription_id are mutually exclusive), use this
 argument to indicate which column to partition by. `default=none`
-* `collectively_exhaustive` (optional): True if the upper bound of one row should
-be the lower bound of the next row. `default=false`
-
-**Understanding `collectively_exhaustive`:**
-Take the example of subscriptions, where a customer can only have one subscription
-at a time. This customer may have periods where they _do not_ have any active
-subscription, in which case the ranges would not overlap, but they might.
-Setting `collectively_exhaustive=false` means that the test will pass whether
-the ranges are collectively exhaustive or not (i.e. there are gaps).
+* `allow_gaps` (optional): Whether there can be gaps between each range. `default=true`
 
 ---
 ### SQL helpers

@@ -1,7 +1,7 @@
-{% macro test_mutually_exclusive_ranges(model, lower_bound_column, upper_bound_column, partition_by=None, collectively_exhaustive=False) %}
+{% macro test_mutually_exclusive_ranges(model, lower_bound_column, upper_bound_column, partition_by=None, allow_gaps=True) %}
 
 {% set partition_clause="partition by " ~ partition_by if partition_by else '' %}
-{% set collectively_exhaustive_operator='=' if collectively_exhaustive else '<=' %}
+{% set allow_gaps_operator='<=' if allow_gaps else '=' %}
 with calc as (
 
     select
@@ -37,7 +37,7 @@ validation_errors as (
         -- (coalesce it to handle null cases for the last record)
         or not(
             coalesce(
-                upper_bound {{ collectively_exhaustive_operator }} next_lower_bound,
+                upper_bound {{ allow_gaps_operator }} next_lower_bound,
                 true
             )
         )
@@ -46,7 +46,7 @@ validation_errors as (
         -- (coalesce it to handle null cases for the first record
         or not(
             coalesce(
-                previous_upper_bound {{ collectively_exhaustive_operator }} lower_bound,
+                previous_upper_bound {{ allow_gaps_operator }} lower_bound,
                 true
             )
         )

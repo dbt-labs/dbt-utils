@@ -54,7 +54,7 @@ models:
     columns:
       - name: state
         tests:
-          - cardinality_equality:
+          - dbt_utils.cardinality_equality:
               field: state
               to: ref('test_cardinality_uniqueness_test_table_2')
               test_uniqueness: true

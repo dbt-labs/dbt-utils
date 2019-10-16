@@ -50,3 +50,12 @@ models:
               to: ref('data_test_relationships_where_table_1')
               field: id
               from_condition: id <> 4
+  - name: test_cardinality_uniqueness_test_table_1
+    columns:
+      - name: state
+        tests:
+          - cardinality_equality:
+              field: state
+              to: ref('test_cardinality_uniqueness_test_table_2')
+              test_uniqueness: true
+

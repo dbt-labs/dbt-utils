@@ -195,7 +195,7 @@ models:
 ```
 
 #### cardinality_equality ([source](macros/schema_tests/cardinality_equality.sql))
-This schema test asserts if values in a given column have exactly the same cardinality as values from a different column in a different model.
+This schema test asserts if values in a given column have exactly the same cardinality as values from a different column in a different model. An option to test that the two columns share unique values is provided via the test_uniqueness option.
 
 Usage:
 ```yaml
@@ -209,6 +209,7 @@ models:
           - dbt_utils.cardinality_equality:
               field: other_column_name
               to: ref('other_model_name')
+              test_uniqueness: false
 
 ```
 

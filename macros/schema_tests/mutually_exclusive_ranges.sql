@@ -40,8 +40,15 @@ validation_errors as (
     -- the `not` function with `and` statements so we can write our assumptions nore cleanly
     select * from calc
     where not(
+        -- ALL OF THE FOLLOWING SHOULD BE TRUE --
+
         -- For each record: lower_bound should be < upper_bound.
-        (lower_bound < upper_bound)
+        -- Coalesce it to return an error on the null case (implicit assumption
+        -- these columns are not_null)
+        coalesce(
+            lower_bound < upper_bound,
+            false
+        )
 
         -- For each record: upper_bound <= the next lower_bound.
         -- Coalesce it to handle null cases for the last record.

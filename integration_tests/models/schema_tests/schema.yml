@@ -62,6 +62,6 @@ models:
     tests:
       - dbt_utils.mutually_exclusive_ranges:
           lower_bound_column: valid_from
-          upper_bound_column: valid_to
+          upper_bound_column: coalesce(valid_to, '2099-01-01')
           partition_by: subscription_id
           allow_gaps: true

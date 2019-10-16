@@ -250,7 +250,7 @@ models:
           allow_gaps: false
 
   # test that each customer can only have one subscription at a time
-  - name: subcriptions
+  - name: subscriptions
     tests:
       - dbt_utils.mutually_exclusive_ranges:
           lower_bound_column: started_at
@@ -259,13 +259,30 @@ models:
           allow_gaps: true
 ```
 **Args:**
-* `lower_bound_column` (required): The name of the column that is the lower value
-* `upper_bound_column` (required): The name of the column that is the upper value
+* `lower_bound_column` (required): The name of the column that represents the
+lower value of the range. Must be not null.
+* `upper_bound_column` (required): The name of the column that represents the
+upper value of the range. Must be not null.
 * `partition_by` (optional): If a subset of records should be mutually exclusive
 (e.g. all periods for a single subscription_id are mutually exclusive), use this
 argument to indicate which column to partition by. `default=none`
 * `allow_gaps` (optional): Whether there can be gaps between each range. `default=true`
 
+**Note:** Both `lower_bound_column` and `upper_bound_column` should be not null.
+If this is not the case in your data source, consider passing a coalesce function
+to the `lower_` and `upper_bound_column` arguments, like so:
+```yaml
+version: 2
+
+models:
+- name: subscriptions
+  tests:
+    - dbt_utils.mutually_exclusive_ranges:
+        lower_bound_column: coalesce(started_at, '1900-01-01')
+        upper_bound_column: coalesce(ended_at, '2099-12-31')
+        partition_by: customer_id
+        allow_gaps: true
+```
 ---
 ### SQL helpers
 #### get_column_values ([source](macros/sql/get_column_values.sql))

@@ -50,3 +50,15 @@ models:
               to: ref('data_test_relationships_where_table_1')
               field: id
               from_condition: id <> 4
+
+  - name: data_test_numeric_constraints
+    columns:
+      - name: vat_pct
+        tests:
+          - dbt_utils.numeric_constraints:
+              gte: 0
+              ne: 0.5
+              lt: 1
+          - dbt_utils.numeric_constraints:
+              eq: 0
+              condition: "(status = 'done') and (type = 'international')"

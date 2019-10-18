@@ -1,0 +1,9 @@
+id,type,status,vat_pct
+1,national,done,0.19
+2,national,done,0.19
+3,national,done,0.07
+4,national,open,0.07
+5,international,done,0
+6,international,done,0
+7,international,done,0
+8,international,open,0.19

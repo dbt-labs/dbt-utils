@@ -455,7 +455,7 @@ This macro formats the input in a way that will print nicely to the command line
 ### log_info ([source](macros/logger/log_info.sql))
 This macro logs a formatted message (with a timestamp) to the command line.
 ```sql
-{{ log_info(dbt_utils.log_info("my pretty message")) }}
+{{ dbt_utils.log_info("my pretty message") }}
 ```
 
 ```

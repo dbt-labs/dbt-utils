@@ -452,7 +452,7 @@ This macro formats the input in a way that will print nicely to the command line
 
 {{ dbt_utils.pretty_log_format("my pretty message") }}
 ```
-### log_info ([source](macros/logger/log_info.sql))
+#### log_info ([source](macros/logger/log_info.sql))
 This macro logs a formatted message (with a timestamp) to the command line.
 ```sql
 {{ dbt_utils.log_info("my pretty message") }}

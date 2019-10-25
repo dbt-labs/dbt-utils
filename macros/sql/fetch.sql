@@ -1,7 +1,7 @@
 {% macro fetch(sql) %}
 {# This macro returns a dictionary of the form {column_name: (tuple_of_results)} #}
 
-    {%- call statement('get_sql_results', fetch_result=True) -%}
+    {%- call statement('get_sql_results', fetch_result=True,auto_begin=false) -%}
 
         {{sql}}
 

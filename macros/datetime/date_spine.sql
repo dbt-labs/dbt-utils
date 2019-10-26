@@ -17,7 +17,20 @@
 
 {%- endmacro %}
 
+{# private, don't call from anywhere else #}
+{%- macro date_spine__parse_end_date(end_date) -%}
+  {{ adapter_macro('dbt_utils.prep_end_date_', end_date) }}
+{%- endmacro -%}
 
+
+{%- macro default__date_spine__parse_end_date(end_date) -%}
+    {{ end_date }}
+{%- endmacro -%}
+
+
+{%- macro bigquery__date_spine__parse_end_date(end_date) -%}
+    {{ dbt_utils.safe_cast(end_date, dbt_utils.type_datetime()) }}
+{%- endmacro -%}
 
 
 {% macro date_spine(datepart, start_date, end_date) %}
@@ -60,7 +73,7 @@ filtered as (
 
     select *
     from all_periods
-    where date_{{datepart}} <= {{ dbt_utils.safe_cast(end_date, dbt_utils.type_datetime()) }}
+    where date_{{datepart}} <= {{ dbt_utils.prep_end_date_(end_date) }}
 
 )
 

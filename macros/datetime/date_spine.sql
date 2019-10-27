@@ -19,7 +19,7 @@
 
 {# private, don't call from anywhere else #}
 {%- macro date_spine__parse_end_date(end_date) -%}
-  {{ adapter_macro('dbt_utils.prep_end_date_', end_date) }}
+  {{ adapter_macro('dbt_utils.date_spine__parse_end_date', end_date) }}
 {%- endmacro -%}
 
 

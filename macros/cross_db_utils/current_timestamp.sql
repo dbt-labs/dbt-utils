@@ -3,7 +3,7 @@
 {% endmacro %}
 
 {% macro default__current_timestamp() %}
-    current_timestamp::{{dbt_utils.type_timestamp()}}
+    getdate()::{{dbt_utils.type_timestamp()}}
 {% endmacro %}
 
 {% macro bigquery__current_timestamp() %}

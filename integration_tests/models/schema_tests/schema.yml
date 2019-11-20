@@ -33,6 +33,15 @@ models:
       - dbt_utils.equal_rowcount:
           compare_model: ref('test_equal_rowcount')
 
+  - name: test_equal_column_subset
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_people')
+          compare_columns:
+            - first_name
+            - last_name
+            - email
+
   - name: data_people
     columns:
       - name: is_active

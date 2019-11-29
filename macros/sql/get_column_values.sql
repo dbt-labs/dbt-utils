@@ -1,5 +1,5 @@
 {#
-This macro get_sql_results_as_dictes the unique values for `column` in the table `table`
+This macro fetches the unique values for `column` in the table `table`
 
 Arguments:
     table: A model `ref`, or a schema.table string for the table to query (Required)

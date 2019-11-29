@@ -1,4 +1,4 @@
--- depends_on: {{ ref('data_fetch') }}
+-- depends_on: {{ ref('data_get_sql_results_as_dict') }}
 
 {% set expected_dictionary={
     'col_1': [1, 2, 3],
@@ -7,8 +7,8 @@
 } %}
 
 
-{% set actual_dictionary=dbt_utils.fetch(
-    "select * from " ~ ref('data_fetch')
+{% set actual_dictionary=dbt_utils.get_sql_results_as_dict(
+    "select * from " ~ ref('data_get_sql_results_as_dict')
 ) %}
 
 {#-

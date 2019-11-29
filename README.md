@@ -214,13 +214,22 @@ models:
 
 ---
 ### SQL helpers
-#### fetch ([source](macros/sql/fetch.sql))
-This macro returns a dictionary from a sql query.
+#### get_sql_results_as_dict ([source](macros/sql/get_sql_results_as_dict.sql))
+This macro returns a dictionary from a sql query, so that you don't need to interact with the Agate library to operate on teh reuslt
 
 Usage:
 ```
 -- Returns a dictionary of the users table where the state is California
-{% set california_users = dbt_utils.fetch("select * from" ~ ref('users') ~ "where state = 'CA' ") %}
+{% set california_cities = dbt_utils.get_sql_results_as_dict("select * from" ~ ref('cities') ~ "where state = 'CA' ") %}
+select
+  city,
+{% for city in california_cities %}
+  sum(case when city = {{ city }} then 1 else 0 end) as users_in_{{ city }},
+{% endfor %}
+  count(*) as total
+from {{ ref('users') }}
+
+group by 1
 ```
 
 #### get_column_values ([source](macros/sql/get_column_values.sql))

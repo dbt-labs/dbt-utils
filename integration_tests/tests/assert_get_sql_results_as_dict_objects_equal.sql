@@ -3,38 +3,79 @@
 {% set expected_dictionary={
     'col_1': [1, 2, 3],
     'col_2': ['a', 'b', 'c'],
-    'col_3': [4.1, 5.2, none]
+    'col_3': [True, False, none]
 } %}
+
+{#- Handle snowflake casing silliness -#}
+{% if target.type == 'snowflake' %}
+{% set expected_dictionary={
+    'COL_1': [1, 2, 3],
+    'COL_2': ['a', 'b', 'c'],
+    'COL_3': [True, False, none]
+} %}
+{% endif %}
 
 
 {% set actual_dictionary=dbt_utils.get_sql_results_as_dict(
     "select * from " ~ ref('data_get_sql_results_as_dict')
 ) %}
-
 {#-
-Cast the keys to lower case to handle snowflake silliness
+For reasons that remain unclear, Jinja won't return True for actual_dictionary == expected_dictionary.
+Instead, we'll manually check that the values of these dictionaries are equivalent.
 -#}
 
-{% set actual_dictionary_with_lower_keys={} %}
-{% for key, values in actual_dictionary.items() %}
-    {% do actual_dictionary_with_lower_keys.update({(key | lower): values}) %}
-{% endfor %}
+{% set ns = namespace(
+    pass=True,
+    err_msg = ""
+) %}
+{% if execute %}
+{#- Check that the dictionaries have the same keys -#}
+{% set expected_keys=expected_dictionary.keys() | list | sort %}
+{% set actual_keys=actual_dictionary.keys() | list | sort %}
 
-
-{% if actual_dictionary_with_lower_keys['col_1'] | map('int',default=none) | list != expected_dictionary['col_1'] %}
- {# select > 0 rows for test to fail  #}
-    select 'fail 1'
-
-{% elif actual_dictionary_with_lower_keys['col_2'] | list != expected_dictionary['col_2'] %}
- {# select > 0 rows for test to fail  #}
-    select 'fail 2'
-
-{% elif actual_dictionary_with_lower_keys['col_3'] | map('float',default=none) | list != expected_dictionary['col_3'] %}
- {# select > 0 rows for test to fail  #}
-    select 'fail 3'
+{% if expected_keys != actual_keys %}
+    {% set ns.pass=False %}
+    {% set ns.err_msg %}
+    The two dictionaries have different keys:
+      expected_dictionary has keys: {{ expected_keys }}
+      actual_dictionary has keys: {{ actual_keys }}
+    {% endset %}
 
 {% else %}
- {# select 0 rows for test to pass  #}
-    select 'pass' limit 0
 
+{% for key, value in expected_dictionary.items() %}
+    {% set expected_length=expected_dictionary[key] | length %}
+    {% set actual_length=actual_dictionary[key] | length %}
+
+    {% if expected_length != actual_length %}
+        {% set ns.pass=False %}
+        {% set ns.err_msg %}
+    The {{ key }} column has different lengths:
+      expected_dictionary[{{ key }}] has length {{ expected_length }}
+      actual_dictionary[{{ key }}] has length {{ actual_length }}
+        {% endset %}
+
+    {% else %}
+
+        {% for i in range(value | length) %}
+            {% set expected_value=expected_dictionary[key][i] %}
+            {% set actual_value=actual_dictionary[key][i] %}
+            {% if expected_value != actual_value %}
+                {% set ns.pass=False %}
+                {% set ns.err_msg %}
+    The {{ key }} column has differing values:
+      expected_dictionary[{{ key }}][{{ i }}] == {{ expected_value }}
+      actual_dictionary[{{ key }}][{{ i }}] == {{ actual_value }}
+                {% endset %}
+
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+{% endfor %}
+
+{% endif %}
+
+{{ log(ns.err_msg, info=True) }}
+select 1 {% if ns.pass %} limit 0 {% endif %}
 {% endif %}

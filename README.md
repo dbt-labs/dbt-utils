@@ -220,7 +220,7 @@ This macro returns a dictionary from a sql query, so that you don't need to inte
 Usage:
 ```
 -- Returns a dictionary of the users table where the state is California
-{% set california_cities = dbt_utils.get_sql_results_as_dict("select * from" ~ ref('cities') ~ "where state = 'CA' ") %}
+{% set california_cities = dbt_utils.get_sql_results_as_dict("select * from" ~ ref('cities') ~ "where state = 'CA' and city is not null ") %}
 select
   city,
 {% for city in california_cities %}

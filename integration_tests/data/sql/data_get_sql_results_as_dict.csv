@@ -1,4 +1,4 @@
 col_1,col_2,col_3
-1,a,4.1
-2,b,5.2
+1,a,True
+2,b,False
 3,c,

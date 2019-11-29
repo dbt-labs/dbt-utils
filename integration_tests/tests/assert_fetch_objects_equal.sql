@@ -3,51 +3,38 @@
 {% set expected_dictionary={
     'col_1': [1, 2, 3],
     'col_2': ['a', 'b', 'c'],
-    'col_3': [4.0, 5.0, none]
+    'col_3': [4.1, 5.2, none]
 } %}
+
 
 {% set actual_dictionary=dbt_utils.fetch(
     "select * from " ~ ref('data_fetch')
 ) %}
 
-{% if target.type == 'snowflake' %}
+{#-
+Cast the keys to lower case to handle snowflake silliness
+-#}
 
-{% if actual_dictionary['COL_1'] | map('int',default=none) | list != expected_dictionary['col_1'] %}
- {# select > 0 rows for test to fail  #}
-    select 1
+{% set actual_dictionary_with_lower_keys={} %}
+{% for key, values in actual_dictionary.items() %}
+    {% do actual_dictionary_with_lower_keys.update({(key | lower): values}) %}
+{% endfor %}
 
-{% elif actual_dictionary['COL_2'] | list != expected_dictionary['col_2']%}
- {# select > 0 rows for test to fail  #}
-    select 1
 
-{% elif actual_dictionary['COL_3'] | map('float',default=none) | list != expected_dictionary['col_3'] %}
+{% if actual_dictionary_with_lower_keys['col_1'] | map('int',default=none) | list != expected_dictionary['col_1'] %}
  {# select > 0 rows for test to fail  #}
-    select 1
+    select 'fail 1'
+
+{% elif actual_dictionary_with_lower_keys['col_2'] | list != expected_dictionary['col_2'] %}
+ {# select > 0 rows for test to fail  #}
+    select 'fail 2'
+
+{% elif actual_dictionary_with_lower_keys['col_3'] | map('float',default=none) | list != expected_dictionary['col_3'] %}
+ {# select > 0 rows for test to fail  #}
+    select 'fail 3'
 
 {% else %}
  {# select 0 rows for test to pass  #}
-    select 1 limit 0
-
-{% endif %}
-
-{% else %}
-
-{% if actual_dictionary['col_1'] | map('int',default=none) | list != expected_dictionary['col_1'] %}
- {# select > 0 rows for test to fail  #}
-    select 1
-
-{% elif actual_dictionary['col_2'] | list != expected_dictionary['col_2']%}
- {# select > 0 rows for test to fail  #}
-    select 1
-
-{% elif actual_dictionary['col_3']  | list != expected_dictionary['col_3'] %}
- {# select > 0 rows for test to fail  #}
-    select 1
-
-{% else %}
- {# select 0 rows for test to pass  #}
-    select 1 limit 0
-
-{% endif %}
+    select 'pass' limit 0
 
 {% endif %}

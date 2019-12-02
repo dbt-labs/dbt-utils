@@ -1,4 +1,4 @@
--- depends_on: {{ ref('data_get_sql_results_as_dict') }}
+-- depends_on: {{ ref('data_get_query_results_as_dict') }}
 
 {% set expected_dictionary={
     'col_1': [1, 2, 3],
@@ -16,8 +16,8 @@
 {% endif %}
 
 
-{% set actual_dictionary=dbt_utils.get_sql_results_as_dict(
-    "select * from " ~ ref('data_get_sql_results_as_dict')
+{% set actual_dictionary=dbt_utils.get_query_results_as_dict(
+    "select * from " ~ ref('data_get_query_results_as_dict')
 ) %}
 {#-
 For reasons that remain unclear, Jinja won't return True for actual_dictionary == expected_dictionary.

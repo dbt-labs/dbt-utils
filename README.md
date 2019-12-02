@@ -214,13 +214,13 @@ models:
 
 ---
 ### SQL helpers
-#### get_sql_results_as_dict ([source](macros/sql/get_sql_results_as_dict.sql))
+#### get_query_results_as_dict ([source](macros/sql/get_query_results_as_dict.sql))
 This macro returns a dictionary from a sql query, so that you don't need to interact with the Agate library to operate on teh reuslt
 
 Usage:
 ```
 -- Returns a dictionary of the users table where the state is California
-{% set california_cities = dbt_utils.get_sql_results_as_dict("select * from" ~ ref('cities') ~ "where state = 'CA' and city is not null ") %}
+{% set california_cities = dbt_utils.get_query_results_as_dict("select * from" ~ ref('cities') ~ "where state = 'CA' and city is not null ") %}
 select
   city,
 {% for city in california_cities %}

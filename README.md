@@ -310,6 +310,30 @@ the lower bound of the next record (common for date ranges).
 | 0           | 1           |
 | 2           | 3           |
 | 4           | 5           |
+
+#### unique_combination_of_columns ([source](macros/schema_tests/unique_combination_of_columns.sql))
+This test confirms that the combination of columns is unique. For example, the
+combination of month and product is unique, however neither column is unique
+in isolation.
+
+We generally recommend testing this uniqueness condition by either:
+* generating a [surrogate_key](#surrogate_key-source) for your model and testing
+the uniqueness of said key, OR
+* passing the `unique` test a coalesce of the columns (as discussed [here](https://docs.getdbt.com/docs/testing#section-testing-expressions)).
+
+However, these approaches can become non-perfomant on large data sets, in which
+case we recommend using this test instead.
+
+**Usage:**
+```yaml
+- name: revenue_by_product_by_month
+  tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - month
+          - product
+```
+
 ---
 ### SQL helpers
 #### get_query_results_as_dict ([source](macros/sql/get_query_results_as_dict.sql))

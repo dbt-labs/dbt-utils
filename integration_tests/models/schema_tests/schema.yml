@@ -71,3 +71,10 @@ models:
           upper_bound_column: coalesce(valid_to, '2099-01-01')
           partition_by: subscription_id
           gaps: required
+
+  - name: data_unique_combination_of_columns
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - month
+            - product

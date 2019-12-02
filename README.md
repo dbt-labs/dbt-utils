@@ -312,6 +312,24 @@ the lower bound of the next record (common for date ranges).
 | 4           | 5           |
 ---
 ### SQL helpers
+#### get_query_results_as_dict ([source](macros/sql/get_query_results_as_dict.sql))
+This macro returns a dictionary from a sql query, so that you don't need to interact with the Agate library to operate on teh reuslt
+
+Usage:
+```
+-- Returns a dictionary of the users table where the state is California
+{% set california_cities = dbt_utils.get_query_results_as_dict("select * from" ~ ref('cities') ~ "where state = 'CA' and city is not null ") %}
+select
+  city,
+{% for city in california_cities %}
+  sum(case when city = {{ city }} then 1 else 0 end) as users_in_{{ city }},
+{% endfor %}
+  count(*) as total
+from {{ ref('users') }}
+
+group by 1
+```
+
 #### get_column_values ([source](macros/sql/get_column_values.sql))
 This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/api-variable#section-relation).
 It takes an options `default` argument for compiling when the relation does not already exist.

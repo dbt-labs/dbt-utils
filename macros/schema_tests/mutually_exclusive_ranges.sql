@@ -1,7 +1,20 @@
-{% macro test_mutually_exclusive_ranges(model, lower_bound_column, upper_bound_column, partition_by=None, allow_gaps=True) %}
+{% macro test_mutually_exclusive_ranges(model, lower_bound_column, upper_bound_column, partition_by=None, gaps='allowed') %}
+
+{% if gaps == 'not_allowed' %}
+    {% set allow_gaps_operator='=' %}
+{% elif gaps == 'allowed' %}
+    {% set allow_gaps_operator='<=' %}
+{% elif gaps == 'required' %}
+    {% set allow_gaps_operator='<' %}
+{% else %}
+    {{ exceptions.raise_compiler_error(
+        "`gaps` argument for mutually_exclusive_ranges test must be one of ['not_allowed', 'allowed', 'required'] Got: '" ~ gaps ~"'.'"
+    ) }}
+
+{% endif %}
 
 {% set partition_clause="partition by " ~ partition_by if partition_by else '' %}
-{% set allow_gaps_operator='<=' if allow_gaps else '=' %}
+
 with calc as (
 
     select

@@ -213,7 +213,7 @@ models:
 ```
 
 #### relationships_where ([source](macros/schema_tests/relationships_where.sql))
-This test validates the referential integrity between two tables (same as the core relationships schema test) with an added predicate to filter out some rows from the test. This is useful to exclude records such as test entities, rows created in the last X minutes/hours to account for temporary gaps due to ETL limitations, etc.
+This test validates the referential integrity between two relations (same as the core relationships schema test) with an added predicate to filter out some rows from the test. This is useful to exclude records such as test entities, rows created in the last X minutes/hours to account for temporary gaps due to ETL limitations, etc.
 
 Usage:
 ```yaml
@@ -345,23 +345,32 @@ Usage:
 
 ...
 ```
+#### get_relations_by_prefix
+> This replaces the `get_tables_by_prefix` macro. Note that the `get_tables_by_prefix` macro will
+be deprecated in a future release of this package.
 
-#### get_tables_by_prefix ([source](macros/sql/get_tables_by_prefix.sql))
-This macro returns a list of tables that match a given prefix, with an optional
-exclusion pattern. It's particularly handy paired with `union_tables`.
-
-Usage:
+Returns a list of [Relations](https://docs.getdbt.com/docs/api-variable#section-relation)
+that match a given prefix, with an optional exclusion pattern. It's particularly
+handy paired with `union_relations`.
+**Usage:**
 ```
--- Returns a list of tables that match schema.prefix%
-{% set tables = dbt_utils.get_tables_by_prefix('schema', 'prefix') %}
+-- Returns a list of relations that match schema.prefix%
+{% set relations = dbt_utils.get_relations_by_prefix('my_schema', 'my_prefix') %}
 
--- Returns a list of tables as above, excluding any with underscores
-{% set tables = dbt_utils.get_tables_by_prefix('schema', 'prefix', '%_%') %}
+-- Returns a list of relations as above, excluding any with underscores
+{% set relations = dbt_utils.get_relations_by_prefix('my_schema', 'my_prefix', '%_%') %}
 
--- Example using the union_tables macro
-{% set event_tables = dbt_utils.get_tables_by_prefix('events', 'event_') %}
-{{ dbt_utils.union_tables(tables = event_tables) }}
+-- Example using the union_relations macro
+{% set event_relations = dbt_utils.get_relations_by_prefix('events', 'event_') %}
+{{ dbt_utils.union_relations(relations = union_relations) }}
 ```
+
+**Args:**
+* `schema` (required): The schema to inspect for relations.
+* `prefix` (required): The prefix of the table/view (case insensitive)
+* `exclude` (optional): Exclude any relations that match this pattern.
+* `database` (optional, default = `target.database`): The database to inspect
+for relations.
 
 #### group_by ([source](macros/sql/groupby.sql))
 This macro build a group by statement for fields 1...N
@@ -381,18 +390,33 @@ select
 from {{ref('my_model')}}
 ```
 
-#### union_tables ([source](macros/sql/union.sql))
-This macro implements an "outer union." The list of relations provided to this macro will be unioned together, and any columns exclusive to a subset of these tables will be filled with `null` where not present. The `column_override` argument is used to explicitly assign the column type for a set of columns. The `source_column_name` argument is used to change the name of the`_dbt_source_table` field.
+#### union_relations ([source](macros/sql/union.sql))
+> This replaces the `union_tables` macro. Note that the `union_tables` macro will
+be deprecated in a future release of this package.
 
-Usage:
+This macro unions together an array of [Relations](https://docs.getdbt.com/docs/api-variable#section-relation),
+even when columns have differing orders in each Relation, and/or some columns are
+missing from some relations. Any columns exclusive to a subset of these
+relations will be filled with `null` where not present. An new column
+(`_dbt_source_relation`) is also added to indicate the source for each record.
+
+**Usage:**
 ```
-{{ dbt_utils.union_tables(
-    tables=[ref('table_1'), ref('table_2')],
-    column_override={"some_field": "varchar(100)"},
-    exclude=["some_other_field"],
-    source_column_name='custom_source_column_name'
+{{ dbt_utils.union_relations(
+    relations=[ref('my_model'), source('my_source', 'my_table')],
+    exclude=["_loaded_at"]
 ) }}
 ```
+**Args:**
+* `relations` (required): An array of [Relations](https://docs.getdbt.com/docs/api-variable#section-relation).
+* `exclude` (optional): A list of column names that should be excluded from
+the final query.
+* `include` (optional): A list of column names that should be included in the
+final query. Note that you cannot provide both a whitelist and a blacklist.
+* `column_override` (optional): A dictionary of explicit column type overrides,
+e.g. `{"some_field": "varchar(100)"}`.``
+* `source_column_name` (optional, `default="_dbt_source_relation"`): The name of
+the column that records the source of this row.
 
 #### generate_series ([source](macros/sql/generate_series.sql))
 This macro implements a cross-database mechanism to generate an arbitrarily long list of numbers. Specify the maximum number you'd like in your list and it will create a 1-indexed SQL result set.
@@ -464,7 +488,7 @@ This macro "un-pivots" a table from wide format to long format. Functionality is
 Usage:
 ```
 {{ dbt_utils.unpivot(
-  table=ref('table_name'),
+  relation=ref('table_name'),
   cast_to='datatype',
   exclude=[<list of columns to exclude from unpivot>],
   remove=[<list of columns to remove>],
@@ -473,7 +497,7 @@ Usage:
 ) }}
 ```
 
-Example:
+**Usage:**
 
     Input: orders
 
@@ -493,14 +517,13 @@ Example:
     | 2017-03-01 | processing | size       | S     |
     | 2017-03-01 | processing | color      | red   |
 
-Arguments:
-
-    - table: Table name, required
-    - cast_to: The data type to cast the unpivoted values to, default is varchar
-    - exclude: A list of columns to exclude from the unpivot operation but keep in the resulting table.
-    - remove: A list of columns to remove from the resulting table.
-    - field_name: column name in the resulting table for field
-    - value_name: column name in the resulting table for value
+**Args**:
+- `relation`: The [Relation](https://docs.getdbt.com/docs/api-variable#section-relation) to unpivot.
+- `cast_to`: The data type to cast the unpivoted values to, default is varchar
+- `exclude`: A list of columns to exclude from the unpivot operation but keep in the resulting table.
+- `remove`: A list of columns to remove from the resulting table.
+- `field_name`: column name in the resulting table for field
+- `value_name`: column name in the resulting table for value
 
 ---
 ### Web

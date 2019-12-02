@@ -1,4 +1,4 @@
-{% macro union_tables(tables, column_override=none, include=[], exclude=[], source_column_name=none) -%}
+{% macro union_relations(relations, column_override=none, include=[], exclude=[], source_column_name=none) -%}
 
     {%- if exclude and include -%}
         {{ exceptions.raise_compiler_error("Both an exclude and include list were provided to the `union` macro. Only one is allowed") }}
@@ -12,15 +12,15 @@
     {%- set column_override = column_override if column_override is not none else {} %}
     {%- set source_column_name = source_column_name if source_column_name is not none else '_dbt_source_relation' %}
 
-    {%- set table_columns = {} %}
+    {%- set relation_columns = {} %}
     {%- set column_superset = {} %}
 
-    {%- for table in tables -%}
+    {%- for relation in relations -%}
 
-        {%- do table_columns.update({table: []}) %}
+        {%- do relation_columns.update({relation: []}) %}
 
-        {%- do dbt_utils._is_relation(table, 'union_tables') -%}
-        {%- set cols = adapter.get_columns_in_relation(table) %}
+        {%- do dbt_utils._is_relation(relation, 'union_relations') -%}
+        {%- set cols = adapter.get_columns_in_relation(relation) %}
         {%- for col in cols -%}
 
         {#- If an exclude list was provided and the column is in the list, do nothing #}
@@ -32,8 +32,8 @@
         {#- Otherwise add the column to the column superset #}
         {% else %}
 
-            {# update the list of columns in this table #}
-            {%- do table_columns[table].append(col.column) %}
+            {# update the list of columns in this relation #}
+            {%- do relation_columns[relation].append(col.column) %}
 
             {%- if col.column in column_superset -%}
 
@@ -57,22 +57,22 @@
 
     {%- set ordered_column_names = column_superset.keys() %}
 
-    {%- for table in tables -%}
+    {%- for relation in relations -%}
 
         (
             select
 
-                cast({{ dbt_utils.string_literal(table) }} as {{ dbt_utils.type_string() }}) as {{ source_column_name }},
+                cast({{ dbt_utils.string_literal(relation) }} as {{ dbt_utils.type_string() }}) as {{ source_column_name }},
 
                 {% for col_name in ordered_column_names -%}
 
                     {%- set col = column_superset[col_name] %}
                     {%- set col_type = column_override.get(col.column, col.data_type) %}
-                    {%- set col_name = adapter.quote(col_name) if col_name in table_columns[table] else 'null' %}
+                    {%- set col_name = adapter.quote(col_name) if col_name in relation_columns[relation] else 'null' %}
                     cast({{ col_name }} as {{ col_type }}) as {{ col.quoted }} {% if not loop.last %},{% endif %}
                 {%- endfor %}
 
-            from {{ table }}
+            from {{ relation }}
         )
 
         {% if not loop.last %} union all {% endif %}
@@ -80,3 +80,14 @@
     {%- endfor %}
 
 {%- endmacro %}
+
+{% macro union_tables(tables, column_override=none, include=[], exclude=[], source_column_name=none) -%}
+
+    {% if execute %}
+        {{ log("Warning: the `union_tables` macro is no longer supported and will be deprecated in a future release of dbt-utils. Use the `union_relations` macro instead", info=True) }}
+    {% endif %}
+
+
+    {{ return(dbt_utils.union_relations(tables, column_override, include, exclude, source_column_name='_dbt_source_table')) }}
+
+{% endmacro %}

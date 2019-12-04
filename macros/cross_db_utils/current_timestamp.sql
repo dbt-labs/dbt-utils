@@ -6,6 +6,10 @@
     current_timestamp::{{dbt_utils.type_timestamp()}}
 {% endmacro %}
 
+{% macro redshift__current_timestamp() %}
+    getdate()
+{% endmacro %}
+
 {% macro bigquery__current_timestamp() %}
     current_timestamp
 {% endmacro %}

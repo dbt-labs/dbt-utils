@@ -18,6 +18,7 @@ clean-targets:         # directories to be removed by `dbt clean`
     - "dbt_modules"
 
 seeds:
+
   quote_columns: false
   dbt_utils_integration_tests:
     enabled: true
@@ -39,3 +40,9 @@ seeds:
           first_date: timestamp
           second_date: timestamp
 
+
+      data_width_bucket:
+          column_types:
+            num_buckets: integer
+            min_value: float
+            max_value: float

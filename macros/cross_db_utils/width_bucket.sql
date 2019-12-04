@@ -11,10 +11,10 @@
     (
         -- to break ties when the amount is eaxtly at the bucket egde
         case
-            when 
+            when
                 mod(
-                    {{ dbt_utils.safe_cast(expr, 'decimal(28,6)') }},
-                    {{ dbt_utils.safe_cast(bin_size, 'decimal(28,6)') }}
+                    {{ dbt_utils.safe_cast(expr, dbt_utils.type_numeric() ) }},
+                    {{ dbt_utils.safe_cast(bin_size, dbt_utils.type_numeric() ) }}
                 ) = 0
             then 1
             else 0
@@ -35,11 +35,11 @@
     (( {{ max_value }} - {{ min_value }} ) / {{ num_buckets }} )
     {%- endset %}
     (
-        -- to break ties when the amount is eaxtly at the bucket egde
+        -- to break ties when the amount is exactly at the bucket edge
         case
-            when 
-                {{ dbt_utils.safe_cast(expr, 'decimal(28,6)') }} %
-                {{ dbt_utils.safe_cast(bin_size, 'decimal(28,6)') }}
+            when
+                {{ dbt_utils.safe_cast(expr, dbt_utils.type_numeric() ) }} %
+                {{ dbt_utils.safe_cast(bin_size, dbt_utils.type_numeric() ) }}
                  = 0
             then 1
             else 0

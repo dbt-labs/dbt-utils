@@ -51,6 +51,20 @@
     float64
 {% endmacro %}
 
+{# numeric  ------------------------------------------------     #}
+
+{% macro type_numeric() %}
+  {{ adapter_macro('dbt_utils.type_numeric') }}
+{% endmacro %}
+
+{% macro default__type_numeric() %}
+    numeric(28, 6)
+{% endmacro %}
+
+{% macro bigquery__type_numeric() %}
+    numeric
+{% endmacro %}
+
 
 {# bigint  -------------------------------------------------     #}
 

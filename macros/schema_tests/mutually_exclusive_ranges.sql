@@ -24,20 +24,10 @@ with calc as (
         {{ lower_bound_column }} as lower_bound,
         {{ upper_bound_column }} as upper_bound,
 
-        lag({{ upper_bound_column }}) over (
-            {{ partition_clause }}
-            order by {{ lower_bound_column }}
-        ) as previous_upper_bound,
-
         lead({{ lower_bound_column }}) over (
             {{ partition_clause }}
             order by {{ lower_bound_column }}
         ) as next_lower_bound,
-
-        row_number() over (
-            {{ partition_clause }}
-            order by {{ lower_bound_column }}
-        ) = 1 as is_first_record,
 
         row_number() over (
             {{ partition_clause }}
@@ -68,15 +58,6 @@ validation_errors as (
         and coalesce(
             upper_bound {{ allow_gaps_operator }} next_lower_bound,
             is_last_record,
-            false
-        )
-
-        -- For each record: lower_bound >= previous_upper_bound.
-        -- Switch the order of this statement to use the same operator.
-        -- Coalesce it to handle null cases for the first record
-        and coalesce(
-            previous_upper_bound {{ allow_gaps_operator }} lower_bound,
-            is_first_record,
             false
         )
     )

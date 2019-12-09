@@ -2,10 +2,13 @@
 
 {% if gaps == 'not_allowed' %}
     {% set allow_gaps_operator='=' %}
+    {% set allow_gaps_operator_in_words='equal_to' %}
 {% elif gaps == 'allowed' %}
     {% set allow_gaps_operator='<=' %}
+    {% set allow_gaps_operator_in_words='less_than_or_equal_to' %}
 {% elif gaps == 'required' %}
     {% set allow_gaps_operator='<' %}
+    {% set allow_gaps_operator_in_words='less_than' %}
 {% else %}
     {{ exceptions.raise_compiler_error(
         "`gaps` argument for mutually_exclusive_ranges test must be one of ['not_allowed', 'allowed', 'required'] Got: '" ~ gaps ~"'.'"
@@ -15,7 +18,7 @@
 
 {% set partition_clause="partition by " ~ partition_by if partition_by else '' %}
 
-with calc as (
+with window_functions as (
 
     select
         {% if partition_by %}
@@ -38,12 +41,11 @@ with calc as (
 
 ),
 
-validation_errors as (
+calc as (
     -- We want to return records where one of our assumptions fails, so we'll use
     -- the `not` function with `and` statements so we can write our assumptions nore cleanly
-    select * from calc
-    where not(
-        -- ALL OF THE FOLLOWING SHOULD BE TRUE --
+    select
+        *,
 
         -- For each record: lower_bound should be < upper_bound.
         -- Coalesce it to return an error on the null case (implicit assumption
@@ -51,15 +53,30 @@ validation_errors as (
         coalesce(
             lower_bound < upper_bound,
             false
-        )
+        ) as lower_bound_less_than_upper_bound,
 
-        -- For each record: upper_bound <= the next lower_bound.
+        -- For each record: upper_bound {{ allow_gaps_operator }} the next lower_bound.
         -- Coalesce it to handle null cases for the last record.
-        and coalesce(
+        coalesce(
             upper_bound {{ allow_gaps_operator }} next_lower_bound,
             is_last_record,
             false
-        )
+        ) as upper_bound_{{ allow_gaps_operator_in_words }}_next_lower_bound
+
+    from window_functions
+
+),
+
+validation_errors as (
+
+    select
+        *
+    from calc
+
+    where not(
+        -- THE FOLLOWING SHOULD BE TRUE --
+        lower_bound_less_than_upper_bound
+        and upper_bound_{{ allow_gaps_operator_in_words }}_next_lower_bound
     )
 )
 

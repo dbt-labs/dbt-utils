@@ -64,7 +64,7 @@ This macro is modeled after the `width_bucket` function natively available in Sn
 
 From the original Snowflake [documentation](https://docs.snowflake.net/manuals/sql-reference/functions/width_bucket.html):
 
-Constructs equi-width histograms, in which the histogram range is divided into intervals of identical size, and returns the bucket number into which the value of an expression falls, after it has been evaluated. The function returns an integer value or null (if any input is null). 
+Constructs equi-width histograms, in which the histogram range is divided into intervals of identical size, and returns the bucket number into which the value of an expression falls, after it has been evaluated. The function returns an integer value or null (if any input is null).
 Notes:
 
 - `expr`
@@ -75,9 +75,9 @@ Notes:
 
 - `num_buckets`
   The desired number of buckets; must be a positive integer value. A value from the expression is assigned to each bucket, and the function then returns the corresponding bucket number.
-  
+
   When an expression falls outside the range, the function returns:
-    
+
     `0` if the expression is less than min_value.
 
     `num_buckets + 1` if the expression is greater than or equal to max_value.
@@ -322,6 +322,7 @@ models:
 Here are a number of examples for each allowed `gaps` parameter.
 * `gaps:not_allowed`: The upper bound of one record must be the lower bound of
 the next record.
+
 | lower_bound | upper_bound |
 |-------------|-------------|
 | 0           | 1           |
@@ -330,6 +331,7 @@ the next record.
 
 * `gaps:allowed` (default): There may be a gap between the upper bound of one
 record and the lower bound of the next record.
+
 | lower_bound | upper_bound |
 |-------------|-------------|
 | 0           | 1           |
@@ -338,6 +340,7 @@ record and the lower bound of the next record.
 
 * `gaps:required`: There must be a gap between the upper bound of one record and
 the lower bound of the next record (common for date ranges).
+
 | lower_bound | upper_bound |
 |-------------|-------------|
 | 0           | 1           |

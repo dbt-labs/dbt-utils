@@ -26,7 +26,7 @@
         {#- If an exclude list was provided and the column is in the list, do nothing #}
         {%- if exclude and col.column in exclude %}
 
-        {#- If an include list was procided and the column is not in the list, do nothing -#}
+        {#- If an include list was provided and the column is not in the list, do nothing -#}
         {%- elif include and col.column not in include %}
 
         {#- Otherwise add the column to the column superset #}

@@ -357,12 +357,12 @@ handy paired with `union_relations`.
 -- Returns a list of relations that match schema.prefix%
 {% set relations = dbt_utils.get_relations_by_prefix('my_schema', 'my_prefix') %}
 
--- Returns a list of relations as above, excluding any with underscores
-{% set relations = dbt_utils.get_relations_by_prefix('my_schema', 'my_prefix', '%_%') %}
+-- Returns a list of relations as above, excluding any that end in `_deprecated`
+{% set relations = dbt_utils.get_relations_by_prefix('my_schema', 'my_prefix', '%_deprecated') %}
 
 -- Example using the union_relations macro
 {% set event_relations = dbt_utils.get_relations_by_prefix('events', 'event_') %}
-{{ dbt_utils.union_relations(relations = union_relations) }}
+{{ dbt_utils.union_relations(relations = event_relations) }}
 ```
 
 **Args:**
@@ -412,7 +412,7 @@ relations will be filled with `null` where not present. An new column
 * `exclude` (optional): A list of column names that should be excluded from
 the final query.
 * `include` (optional): A list of column names that should be included in the
-final query. Note that you cannot provide both a whitelist and a blacklist.
+final query. Note the `include` and `exclude` parameters are mutually exclusive.
 * `column_override` (optional): A dictionary of explicit column type overrides,
 e.g. `{"some_field": "varchar(100)"}`.``
 * `source_column_name` (optional, `default="_dbt_source_relation"`): The name of

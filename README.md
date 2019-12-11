@@ -357,8 +357,8 @@ handy paired with `union_relations`.
 -- Returns a list of relations that match schema.prefix%
 {% set relations = dbt_utils.get_relations_by_prefix('my_schema', 'my_prefix') %}
 
--- Returns a list of relations as above, excluding any that end in `_deprecated`
-{% set relations = dbt_utils.get_relations_by_prefix('my_schema', 'my_prefix', '%_deprecated') %}
+-- Returns a list of relations as above, excluding any that end in `deprecated`
+{% set relations = dbt_utils.get_relations_by_prefix('my_schema', 'my_prefix', '%deprecated') %}
 
 -- Example using the union_relations macro
 {% set event_relations = dbt_utils.get_relations_by_prefix('events', 'event_') %}

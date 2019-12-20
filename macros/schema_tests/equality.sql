@@ -50,12 +50,12 @@ unioned as (
 
 final as (
 
-    select (select count(*) from unioned) +
-        (select abs(
+    select (
+      select count(*) from unioned) +
+        abs(
             (select count(*) from a_minus_b) -
             (select count(*) from b_minus_a)
-            ))
-        as count
+      ) as count
 
 )
 

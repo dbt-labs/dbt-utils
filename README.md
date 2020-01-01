@@ -7,6 +7,10 @@ Check [dbt Hub](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/) for
 
 ## Macros
 ### Cross-database
+While these macros are cross database, they do not support all databases. 
+These macros are provided to make date calculations easier and are not a core part of dbt. 
+Most date macros are not supported on postgres. 
+
 #### current_timestamp ([source](macros/cross_db_utils/current_timestamp.sql))
 This macro returns the current timestamp.
 

@@ -1,5 +1,5 @@
 {% macro star(from, relation_alias=False, except=[]) -%}
-    
+
     {%- do dbt_utils._is_relation(from, 'star') -%}
 
     {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
@@ -19,8 +19,8 @@
 
     {%- for col in include_cols %}
 
-        {% if relation_alias %} {{ relation_alias }}.{% endif %} {{ dbt_utils.identifier(col) }} {% if not loop.last %},
-        {% endif %}
+        {%- if relation_alias %}{{ relation_alias }}.{% else %}{% endif %}{{ dbt_utils.identifier(col)|trim }}
+        {%- if not loop.last %},{{ '\n' }}{% endif %}
 
     {%- endfor -%}
 {%- endmacro %}

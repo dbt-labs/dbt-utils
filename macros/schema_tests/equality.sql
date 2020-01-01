@@ -1,7 +1,5 @@
 {% macro test_equality(model) %}
 
-{% set compare_model = kwargs.get('compare_model', kwargs.get('arg')) %}
-
 
 {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
 {%- if not execute -%}
@@ -10,8 +8,9 @@
 
 -- setup
 {%- do dbt_utils._is_relation(model, 'test_equality') -%}
-{% set dest_columns = adapter.get_columns_in_relation(model) %}
-{% set dest_cols_csv = dest_columns | map(attribute='quoted') | join(', ') %}
+{% set compare_model = kwargs.get('compare_model', kwargs.get('arg')) %}
+{% set compare_columns = kwargs.get('compare_columns', adapter.get_columns_in_relation(model) | map(attribute='quoted') ) %}
+{% set compare_cols_csv = compare_columns | join(', ') %}
 
 with a as (
 
@@ -27,17 +26,17 @@ b as (
 
 a_minus_b as (
 
-    select {{dest_cols_csv}} from a
+    select {{compare_cols_csv}} from a
     {{ dbt_utils.except() }}
-    select {{dest_cols_csv}} from b
+    select {{compare_cols_csv}} from b
 
 ),
 
 b_minus_a as (
 
-    select {{dest_cols_csv}} from b
+    select {{compare_cols_csv}} from b
     {{ dbt_utils.except() }}
-    select {{dest_cols_csv}} from a
+    select {{compare_cols_csv}} from a
 
 ),
 

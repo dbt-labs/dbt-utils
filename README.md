@@ -20,7 +20,7 @@ This macro adds a time/day interval to the supplied date/timestamp. Note: The `d
 
 Usage:
 ```
-{{ dbt_utils.dateadd(datepart='day', interval=1, from_date_or_timestamp='2017-01-01') }}
+{{ dbt_utils.dateadd(datepart='day', interval=1, from_date_or_timestamp="'2017-01-01'") }}
 ```
 
 #### datediff ([source](macros/cross_db_utils/datediff.sql))
@@ -58,6 +58,36 @@ Usage:
 ```
 {{ dbt_utils.last_day(date, datepart) }}
 ```
+
+#### width_bucket ([source](macros/cross_db_utils/width_bucket.sql))
+This macro is modeled after the `width_bucket` function natively available in Snowflake.
+
+From the original Snowflake [documentation](https://docs.snowflake.net/manuals/sql-reference/functions/width_bucket.html):
+
+Constructs equi-width histograms, in which the histogram range is divided into intervals of identical size, and returns the bucket number into which the value of an expression falls, after it has been evaluated. The function returns an integer value or null (if any input is null).
+Notes:
+
+- `expr`
+  The expression for which the histogram is created. This expression must evaluate to a numeric value or to a value that can be implicitly converted to a numeric value.
+
+- `min_value` and `max_value`
+  The low and high end points of the acceptable range for the expression. The end points must also evaluate to numeric values and not be equal.
+
+- `num_buckets`
+  The desired number of buckets; must be a positive integer value. A value from the expression is assigned to each bucket, and the function then returns the corresponding bucket number.
+
+  When an expression falls outside the range, the function returns:
+
+    `0` if the expression is less than min_value.
+
+    `num_buckets + 1` if the expression is greater than or equal to max_value.
+
+
+Usage:
+```
+{{ dbt_utils.width_bucket(expr, min_value, max_value, num_buckets) }}
+```
+
 ---
 ### Date/Time
 #### date_spine ([source](macros/datetime/date_spine.sql))
@@ -99,7 +129,7 @@ models:
 ```
 
 #### equality ([source](macros/schema_tests/equality.sql))
-This schema test asserts the equality of two relations.
+This schema test asserts the equality of two relations. Optionally specify a subset of columns to compare.
 
 Usage:
 ```yaml
@@ -110,6 +140,9 @@ models:
     tests:
       - dbt_utils.equality:
           compare_model: ref('other_table_name')
+          compare_columns:
+            - first_column
+            - second_column
 
 ```
 
@@ -212,11 +245,154 @@ models:
 
 ```
 
+#### relationships_where ([source](macros/schema_tests/relationships_where.sql))
+This test validates the referential integrity between two relations (same as the core relationships schema test) with an added predicate to filter out some rows from the test. This is useful to exclude records such as test entities, rows created in the last X minutes/hours to account for temporary gaps due to ETL limitations, etc.
+
+Usage:
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    columns:
+      - name: id
+        tests:
+          - dbt_utils.relationships_where:
+              to: ref('other_model_name')
+              field: client_id
+              from_condition: id <> '4ca448b8-24bf-4b88-96c6-b1609499c38b'
+
+```
+
+#### mutually_exclusive_ranges ([source](macros/schema_tests/mutually_exclusive_ranges.sql))
+This test confirms that for a given lower_bound_column and upper_bound_column,
+the ranges of between the lower and upper bounds do not overlap with the ranges
+of another row.
+
+**Usage:**
+```yaml
+version: 2
+
+models:
+  # test that age ranges do not overlap
+  - name: age_brackets
+    tests:
+      - dbt_utils.mutually_exclusive_ranges:
+          lower_bound_column: min_age
+          upper_bound_column: max_age
+          gaps: not_allowed
+
+  # test that each customer can only have one subscription at a time
+  - name: subscriptions
+    tests:
+      - dbt_utils.mutually_exclusive_ranges:
+          lower_bound_column: started_at
+          upper_bound_column: ended_at
+          partition_by: customer_id
+          gaps: required
+```
+**Args:**
+* `lower_bound_column` (required): The name of the column that represents the
+lower value of the range. Must be not null.
+* `upper_bound_column` (required): The name of the column that represents the
+upper value of the range. Must be not null.
+* `partition_by` (optional): If a subset of records should be mutually exclusive
+(e.g. all periods for a single subscription_id are mutually exclusive), use this
+argument to indicate which column to partition by. `default=none`
+* `gaps` (optional): Whether there can be gaps are allowed between ranges.
+`default='allowed', one_of=['not_allowed', 'allowed', 'required']`
+
+**Note:** Both `lower_bound_column` and `upper_bound_column` should be not null.
+If this is not the case in your data source, consider passing a coalesce function
+to the `lower_` and `upper_bound_column` arguments, like so:
+```yaml
+version: 2
+
+models:
+- name: subscriptions
+  tests:
+    - dbt_utils.mutually_exclusive_ranges:
+        lower_bound_column: coalesce(started_at, '1900-01-01')
+        upper_bound_column: coalesce(ended_at, '2099-12-31')
+        partition_by: customer_id
+        gaps: allowed
+```
+
+**Understanding the `gaps` parameter:**
+Here are a number of examples for each allowed `gaps` parameter.
+* `gaps:not_allowed`: The upper bound of one record must be the lower bound of
+the next record.
+
+| lower_bound | upper_bound |
+|-------------|-------------|
+| 0           | 1           |
+| 1           | 2           |
+| 2           | 3           |
+
+* `gaps:allowed` (default): There may be a gap between the upper bound of one
+record and the lower bound of the next record.
+
+| lower_bound | upper_bound |
+|-------------|-------------|
+| 0           | 1           |
+| 2           | 3           |
+| 3           | 4           |
+
+* `gaps:required`: There must be a gap between the upper bound of one record and
+the lower bound of the next record (common for date ranges).
+
+| lower_bound | upper_bound |
+|-------------|-------------|
+| 0           | 1           |
+| 2           | 3           |
+| 4           | 5           |
+
+#### unique_combination_of_columns ([source](macros/schema_tests/unique_combination_of_columns.sql))
+This test confirms that the combination of columns is unique. For example, the
+combination of month and product is unique, however neither column is unique
+in isolation.
+
+We generally recommend testing this uniqueness condition by either:
+* generating a [surrogate_key](#surrogate_key-source) for your model and testing
+the uniqueness of said key, OR
+* passing the `unique` test a coalesce of the columns (as discussed [here](https://docs.getdbt.com/docs/testing#section-testing-expressions)).
+
+However, these approaches can become non-perfomant on large data sets, in which
+case we recommend using this test instead.
+
+**Usage:**
+```yaml
+- name: revenue_by_product_by_month
+  tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - month
+          - product
+```
+
 ---
 ### SQL helpers
+#### get_query_results_as_dict ([source](macros/sql/get_query_results_as_dict.sql))
+This macro returns a dictionary from a sql query, so that you don't need to interact with the Agate library to operate on teh reuslt
+
+Usage:
+```
+-- Returns a dictionary of the users table where the state is California
+{% set california_cities = dbt_utils.get_query_results_as_dict("select * from" ~ ref('cities') ~ "where state = 'CA' and city is not null ") %}
+select
+  city,
+{% for city in california_cities %}
+  sum(case when city = {{ city }} then 1 else 0 end) as users_in_{{ city }},
+{% endfor %}
+  count(*) as total
+from {{ ref('users') }}
+
+group by 1
+```
+
 #### get_column_values ([source](macros/sql/get_column_values.sql))
-This macro returns the unique values for a column in a given table.
-It takes an options `default` argument for compiling when relation does not already exist. 
+This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/api-variable#section-relation).
+It takes an options `default` argument for compiling when the relation does not already exist.
 
 Usage:
 ```
@@ -229,19 +405,32 @@ Usage:
 
 ...
 ```
+#### get_relations_by_prefix
+> This replaces the `get_tables_by_prefix` macro. Note that the `get_tables_by_prefix` macro will
+be deprecated in a future release of this package.
 
-#### get_tables_by_prefix ([source](macros/sql/get_tables_by_prefix.sql))
-This macro returns a list of tables that match a given prefix, with an optional
-exclusion pattern. It's particularly handy paired with `union_tables`.
-
-Usage:
+Returns a list of [Relations](https://docs.getdbt.com/docs/api-variable#section-relation)
+that match a given prefix, with an optional exclusion pattern. It's particularly
+handy paired with `union_relations`.
+**Usage:**
 ```
--- Returns a list of tables that match schema.prefix%
-{{ set tables = dbt_utils.get_tables_by_prefix('schema', 'prefix')}}
+-- Returns a list of relations that match schema.prefix%
+{% set relations = dbt_utils.get_relations_by_prefix('my_schema', 'my_prefix') %}
 
--- Returns a list of tables as above, excluding any with underscores
-{{ set tables = dbt_utils.get_tables_by_prefix('schema', 'prefix', '%_%')}}
+-- Returns a list of relations as above, excluding any that end in `deprecated`
+{% set relations = dbt_utils.get_relations_by_prefix('my_schema', 'my_prefix', '%deprecated') %}
+
+-- Example using the union_relations macro
+{% set event_relations = dbt_utils.get_relations_by_prefix('events', 'event_') %}
+{{ dbt_utils.union_relations(relations = event_relations) }}
 ```
+
+**Args:**
+* `schema` (required): The schema to inspect for relations.
+* `prefix` (required): The prefix of the table/view (case insensitive)
+* `exclude` (optional): Exclude any relations that match this pattern.
+* `database` (optional, default = `target.database`): The database to inspect
+for relations.
 
 #### group_by ([source](macros/sql/groupby.sql))
 This macro build a group by statement for fields 1...N
@@ -261,18 +450,33 @@ select
 from {{ref('my_model')}}
 ```
 
-#### union_tables ([source](macros/sql/union.sql))
-This macro implements an "outer union." The list of relations provided to this macro will be unioned together, and any columns exclusive to a subset of these tables will be filled with `null` where not present. The `column_override` argument is used to explicitly assign the column type for a set of columns. The `source_column_name` argument is used to change the name of the`_dbt_source_table` field.
+#### union_relations ([source](macros/sql/union.sql))
+> This replaces the `union_tables` macro. Note that the `union_tables` macro will
+be deprecated in a future release of this package.
 
-Usage:
+This macro unions together an array of [Relations](https://docs.getdbt.com/docs/api-variable#section-relation),
+even when columns have differing orders in each Relation, and/or some columns are
+missing from some relations. Any columns exclusive to a subset of these
+relations will be filled with `null` where not present. An new column
+(`_dbt_source_relation`) is also added to indicate the source for each record.
+
+**Usage:**
 ```
-{{ dbt_utils.union_tables(
-    tables=[ref('table_1'), ref('table_2')],
-    column_override={"some_field": "varchar(100)"},
-    exclude=["some_other_field"],
-    source_column_name='custom_source_column_name'
+{{ dbt_utils.union_relations(
+    relations=[ref('my_model'), source('my_source', 'my_table')],
+    exclude=["_loaded_at"]
 ) }}
 ```
+**Args:**
+* `relations` (required): An array of [Relations](https://docs.getdbt.com/docs/api-variable#section-relation).
+* `exclude` (optional): A list of column names that should be excluded from
+the final query.
+* `include` (optional): A list of column names that should be included in the
+final query. Note the `include` and `exclude` parameters are mutually exclusive.
+* `column_override` (optional): A dictionary of explicit column type overrides,
+e.g. `{"some_field": "varchar(100)"}`.``
+* `source_column_name` (optional, `default="_dbt_source_relation"`): The name of
+the column that records the source of this row.
 
 #### generate_series ([source](macros/sql/generate_series.sql))
 This macro implements a cross-database mechanism to generate an arbitrarily long list of numbers. Specify the maximum number you'd like in your list and it will create a 1-indexed SQL result set.
@@ -300,7 +504,7 @@ Usage:
 
 Example:
 
-    Input: public.test
+    Input: orders
 
     | size | color |
     |------|-------|
@@ -311,9 +515,11 @@ Example:
 
     select
       size,
-      {{ dbt_utils.pivot('color', dbt_utils.get_column_values('public.test',
-                                                             'color')) }}
-    from public.test
+      {{ dbt_utils.pivot(
+          'color',
+          dbt_utils.get_column_values(ref('orders'), 'color')
+      ) }}
+    from {{ ref('orders') }}
     group by size
 
     Output:
@@ -341,10 +547,17 @@ This macro "un-pivots" a table from wide format to long format. Functionality is
 
 Usage:
 ```
-{{ dbt_utils.unpivot(table=ref('table_name'), cast_to='datatype', exclude=[<list of columns to exclude from unpivot>], remove=[<list of columns to remove>], field_name=<column name for field>, value_name=<column name for value>) }}
+{{ dbt_utils.unpivot(
+  relation=ref('table_name'),
+  cast_to='datatype',
+  exclude=[<list of columns to exclude from unpivot>],
+  remove=[<list of columns to remove>],
+  field_name=<column name for field>,
+  value_name=<column name for value>
+) }}
 ```
 
-Example:
+**Usage:**
 
     Input: orders
 
@@ -364,14 +577,13 @@ Example:
     | 2017-03-01 | processing | size       | S     |
     | 2017-03-01 | processing | color      | red   |
 
-Arguments:
-
-    - table: Table name, required
-    - cast_to: The data type to cast the unpivoted values to, default is varchar
-    - exclude: A list of columns to exclude from the unpivot operation but keep in the resulting table.
-    - remove: A list of columns to remove from the resulting table.
-    - field_name: column name in the resulting table for field
-    - value_name: column name in the resulting table for value
+**Args**:
+- `relation`: The [Relation](https://docs.getdbt.com/docs/api-variable#section-relation) to unpivot.
+- `cast_to`: The data type to cast the unpivoted values to, default is varchar
+- `exclude`: A list of columns to exclude from the unpivot operation but keep in the resulting table.
+- `remove`: A list of columns to remove from the resulting table.
+- `field_name`: column name in the resulting table for field
+- `value_name`: column name in the resulting table for value
 
 ---
 ### Web
@@ -420,10 +632,10 @@ This macro formats the input in a way that will print nicely to the command line
 
 {{ dbt_utils.pretty_log_format("my pretty message") }}
 ```
-### log_info ([source](macros/logger/log_info.sql))
+#### log_info ([source](macros/logger/log_info.sql))
 This macro logs a formatted message (with a timestamp) to the command line.
 ```sql
-{{ log_info(dbt_utils.log_info("my pretty message")) }}
+{{ dbt_utils.log_info("my pretty message") }}
 ```
 
 ```

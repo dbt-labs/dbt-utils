@@ -377,7 +377,7 @@ case we recommend using this test instead.
 ---
 ### SQL helpers
 #### get_query_results_as_dict ([source](macros/sql/get_query_results_as_dict.sql))
-This macro returns a dictionary from a sql query, so that you don't need to interact with the Agate library to operate on teh reuslt
+This macro returns a dictionary from a sql query, so that you don't need to interact with the Agate library to operate on the reuslt
 
 Usage:
 ```

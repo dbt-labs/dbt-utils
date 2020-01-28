@@ -36,7 +36,7 @@
     {% elif datepart == 'day' %}
         ({{second_date}}::date - {{first_date}}::date)
     {% elif datepart == 'week' %}
-        (floor({{ dbt_utils.datediff(first_date, second_date, 'day') }} / 7) + case when date_part('dow', {{second_date}}::timestamp) < date_part('dow', {{first_date}}::timestamp) then 1 else 0 end)
+        ({{ dbt_utils.datediff(first_date, second_date, 'day') }} / 7 + case when date_part('dow', {{second_date}}::timestamp) < date_part('dow', {{first_date}}::timestamp) then 1 else 0 end)
     {% elif datepart == 'hour' %}
         ({{ dbt_utils.datediff(first_date, second_date, 'day') }} * 24 + date_part('hour', {{second_date}}::timestamp) - date_part('hour', {{first_date}}::timestamp))
     {% elif datepart == 'minute' %}

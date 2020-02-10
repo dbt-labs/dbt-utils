@@ -1,8 +1,8 @@
 {# string  -------------------------------------------------     #}
 
-{% macro type_string() %}
+{%- macro type_string() -%}
   {{ adapter_macro('dbt_utils.type_string') }}
-{% endmacro %}
+{%- endmacro -%}
 
 {% macro default__type_string() %}
     string
@@ -24,9 +24,9 @@
 
 {# timestamp  -------------------------------------------------     #}
 
-{% macro type_timestamp() %}
+{%- macro type_timestamp() -%}
   {{ adapter_macro('dbt_utils.type_timestamp') }}
-{% endmacro %}
+{%- endmacro -%}
 
 {% macro default__type_timestamp() %}
     timestamp
@@ -39,9 +39,9 @@
 
 {# float  -------------------------------------------------     #}
 
-{% macro type_float() %}
+{%- macro type_float() -%}
   {{ adapter_macro('dbt_utils.type_float') }}
-{% endmacro %}
+{%- endmacro -%}
 
 {% macro default__type_float() %}
     float
@@ -53,9 +53,9 @@
 
 {# numeric  ------------------------------------------------     #}
 
-{% macro type_numeric() %}
+{%- macro type_numeric() -%}
   {{ adapter_macro('dbt_utils.type_numeric') }}
-{% endmacro %}
+{%- endmacro -%}
 
 {% macro default__type_numeric() %}
     numeric(28, 6)
@@ -68,9 +68,9 @@
 
 {# bigint  -------------------------------------------------     #}
 
-{% macro type_bigint() %}
+{%- macro type_bigint() -%}
   {{ adapter_macro('dbt_utils.type_bigint') }}
-{% endmacro %}
+{%- endmacro -%}
 
 {% macro default__type_bigint() %}
     bigint
@@ -82,9 +82,9 @@
 
 {# int  -------------------------------------------------     #}
 
-{% macro type_int() %}
+{%- macro type_int() -%}
   {{ adapter_macro('dbt_utils.type_int') }}
-{% endmacro %}
+{%- endmacro -%}
 
 {% macro default__type_int() %}
     int

@@ -3,14 +3,14 @@
   {% call statement('period_boundaries', fetch_result=True) -%}
     with data as (
       select
-          coalesce(max("{{timestamp_field}}"), '{{start_date}}')::timestamp as start_timestamp,
+          coalesce(max({{timestamp_field}}), '{{start_date}}')::timestamp as start_timestamp,
           coalesce(
             {{dbt_utils.dateadd('millisecond',
                                 -1,
                                 "nullif('" ~ stop_date ~ "','')::timestamp")}},
             {{dbt_utils.current_timestamp()}}
           ) as stop_timestamp
-      from "{{target_schema}}"."{{target_table}}"
+      from {{target_schema}}.{{target_table}}
     )
 
     select
@@ -27,9 +27,9 @@
 {% macro get_period_sql(target_cols_csv, sql, timestamp_field, period, start_timestamp, stop_timestamp, offset) -%}
 
   {%- set period_filter -%}
-    ("{{timestamp_field}}" >  '{{start_timestamp}}'::timestamp + interval '{{offset}} {{period}}' and
-     "{{timestamp_field}}" <= '{{start_timestamp}}'::timestamp + interval '{{offset}} {{period}}' + interval '1 {{period}}' and
-     "{{timestamp_field}}" <  '{{stop_timestamp}}'::timestamp)
+    ({{timestamp_field}} >  '{{start_timestamp}}'::timestamp + interval '{{offset}} {{period}}' and
+     {{timestamp_field}} <= '{{start_timestamp}}'::timestamp + interval '{{offset}} {{period}}' + interval '1 {{period}}' and
+     {{timestamp_field}} <  '{{stop_timestamp}}'::timestamp)
   {%- endset -%}
 
   {%- set filtered_sql = sql | replace("__PERIOD_FILTER__", period_filter) -%}
@@ -94,7 +94,7 @@
     {# Create an empty target table -#}
     {% call statement('main') -%}
       {%- set empty_sql = sql | replace("__PERIOD_FILTER__", 'false') -%}
-      {{create_table_as(False, target_relation, empty_sql)}};
+      {{create_table_as(False, target_relation, empty_sql)}}
     {%- endcall %}
   {%- endif %}
 
@@ -142,7 +142,7 @@
           from {{tmp_relation.include(schema=False)}}
       );
     {%- endcall %}
-    {%- set rows_inserted = (load_result('main-' ~ i)['status'].split(" "))[2] | int -%}
+    {%- set rows_inserted = (load_result('main-' ~ i)['status'].split(" "))[1] | int -%}
     {%- set sum_rows_inserted = loop_vars['sum_rows_inserted'] + rows_inserted -%}
     {%- if loop_vars.update({'sum_rows_inserted': sum_rows_inserted}) %} {% endif -%}
 

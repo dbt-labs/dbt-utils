@@ -75,6 +75,12 @@ models:
         tests:
           - not_empty_string
 
+  - name: test_safe_add
+    tests:
+      - assert_equal:
+          actual: actual
+          expected: expected
+
   - name: test_pivot
     tests:
       - dbt_utils.equality:

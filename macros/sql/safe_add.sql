@@ -4,9 +4,7 @@
 
 {%- for field in varargs -%}
 
-    {% set _ = fields.append(
-        "coalesce(" ~ field ~ ", 0)"
-    ) %}
+    {% do fields.append("coalesce(" ~ field ~ ", 0)") %}
 
 {%- endfor -%}
 

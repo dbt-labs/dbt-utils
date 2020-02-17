@@ -498,6 +498,14 @@ Usage:
 {{ dbt_utils.surrogate_key('field_a', 'field_b'[,...]) }}
 ```
 
+#### safe_add ([source](macros/sql/safe_add.sql))
+Implements a cross-database way to sum nullable fiellds using the fields specified.
+
+Usage:
+```
+{{ dbt_utils.safe_add('field_a', 'field_b'[,...]) }}
+```
+
 #### pivot ([source](macros/sql/pivot.sql))
 This macro pivots values from rows to columns.
 

@@ -12,7 +12,7 @@
     {%- for col in cols -%}
 
         {%- if col.column not in except -%}
-            {% set _ = include_cols.append(col.column) %}
+            {% do include_cols.append(col.column) %}
 
         {%- endif %}
     {%- endfor %}

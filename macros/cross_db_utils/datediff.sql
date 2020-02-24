@@ -27,8 +27,8 @@
 
 {% macro postgres__datediff(first_date, second_date, datepart) %}
 
-    {% if datepart in ('year', 'decade', 'century', 'millennium') %}
-        (date_part('{{datepart}}', ({{second_date}})::date) - date_part('{{datepart}}', ({{first_date}})::date))
+    {% if datepart == 'year' %}
+        (date_part('year', ({{second_date}})::date) - date_part('year', ({{first_date}})::date))
     {% elif datepart == 'quarter' %}
         ({{ dbt_utils.datediff(first_date, second_date, 'year') }} * 4 + date_part('quarter', ({{second_date}})::date) - date_part('quarter', ({{first_date}})::date))
     {% elif datepart == 'month' %}

@@ -12,15 +12,15 @@
     {%- for col in cols -%}
 
         {%- if col.column not in except -%}
-            {% set _ = include_cols.append(col.column) %}
+            {% do include_cols.append(col.column) %}
 
         {%- endif %}
     {%- endfor %}
 
     {%- for col in include_cols %}
 
-        {%- if relation_alias %}{{ relation_alias }}.{% else %}{% endif %}{{ dbt_utils.identifier(col)|trim }}
-        {%- if not loop.last %},{{ '\n' }}{% endif %}
+        {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}{{ dbt_utils.identifier(col)|trim }}
+        {%- if not loop.last %},{{ '\n  ' }}{% endif %}
 
     {%- endfor -%}
 {%- endmacro %}

@@ -1,6 +1,6 @@
-{% macro current_timestamp() %}
+{% macro current_timestamp() -%}
   {{ adapter_macro('dbt_utils.current_timestamp') }}
-{% endmacro %}
+{%- endmacro %}
 
 {% macro default__current_timestamp() %}
     current_timestamp::{{dbt_utils.type_timestamp()}}
@@ -16,9 +16,9 @@
 
 
 
-{% macro current_timestamp_in_utc() %}
+{% macro current_timestamp_in_utc() -%}
   {{ adapter_macro('dbt_utils.current_timestamp_in_utc') }}
-{% endmacro %}
+{%- endmacro %}
 
 {% macro default__current_timestamp_in_utc() %}
     {{dbt_utils.current_timestamp()}}

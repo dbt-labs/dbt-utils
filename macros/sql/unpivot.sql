@@ -15,7 +15,7 @@ Arguments:
 {% macro unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', table=none) -%}
 
     {% if execute and table %}
-        {{ log("Warning: the `unpivot` macro no longer accepts a `table` parameter. This parameter will be deprecated in a future release of dbt-utils. Use the `relation` parameter instead", info=True) }}
+        {% do exceptions.warn("Warning: the `unpivot` macro no longer accepts a `table` parameter. This parameter will be deprecated in a future release of dbt-utils. Use the `relation` parameter instead") %}
     {% endif %}
 
     {% if relation and table %}

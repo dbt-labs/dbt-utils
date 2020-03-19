@@ -24,7 +24,7 @@
 
 {% macro get_tables_by_prefix(schema, prefix, exclude='', database=target.database) %}
     {% if execute %}
-        {{ log("Warning: the `get_tables_by_prefix` macro is no longer supported and will be deprecated in a future release of dbt-utils. Use the `get_relations_by_prefix` macro instead", info=True) }}
+        {% do exceptions.warn("Warning: the `get_tables_by_prefix` macro is no longer supported and will be deprecated in a future release of dbt-utils. Use the `get_relations_by_prefix` macro instead") %}
     {% endif %}
 
 

@@ -85,9 +85,7 @@
 
 {%- macro union_tables(tables, column_override=none, include=[], exclude=[], source_column_name='_dbt_source_table') -%}
 
-    {%- if execute -%}
-        {{ log("Warning: the `union_tables` macro is no longer supported and will be deprecated in a future release of dbt-utils. Use the `union_relations` macro instead", info=True) }}
-    {%- endif -%}
+    {%- do exceptions.warn("Warning: the `union_tables` macro is no longer supported and will be deprecated in a future release of dbt-utils. Use the `union_relations` macro instead") -%}
 
     {{ return(dbt_utils.union_relations(tables, column_override, include, exclude, source_column_name)) }}
 

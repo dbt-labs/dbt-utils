@@ -3,7 +3,7 @@
 
 {%- if varargs|length >= 1 %}
 
-{{ exceptions.warn("Warning: the `surrogate_key` macro now takes a single list argument instead of multiple string arguments. Multiple string arguments are longer supported and will be deprecated in a future release of dbt-utils.") }}
+{%- do exceptions.warn("Warning: the `surrogate_key` macro now takes a single list argument instead of multiple string arguments. Multiple string arguments are longer supported and will be deprecated in a future release of dbt-utils.") -%}
 
 {# first argument is not included in varargs, so add first element to field_list_xf #}
 {%- set field_list_xf = [field_list] -%}

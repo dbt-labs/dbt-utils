@@ -104,7 +104,10 @@ models:
   - name: test_surrogate_key
     tests:
       - assert_equal:
-          actual: actual
+          actual: actual_arguments
+          expected: expected
+      - assert_equal:
+          actual: actual_list
           expected: expected
 
   - name: test_union

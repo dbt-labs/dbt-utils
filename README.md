@@ -495,7 +495,7 @@ Implements a cross-database way to generate a hashed surrogate key using the fie
 
 Usage:
 ```
-{{ dbt_utils.surrogate_key('field_a', 'field_b'[,...]) }}
+{{ dbt_utils.surrogate_key(['field_a', 'field_b'[,...]]) }}
 ```
 
 #### safe_add ([source](macros/sql/safe_add.sql))

@@ -1,6 +1,6 @@
-{% macro concat(fields) %}
+{% macro concat(fields) -%}
   {{ adapter_macro('dbt_utils.concat', fields) }}
-{% endmacro %}
+{%- endmacro %}
 
 
 {% macro default__concat(fields) -%}

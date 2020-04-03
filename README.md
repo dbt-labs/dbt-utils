@@ -359,7 +359,7 @@ in isolation.
 We generally recommend testing this uniqueness condition by either:
 * generating a [surrogate_key](#surrogate_key-source) for your model and testing
 the uniqueness of said key, OR
-* passing the `unique` test a coalesce of the columns (as discussed [here](https://docs.getdbt.com/docs/testing#section-testing-expressions)).
+* passing the `unique` test a coalesce of the columns (as discussed [here](https://docs.getdbt.com/docs/building-a-dbt-project/testing-and-documentation/testing/#testing-expressions)).
 
 However, these approaches can become non-perfomant on large data sets, in which
 case we recommend using this test instead.
@@ -395,7 +395,7 @@ group by 1
 ```
 
 #### get_column_values ([source](macros/sql/get_column_values.sql))
-This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/api-variable#section-relation).
+This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation).
 It takes an options `default` argument for compiling when the relation does not already exist.
 
 Usage:
@@ -413,7 +413,7 @@ Usage:
 > This replaces the `get_tables_by_prefix` macro. Note that the `get_tables_by_prefix` macro will
 be deprecated in a future release of this package.
 
-Returns a list of [Relations](https://docs.getdbt.com/docs/api-variable#section-relation)
+Returns a list of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation)
 that match a given prefix, with an optional exclusion pattern. It's particularly
 handy paired with `union_relations`.
 **Usage:**
@@ -458,7 +458,7 @@ from {{ref('my_model')}}
 > This replaces the `union_tables` macro. Note that the `union_tables` macro will
 be deprecated in a future release of this package.
 
-This macro unions together an array of [Relations](https://docs.getdbt.com/docs/api-variable#section-relation),
+This macro unions together an array of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation),
 even when columns have differing orders in each Relation, and/or some columns are
 missing from some relations. Any columns exclusive to a subset of these
 relations will be filled with `null` where not present. An new column
@@ -472,7 +472,7 @@ relations will be filled with `null` where not present. An new column
 ) }}
 ```
 **Args:**
-* `relations` (required): An array of [Relations](https://docs.getdbt.com/docs/api-variable#section-relation).
+* `relations` (required): An array of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation).
 * `exclude` (optional): A list of column names that should be excluded from
 the final query.
 * `include` (optional): A list of column names that should be included in the
@@ -590,7 +590,7 @@ Usage:
     | 2017-03-01 | processing | color      | red   |
 
 **Args**:
-- `relation`: The [Relation](https://docs.getdbt.com/docs/api-variable#section-relation) to unpivot.
+- `relation`: The [Relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation) to unpivot.
 - `cast_to`: The data type to cast the unpivoted values to, default is varchar
 - `exclude`: A list of columns to exclude from the unpivot operation but keep in the resulting table.
 - `remove`: A list of columns to remove from the resulting table.

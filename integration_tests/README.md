@@ -12,6 +12,7 @@ For an example integration tests, check out the tests for the `get_url_parameter
 
 Once you've added all of these files, you should be able to run:
 ```
+$ dbt deps
 $ dbt seed
 $ dbt run --model {your_model_name}
 $ dbt test --model {your_model_name}

@@ -7,9 +7,9 @@ Check [dbt Hub](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/) for
 
 ## Macros
 ### Cross-database
-While these macros are cross database, they do not support all databases. 
-These macros are provided to make date calculations easier and are not a core part of dbt. 
-Most date macros are not supported on postgres. 
+While these macros are cross database, they do not support all databases.
+These macros are provided to make date calculations easier and are not a core part of dbt.
+Most date macros are not supported on postgres.
 
 #### current_timestamp ([source](macros/cross_db_utils/current_timestamp.sql))
 This macro returns the current timestamp.
@@ -106,6 +106,19 @@ Usage:
    )
 }}
 ```
+
+#### epoch_to_timestamp ([source](macros/datetime/epoch_to_timestamp.sql))
+This macro converts an epoch timestamp to a datetime
+
+Usage:
+```
+{{ dbt_utils.epoch_to_timestamp('created', 'seconds') }} as created_at,
+```
+
+Arguments:
+* `column_name` (required): The name of the column that is currently stored as an epoch timestamp.
+* `time_unit` (default='seconds'): The increments used by this epoch timestamp.
+
 ---
 ### Geo
 #### haversine_distance ([source](macros/geo/haversine_distance.sql))

@@ -46,3 +46,8 @@ seeds:
           num_buckets: integer
           min_value: float
           max_value: float
+
+    datetime:
+      data_epoch_to_timestamp:
+        +column_types:
+          epoch_time_milliseconds: bigint

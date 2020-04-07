@@ -5,3 +5,15 @@ models:
     tests:
       - dbt_utils.equality:
           compare_model: ref('data_date_spine')
+
+  - name: test_epoch_to_timestamp
+    tests:
+      - assert_equal:
+          actual: actual_default
+          expected: expected
+      - assert_equal:
+          actual: actual_from_seconds
+          expected: expected
+      - assert_equal:
+          actual: actual_from_milliseconds
+          expected: expected

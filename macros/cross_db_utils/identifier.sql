@@ -10,3 +10,7 @@
 {% macro bigquery__identifier(value) -%}
     `{{ value }}`
 {%- endmacro %}
+
+{% macro spark__identifier(value) -%}
+    `{{ value }}`
+{%- endmacro %}

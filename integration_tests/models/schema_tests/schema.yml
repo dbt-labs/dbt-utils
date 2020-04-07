@@ -54,14 +54,14 @@ models:
     columns:
       - name: id
         tests:
-          - unique_where:
+          - dbt_utils.unique_where:
               where: "_deleted = false"
 
   - name: data_test_not_null_where
     columns:
       - name: id
         tests:
-          - not_null_where:
+          - dbt_utils.not_null_where:
               where: "_deleted = false"
 
   - name: data_test_relationships_where_table_2

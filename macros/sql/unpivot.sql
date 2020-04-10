@@ -52,7 +52,12 @@ Arguments:
       {%- endfor %}
 
       cast('{{ col.column }}' as {{ dbt_utils.type_string() }}) as {{ field_name }},
-      cast({{ col.column }} as {{ cast_to }}) as {{ value_name }}
+      cast(  {% if col.data_type == 'boolean' %}
+           case when {{ col.column }} then 'true' else 'false' end
+             {% else %}
+           {{ col.column }}
+             {% endif %}
+           as {{ cast_to }}) as {{ value_name }}
 
     from {{ relation }}
 

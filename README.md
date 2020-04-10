@@ -556,6 +556,7 @@ Arguments:
 
 #### unpivot ([source](macros/sql/unpivot.sql))
 This macro "un-pivots" a table from wide format to long format. Functionality is similar to pandas [melt](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.melt.html) function.
+Boolean values are replaced with the strings 'true'|'false'
 
 Usage:
 ```

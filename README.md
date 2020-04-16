@@ -620,7 +620,7 @@ This macro extracts a page path from a column containing a url.
 
 Usage:
 ```
-{{ dbt_utils.get_url_host(field='page_url') }}
+{{ dbt_utils.get_url_path(field='page_url') }}
 ```
 
 ---

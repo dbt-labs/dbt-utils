@@ -11,7 +11,7 @@ integration_tests:
   outputs:
     postgres:
       type: postgres
-      host: localhost
+      host: "{{ env_var('CI_DBT_HOST') }}"
       user: "{{ env_var('CI_DBT_USER') }}"
       pass: "{{ env_var('CI_DBT_PASS') }}"
       port: "{{ env_var('CI_DBT_PORT') }}"

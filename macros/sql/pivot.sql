@@ -32,6 +32,7 @@ Arguments:
     alias: Whether to create column aliases, default is True
     agg: SQL aggregation function, default is sum
     cmp: SQL value comparison, default is =
+    dictinct: Whether to use distinct in the aggregation, default is False
     prefix: Column alias prefix, default is blank
     suffix: Column alias postfix, default is blank
     then_value: Value to use if comparison succeeds, default is 1
@@ -44,6 +45,7 @@ Arguments:
                alias=True,
                agg='sum',
                cmp='=',
+               distinct=False,
                prefix='',
                suffix='',
                then_value=1,
@@ -51,6 +53,7 @@ Arguments:
                quote_identifiers=True) %}
   {% for v in values %}
     {{ agg }}(
+      {% if distinct %} distinct {% endif %}
       case
       when {{ column }} {{ cmp }} '{{ v }}'
         then {{ then_value }}

@@ -6,7 +6,7 @@ services:
     depends_on:
       - ${TARGET}
     env_file: "./integration_tests/.env/${TARGET}.env"
-    entrypoint: "/repo/run_test.sh ${TARGET}"
+    entrypoint: "/repo/run_test.sh ${TARGET} ${MODELS} ${SEEDS}"
     working_dir: /repo
     volumes:
         - ".:/repo"

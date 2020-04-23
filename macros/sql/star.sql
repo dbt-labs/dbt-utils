@@ -19,7 +19,7 @@
 
     {%- for col in include_cols %}
 
-        {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}{{ dbt_utils.identifier(col)|trim }}
+        {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}{{ adapter.quote(col)|trim }}
         {%- if not loop.last %},{{ '\n  ' }}{% endif %}
 
     {%- endfor -%}

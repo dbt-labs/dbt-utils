@@ -1,7 +1,7 @@
 name: 'dbt_utils'
 version: '0.1.0'
 
-require-dbt-version: ">=0.15.1"
+require-dbt-version: ">=0.16"
 
 target-path: "target"
 clean-targets: ["target", "dbt_modules"]

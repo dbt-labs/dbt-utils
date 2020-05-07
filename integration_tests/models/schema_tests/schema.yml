@@ -50,6 +50,20 @@ models:
               field: is_active
               to: ref('data_people')
 
+  - name: data_test_unique_where
+    columns:
+      - name: id
+        tests:
+          - not_null_where:
+              where: "_deleted = false"
+
+  - name: data_test_not_null_where
+    columns:
+      - name: id
+        tests:
+          - not_null_where:
+              where: "_deleted = false"
+
   - name: data_test_relationships_where_table_2
     columns:
       - name: id

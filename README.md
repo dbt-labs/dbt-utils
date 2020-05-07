@@ -249,6 +249,30 @@ models:
 
 ```
 
+#### unique_where ([source](macros/schema_tests/unique_where.sql))
+This test validates that there are no duplicate values present in a field for a subset of rows by specifying a `where` clause.
+
+Usage:
+```yaml
+    columns:
+        - name: id
+          tests:
+            - unique_where:
+                where: "_deleted = false"
+```
+
+#### not_null_where ([source](macros/schema_tests/not_null_where.sql))
+This test validates that there are no null values present in a column for a subset of rows by specifying a `where` clause.
+
+Usage:
+```yaml
+    columns:
+        - name: id
+          tests:
+            - not_null_where:
+                where: "_deleted = false"
+```
+
 #### relationships_where ([source](macros/schema_tests/relationships_where.sql))
 This test validates the referential integrity between two relations (same as the core relationships schema test) with an added predicate to filter out some rows from the test. This is useful to exclude records such as test entities, rows created in the last X minutes/hours to account for temporary gaps due to ETL limitations, etc.
 

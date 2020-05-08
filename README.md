@@ -468,6 +468,32 @@ handy paired with `union_relations`.
 * `database` (optional, default = `target.database`): The database to inspect
 for relations.
 
+#### get_relations_by_schema_prefix
+> This was built from the get_relations_by_prefix macro.
+
+Returns a list of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation)
+that match a given schema prefix pattern and table/view name with an optional exclusion pattern. Like its cousin
+get_relations_by_prefix, it's particularly handy paired with `union_relations`.
+**Usage:**
+```
+-- Returns a list of relations that match schema%.table_name
+{% set relations = dbt_utils.get_relations_by_schema_prefix('my_schema_prefix%', 'my_table_name') %}
+
+-- Returns a list of relations as above, excluding any that end in `deprecated`
+{% set relations = dbt_utils.get_relations_by_schema_prefix('my_schema_prefix%',', 'my_table_name', '%deprecated') %}
+
+-- Example using the union_relations macro
+{% set event_relations = dbt_utils.get_relations_by_schema_prefix('venue%', 'clicks') %}
+{{ dbt_utils.union_relations(relations = event_relations) }}
+```
+
+**Args:**
+* `schema_prefix` (required): The schema pattern to inspect for relations.
+* `table_name` (required): The name of the table/view (case insensitive)
+* `exclude` (optional): Exclude any relations that match this pattern.
+* `database` (optional, default = `target.database`): The database to inspect
+for relations.
+
 #### group_by ([source](macros/sql/groupby.sql))
 This macro build a group by statement for fields 1...N
 

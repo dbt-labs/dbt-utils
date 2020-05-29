@@ -17,11 +17,11 @@
 {% macro bigquery__get_tables_by_prefix_sql(schema, prefix, exclude='', database=target.database) %}
     
         select distinct
-            dataset_id as table_schema, table_id as table_name
+            table_schema, table_name
 
-        from {{adapter.quote(database)}}.{{schema}}.__TABLES_SUMMARY__
-        where dataset_id = '{{schema}}'
-            and lower(table_id) like lower ('{{prefix}}%')
-            and lower(table_id) not like lower ('{{exclude}}')
+        from {{adapter.quote(database)}}.{{schema}}.INFORMATION_SCHEMA.TABLES
+        where table_schema = '{{schema}}'
+            and lower(table_name) like lower ('{{prefix}}%')
+            and lower(table_name) not like lower ('{{exclude}}')
 
 {% endmacro %}

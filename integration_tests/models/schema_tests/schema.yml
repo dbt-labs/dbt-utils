@@ -87,3 +87,11 @@ models:
           combination_of_columns:
             - month
             - product
+
+  - name: test_json_paths_not_null
+    columns:
+      - name: id
+      - name : json_field
+        tests:
+          - dbt_utils.json_paths_not_null:
+              paths: ['settings.emailAddress', 'settings.displayName']

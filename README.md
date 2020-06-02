@@ -415,6 +415,19 @@ case we recommend using this test instead.
 ```
 
 ---
+#### json_paths_not_null ([source](macros/schema_tests/json_paths_not_null.sql))
+This test confirms that all rows in a model have json values for the paths specified in the column tested against.
+
+**Usage:**
+```yaml
+- name: subscriptions
+  columns:
+    - name: settings_json
+      tests:
+        - dbt_utils.json_path_not_null:
+            paths: ['preferences.email_type', 'preferences.email_address']
+```
+
 ### SQL helpers
 #### get_query_results_as_dict ([source](macros/sql/get_query_results_as_dict.sql))
 This macro returns a dictionary from a sql query, so that you don't need to interact with the Agate library to operate on the result

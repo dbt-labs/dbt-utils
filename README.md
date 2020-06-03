@@ -132,6 +132,27 @@ models:
 
 ```
 
+#### accepted_values_from([source](macros/schema_tests/accepted_values_from.sql))
+Much like the built in accepted_values test this test asserts that all values of a given column are
+in a list. However the list comes from a source or relationship.  
+
+Usage:
+```yaml
+- name: test_accepted_values_from_with_rename
+    columns:
+      - name: destination_column
+        tests:
+          - dbt_utils.accepted_values_from:
+              relationship: ref('data_test_accepted_values_from_source')
+              field: lookup
+  - name: test_accepted_values_from_without_rename
+    columns:
+        - name: lookup
+          tests:
+            - dbt_utils.accepted_values_from:
+                relationship: ref('data_test_accepted_values_from_source')
+```
+
 #### equality ([source](macros/schema_tests/equality.sql))
 This schema test asserts the equality of two relations. Optionally specify a subset of columns to compare.
 

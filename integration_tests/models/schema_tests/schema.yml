@@ -20,6 +20,16 @@ models:
       - dbt_utils.expression_is_true:
           expression: col_a = 0.5
           condition: col_b = 0.5
+    columns:
+      - name: col_a
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: + col_b = 1
+      - name: col_b
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: = 0.5
+              condition: col_a = 0.5
 
   - name: test_recency
     tests:

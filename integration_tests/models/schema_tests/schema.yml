@@ -117,3 +117,13 @@ models:
         tests:
           - dbt_utils.json_paths_not_null:
               paths: ['settings.emailAddress', 'settings.displayName']
+
+  - name: data_test_not_null_when
+    columns:
+        - name: col_b
+          tests:
+            - dbt_utils.not_null_when:
+                condition: 'col_a > 1'
+            - dbt_utils.is_null_when:
+                condition: 'col_a = 1'
+

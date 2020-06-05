@@ -87,3 +87,17 @@ models:
           combination_of_columns:
             - month
             - product
+            -
+  - name: test_accepted_values_from_with_rename
+    columns:
+      - name: destination_column
+        tests:
+          - dbt_utils.accepted_values_from:
+              relationship: ref('data_test_accepted_values_from_source')
+              field: lookup
+  - name: test_accepted_values_from_without_rename
+    columns:
+        - name: lookup
+          tests:
+            - dbt_utils.accepted_values_from:
+                relationship: ref('data_test_accepted_values_from_source')

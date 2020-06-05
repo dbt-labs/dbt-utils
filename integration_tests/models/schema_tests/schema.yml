@@ -97,7 +97,6 @@ models:
           combination_of_columns:
             - month
             - product
-            -
   - name: test_accepted_values_from_with_rename
     columns:
       - name: destination_column
@@ -111,3 +110,10 @@ models:
           tests:
             - dbt_utils.accepted_values_from:
                 relationship: ref('data_test_accepted_values_from_source')
+  - name: test_json_paths_not_null
+    columns:
+      - name: id
+      - name : json_field
+        tests:
+          - dbt_utils.json_paths_not_null:
+              paths: ['settings.emailAddress', 'settings.displayName']

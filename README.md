@@ -202,6 +202,25 @@ models:
 
 ```
 
+This macro can also be used at the column level. When this is done, the `expression` is evaluated against the column.  
+
+```yaml
+version: 2
+models: 
+    - name: model_name
+      columns: 
+        - name: col_a
+          tests:
+            - dbt_utils.expression_is_true:
+                expression: '>= 1'
+        - name: col_b
+          tests:
+            - dbt_utils.expression_is_true:
+                expression: '= 1'
+                condition: col_a = 1
+      
+```
+
 
 #### recency ([source](macros/schema_tests/recency.sql))
 This schema test asserts that there is data in the referenced model at least as recent as the defined interval prior to the current timestamp.

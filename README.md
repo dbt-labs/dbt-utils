@@ -428,6 +428,32 @@ This test confirms that all rows in a model have json values for the paths speci
             paths: ['preferences.email_type', 'preferences.email_address']
 ```
 
+#### not_null_when ([source](macros/schema_tests/not_null_when.sql))
+This test behaves the same as the built in `not_null` test, but allows the specifying of a condition to filter rows by.
+** Usage ** 
+```yaml
+- name: model
+  columns:
+    - name: col_a
+      tests:
+        - dbt_utils.not_null_when:
+            condition: "col_b = 1"
+```
+
+#### not_null_when ([source](macros/schema_tests/is_null_when.sql))
+This test asserts that all rows have a null value for the column where the condition specified is met.
+** Usage ** 
+```yaml
+- name: model
+  columns:
+    - name: col_a
+      tests:
+        - dbt_utils.is_null_when:
+            condition: "col_b > 1"
+```
+
+
+
 ### SQL helpers
 #### get_query_results_as_dict ([source](macros/sql/get_query_results_as_dict.sql))
 This macro returns a dictionary from a sql query, so that you don't need to interact with the Agate library to operate on the result

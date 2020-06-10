@@ -1,8 +1,8 @@
-{% macro star(from, relation_alias=False, except=[]) -%}
-    {{ return(adapter.dispatch('star', packages = dbt_utils._get_utils_namespaces())(from, relation_alias, except)) }}
+{% macro star(from, relation_alias=False, except=[], aliases={}) -%}
+    {{ return(adapter.dispatch('star', packages = dbt_utils._get_utils_namespaces())(from, relation_alias, except, aliases)) }}
 {% endmacro %}
 
-{% macro default__star(from, relation_alias=False, except=[]) -%}
+{% macro default__star(from, relation_alias=False, except=[], aliases={}) -%}
     {%- do dbt_utils._is_relation(from, 'star') -%}
     {%- do dbt_utils._is_ephemeral(from, 'star') -%}
 
@@ -23,8 +23,7 @@
     {%- endfor %}
 
     {%- for col in include_cols %}
-
-        {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}{{ adapter.quote(col)|trim }}
+        {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}{{ adapter.quote(col)|trim }}{%- if col in aliases %} as {{ adapter.quote(aliases[col]) | trim }}{%- endif -%}
         {%- if not loop.last %},{{ '\n  ' }}{% endif %}
 
     {%- endfor -%}

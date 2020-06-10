@@ -1,4 +1,4 @@
-{% macro star(from, relation_alias=False, except=[]) -%}
+{% macro star(from, relation_alias=False, except=[], aliases={}) -%}
 
     {%- do dbt_utils._is_relation(from, 'star') -%}
 
@@ -19,7 +19,7 @@
 
     {%- for col in include_cols %}
 
-        {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}{{ adapter.quote(col)|trim }}
+        {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}{{ adapter.quote(col)|trim }}{%- if col in aliases %} as {{ adapter.quote(aliases[col]) | trim }}{%- endif -%}
         {%- if not loop.last %},{{ '\n  ' }}{% endif %}
 
     {%- endfor -%}

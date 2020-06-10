@@ -101,6 +101,11 @@ models:
       - dbt_utils.equality:
           compare_model: ref('data_star_expected')
 
+  - name: test_star_aliases
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_star_aliases_expected')
+
   - name: test_surrogate_key
     tests:
       - assert_equal:

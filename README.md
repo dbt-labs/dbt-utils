@@ -446,11 +446,11 @@ Usage:
 
 #### star ([source](macros/sql/star.sql))
 This macro generates a list of all fields that exist in the `from` relation, excluding any fields listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with the star macro. This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias.
-
+It also has an optional arg that allows aliasing of individual columns.
 Usage:
 ```
 select
-{{ dbt_utils.star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"]) }}
+{{ dbt_utils.star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"], aliases={"field_x":"pretty_name", "field_y":"another_pretty_name"}) }}
 from {{ref('my_model')}}
 ```
 

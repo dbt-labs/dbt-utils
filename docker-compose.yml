@@ -2,7 +2,7 @@ version: "3.7"
 services:
 
   dbt:
-    image: circleci/python:3.6.2-stretch
+    image: circleci/python:3.6.9-stretch
     depends_on:
       - ${TARGET}
     env_file: "./integration_tests/.env/${TARGET}.env"
@@ -18,15 +18,15 @@ services:
 
   # dummy container, since snowflake is a managed service
   snowflake:
-    image: circleci/python:3.6.2-stretch
+    image: circleci/python:3.6.9-stretch
     entrypoint: "/bin/true"
   
   # dummy container, since bigquery is a managed service
   bigquery:
-    image: circleci/python:3.6.2-stretch
+    image: circleci/python:3.6.9-stretch
     entrypoint: "/bin/true"
 
   # dummy container, since redshift is a managed service
   redshift:
-    image: circleci/python:3.6.2-stretch
+    image: circleci/python:3.6.9-stretch
     entrypoint: "/bin/true"

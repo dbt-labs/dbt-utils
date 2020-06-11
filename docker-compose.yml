@@ -2,7 +2,7 @@ version: "3.7"
 services:
 
   dbt:
-    image: circleci/python:3.6.2-stretch
+    image: circleci/python:3.6.3-stretch
     depends_on:
       - ${TARGET}
     env_file: "./integration_tests/.env/${TARGET}.env"

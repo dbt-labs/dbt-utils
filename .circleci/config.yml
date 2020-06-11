@@ -4,7 +4,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/python:3.6.2-stretch
+      - image: circleci/python:3.6.3-stretch
       - image: circleci/postgres:9.6.5-alpine-ram
 
     steps:

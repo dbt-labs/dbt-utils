@@ -12,8 +12,10 @@ fi
 . $VENV
 cd integration_tests
 
-mkdir -p ~/.dbt
-cp ci/sample.profiles.yml ~/.dbt/profiles.yml
+if [[ ! -e ~/.dbt/profiles.yml ]]; then
+    mkdir -p ~/.dbt
+    cp ci/sample.profiles.yml ~/.dbt/profiles.yml
+fi
 
 _models=""
 _seeds="--full-refresh"

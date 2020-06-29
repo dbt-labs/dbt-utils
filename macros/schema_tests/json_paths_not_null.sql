@@ -3,7 +3,10 @@
 {% endmacro %}
 
 {% macro default__test_json_paths_not_null(model) %}
+    {% set _ = kwargs %}
+    {% if execute %}
     {{ exceptions.raise_compiler_error("Schema test json_paths_not_null not implemented for this adapter") }}
+    {% endif %}
 {% endmacro %}
 
 {% macro snowflake__test_json_paths_not_null (model) %}

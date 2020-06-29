@@ -483,7 +483,7 @@ get_relations_by_prefix, it's particularly handy paired with `union_relations`.
 {% set relations = dbt_utils.get_relations_by_pattern('schema_pattern', 'table_pattern%') %}
 
 -- Returns a list of relations as above, excluding any that end in `deprecated`
-{% set relations = dbt_utils.get_relations_by_pattern('schema_pattern',', 'table_pattern%', '%deprecated') %}
+{% set relations = dbt_utils.get_relations_by_pattern('schema_pattern', 'table_pattern%', '%deprecated') %}
 
 -- Example using the union_relations macro
 {% set event_relations = dbt_utils.get_relations_by_pattern('venue%', 'clicks') %}

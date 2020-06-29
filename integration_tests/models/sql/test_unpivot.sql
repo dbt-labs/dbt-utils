@@ -26,7 +26,7 @@ from (
         relation=ref('data_unpivot'),
         cast_to=dbt_utils.type_string(),
         exclude=exclude,
-        remove='name',
+        remove=['name'],
         field_name='prop',
         value_name='val'
     ) }}

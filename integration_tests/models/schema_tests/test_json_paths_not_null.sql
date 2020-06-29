@@ -1,3 +1,9 @@
+{{
+    config(
+        enabled=(target.type == 'snowflake')
+    )
+}}
+
 with source as (
     select * from {{ ref('data_test_json_paths_not_null') }}
 ), sanitized as (

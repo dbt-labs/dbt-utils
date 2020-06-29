@@ -1,4 +1,12 @@
-{% macro test_json_paths_not_null (model) %}
+{% macro test_json_paths_not_null(model) %}
+    {{ adapter_macro('dbt_utils.test_json_paths_not_null', model, **kwargs) }}
+{% endmacro %}
+
+{% macro default__test_json_paths_not_null(model) %}
+    {{ exceptions.raise_compiler_error("Schema test json_paths_not_null not implemented for this adapter") }}
+{% endmacro %}
+
+{% macro snowflake__test_json_paths_not_null (model) %}
     {% set column_name = kwargs.get('column_name') %}
     {% set paths = kwargs.get('paths', []) %}
 

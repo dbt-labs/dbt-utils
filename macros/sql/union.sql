@@ -20,6 +20,7 @@
         {%- do relation_columns.update({relation: []}) -%}
 
         {%- do dbt_utils._is_relation(relation, 'union_relations') -%}
+        {%- do dbt_utils._is_ephemeral(relation, 'union_relations') -%}
         {%- set cols = adapter.get_columns_in_relation(relation) -%}
         {%- for col in cols -%}
 

@@ -492,7 +492,7 @@ get_relations_by_prefix, it's particularly handy paired with `union_relations`.
 
 **Args:**
 * `schema_pattern` (required): The schema pattern to inspect for relations.
-* `table_pattern` (required): The name of the table/view (case insensitive)
+* `table_pattern` (required): The name of the table/view (case insensitive).
 * `exclude` (optional): Exclude any relations that match this table pattern.
 * `database` (optional, default = `target.database`): The database to inspect
 for relations.

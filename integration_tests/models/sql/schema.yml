@@ -104,11 +104,14 @@ models:
   - name: test_surrogate_key
     tests:
       - assert_equal:
-          actual: actual_arguments
-          expected: expected
+          actual: actual_column_1_only
+          expected: expected_column_1_only
       - assert_equal:
-          actual: actual_list
-          expected: expected
+          actual: actual_all_columns_arguments
+          expected: expected_all_columns
+      - assert_equal:
+          actual: actual_all_columns_list
+          expected: expected_all_columns
 
   - name: test_union
     tests:

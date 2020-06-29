@@ -49,4 +49,5 @@ seeds:
 
     datetime:
       data_epoch_to_timestamp:
-        +column_types: "{% if target.type == 'postgres' %}{ epoch_time_milliseconds: bigint }{% else %}{}{% endif %}"
+        +column_types:
+            epoch_time_milliseconds: "{% if target.type == 'bigquery' %}int64{% else %}bigint{% endif %}"

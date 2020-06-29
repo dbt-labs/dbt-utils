@@ -7,9 +7,9 @@ Check [dbt Hub](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/) for
 
 ## Macros
 ### Cross-database
-While these macros are cross database, they do not support all databases. 
-These macros are provided to make date calculations easier and are not a core part of dbt. 
-Most date macros are not supported on postgres. 
+While these macros are cross database, they do not support all databases.
+These macros are provided to make date calculations easier and are not a core part of dbt.
+Most date macros are not supported on postgres.
 
 #### current_timestamp ([source](macros/cross_db_utils/current_timestamp.sql))
 This macro returns the current timestamp.
@@ -247,6 +247,38 @@ models:
               field: other_column_name
               to: ref('other_model_name')
 
+```
+
+#### unique_where ([source](macros/schema_tests/unique_where.sql))
+This test validates that there are no duplicate values present in a field for a subset of rows by specifying a `where` clause.
+
+Usage:
+```yaml
+version: 2
+
+models:
+  - name: my_model
+    columns:
+      - name: id
+        tests:
+          - dbt_utils.unique_where:
+              where: "_deleted = false"
+```
+
+#### not_null_where ([source](macros/schema_tests/not_null_where.sql))
+This test validates that there are no null values present in a column for a subset of rows by specifying a `where` clause.
+
+Usage:
+```yaml
+version: 2
+
+models:
+  - name: my_model
+    columns:
+      - name: id
+        tests:
+          - dbt_utils.not_null_where:
+              where: "_deleted = false"
 ```
 
 #### relationships_where ([source](macros/schema_tests/relationships_where.sql))

@@ -8,6 +8,15 @@
 
 -- setup
 {%- do dbt_utils._is_relation(model, 'test_equality') -%}
+
+{#-
+If the compare_cols arg is provided, we can run this test without querying the
+information schema — this allows the model to be an ephemeral model
+-#}
+{%- if not kwargs.get('compare_columns', None) -%}
+    {%- do dbt_utils._is_ephemeral(model, 'test_equality') -%}
+{%- endif -%}
+
 {% set compare_model = kwargs.get('compare_model', kwargs.get('arg')) %}
 {% set compare_columns = kwargs.get('compare_columns', adapter.get_columns_in_relation(model) | map(attribute='quoted') ) %}
 {% set compare_cols_csv = compare_columns | join(', ') %}

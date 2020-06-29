@@ -1,8 +1,8 @@
-{% macro get_relations_by_schema_prefix(schema_prefix, table_name, exclude='', database=target.database) %}
+{% macro get_relations_by_pattern(schema_pattern, table_pattern, exclude='', database=target.database) %}
 
     {%- call statement('get_tables', fetch_result=True) %}
 
-      {{ dbt_utils.get_tables_by_schema_prefix(schema_prefix, table_name, exclude, database) }}
+      {{ dbt_utils.get_tables_by_pattern(schema_pattern, table_pattern, exclude, database) }}
 
     {%- endcall -%}
 

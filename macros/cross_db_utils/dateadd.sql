@@ -35,7 +35,7 @@
 
 {% set expression -%}
 
-    {{ from_date_or_timestamp }} + ((interval '1 {{ datepart }}') * ({{ interval }}))
+    {{ from_date_or_timestamp }}::timestamp + ((interval '1 {{ datepart }}') * ({{ interval }}))
 
 {%- endset %}
 

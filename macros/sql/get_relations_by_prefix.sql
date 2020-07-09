@@ -1,7 +1,5 @@
 {% macro get_relations_by_prefix(schema, prefix, exclude='', database=target.database) %}
 
-{%- do exceptions.warn("Warning: the `get_relations_by_prefix` macro will be replaced by `get_relations_by_pattern`. Support for `get_relations_by_prefix` will be deprecated in a future release of dbt-utils.") -%}
-
     {%- call statement('get_tables', fetch_result=True) %}
 
       {{ dbt_utils.get_tables_by_prefix_sql(schema, prefix, exclude, database) }}

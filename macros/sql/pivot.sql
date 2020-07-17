@@ -61,10 +61,11 @@ Arguments:
       end
     )
     {% if alias %}
+      {% set column_name = prefix ~ v ~ suffix %}
       {% if quote_identifiers %}
-            as {{ adapter.quote(prefix ~ v ~ suffix) }}
+            as {{ adapter.quote(column_name) }}
       {% else %}
-        as {{prefix ~ v ~ suffix }}
+        as {{ cleanse_jinja(column_name) }}
       {% endif %}
     {% endif %}
     {% if not loop.last %},{% endif %}

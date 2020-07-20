@@ -17,7 +17,7 @@ b as (
     select count(*) as count_b from {{ compare_model }}
 
 ),
-final as (
+finale as (
 
     select abs(
             (select count_a from a) -
@@ -27,6 +27,6 @@ final as (
 
 )
 
-select diff_count from final
+select diff_count from finale
 
 {% endmacro %}

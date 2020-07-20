@@ -57,7 +57,7 @@ unioned as (
 
 ),
 
-final as (
+finale as (
 
     select (select count(*) from unioned) +
         (select abs(
@@ -68,6 +68,6 @@ final as (
 
 )
 
-select count from final
+select count from finale
 
 {% endmacro %}

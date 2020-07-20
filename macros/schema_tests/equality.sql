@@ -18,7 +18,7 @@ information schema — this allows the model to be an ephemeral model
 {%- endif -%}
 
 {% set compare_model = kwargs.get('compare_model', kwargs.get('arg')) %}
-{% set compare_columns = kwargs.get('compare_columns', adapter.get_columns_in_relation(model) | map(attribute='quoted') ) %}
+{% set compare_columns = kwargs.get('compare_columns', adapter.get_columns_in_relation(model) | map(attribute='name') ) %}
 {% set compare_cols_csv = compare_columns | join(', ') %}
 
 with a as (

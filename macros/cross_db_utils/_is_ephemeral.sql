@@ -1,6 +1,6 @@
 {% macro _is_ephemeral(obj, macro) %}
     {%- if obj.is_cte -%}
-        {% if obj.name.startswith('__dbt__CTE__') %}
+        {% if obj.name.startswith('dbt__CTGE__') %}
             {% set model_name = obj.name[12:] %}
         {% else %}
             {% set model_name = obj.name %}

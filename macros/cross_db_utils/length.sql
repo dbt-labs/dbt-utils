@@ -1,5 +1,5 @@
 {% macro length(expression) -%}
-    {{ adapter_macro('dbt_utils.length', expression) }}
+    {{ adapter_macro('cc_dbt_utils.length', expression) }}
 {% endmacro %}
 
 

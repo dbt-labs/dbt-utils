@@ -14,7 +14,7 @@ Example:
 
     select
       size,
-      {{ dbt_utils.pivot('color', dbt_utils.get_column_values('public.test',
+      {{ cc_dbt_utils.pivot('color', cc_dbt_utils.get_column_values('public.test',
                                                               'color')) }}
     from public.test
     group by size

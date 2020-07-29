@@ -19,8 +19,8 @@
 
         {%- do relation_columns.update({relation: []}) -%}
 
-        {%- do dbt_utils._is_relation(relation, 'union_relations') -%}
-        {%- do dbt_utils._is_ephemeral(relation, 'union_relations') -%}
+        {%- do cc_dbt_utils._is_relation(relation, 'union_relations') -%}
+        {%- do cc_dbt_utils._is_ephemeral(relation, 'union_relations') -%}
         {%- set cols = adapter.get_columns_in_relation(relation) -%}
         {%- for col in cols -%}
 
@@ -63,7 +63,7 @@
         (
             select
 
-                cast({{ dbt_utils.string_literal(relation) }} as {{ dbt_utils.type_string() }}) as {{ source_column_name }},
+                cast({{ cc_dbt_utils.string_literal(relation) }} as {{ cc_dbt_utils.type_string() }}) as {{ source_column_name }},
                 {% for col_name in ordered_column_names -%}
 
                     {%- set col = column_superset[col_name] %}
@@ -88,6 +88,6 @@
 
     {%- do exceptions.warn("Warning: the `union_tables` macro is no longer supported and will be deprecated in a future release of dbt-utils. Use the `union_relations` macro instead") -%}
 
-    {{ return(dbt_utils.union_relations(tables, column_override, include, exclude, source_column_name)) }}
+    {{ return(cc_dbt_utils.union_relations(tables, column_override, include, exclude, source_column_name)) }}
 
 {%- endmacro -%}

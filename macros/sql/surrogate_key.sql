@@ -1,38 +1,29 @@
-{%- macro surrogate_key(field_list) -%}
+{%- macro surrogate_key(columns, normalize_case = none) -%}
 
-{%- if varargs|length >= 1 or field_list is string %}
+{% set fields = [] %}
 
-{%- do exceptions.warn("Warning: the `surrogate_key` macro now takes a single list argument instead of multiple string arguments. Support for multiple string arguments will be deprecated in a future release of dbt-utils.") -%}
+{%- for field in columns -%}
 
-{# first argument is not included in varargs, so add first element to field_list_xf #}
-{%- set field_list_xf = [field_list] -%}
+    {% if normalize_case is none %}
+          
+        {%- set _ = fields.append(
+            "coalesce(cast(" ~ field ~ " as " ~ cc_dbt_utils.type_string() ~ "), '')"
+        ) -%}
 
-{%- for field in varargs %}
-{%- set _ = field_list_xf.append(field) -%}
-{%- endfor -%}
+    {% elif normalize_case is not none %}
 
-{%- else -%}
+        {%- set _ = fields.append(
+            "upper(coalesce(cast(" ~ field ~ " as " ~ cc_dbt_utils.type_string() ~ "), ''))"
+        ) -%}
 
-{# if using list, just set field_list_xf as field_list #}
-{%- set field_list_xf = field_list -%}
+    {% endif %}
 
-{%- endif -%}
-
-
-{%- set fields = [] -%}
-
-{%- for field in field_list_xf -%}
-
-    {%- set _ = fields.append(
-        "coalesce(cast(" ~ field ~ " as " ~ dbt_utils.type_string() ~ "), '')"
-    ) -%}
-
-    {%- if not loop.last %}
-        {%- set _ = fields.append("'-'") -%}
-    {%- endif -%}
+    {% if not loop.last %}
+        {% set _ = fields.append("'-'") %}
+    {% endif %}
 
 {%- endfor -%}
 
-{{dbt_utils.hash(dbt_utils.concat(fields))}}
+{{cc_dbt_utils.hash(cc_dbt_utils.concat(fields))}}
 
 {%- endmacro -%}

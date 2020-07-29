@@ -2,7 +2,7 @@
 
     {%- call statement('get_tables', fetch_result=True) %}
 
-      {{ dbt_utils.get_tables_by_prefix_sql(schema, prefix, exclude, database) }}
+      {{ cc_dbt_utils.get_tables_by_prefix_sql(schema, prefix, exclude, database) }}
 
     {%- endcall -%}
 
@@ -26,6 +26,6 @@
 
     {% do exceptions.warn("Warning: the `get_tables_by_prefix` macro is no longer supported and will be deprecated in a future release of dbt-utils. Use the `get_relations_by_prefix` macro instead") %}
 
-    {{ return(dbt_utils.get_relations_by_prefix(schema, prefix, exclude, database)) }}
+    {{ return(cc_dbt_utils.get_relations_by_prefix(schema, prefix, exclude, database)) }}
 
 {% endmacro %}

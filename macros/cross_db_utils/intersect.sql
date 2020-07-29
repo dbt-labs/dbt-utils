@@ -1,5 +1,5 @@
 {% macro intersect() %}
-  {{ adapter_macro('dbt_utils.intersect') }}
+  {{ adapter_macro('cc_dbt_utils.intersect') }}
 {% endmacro %}
 
 

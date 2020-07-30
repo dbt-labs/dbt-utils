@@ -22,7 +22,7 @@ _seeds="--full-refresh"
 if [[ ! -z $2 ]]; then _models="--models $2"; fi
 if [[ ! -z $3 ]]; then _seeds="--select $3 --full-refresh"; fi
 
-dbt deps --target $1
-dbt seed --target $1 $_seeds
-dbt run --target $1 $_models
-dbt test --target $1 $_models
+dbt --warn-error deps --target $1
+dbt --warn-error seed --target $1 $_seeds
+dbt --warn-error run --target $1 $_models
+dbt --warn-error test --target $1 $_models

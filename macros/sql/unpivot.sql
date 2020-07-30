@@ -15,7 +15,12 @@ Arguments:
 {% macro unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', table=none) -%}
 
     {% if table %}
-        {% do exceptions.warn("Warning: the `unpivot` macro no longer accepts a `table` parameter. This parameter will be deprecated in a future release of dbt-utils. Use the `relation` parameter instead") %}
+        {%- set error_message = '
+            Warning: the `unpivot` macro no longer accepts a `table` parameter. \
+            This parameter will be deprecated in a future release of dbt-utils. Use the `relation` parameter instead. \
+            The {}.{} model triggered this warning. \
+            '.format(model.package_name, model.name) -%}
+        {%- do exceptions.warn(error_message) -%}
     {% endif %}
 
     {% if relation and table %}

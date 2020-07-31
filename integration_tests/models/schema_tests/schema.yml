@@ -107,5 +107,5 @@ models:
       - dbt_utils.no_time_gap:
           datepart: day
           field: day
-          interval: 7
-          since: 100
+          interval: 2
+          since: 14

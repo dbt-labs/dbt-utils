@@ -406,6 +406,32 @@ case we recommend using this test instead.
           - product
 ```
 
+#### no_time_gap ([source](macros/schema_tests/no_time_gap.sql))
+This test asserts that a gap of the specified duration does not exist in a
+date or datetime column. For tables that are loaded incrementally, this test 
+can be used to verify that data loaded for all time intervals.
+
+**Usage:**
+```yaml
+version: 2
+
+models:
+  # tests that events exist in every 2 week interval in the past 52 weeks
+  - name: events
+    tests:
+      - dbt_utils.no_time_gap:
+          field: created_at
+          datepart: week
+          interval: 2
+          since: 52
+```
+**Args:**
+* `field` (required): The name of the column to test.
+* `datepart` (required): The date part to use as the unit for `interval` and `since`.
+* `interval` (required): The size of the gap that we are testing for. A gap of this 
+size or larger should not exist.
+* `since` (optional): If specified, the test only selects records created after since dateparts ago.
+
 ---
 ### SQL helpers
 #### get_query_results_as_dict ([source](macros/sql/get_query_results_as_dict.sql))

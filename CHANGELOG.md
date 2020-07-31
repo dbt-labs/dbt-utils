@@ -1,4 +1,12 @@
-## dbt-utils v0.5.1
+# dbt-utils v0.6.0 (unreleased)
+
+## Fixes
+
+## Features
+
+## Quality of life
+
+# dbt-utils v0.5.1
 
 ## Fixes
 

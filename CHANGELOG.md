@@ -3,6 +3,7 @@
 ## Fixes
 
 ## Features
+* Add `no_time_gap` schema test
 
 ## Quality of life
 

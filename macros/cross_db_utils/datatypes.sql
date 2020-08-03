@@ -1,7 +1,7 @@
 {# string  -------------------------------------------------     #}
 
 {%- macro type_string() -%}
-  {{ adapter_macro('dbt_utils.type_string') }}
+  {{ adapter.dispatch('type_string', packages = dbt_utils._get_utils_namespaces())() }}
 {%- endmacro -%}
 
 {% macro default__type_string() %}
@@ -25,7 +25,7 @@
 {# timestamp  -------------------------------------------------     #}
 
 {%- macro type_timestamp() -%}
-  {{ adapter_macro('dbt_utils.type_timestamp') }}
+  {{ adapter.dispatch('type_timestamp', packages = dbt_utils._get_utils_namespaces())() }}
 {%- endmacro -%}
 
 {% macro default__type_timestamp() %}
@@ -40,7 +40,7 @@
 {# float  -------------------------------------------------     #}
 
 {%- macro type_float() -%}
-  {{ adapter_macro('dbt_utils.type_float') }}
+  {{ adapter.dispatch('type_float', packages = dbt_utils._get_utils_namespaces())() }}
 {%- endmacro -%}
 
 {% macro default__type_float() %}
@@ -54,7 +54,7 @@
 {# numeric  ------------------------------------------------     #}
 
 {%- macro type_numeric() -%}
-  {{ adapter_macro('dbt_utils.type_numeric') }}
+  {{ adapter.dispatch('type_numeric', packages = dbt_utils._get_utils_namespaces())() }}
 {%- endmacro -%}
 
 {% macro default__type_numeric() %}
@@ -69,7 +69,7 @@
 {# bigint  -------------------------------------------------     #}
 
 {%- macro type_bigint() -%}
-  {{ adapter_macro('dbt_utils.type_bigint') }}
+  {{ adapter.dispatch('type_bigint', packages = dbt_utils._get_utils_namespaces())() }}
 {%- endmacro -%}
 
 {% macro default__type_bigint() %}
@@ -83,7 +83,7 @@
 {# int  -------------------------------------------------     #}
 
 {%- macro type_int() -%}
-  {{ adapter_macro('dbt_utils.type_int') }}
+  {{ adapter.dispatch('type_int', packages = dbt_utils._get_utils_namespaces())() }}
 {%- endmacro -%}
 
 {% macro default__type_int() %}

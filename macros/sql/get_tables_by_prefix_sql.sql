@@ -1,5 +1,5 @@
 {% macro get_tables_by_prefix_sql(schema, prefix, exclude='', database=target.database) %}
-    {{ adapter_macro('dbt_utils.get_tables_by_prefix_sql', schema, prefix, exclude, database) }}
+    {{ adapter.dispatch('get_tables_by_prefix_sql', packages = dbt_utils._get_utils_namespaces()) (schema, prefix, exclude, database) }}
 {% endmacro %}
 
 {% macro default__get_tables_by_prefix_sql(schema, prefix, exclude='', database=target.database) %}

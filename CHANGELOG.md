@@ -15,3 +15,4 @@
 ## Quality of life
 * Improve release process, and fix tests (#251)
 * Make deprecation warnings more useful (#258 @tayloramurphy)
+* Add more docs for `date_spine` (#265 @calvingiles)

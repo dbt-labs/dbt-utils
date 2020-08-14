@@ -2,7 +2,7 @@
 
     {%- call statement('get_tables', fetch_result=True) %}
 
-      {{ dbt_utils.get_tables_by_pattern(schema_pattern, table_pattern, exclude, database) }}
+      {{ dbt_utils.get_tables_by_pattern_sql(schema_pattern, table_pattern, exclude, database) }}
 
     {%- endcall -%}
 
@@ -21,3 +21,15 @@
     {%- endif -%}
 
 {% endmacro %}
+
+{% macro get_tables_by_pattern(schema_pattern, table_pattern, exclude='', database=target.database) %}
+    {%- set error_message = '
+        Warning: the `get_tables_by_pattern` macro is no longer supported and will be deprecated in a future release of dbt-utils. \
+        Use the `get_relations_by_prefix` macro instead. \
+        The {}.{} model triggered this warning. \
+        '.format(model.package_name, model.name) -%}
+    {%- do exceptions.warn(error_message) -%}
+
+    {{ return(dbt_utils.get_relations_by_pattern(schema_pattern, table_pattern, exclude='', database=target.database)) }}
+
+{% endmacro %} 

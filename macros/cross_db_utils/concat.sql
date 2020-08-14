@@ -14,10 +14,10 @@
 
 
 {% macro redshift__concat(fields) %}
-    {{ alternative_concat(fields) }}
+    {{ dbt_utils.alternative_concat(fields) }}
 {% endmacro %}
 
 
 {% macro snowflake__concat(fields) %}
-    {{ alternative_concat(fields) }}
+    {{ dbt_utils.alternative_concat(fields) }}
 {% endmacro %}

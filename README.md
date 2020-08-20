@@ -442,9 +442,6 @@ Usage:
 ...
 ```
 #### get_relations_by_prefix
-> This replaces the `get_tables_by_prefix` macro. Note that the `get_tables_by_prefix` macro will
-be deprecated in a future release of this package.
-
 Returns a list of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation)
 that match a given prefix, with an optional exclusion pattern. It's particularly
 handy paired with `union_relations`.
@@ -516,8 +513,6 @@ from {{ref('my_model')}}
 ```
 
 #### union_relations ([source](macros/sql/union.sql))
-> This replaces the `union_tables` macro. Note that the `union_tables` macro will
-be deprecated in a future release of this package.
 
 This macro unions together an array of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation),
 even when columns have differing orders in each Relation, and/or some columns are

@@ -21,15 +21,3 @@
     {%- endif -%}
 
 {% endmacro %}
-
-{% macro get_tables_by_prefix(schema, prefix, exclude='', database=target.database) %}
-    {%- set error_message = '
-        Warning: the `get_tables_by_prefix` macro is no longer supported and will be deprecated in a future release of dbt-utils. \
-        Use the `get_relations_by_prefix` macro instead. \
-        The {}.{} model triggered this warning. \
-        '.format(model.package_name, model.name) -%}
-    {%- do exceptions.warn(error_message) -%}
-
-    {{ return(dbt_utils.get_relations_by_prefix(schema, prefix, exclude, database)) }}
-
-{% endmacro %}

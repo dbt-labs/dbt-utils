@@ -777,6 +777,42 @@ We welcome contributions to this repo! To contribute a new feature or a fix, ple
 
 ----
 
+### Dispatch macros
+
+**Note:** This is primarily relevant to users and maintainers of community-supported
+database plugins. If you use Postgres, Redshift, Snowflake, or Bigquery, this likely
+does not apply to you.
+
+dbt v0.18.0 introduces `adapter.dispatch()`, a reliable way to define different implementations of the same macro
+across different databases.
+
+All dispatched macros in `dbt_utils` have an override setting: a `var` named
+`dbt_utils_dispatch_list` that accepts a list of package names. If you set this 
+variable in your project, when dbt searches for implementations of a dispatched
+`dbt_utils` macro, it will search through your listed packages _before_ using
+the implementations defined in `dbt_utils`.
+
+Set the variable:
+```yml
+vars:
+  dbt_utils_dispatch_list:
+    - first_package_to_search    # likely the name of your root project
+    - second_package_to_search   # likely an "add-on" package, such as spark_utils
+    # dbt_utils is always the last place searched
+```
+
+When running on Spark, if dbt needs to dispatch `dbt_utils.datediff`, it will search for the following in order:
+```
+first_package_to_search.spark__datediff
+first_package_to_search.default__datediff
+second_package_to_search.spark__datediff
+second_package_to_search.default__datediff
+dbt_utils.spark__datediff
+dbt_utils.default__datediff
+```
+
+----
+
 ### Getting started with dbt
 
 - [What is dbt]?

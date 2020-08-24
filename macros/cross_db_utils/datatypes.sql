@@ -16,9 +16,9 @@
     varchar
 {% endmacro %}
 
-{% macro snowflake__type_string() %}
+{%- macro snowflake__type_string() -%}
     varchar
-{% endmacro %}
+{%- endmacro -%}
 
 
 

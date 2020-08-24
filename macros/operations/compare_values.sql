@@ -1,11 +1,19 @@
 {#- 
 To run, alter this command
 
+--simple example
+dbt run-operation compare_objects --args "{comparison_schema : dbt_kevin, object_name: dw_claim_transaction_item_calendar_date_ungrouped, primary_key : 'claim_transaction_calendar_date_key'}"
+dbt run-operation compare_objects --args "{comparison_schema : dbt_kevin, object_name: dw_claim_transaction_item_calendar_date_ungrouped, primary_key : 'claim_transaction_calendar_date_key', sql_where: calendar_date < '2020-08-15'}"
+
+--example with updated prod_schema variable
+dbt run-operation compare_objects --args "{comparison_schema : dbt_kevin_dw, prod_schema: dw, object_name: dw_claim_transaction_item_calendar_date_ungrouped, primary_key : 'claim_transaction_calendar_date_key'}"
+dbt run-operation compare_objects --args "{comparison_schema : dbt_kevin_dw, prod_schema: dw, object_name: dw_claim_transaction_item_calendar_date_ungrouped, primary_key : 'claim_transaction_calendar_date_key', sql_where: calendar_date < '2020-08-15'}"
+
+--example where you need to construct a primary key
 dbt run-operation compare_objects --args "{comparison_schema : dbt_kevin, object_name: claim_transaction_calendar_date, primary_key : 'claim_uuid || claim_coverage_type ||  calendar_date'}"
-
 dbt run-operation compare_objects --args "{comparison_schema: dbt_kevin, object_name: claim_transaction_calendar_date, primary_key : 'claim_uuid || claim_coverage_type ||  calendar_date', sql_where: calendar_date < '2020-05-01'}"
- -#}
 
+-#}
 
 {% macro get_comparison_schema() %}
 
@@ -42,6 +50,7 @@ dbt run-operation compare_objects --args "{comparison_schema: dbt_kevin, object_
 	   ["column_name", "varchar(512)"],
 	   ["match_status", "varchar(512)"],
 	   ["counts", "integer"],
+       ["query", "varchar"],
 	   ["created_at", cc_dbt_utils.type_timestamp()]
 	] -%}
 
@@ -107,7 +116,7 @@ dbt run-operation compare_objects --args "{comparison_schema: dbt_kevin, object_
 		{% do run_query(drop_table_sql) %}
 {% endmacro %}
 
-{% macro log_comparison_results(invocation_id,schema_name, relation_name, column_name,match_status, counts) %}
+{% macro log_comparison_results(invocation_id,schema_name, relation_name, column_name, match_status, counts, query) %}
 
 	insert into {{ get_comparison_results_relation() }} (
 		invocation_id,
@@ -116,6 +125,7 @@ dbt run-operation compare_objects --args "{comparison_schema: dbt_kevin, object_
 		column_name,
 		match_status,
 		counts,
+        query,
 		created_at
 	)
 
@@ -126,6 +136,7 @@ dbt run-operation compare_objects --args "{comparison_schema: dbt_kevin, object_
 		{% if variable != None %}'{{ column_name }}'{% else %}null::varchar(512){% endif %},
 		{% if variable != None %}'{{ match_status }}'{% else %}null::varchar(512){% endif %},
 		{% if variable != None %}'{{ counts }}'{% else %}null::int{% endif %},
+        {% if variable != None %}{{ query }}{% else %}null::varchar{% endif %},
 		{{ cc_dbt_utils.current_timestamp_in_utc() }}
 	);
 	
@@ -151,7 +162,14 @@ dbt run-operation compare_objects --args "{comparison_schema: dbt_kevin, object_
 	{% do log('results table is ready to go', True) %}
 	
 	{% set original_object = adapter.get_relation(prod_database, prod_schema, object_name) -%}
+		{%- if original_object is none -%}
+			{% do log('The original object {2}.{1}.{0} was not found, please double check your inputs or permissions if you believe your object definitely exists'.format(object_name, prod_schema, prod_database), True) %}
+		{%- endif -%}
+
 	{% set comparison_object = adapter.get_relation(target.database, comparison_schema, object_name) -%}
+		{%- if comparison_object is none -%}
+			{% do log('The comparison object {2}.{1}.{0} was not found, please double check your inputs or permissions if you believe your object definitely exists'.format(object_name, comparison_schema, target.database), True) %}
+		{%- endif -%}
 
   	{%- set original_columns = adapter.get_columns_in_relation(original_object)|map(attribute='column')|map('lower')|list -%}
   	{%- set comparison_columns = adapter.get_columns_in_relation(comparison_object)|map(attribute='column')|map('lower')|list -%}
@@ -163,7 +181,7 @@ dbt run-operation compare_objects --args "{comparison_schema: dbt_kevin, object_
   	{%- for column_name in total_columns -%}
 		{% do log('starting column {0}.'.format(column_name), True) %}
 		{% set compare_sql %}
-		
+
 		with original_object_cte as (
 
 			select *,
@@ -197,18 +215,20 @@ dbt run-operation compare_objects --args "{comparison_schema: dbt_kevin, object_
 			from original_object_cte as a
 			full outer join comparison_object_cte as b
 				on a.cv_primary_key = b.cv_primary_key
-			where 1=1
+			where 1=1 {{ '\n  ' }}
 			{%- if sql_where is not none -%}
 			and a.{{ sql_where }} {{ '\n  ' }}
 			{%- endif -%}
 			group by 1
 			
 		{% endset %}
-
+        
+        
 		{% set compare_sql_results = run_query(compare_sql) %}
+        {% set compare_sql_string = '$$' ~ compare_sql|string ~ '$$' %}
 		{%- for result in compare_sql_results.rows -%}
 
-			{% set run_a = run_query(log_comparison_results(invocation_id = invocation_id_value.rows[0][0], schema_name=comparison_schema, relation_name = object_name, column_name = column_name, match_status = result[0], counts = result[1])) %}
+			{% set run_a = run_query(log_comparison_results(invocation_id = invocation_id_value.rows[0][0], schema_name=comparison_schema, relation_name = object_name, column_name = column_name, match_status = result[0], counts = result[1], query=compare_sql_string)) %}
 
 		{%- endfor -%}
 

@@ -1,4 +1,4 @@
-{%- macro union_relations(relations, column_override=none, include=[], exclude=[], source_column_name=none) -%}
+{%- macro union_relations(relations, column_override=none, include=[], exclude=[], source_column_name='_dbt_source_relation') -%}
 
     {%- if exclude and include -%}
         {{ exceptions.raise_compiler_error("Both an exclude and include list were provided to the `union` macro. Only one is allowed") }}
@@ -10,7 +10,6 @@
     {% endif -%}
 
     {%- set column_override = column_override if column_override is not none else {} -%}
-    {%- set source_column_name = source_column_name if source_column_name is not none else '_dbt_source_relation' -%}
 
     {%- set relation_columns = {} -%}
     {%- set column_superset = {} -%}
@@ -81,17 +80,5 @@
         {% endif -%}
 
     {%- endfor -%}
-
-{%- endmacro -%}
-
-{%- macro union_tables(tables, column_override=none, include=[], exclude=[], source_column_name='_dbt_source_table') -%}
-    {%- set error_message = '
-        Warning: the `union_tables` macro is no longer supported and will be deprecated in a future release of dbt-utils. \
-        Use the `union_relations` macro instead. \
-        The {}.{} model triggered this warning. \
-        '.format(model.package_name, model.name) -%}
-    {%- do exceptions.warn(error_message) -%}
-
-    {{ return(dbt_utils.union_relations(tables, column_override, include, exclude, source_column_name)) }}
 
 {%- endmacro -%}

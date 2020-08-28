@@ -49,3 +49,4 @@ database adapters that use different prefixes (#267)
 ## Quality of life
 * Improve release process, and fix tests (#251)
 * Make deprecation warnings more useful (#258 @tayloramurphy)
+* Upgrade unique_combination_of_columns.sql macro to respect the quote_columns=TRUE flag as a test argument

@@ -36,11 +36,11 @@ database adapters that use different prefixes ([#267](https://github.com/fishtow
 * Implement a quote_columns argument in the unique_combination_of_columns schema test ([#270](https://github.com/fishtown-analytics/dbt-utils/pull/270) [@JoshuaHuntley](https://github.com/JoshuaHuntley))
 
 ## Quality of life
-* Remove deprecated macros `get_tables_by_prefix` and `union_tables` ([#268]((https://github.com/fishtown-analytics/dbt-utils/pull/268))
-* Remove `get_tables_by_pattern` macro, which is equivalent to the `get_tables_by_pattern_sql` macro (the latter has a more logical name) ([#268]((https://github.com/fishtown-analytics/dbt-utils/pull/268))
+* Remove deprecated macros `get_tables_by_prefix` and `union_tables` ([#268](https://github.com/fishtown-analytics/dbt-utils/pull/268))
+* Remove `get_tables_by_pattern` macro, which is equivalent to the `get_tables_by_pattern_sql` macro (the latter has a more logical name) ([#268](https://github.com/fishtown-analytics/dbt-utils/pull/268))
 
 # dbt-utils v0.5.1
 
 ## Quality of life
 * Improve release process, and fix tests ([#251](https://github.com/fishtown-analytics/dbt-utils/pull/251))
-* Make deprecation warnings more useful ([#258](https://github.com/fishtown-analytics/dbt-utils/pull/258)) [@tayloramurphy](https://github.com/tayloramurphy))
+* Make deprecation warnings more useful ([#258](https://github.com/fishtown-analytics/dbt-utils/pull/258) [@tayloramurphy](https://github.com/tayloramurphy))

@@ -406,6 +406,18 @@ case we recommend using this test instead.
           - product
 ```
 
+An optional `quote_columns` parameter (`default=false`) can also be used if a column name needs to be quoted.
+
+```yaml
+- name: revenue_by_product_by_month
+  tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - month
+          - group
+        quote_columns: true
+```
+
 ---
 ### SQL helpers
 #### get_query_results_as_dict ([source](macros/sql/get_query_results_as_dict.sql))
@@ -782,7 +794,7 @@ dbt v0.18.0 introduces `adapter.dispatch()`, a reliable way to define different 
 across different databases.
 
 All dispatched macros in `dbt_utils` have an override setting: a `var` named
-`dbt_utils_dispatch_list` that accepts a list of package names. If you set this 
+`dbt_utils_dispatch_list` that accepts a list of package names. If you set this
 variable in your project, when dbt searches for implementations of a dispatched
 `dbt_utils` macro, it will search through your listed packages _before_ using
 the implementations defined in `dbt_utils`.

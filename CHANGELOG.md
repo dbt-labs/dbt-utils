@@ -1,5 +1,6 @@
 # dbt-utils v0.6.5 (unreleased)
 ## Features
+* Add new `accepted_range` test ([#276](https://github.com/fishtown-analytics/dbt-utils/pull/276) [@joellabes](https://github.com/joellabes))
 
 ## Fixes
 

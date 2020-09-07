@@ -1,3 +1,9 @@
+# dbt-utils v0.7.0 (unreleased)
+
+## Features
+* Add new `accepted_range` test ([#276](https://github.com/fishtown-analytics/dbt-utils/pull/276) [@joellabes](https://github.com/joellabes))
+
+
 # dbt-utils v0.6.4
 
 ### Fixes
@@ -13,15 +19,14 @@
 
 # dbt-utils v0.6.3
 
+## Fixes
 - Bump `require-dbt-version` to `[">=0.18.0", "<0.20.0"]` to support dbt v0.19.0 ([#308](https://github.com/fishtown-analytics/dbt-utils/pull/308), [#309](https://github.com/fishtown-analytics/dbt-utils/pull/309))
 
-## Fixes
 
 # dbt-utils v0.6.2
 
 ## Fixes
 - Fix the logic in `get_tables_by_pattern_sql` to ensure non-default arguments are respected ([#279](https://github.com/fishtown-analytics/dbt-utils/pull/279))
-
 
 # dbt-utils v0.6.1
 

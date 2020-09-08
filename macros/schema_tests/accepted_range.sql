@@ -17,12 +17,12 @@ validation_errors as (
 
   {%- if min_value is not none %}
     -- records with a value >= min_value are permitted. The `not` flips this to find records that don't meet the rule.
-    or not {{ column_name }} >{{"=" if inclusive}} {{min_value}} 
+    or not {{ column_name }} > {{- "=" if inclusive }} {{ min_value }} 
   {%- endif %}
 
   {%- if max_value is not none %}
     -- records with a value <= max_value are permitted. The `not` flips this to find records that don't meet the rule.
-    or not {{ column_name }} <{{"=" if inclusive}} {{max_value}}
+    or not {{ column_name }} < {{- "=" if inclusive }} {{ max_value }}
   {%- endif %}
 )
 

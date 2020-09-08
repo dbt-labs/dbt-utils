@@ -440,21 +440,21 @@ models:
       - name: account_created_at
         tests:
           - dbt_utils.accepted_range:
-            max_value: "getdate()"
-            #inclusive is true by default
+              max_value: "getdate()"
+              #inclusive is true by default
       
       - name: num_returned_orders
         tests:
-          - dbt_utils.accepted_range
-            min_value: 0
-            max_value: "num_orders"
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: "num_orders"
       
       - name: num_web_sessions
         tests:
-          - dbt_utils.accepted_range
-            min_value: 0
-            inclusive: false
-            where: "num_orders > 0"
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+              where: "num_orders > 0"
 ```
 
 ---

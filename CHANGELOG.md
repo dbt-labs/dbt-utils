@@ -1,3 +1,8 @@
+# dbt-utils v0.6.1
+
+## Fixes
+- Fix the logic in `get_tables_by_pattern_sql` for matching a schema pattern on BigQuery ([#275](https://github.com/fishtown-analytics/dbt-utils/pull/275/))
+
 # dbt-utils v0.6.0
 
 ## Breaking changes

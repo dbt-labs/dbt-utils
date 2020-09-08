@@ -46,3 +46,7 @@ seeds:
           num_buckets: integer
           min_value: float
           max_value: float
+
+    sql:
+      data_events_20180103:
+        +schema: events

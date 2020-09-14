@@ -103,18 +103,20 @@ models:
             - product
 
   - name: data_test_accepted_range
-    tests:
-      - dbt_utils.accepted_range:
-          min_value: -1
-          max_value: 11
-          inclusive: true
-          
-      - dbt_utils.accepted_range:
-          min_value: -2
-          max_value: 11.1
-          inclusive: false
-          
-      - dbt_utils.accepted_range:
-          min_value: 0
-          inclusive: true
-          where: "id <> -1"
+    columns:
+      - name: id
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: -1
+              max_value: 11
+              inclusive: true
+
+          - dbt_utils.accepted_range:
+              min_value: -2
+              max_value: 11.1
+              inclusive: false
+
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: true
+              where: "id <> -1"

@@ -1,3 +1,9 @@
+# dbt-utils v0.6.2
+
+## Fixes
+- Fix the logic in `get_tables_by_pattern_sql` to ensure non-default arguments are respected ([#279](https://github.com/fishtown-analytics/dbt-utils/pull/279))
+
+
 # dbt-utils v0.6.1
 
 ## Fixes

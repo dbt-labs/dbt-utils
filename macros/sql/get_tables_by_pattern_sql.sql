@@ -1,6 +1,6 @@
 {% macro get_tables_by_pattern_sql(schema_pattern, table_pattern, exclude='', database=target.database) %}
     {{ adapter.dispatch('get_tables_by_pattern_sql', packages = dbt_utils._get_utils_namespaces())
-        (schema_pattern, table_pattern, exclude='', database=target.database) }}
+        (schema_pattern, table_pattern, exclude, database) }}
 {% endmacro %}
 
 {% macro default__get_tables_by_pattern_sql(schema_pattern, table_pattern, exclude='', database=target.database) %}

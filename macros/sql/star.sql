@@ -13,7 +13,7 @@
 
     {%- for col in cols -%}
 
-        {%- if col.column not in except -%}
+        {%- if col.column|lower not in except|map('lower') -%}
             {% do include_cols.append(col.column) %}
 
         {%- endif %}

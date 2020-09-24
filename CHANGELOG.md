@@ -55,3 +55,4 @@ database adapters that use different prefixes ([#267](https://github.com/fishtow
 ## Quality of life
 * Improve release process, and fix tests ([#251](https://github.com/fishtown-analytics/dbt-utils/pull/251))
 * Make deprecation warnings more useful ([#258](https://github.com/fishtown-analytics/dbt-utils/pull/258) [@tayloramurphy](https://github.com/tayloramurphy))
+* Add more docs for `date_spine` ([#265](https://github.com/fishtown-analytics/dbt-utils/pull/265) [@calvingiles](https://github.com/calvingiles))

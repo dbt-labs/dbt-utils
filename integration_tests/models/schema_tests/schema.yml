@@ -79,7 +79,7 @@ models:
       - name: city
         tests:
           - dbt_utils.not_accepted_values:
-              values: ['Barcelona', 'New York', 'Berlin']
+              values: ['Madrid', 'Berlin']
 
   - name: data_test_relationships_where_table_2
     columns:

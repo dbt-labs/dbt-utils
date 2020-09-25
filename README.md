@@ -7,9 +7,9 @@ Check [dbt Hub](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/) for
 
 ## Macros
 ### Cross-database
-While these macros are cross database, they do not support all databases. 
-These macros are provided to make date calculations easier and are not a core part of dbt. 
-Most date macros are not supported on postgres. 
+While these macros are cross database, they do not support all databases.
+These macros are provided to make date calculations easier and are not a core part of dbt.
+Most date macros are not supported on postgres.
 
 #### current_timestamp ([source](macros/cross_db_utils/current_timestamp.sql))
 This macro returns the current timestamp.
@@ -95,7 +95,7 @@ Usage:
 ---
 ### Date/Time
 #### date_spine ([source](macros/datetime/date_spine.sql))
-This macro returns the sql required to build a date spine.
+This macro returns the sql required to build a date spine. The spine will include the `start_date` (if it is aligned to the `datepart`), but it will not include the `end_date`. 
 
 Usage:
 ```
@@ -249,6 +249,38 @@ models:
 
 ```
 
+#### unique_where ([source](macros/schema_tests/unique_where.sql))
+This test validates that there are no duplicate values present in a field for a subset of rows by specifying a `where` clause.
+
+Usage:
+```yaml
+version: 2
+
+models:
+  - name: my_model
+    columns:
+      - name: id
+        tests:
+          - dbt_utils.unique_where:
+              where: "_deleted = false"
+```
+
+#### not_null_where ([source](macros/schema_tests/not_null_where.sql))
+This test validates that there are no null values present in a column for a subset of rows by specifying a `where` clause.
+
+Usage:
+```yaml
+version: 2
+
+models:
+  - name: my_model
+    columns:
+      - name: id
+        tests:
+          - dbt_utils.not_null_where:
+              where: "_deleted = false"
+```
+
 #### relationships_where ([source](macros/schema_tests/relationships_where.sql))
 This test validates the referential integrity between two relations (same as the core relationships schema test) with an added predicate to filter out some rows from the test. This is useful to exclude records such as test entities, rows created in the last X minutes/hours to account for temporary gaps due to ETL limitations, etc.
 
@@ -374,6 +406,18 @@ case we recommend using this test instead.
           - product
 ```
 
+An optional `quote_columns` parameter (`default=false`) can also be used if a column name needs to be quoted.
+
+```yaml
+- name: revenue_by_product_by_month
+  tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - month
+          - group
+        quote_columns: true
+```
+
 ---
 ### SQL helpers
 #### get_query_results_as_dict ([source](macros/sql/get_query_results_as_dict.sql))
@@ -410,9 +454,6 @@ Usage:
 ...
 ```
 #### get_relations_by_prefix
-> This replaces the `get_tables_by_prefix` macro. Note that the `get_tables_by_prefix` macro will
-be deprecated in a future release of this package.
-
 Returns a list of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation)
 that match a given prefix, with an optional exclusion pattern. It's particularly
 handy paired with `union_relations`.
@@ -433,6 +474,35 @@ handy paired with `union_relations`.
 * `schema` (required): The schema to inspect for relations.
 * `prefix` (required): The prefix of the table/view (case insensitive)
 * `exclude` (optional): Exclude any relations that match this pattern.
+* `database` (optional, default = `target.database`): The database to inspect
+for relations.
+
+#### get_relations_by_pattern
+> This was built from the get_relations_by_prefix macro.
+
+Returns a list of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation)
+that match a given schema or table pattern and table/view name with an optional exclusion pattern. Like its cousin
+get_relations_by_prefix, it's particularly handy paired with `union_relations`.
+**Usage:**
+```
+-- Returns a list of relations that match schema%.table
+{% set relations = dbt_utils.get_relations_by_pattern('schema_pattern%', 'table_pattern') %}
+
+-- Returns a list of relations that match schema.table%
+{% set relations = dbt_utils.get_relations_by_pattern('schema_pattern', 'table_pattern%') %}
+
+-- Returns a list of relations as above, excluding any that end in `deprecated`
+{% set relations = dbt_utils.get_relations_by_pattern('schema_pattern', 'table_pattern%', '%deprecated') %}
+
+-- Example using the union_relations macro
+{% set event_relations = dbt_utils.get_relations_by_pattern('venue%', 'clicks') %}
+{{ dbt_utils.union_relations(relations = event_relations) }}
+```
+
+**Args:**
+* `schema_pattern` (required): The schema pattern to inspect for relations.
+* `table_pattern` (required): The name of the table/view (case insensitive).
+* `exclude` (optional): Exclude any relations that match this table pattern.
 * `database` (optional, default = `target.database`): The database to inspect
 for relations.
 
@@ -463,8 +533,6 @@ from {{ref('my_model')}}
 ```
 
 #### union_relations ([source](macros/sql/union.sql))
-> This replaces the `union_tables` macro. Note that the `union_tables` macro will
-be deprecated in a future release of this package.
 
 This macro unions together an array of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation),
 even when columns have differing orders in each Relation, and/or some columns are
@@ -721,6 +789,42 @@ A useful workaround is to change the above post-hook to:
 ### Contributing
 
 We welcome contributions to this repo! To contribute a new feature or a fix, please open a Pull Request with 1) your changes, 2) updated documentation for the `README.md` file, and 3) a working integration test. See [this page](integration_tests/README.md) for more information.
+
+----
+
+### Dispatch macros
+
+**Note:** This is primarily relevant to users and maintainers of community-supported
+database plugins. If you use Postgres, Redshift, Snowflake, or Bigquery, this likely
+does not apply to you.
+
+dbt v0.18.0 introduces `adapter.dispatch()`, a reliable way to define different implementations of the same macro
+across different databases.
+
+All dispatched macros in `dbt_utils` have an override setting: a `var` named
+`dbt_utils_dispatch_list` that accepts a list of package names. If you set this
+variable in your project, when dbt searches for implementations of a dispatched
+`dbt_utils` macro, it will search through your listed packages _before_ using
+the implementations defined in `dbt_utils`.
+
+Set the variable:
+```yml
+vars:
+  dbt_utils_dispatch_list:
+    - first_package_to_search    # likely the name of your root project
+    - second_package_to_search   # likely an "add-on" package, such as spark_utils
+    # dbt_utils is always the last place searched
+```
+
+When running on Spark, if dbt needs to dispatch `dbt_utils.datediff`, it will search for the following in order:
+```
+first_package_to_search.spark__datediff
+first_package_to_search.default__datediff
+second_package_to_search.spark__datediff
+second_package_to_search.default__datediff
+dbt_utils.spark__datediff
+dbt_utils.default__datediff
+```
 
 ----
 

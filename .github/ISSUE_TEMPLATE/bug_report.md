@@ -56,3 +56,8 @@ If applicable, add screenshots or log output to help explain your problem.
 <!---
 Add any other context about the problem here. For example, if you think you know which line of code is causing the issue.
 --->
+
+### Are you interested in contributing the fix?
+<!---
+Let us know if you want to contribute the fix, and whether would need a hand getting started
+--->

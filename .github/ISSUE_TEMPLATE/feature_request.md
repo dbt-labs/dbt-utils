@@ -18,3 +18,8 @@ Is this feature database-specific? Which database(s) is/are relevant? Please inc
 
 ### Who will this benefit?
 What kind of use case will this feature be useful for? Please be specific and provide examples, this will help us prioritize properly.
+
+### Are you interested in contributing this feature?
+<!---
+Let us know if you want to contribute the feature, and whether would need a hand getting started
+--->

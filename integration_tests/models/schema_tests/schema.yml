@@ -74,6 +74,13 @@ models:
           - dbt_utils.not_null_where:
               where: "_deleted = false"
 
+  - name: data_test_not_accepted_values
+    columns:
+      - name: city
+        tests:
+          - dbt_utils.not_accepted_values:
+              values: ['Barcelona', 'New York', 'Berlin']
+
   - name: data_test_relationships_where_table_2
     columns:
       - name: id

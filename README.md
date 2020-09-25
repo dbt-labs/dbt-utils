@@ -300,6 +300,22 @@ models:
               where: "_deleted = false"
 ```
 
+#### not_accepted_values ([source](macros/schema_tests/not_accepted_values.sql))
+This test validates that there are no rows that match the given values.
+
+Usage:
+```yaml
+version: 2
+
+models:
+  - name: my_model
+    columns:
+      - name: city
+        tests:
+          - dbt_utils.not_accepted_values:
+              values: ['Barcelona', 'New York']
+```
+
 #### relationships_where ([source](macros/schema_tests/relationships_where.sql))
 This test validates the referential integrity between two relations (same as the core relationships schema test) with an added predicate to filter out some rows from the test. This is useful to exclude records such as test entities, rows created in the last X minutes/hours to account for temporary gaps due to ETL limitations, etc.
 

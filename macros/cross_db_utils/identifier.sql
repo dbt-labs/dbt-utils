@@ -4,7 +4,7 @@
     Use `adapter.quote` instead. The {}.{} model triggered this warning. \
     '.format(model.package_name, model.name) -%}
   {%- do exceptions.warn(error_message) -%}
-  {{ adapter.dispatch('identifier', packages = dbt_utils._get_utils_namespaces()) (value) }}
+  {{ adapter.dispatch('identifier', packages = cc_dbt_utils._get_utils_namespaces()) (value) }}
 {% endmacro %}	
 
 {% macro default__identifier(value) -%}	

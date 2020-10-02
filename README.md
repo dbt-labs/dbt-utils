@@ -406,6 +406,18 @@ case we recommend using this test instead.
           - product
 ```
 
+An optional `quote_columns` parameter (`default=false`) can also be used if a column name needs to be quoted.
+
+```yaml
+- name: revenue_by_product_by_month
+  tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - month
+          - group
+        quote_columns: true
+```
+
 ---
 ### SQL helpers
 #### get_query_results_as_dict ([source](macros/sql/get_query_results_as_dict.sql))
@@ -442,9 +454,6 @@ Usage:
 ...
 ```
 #### get_relations_by_prefix
-> This replaces the `get_tables_by_prefix` macro. Note that the `get_tables_by_prefix` macro will
-be deprecated in a future release of this package.
-
 Returns a list of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation)
 that match a given prefix, with an optional exclusion pattern. It's particularly
 handy paired with `union_relations`.
@@ -516,8 +525,6 @@ from {{ref('my_model')}}
 ```
 
 #### union_relations ([source](macros/sql/union.sql))
-> This replaces the `union_tables` macro. Note that the `union_tables` macro will
-be deprecated in a future release of this package.
 
 This macro unions together an array of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation),
 even when columns have differing orders in each Relation, and/or some columns are
@@ -774,6 +781,42 @@ A useful workaround is to change the above post-hook to:
 ### Contributing
 
 We welcome contributions to this repo! To contribute a new feature or a fix, please open a Pull Request with 1) your changes, 2) updated documentation for the `README.md` file, and 3) a working integration test. See [this page](integration_tests/README.md) for more information.
+
+----
+
+### Dispatch macros
+
+**Note:** This is primarily relevant to users and maintainers of community-supported
+database plugins. If you use Postgres, Redshift, Snowflake, or Bigquery, this likely
+does not apply to you.
+
+dbt v0.18.0 introduces `adapter.dispatch()`, a reliable way to define different implementations of the same macro
+across different databases.
+
+All dispatched macros in `dbt_utils` have an override setting: a `var` named
+`dbt_utils_dispatch_list` that accepts a list of package names. If you set this
+variable in your project, when dbt searches for implementations of a dispatched
+`dbt_utils` macro, it will search through your listed packages _before_ using
+the implementations defined in `dbt_utils`.
+
+Set the variable:
+```yml
+vars:
+  dbt_utils_dispatch_list:
+    - first_package_to_search    # likely the name of your root project
+    - second_package_to_search   # likely an "add-on" package, such as spark_utils
+    # dbt_utils is always the last place searched
+```
+
+When running on Spark, if dbt needs to dispatch `dbt_utils.datediff`, it will search for the following in order:
+```
+first_package_to_search.spark__datediff
+first_package_to_search.default__datediff
+second_package_to_search.spark__datediff
+second_package_to_search.default__datediff
+dbt_utils.spark__datediff
+dbt_utils.default__datediff
+```
 
 ----
 

@@ -21,11 +21,3 @@
     {%- endif -%}
 
 {% endmacro %}
-
-{% macro get_tables_by_prefix(schema, prefix, exclude='', database=target.database) %}
-
-    {% do exceptions.warn("Warning: the `get_tables_by_prefix` macro is no longer supported and will be deprecated in a future release of dbt-utils. Use the `get_relations_by_prefix` macro instead") %}
-
-    {{ return(cc_dbt_utils.get_relations_by_prefix(schema, prefix, exclude, database)) }}
-
-{% endmacro %}

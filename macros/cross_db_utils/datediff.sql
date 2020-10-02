@@ -1,5 +1,5 @@
 {% macro datediff(first_date, second_date, datepart) %}
-  {{ adapter_macro('cc_dbt_utils.datediff', first_date, second_date, datepart) }}
+  {{ adapter.dispatch('datediff', packages = dbt_utils._get_utils_namespaces())(first_date, second_date, datepart) }}
 {% endmacro %}
 
 
@@ -23,7 +23,6 @@
     )
 
 {% endmacro %}
-
 
 {% macro postgres__datediff(first_date, second_date, datepart) %}
 

@@ -2,7 +2,13 @@
 
 {% set fields = [] %}
 
-{%- for field in columns -%}
+{%- set error_message = '
+Warning: the `surrogate_key` macro now takes a single list argument instead of \
+multiple string arguments. Support for multiple string arguments will be \
+deprecated in a future release of dbt-utils. The {}.{} model triggered this warning. \
+'.format(model.package_name, model.name) -%}
+
+{%- do exceptions.warn(error_message) -%}
 
     {% if normalize_case is none %}
           

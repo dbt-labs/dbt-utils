@@ -4,7 +4,7 @@ testing is required to validate that it will work on other dateparts.
 */
 
 {% macro last_day(date, datepart) %}
-  {{ adapter_macro('cc_dbt_utils.last_day', date, datepart) }}
+  {{ adapter.dispatch('last_day', packages = dbt_utils._get_utils_namespaces()) (date, datepart) }}
 {% endmacro %}
 
 

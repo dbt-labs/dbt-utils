@@ -2,7 +2,7 @@
 
     {%- call statement('get_tables', fetch_result=True) %}
 
-      {{ cc_dbt_utils.get_tables_by_pattern(schema_pattern, table_pattern, exclude, database) }}
+      {{ dbt_utils.get_tables_by_pattern_sql(schema_pattern, table_pattern, exclude, database) }}
 
     {%- endcall -%}
 

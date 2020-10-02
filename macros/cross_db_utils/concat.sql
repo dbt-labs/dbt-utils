@@ -1,12 +1,12 @@
-{% macro concat(fields) -%}
-  {{ adapter_macro('cc_dbt_utils.concat', fields) }}
-{%- endmacro %}
 
+
+{% macro concat(fields) -%}
+  {{ adapter.dispatch('concat', packages = cc_dbt_utils._get_utils_namespaces())(fields) }}
+{%- endmacro %}
 
 {% macro default__concat(fields) -%}
     concat({{ fields|join(', ') }})
 {%- endmacro %}
-
 
 {% macro alternative_concat(fields) %}
     {{ fields|join(' || ') }}

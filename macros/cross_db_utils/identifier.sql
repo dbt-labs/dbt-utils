@@ -1,6 +1,10 @@
 {% macro identifier(value) %}	
-  {% do exceptions.warn("Warning: the `identifier` macro is no longer supported and will be deprecated in a future release of dbt-utils. Use `adapter.quote` instead") %}
-  {{ adapter_macro('cc_dbt_utils.identifier', value) }}	
+  {%- set error_message = '
+    Warning: the `identifier` macro is no longer supported and will be deprecated in a future release of dbt-utils. \
+    Use `adapter.quote` instead. The {}.{} model triggered this warning. \
+    '.format(model.package_name, model.name) -%}
+  {%- do exceptions.warn(error_message) -%}
+  {{ adapter.dispatch('identifier', packages = dbt_utils._get_utils_namespaces()) (value) }}
 {% endmacro %}	
 
 {% macro default__identifier(value) -%}	

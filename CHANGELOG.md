@@ -1,3 +1,8 @@
+# dbt-utils v0.6.3
+
+## Features
+- Adds ability to specify a `sort_column` and `sort_direction` in `get_column_values.
+
 # dbt-utils v0.6.2
 
 ## Fixes

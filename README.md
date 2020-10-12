@@ -442,6 +442,8 @@ group by 1
 This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation).
 It takes an options `default` argument for compiling when the relation does not already exist.
 
+The `sort_column` argument allows for sorting of values. The default is highest to lowest frequency of values. You can also specify a `sort_direction`.
+
 Usage:
 ```
 -- Returns a list of the top 50 states in the `users` table
@@ -453,6 +455,29 @@ Usage:
 
 ...
 ```
+
+```
+-- Returns a list of user names sorted by name from the `users` table
+{% set names = dbt_utils.get_column_values(table=ref('users'), column='name', sort_column='name', default=[]) %}
+
+{% for name in names %}
+    ...
+{% endfor %}
+
+...
+```
+
+```
+-- Returns a list of user cities sorted by name from the `users` table
+{% set cities = dbt_utils.get_column_values(table=ref('users'), column='city_name', sort_column='city_name', default=[]) %}
+
+{% for city in cities %}
+    ...
+{% endfor %}
+
+...
+```
+
 #### get_relations_by_prefix
 Returns a list of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation)
 that match a given prefix, with an optional exclusion pattern. It's particularly

@@ -1,5 +1,5 @@
 
-{% set columns = dbt_utils.get_column_values(ref('data_get_column_values'), 'field', default = []) %}
+{% set columns = dbt_utils.get_column_values(ref('data_get_column_values'), 'field', default = [],  order_by="field", sort_direction="desc") %}
 
 
 {% if target.type == 'snowflake' %}

@@ -8,6 +8,7 @@
 * Allow star macro to be case insensitive, and improve docs (code originally in [#281](https://github.com/fishtown-analytics/dbt-utils/pull/230/) via [@mdimercurio](https://github.com/mdimercurio), merged via [#348](https://github.com/fishtown-analytics/dbt-utils/pull/348/))
 * Add new schema test, `not_accepted_values` ([#284](https://github.com/fishtown-analytics/dbt-utils/pull/284) [@JavierMonton](https://github.com/JavierMonton))
 * Add new schema test, `fewer_rows_than` (code originally in [#221](https://github.com/fishtown-analytics/dbt-utils/pull/230/) from [@dmarts](https://github.com/dmarts), merged via [#343])
+- Adds ability to specify a `sort_column` and `sort_direction` in `get_column_values`
 
 
 ## Fixes

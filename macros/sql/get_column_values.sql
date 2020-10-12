@@ -10,7 +10,7 @@ Returns:
     A list of distinct values for the specified columns
 #}
 
-{% macro get_column_values(table, column, max_records=none, default=none) -%}
+{% macro get_column_values(table, column, sort_column=none, sort_direction=none, max_records=none, default=none) -%}
 
 {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
     {%- if not execute -%}
@@ -22,6 +22,7 @@ Returns:
                                           schema=table.schema,
                                          identifier=table.identifier) -%}
 
+    {# If no sort column is supplied, we use the default descending frequency count. #}
     {%- call statement('get_column_values', fetch_result=true) %}
 
         {%- if not target_relation and default is none -%}
@@ -36,16 +37,27 @@ Returns:
 
         {%- else -%}
 
-            select
-                {{ column }} as value
+            with sorted_column_values as (
 
-            from {{ target_relation }}
-            group by 1
-            order by count(*) desc
+                select
+                    {{ column }} as value,
+                    {%- if sort_column is none %}
+                    count(*) as sort_column
+                    {% else %}
+                    {# We take the max sort value for each value to make sure 
+                        there are no duplicate rows for each value #}
+                    max({{ sort_column }}) as sort_column
+                    {% endif %}
+                from {{ target_relation }}
+                group by 1
+                order by 2 {{ sort_direction if sort_direction else "desc" }}
+                {% endif %}
+                {% if max_records is not none %}
+                limit {{ max_records }}
+                {% endif %}
 
-            {% if max_records is not none %}
-            limit {{ max_records }}
-            {% endif %}
+            )
+            select value from sorted_column_values
 
         {% endif %}
 

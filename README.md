@@ -281,6 +281,27 @@ models:
               where: "_deleted = false"
 ```
 
+#### is_between ([source](macros/schema_tests/is_between.sql))
+This test validates that column values are between `min` and `max`. Optionally,
+one of the boundaries can be left out and then only the remaining boundary will
+be tested for. Test fails on `null` values by default, however, they can be
+allowed by setting the `allow_nulls` flag.
+
+Usage:
+```yaml
+version: 2
+
+models:
+  - name: my_model
+    columns:
+      - name: id
+        tests:
+          - dbt_utils.is_between:
+              min: 0
+              max: 1000
+              allow_nulls: true
+```
+
 #### relationships_where ([source](macros/schema_tests/relationships_where.sql))
 This test validates the referential integrity between two relations (same as the core relationships schema test) with an added predicate to filter out some rows from the test. This is useful to exclude records such as test entities, rows created in the last X minutes/hours to account for temporary gaps due to ETL limitations, etc.
 

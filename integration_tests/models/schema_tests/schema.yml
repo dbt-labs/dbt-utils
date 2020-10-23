@@ -64,6 +64,23 @@ models:
           - dbt_utils.not_null_where:
               where: "_deleted = false"
 
+  - name: data_test_is_between_no_nulls_allowed
+    columns:
+      - name: value
+        tests:
+          - dbt_utils.is_between:
+              min: 0
+              max: 10
+
+  - name: data_test_is_between_nulls_allowed
+    columns:
+      - name: value
+        tests:
+          - dbt_utils.is_between:
+              min: 0
+              max: 10
+              allow_nulls: true
+
   - name: data_test_relationships_where_table_2
     columns:
       - name: id

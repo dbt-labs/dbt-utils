@@ -1,3 +1,8 @@
+# dbt-utils v0.6.3
+
+## Features
+- Adds a schema test `is_between`
+
 # dbt-utils v0.6.2
 
 ## Fixes

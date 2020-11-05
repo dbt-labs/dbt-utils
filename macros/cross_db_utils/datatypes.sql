@@ -12,6 +12,10 @@
     varchar
 {%- endmacro -%}
 
+{%- macro sqlserver__type_string() -%}
+    VARCHAR
+{%- endmacro -%}
+
 {% macro postgres__type_string() %}
     varchar
 {% endmacro %}

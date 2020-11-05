@@ -1,3 +1,9 @@
+# dbt-utils v0.6.3
+
+## Features
+- Add `gaps: consecutive_dates` option to the `mutually_exclusive_ranges` test to allow checking that no days are skipped between date ranges as well as that they don't overlap ([#292](https://github.com/fishtown-analytics/dbt-utils/pull/292))
+
+
 # dbt-utils v0.6.2
 
 ## Fixes

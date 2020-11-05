@@ -336,7 +336,7 @@ upper value of the range. Must be not null.
 (e.g. all periods for a single subscription_id are mutually exclusive), use this
 argument to indicate which column to partition by. `default=none`
 * `gaps` (optional): Whether there can be gaps are allowed between ranges.
-`default='allowed', one_of=['not_allowed', 'allowed', 'required']`
+`default='allowed', one_of=['not_allowed', 'allowed', 'required', 'consecutive_dates']`
 
 **Note:** Both `lower_bound_column` and `upper_bound_column` should be not null.
 If this is not the case in your data source, consider passing a coalesce function
@@ -371,8 +371,9 @@ record and the lower bound of the next record.
 | lower_bound | upper_bound |
 |-------------|-------------|
 | 0           | 1           |
-| 2           | 3           |
+| 1           | 2           |
 | 3           | 4           |
+| 6           | 7           |
 
 * `gaps:required`: There must be a gap between the upper bound of one record and
 the lower bound of the next record (common for date ranges).
@@ -381,7 +382,16 @@ the lower bound of the next record (common for date ranges).
 |-------------|-------------|
 | 0           | 1           |
 | 2           | 3           |
-| 4           | 5           |
+| 5           | 6           |
+
+* `gaps:consecutive_dates`: There must be a gap of one day between the upper bound of one record and
+the lower bound of the next record. Upper and lower bound columns must both be date columns.
+
+| lower_bound | upper_bound |
+|-------------|-------------|
+| 2020-01-01  | 2020-01-06  |
+| 2020-01-07  | 2020-03-15  |
+| 2020-03-16  | 2020-04-23  |
 
 #### unique_combination_of_columns ([source](macros/schema_tests/unique_combination_of_columns.sql))
 This test confirms that the combination of columns is unique. For example, the

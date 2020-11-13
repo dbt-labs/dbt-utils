@@ -1,5 +1,5 @@
 {% macro split_part(string_text, delimiter_text, part_number) %}
-  {{ adapter_macro('dbt_utils.split_part', string_text, delimiter_text, part_number) }}
+  {{ adapter.dispatch('split_part', packages = dbt_utils._get_utils_namespaces()) (string_text, delimiter_text, part_number) }}
 {% endmacro %}
 
 

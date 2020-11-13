@@ -11,19 +11,23 @@
     {% set exclude = ['customer_id', 'created_at'] %}
 {% endif %}
 
+
 select
     customer_id,
     created_at,
     case
-        when '{{ target.name }}' = 'snowflake' then lower(field_name)
-        else field_name
-    end as field_name,
-    value
+        when '{{ target.name }}' = 'snowflake' then lower(prop)
+        else prop
+    end as prop,
+    val
 
 from (
     {{ dbt_utils.unpivot(
-        table=ref('data_unpivot'),
+        relation=ref('data_unpivot'),
         cast_to=dbt_utils.type_string(),
-        exclude=exclude
+        exclude=exclude,
+        remove=['name'],
+        field_name='prop',
+        value_name='val'
     ) }}
 ) as sbq

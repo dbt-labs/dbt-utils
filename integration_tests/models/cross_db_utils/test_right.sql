@@ -7,6 +7,6 @@ with data as (
 select
 
     {{ dbt_utils.right('string_text', 'length_expression') }} as actual,
-    output as expected
+    coalesce(output, '') as expected
 
 from data

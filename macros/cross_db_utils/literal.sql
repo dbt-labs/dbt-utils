@@ -1,7 +1,7 @@
 
-{% macro string_literal(value) %}
-  {{ adapter_macro('dbt_utils.string_literal', value) }}
-{% endmacro %}
+{%- macro string_literal(value) -%}
+  {{ adapter.dispatch('string_literal', packages = dbt_utils._get_utils_namespaces()) (value) }}
+{%- endmacro -%}
 
 {% macro default__string_literal(value) -%}
     '{{ value }}'

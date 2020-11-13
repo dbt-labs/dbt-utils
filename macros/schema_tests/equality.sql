@@ -1,7 +1,5 @@
 {% macro test_equality(model) %}
 
-{% set compare_model = kwargs.get('compare_model', kwargs.get('arg')) %}
-
 
 {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
 {%- if not execute -%}
@@ -9,12 +7,19 @@
 {% endif %}
 
 -- setup
+{%- do dbt_utils._is_relation(model, 'test_equality') -%}
 
-{% set schema = model.schema %}
-{% set model_a_name = model.name %}
+{#-
+If the compare_cols arg is provided, we can run this test without querying the
+information schema — this allows the model to be an ephemeral model
+-#}
+{%- if not kwargs.get('compare_columns', None) -%}
+    {%- do dbt_utils._is_ephemeral(model, 'test_equality') -%}
+{%- endif -%}
 
-{% set dest_columns = adapter.get_columns_in_table(schema, model_a_name) %}
-{% set dest_cols_csv = dest_columns | map(attribute='quoted') | join(', ') %}
+{% set compare_model = kwargs.get('compare_model', kwargs.get('arg')) %}
+{% set compare_columns = kwargs.get('compare_columns', adapter.get_columns_in_relation(model) | map(attribute='quoted') ) %}
+{% set compare_cols_csv = compare_columns | join(', ') %}
 
 with a as (
 
@@ -30,17 +35,17 @@ b as (
 
 a_minus_b as (
 
-    select {{dest_cols_csv}} from a
+    select {{compare_cols_csv}} from a
     {{ dbt_utils.except() }}
-    select {{dest_cols_csv}} from b
+    select {{compare_cols_csv}} from b
 
 ),
 
 b_minus_a as (
 
-    select {{dest_cols_csv}} from b
+    select {{compare_cols_csv}} from b
     {{ dbt_utils.except() }}
-    select {{dest_cols_csv}} from a
+    select {{compare_cols_csv}} from a
 
 ),
 

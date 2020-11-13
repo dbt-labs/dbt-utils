@@ -57,7 +57,7 @@
 
   {%- set identifier = model['name'] -%}
 
-  {%- set old_relation = adapter.get_relation(schema=schema, identifier=identifier) -%}
+  {%- set old_relation = adapter.get_relation(database=database, schema=schema, identifier=identifier) -%}
   {%- set target_relation = api.Relation.create(identifier=identifier, schema=schema, type='table') -%}
 
   {%- set non_destructive_mode = (flags.NON_DESTRUCTIVE == True) -%}
@@ -108,18 +108,18 @@
   {%- set stop_timestamp = load_result('period_boundaries')['data'][0][1] | string -%}
   {%- set num_periods = load_result('period_boundaries')['data'][0][2] | int -%}
 
-  {% set target_columns = adapter.get_columns_in_table(schema, identifier) %}
+  {% set target_columns = adapter.get_columns_in_relation(target_relation) %}
   {%- set target_cols_csv = target_columns | map(attribute='quoted') | join(', ') -%}
   {%- set loop_vars = {'sum_rows_inserted': 0} -%}
 
   -- commit each period as a separate transaction
   {% for i in range(num_periods) -%}
     {%- set msg = "Running for " ~ period ~ " " ~ (i + 1) ~ " of " ~ (num_periods) -%}
-    {{log("         + " ~ modules.datetime.datetime.now().strftime('%H:%M:%S') ~ " " ~ msg, info=True)}}
+    {{ dbt_utils.log_info(msg) }}
 
     {%- set tmp_identifier = model['name'] ~ '__dbt_incremental_period' ~ i ~ '_tmp' -%}
     {%- set tmp_relation = api.Relation.create(identifier=tmp_identifier,
-                                             schema=schema, type='table') -%}
+                                               schema=schema, type='table') -%}
     {% call statement() -%}
       {% set tmp_table_sql = dbt_utils.get_period_sql(target_cols_csv,
                                                        sql,
@@ -131,9 +131,8 @@
       {{dbt.create_table_as(True, tmp_relation, tmp_table_sql)}}
     {%- endcall %}
 
-    {{adapter.expand_target_column_types(temp_table=tmp_identifier,
-                                         to_schema=schema,
-                                         to_table=identifier)}}
+    {{adapter.expand_target_column_types(from_relation=tmp_relation,
+                                         to_relation=target_relation)}}
     {%- set name = 'main-' ~ i -%}
     {% call statement(name, fetch_result=True) -%}
       insert into {{target_relation}} ({{target_cols_csv}})
@@ -148,7 +147,7 @@
     {%- if loop_vars.update({'sum_rows_inserted': sum_rows_inserted}) %} {% endif -%}
 
     {%- set msg = "Ran for " ~ period ~ " " ~ (i + 1) ~ " of " ~ (num_periods) ~ "; " ~ rows_inserted ~ " records inserted" -%}
-    {{log("         + " ~ modules.datetime.datetime.now().strftime('%H:%M:%S') ~ " " ~ msg, info=True)}}
+    {{ dbt_utils.log_info(msg) }}
 
   {%- endfor %}
 
@@ -169,5 +168,8 @@
   {% call noop_statement(name='main', status=status_string) -%}
     -- no-op
   {%- endcall %}
+
+  -- Return the relations created in this materialization
+  {{ return({'relations': [target_relation]}) }}  
 
 {%- endmaterialization %}

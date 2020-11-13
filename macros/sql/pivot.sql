@@ -36,6 +36,8 @@ Arguments:
     suffix: Column alias postfix, default is blank
     then_value: Value to use if comparison succeeds, default is 1
     else_value: Value to use if comparison fails, default is 0
+    quote_identifiers: Whether to surround column aliases with double quotes, default is true
+    distinct: Whether to use distinct in the aggregation, default is False
 #}
 
 {% macro pivot(column,
@@ -46,9 +48,12 @@ Arguments:
                prefix='',
                suffix='',
                then_value=1,
-               else_value=0) %}
+               else_value=0,
+               quote_identifiers=True,
+               distinct=False) %}
   {% for v in values %}
     {{ agg }}(
+      {% if distinct %} distinct {% endif %}
       case
       when {{ column }} {{ cmp }} '{{ v }}'
         then {{ then_value }}
@@ -56,7 +61,11 @@ Arguments:
       end
     )
     {% if alias %}
-      as {{ adapter.quote(prefix ~ v ~ suffix) }}
+      {% if quote_identifiers %}
+            as {{ adapter.quote(prefix ~ v ~ suffix) }}
+      {% else %}
+        as {{prefix ~ v ~ suffix }}
+      {% endif %}
     {% endif %}
     {% if not loop.last %},{% endif %}
   {% endfor %}

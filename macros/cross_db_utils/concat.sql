@@ -13,6 +13,11 @@
 {% endmacro %}
 
 
+{% macro postgres__concat(fields) %}
+    {{ dbt_utils.alternative_concat(fields) }}
+{% endmacro %}
+
+
 {% macro redshift__concat(fields) %}
     {{ dbt_utils.alternative_concat(fields) }}
 {% endmacro %}

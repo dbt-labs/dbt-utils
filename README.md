@@ -418,6 +418,19 @@ An optional `quote_columns` parameter (`default=false`) can also be used if a co
         quote_columns: true
 ```
 
+An optional `where` parameter can also be used in order to isolate the rows of the data set on which the uniqueness
+constraint needs to be verified.
+
+```yaml
+- name: revenue_by_product_by_month
+  tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - month
+          - group
+        where: year >= 2020
+```
+
 
 #### accepted_range ([source](macros/schema_tests/accepted_range.sql))
 This test checks that a column's values fall inside an expected range. Any combination of `min_value` and `max_value` is allowed, and the range can be inclusive or exclusive. Provide a `where` argument to filter to specific records only. 

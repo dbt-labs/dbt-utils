@@ -1,4 +1,5 @@
 # dbt-utils v0.7.0 (unreleased)
+* Added optional `where` clause in `unique_combination_of_columns` test macro [#295](https://github.com/fishtown-analytics/dbt-utils/pull/295) [findinpath](https://github.com/findinpath)
 
 ## Features
 * Add new `accepted_range` test ([#276](https://github.com/fishtown-analytics/dbt-utils/pull/276) [@joellabes](https://github.com/joellabes))

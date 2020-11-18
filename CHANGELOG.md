@@ -1,3 +1,9 @@
+# dbt-utils v0.6.4
+
+## Features
+- Add `all_columns_present_in_both_tables: true|false` option to the `equality` test
+
+
 # dbt-utils v0.6.3
 
 ## Features

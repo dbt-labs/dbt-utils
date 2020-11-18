@@ -1,6 +1,13 @@
 {% macro test_equality(model) %}
 
 
+{%- if kwargs.get('compare_columns') and kwargs.get('all_columns_present_in_both_tables') -%}
+    {{ exceptions.raise_compiler_error(
+           "`compare_columns` and `all_columns_present_in_both_tables` arguments can't be used together."
+       )
+    }}
+{%- endif -%}
+
 {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
 {%- if not execute -%}
     {{ return('') }}
@@ -18,8 +25,15 @@ information schema — this allows the model to be an ephemeral model
 {%- endif -%}
 
 {% set compare_model = kwargs.get('compare_model', kwargs.get('arg')) %}
-{% set compare_columns = kwargs.get('compare_columns', adapter.get_columns_in_relation(model) | map(attribute='quoted') ) %}
-{% set compare_cols_csv = compare_columns | join(', ') %}
+{% set compare_cols_a = kwargs.get('compare_columns', adapter.get_columns_in_relation(model) | map(attribute='quoted') ) %}
+{% set compare_cols_a_csv = compare_cols_a | join(', ') %}
+
+{%- if kwargs.get('all_columns_present_in_both_tables', false) -%}
+    {% set compare_cols_b = kwargs.get('compare_columns', adapter.get_columns_in_relation(compare_model) | map(attribute='quoted') ) %}
+    {% set compare_cols_b_csv = compare_cols_b | join(', ') %}
+{%- else -%}
+    {% set compare_cols_b_csv = compare_cols_a_csv %}
+{%- endif -%}
 
 with a as (
 
@@ -35,17 +49,17 @@ b as (
 
 a_minus_b as (
 
-    select {{compare_cols_csv}} from a
+    select {{ compare_cols_a_csv }} from a
     {{ dbt_utils.except() }}
-    select {{compare_cols_csv}} from b
+    select {{ compare_cols_b_csv }} from b
 
 ),
 
 b_minus_a as (
 
-    select {{compare_cols_csv}} from b
+    select {{ compare_cols_b_csv }} from b
     {{ dbt_utils.except() }}
-    select {{compare_cols_csv}} from a
+    select {{ compare_cols_a_csv }} from a
 
 ),
 

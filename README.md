@@ -133,7 +133,11 @@ models:
 ```
 
 #### equality ([source](macros/schema_tests/equality.sql))
-This schema test asserts the equality of two relations. Optionally specify a subset of columns to compare.
+This schema test asserts the equality of two relations. Optionally use:
+- `compare_columns` to specify a subset of columns to compare
+- `all_columns_present_in_both_tables` to specify that both tables must have all the same columns
+
+`compare_columns` and `all_columns_present_in_both_tables` can't be used together
 
 Usage:
 ```yaml
@@ -148,6 +152,17 @@ models:
             - first_column
             - second_column
 
+```
+
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('other_table_name')
+          all_columns_present_in_both_tables: true
 ```
 
 #### expression_is_true ([source](macros/schema_tests/expression_is_true.sql))

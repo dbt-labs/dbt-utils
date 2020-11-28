@@ -41,7 +41,7 @@
         "Missing: " ~ missing_col_names | join(', ') ~ ". "
         "Search was case sensitive: " ~ case_sensitive ~ "."
         "Columns searched for: " ~ col_names_to_keep ~ ". "
-        "Input columns: " ~ input_columns ~ ". "
+        "Input columns: " ~ input_columns | map(attribute='name') | join(', ') ~ ". "
     ) }}
 {% endif %}
 

@@ -428,6 +428,45 @@ An optional `quote_columns` parameter (`default=false`) can also be used if a co
         quote_columns: true
 ```
 
+
+#### accepted_range ([source](macros/schema_tests/accepted_range.sql))
+This test checks that a column's values fall inside an expected range. Any combination of `min_value` and `max_value` is allowed, and the range can be inclusive or exclusive. Provide a `where` argument to filter to specific records only. 
+
+In addition to comparisons to a scalar value, you can also compare to another column's values. Any data type that supports the `>` or `<` operators can be compared, so you could also run tests like checking that all order dates are in the past. 
+
+Usage:
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    columns:
+      - name: user_id
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+      
+      - name: account_created_at
+        tests:
+          - dbt_utils.accepted_range:
+              max_value: "getdate()"
+              #inclusive is true by default
+      
+      - name: num_returned_orders
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: "num_orders"
+      
+      - name: num_web_sessions
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+              where: "num_orders > 0"
+```
+
 ---
 ### SQL helpers
 #### get_query_results_as_dict ([source](macros/sql/get_query_results_as_dict.sql))

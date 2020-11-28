@@ -1,14 +1,14 @@
-# dbt-utils v0.6.3
+# dbt-utils v0.7.0 (unreleased)
 
 ## Features
-- Add `gaps: consecutive_dates` option to the `mutually_exclusive_ranges` test to allow checking that no days are skipped between date ranges as well as that they don't overlap ([#292](https://github.com/fishtown-analytics/dbt-utils/pull/292))
+* Add new `accepted_range` test ([#276](https://github.com/fishtown-analytics/dbt-utils/pull/276) [@joellabes](https://github.com/joellabes))
+* Add `gaps: consecutive_dates` option to the `mutually_exclusive_ranges` test  ([#292](https://github.com/fishtown-analytics/dbt-utils/pull/292))
 
 
 # dbt-utils v0.6.2
 
 ## Fixes
 - Fix the logic in `get_tables_by_pattern_sql` to ensure non-default arguments are respected ([#279](https://github.com/fishtown-analytics/dbt-utils/pull/279))
-
 
 # dbt-utils v0.6.1
 

@@ -137,7 +137,10 @@ models:
       # test with subset of columns
       - dbt_utils.equality:
           compare_model: ref('data_test_equality_b_same_as_a')
-          compare_columns: ['col1', 'col2']
+          compare_columns: |
+            {%- if  target.project == "snowflake" -%}['COL1', 'COL2']  # snowflake uppercases column names by default
+            {%- else -%}['col1', 'col2']
+            {%- endif -%}
           column_metadata_tests:
             - case_sensitive_names
             - matching_order
@@ -164,7 +167,7 @@ models:
 
       - dbt_utils.equality:
           compare_model: ref('data_test_equality_d_diff_order_and_case')
-          compare_columns: ['col3', 'col2', 'col4', 'col5']
+          compare_columns: ['col3', 'col2', 'col4', 'col5']  # don't have to uppercase for snowflake as not using case_sensitive_names test
           column_metadata_tests:
             - matching_data_types
             # test errors as expected if below requirements are added
@@ -175,7 +178,10 @@ models:
       # Use `compare_columns` where first table has more columns than second
       - dbt_utils.equality:
           compare_model: ref('data_test_equality_a')
-          compare_columns: ['col1', 'col2', 'col3']
+          compare_columns: |
+            {%- if  target.project == "snowflake" -%}['COL1', 'COL2', 'COL3']
+            {%- else -%}['col1', 'col2', 'col3']
+            {%- endif -%}
           column_metadata_tests:
             - case_sensitive_names
             - matching_order

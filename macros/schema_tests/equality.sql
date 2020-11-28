@@ -39,7 +39,9 @@
     {{ exceptions.raise_compiler_error(
         "Not all needed columns found in table columns. "
         "Missing: " ~ missing_col_names | join(', ') ~ ". "
-        "Search was case sensitive: " ~ case_sensitive ~ "."
+        "Search was case sensitive: " ~ case_sensitive ~ "."'
+        "Columns searched for: " ~ col_names_to_keep ~ ". "
+        "Input columns: " ~ input_columns ~ ". "
     ) }}
 {% endif %}
 

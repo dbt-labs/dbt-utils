@@ -2,7 +2,7 @@
 
 ## Features
 * Add new `accepted_range` test ([#276](https://github.com/fishtown-analytics/dbt-utils/pull/276) [@joellabes](https://github.com/joellabes))
-* Add `all_columns_present_in_both_tables: true|false` option to the `equality` test
+* Add `column_metadata_tests` to the `equality` test ([#298](https://github.com/fishtown-analytics/dbt-utils/pull/298))
 
 
 # dbt-utils v0.6.2

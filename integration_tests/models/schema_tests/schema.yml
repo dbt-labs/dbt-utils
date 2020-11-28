@@ -120,3 +120,62 @@ models:
               min_value: 0
               inclusive: true
               where: "id <> -1"
+
+  - name: data_test_equality_a
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_b_same_as_a')
+
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_b_same_as_a')
+          column_metadata_tests:
+            - all_columns_present_in_both_tables
+            - case_sensitive_names
+            - matching_order
+            - matching_data_types
+
+      # test with subset of columns
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_b_same_as_a')
+          compare_columns: ['col1', 'col2']
+          column_metadata_tests:
+            - case_sensitive_names
+            - matching_order
+            - matching_data_types
+
+      # will only compare columns in A so still expect pass
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_c_mixed_data')
+          # test errors as expected if below requirements are added
+          #column_metadata_tests:
+            #- all_columns_present_in_both_tables
+            #- matching_data_types
+
+  - name: data_test_equality_c_mixed_data
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_d_diff_order_and_case')
+          column_metadata_tests:
+            - matching_data_types
+            - all_columns_present_in_both_tables
+            # test errors as expected if below requirements are added
+            #- case_sensitive_names
+            #- matching_order
+
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_d_diff_order_and_case')
+          compare_columns: ['col3', 'col2', 'col4', 'col5']
+          column_metadata_tests:
+            - matching_data_types
+            # test errors as expected if below requirements are added
+            #- case_sensitive_names
+            #- matching_order
+            #- all_columns_present_in_both_tables
+
+      # Use `compare_columns` where first table has more columns than second
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_a')
+          compare_columns: ['col1', 'col2', 'col3']
+          column_metadata_tests:
+            - case_sensitive_names
+            - matching_order

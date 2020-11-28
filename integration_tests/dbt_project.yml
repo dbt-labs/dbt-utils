@@ -47,6 +47,15 @@ seeds:
           min_value: float
           max_value: float
 
+    schema_tests:
+      data_test_equality_c_mixed_data:
+        +column_types:
+          col3: float
+
+      data_test_equality_d_diff_order_and_case:
+        +column_types:
+          col3: float
+
     sql:
       data_events_20180103:
         +schema: events

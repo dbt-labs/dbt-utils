@@ -1,5 +1,3 @@
--- noinspection SqlNoDataSourceInspectionForFile
-
 {% macro filter_columns(
         input_columns,
         col_names_to_keep,
@@ -66,7 +64,7 @@
 
 {% for column in cols_a %}
     {% set a_data_type = column.data_type %}
-    {% set b_data_type = data_type_for_column_name(cols_b, column.name) %}
+    {% set b_data_type = dbt_utils.data_type_for_column_name(cols_b, column.name) %}
     {% if a_data_type != b_data_type %}
         {% do non_matching_columns.append({
             'column_name': column.name,
@@ -139,7 +137,7 @@
 {% endif %}
 
 {% if column_metadata_tests %}
-    {{ validate_metadata_test_inputs(column_metadata_tests) }}
+    {{ dbt_utils.validate_metadata_test_inputs(column_metadata_tests) }}
 {% endif %}
 
 {#- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
@@ -180,8 +178,8 @@ information schema — this allows the model to be an ephemeral model.
 
     {# reduce to just needed columns for A and B while also checking case if needed #}
     {% if compare_columns %}
-        {% set cols_a = filter_columns(cols_a, compare_columns, case_sensitive_names) %}
-        {% set cols_b = filter_columns(cols_b, compare_columns, case_sensitive_names) %}
+        {% set cols_a = dbt_utils.filter_columns(cols_a, compare_columns, case_sensitive_names) %}
+        {% set cols_b = dbt_utils.filter_columns(cols_b, compare_columns, case_sensitive_names) %}
 
     {# Confirm all columns are shared while also checking case if needed #}
     {% elif all_columns_present_in_both_tables %}
@@ -189,26 +187,26 @@ information schema — this allows the model to be an ephemeral model.
         {% set cols_b_names = cols_b | map(attribute='name') | list %}
 
         {# are A cols in B #}
-        {% do filter_columns(cols_b, cols_a_names, case_sensitive_names) %}
+        {% do dbt_utils.filter_columns(cols_b, cols_a_names, case_sensitive_names) %}
 
         {# are B cols in A #}
-        {% do filter_columns(cols_a, cols_b_names, case_sensitive_names) %}
+        {% do dbt_utils.filter_columns(cols_a, cols_b_names, case_sensitive_names) %}
 
     {# As a minimum check columns of A are in B and check case if needed #}
     {% else %}
         {% set cols_a_names = cols_a | map(attribute='name') | list %}
-        {% do filter_columns(cols_b, cols_a_names, case_sensitive_names) %}
+        {% do dbt_utils.filter_columns(cols_b, cols_a_names, case_sensitive_names) %}
     {% endif %}
 
     {% if matching_data_types %}
-        {% do test_matching_data_types(cols_a, cols_b) %}
+        {% do dbt_utils.test_matching_data_types(cols_a, cols_b) %}
     {% endif %}
 
     {% set cols_a_csv = cols_a | map(attribute='quoted') | join(', ') %}
     {% set cols_b_csv = cols_b | map(attribute='quoted') | join(', ') %}
 
     {% if matching_order %}
-        {% do test_matching_order(cols_a_csv, cols_b_csv) %}
+        {% do dbt_utils.test_matching_order(cols_a_csv, cols_b_csv) %}
     {% endif %}
 
     {# Use just one of the csvs to be sure columns are selected in same order in both tables #}

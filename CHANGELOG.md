@@ -1,14 +1,14 @@
-# dbt-utils v0.6.3
+# dbt-utils v0.7.0 (unreleased)
 
 ## Features
-- Add `all_columns_present_in_both_tables: true|false` option to the `equality` test
+* Add new `accepted_range` test ([#276](https://github.com/fishtown-analytics/dbt-utils/pull/276) [@joellabes](https://github.com/joellabes))
+* Add `all_columns_present_in_both_tables: true|false` option to the `equality` test
 
 
 # dbt-utils v0.6.2
 
 ## Fixes
 - Fix the logic in `get_tables_by_pattern_sql` to ensure non-default arguments are respected ([#279](https://github.com/fishtown-analytics/dbt-utils/pull/279))
-
 
 # dbt-utils v0.6.1
 

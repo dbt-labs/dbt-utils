@@ -1,12 +1,11 @@
-{% macro test_unique_combination_of_columns(model, quote_columns = false) %}
+{% macro test_unique_combination_of_columns(model, combination_of_columns, quote_columns = false, where = None) %}
 
-{%- set columns = kwargs.get('combination_of_columns', kwargs.get('arg')) %}
 
 {% if not quote_columns %}
-    {%- set column_list=columns %}
+    {%- set column_list=combination_of_columns %}
 {% elif quote_columns %}
     {%- set column_list=[] %}
-        {% for column in columns -%}
+        {% for column in combination_of_columns -%}
             {% set column_list = column_list.append( adapter.quote(column) ) %}
         {%- endfor %}
 {% else %}
@@ -23,7 +22,7 @@ with validation_errors as (
     select
         {{ columns_csv }}
     from {{ model }}
-
+    {% if where %}where {{ where }} {% endif %}
     group by {{ columns_csv }}
     having count(*) > 1
 

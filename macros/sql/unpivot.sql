@@ -59,7 +59,7 @@ Arguments:
 
       cast('{{ col.column }}' as {{ dbt_utils.type_string() }}) as {{ field_name }},
       cast(  {% if col.data_type == 'boolean' %}
-           case when {{ col.column }} then 'true' else 'false' end
+           {{ dbt_utils.cast_bool_to_text(col.column) }}
              {% else %}
            {{ col.column }}
              {% endif %}

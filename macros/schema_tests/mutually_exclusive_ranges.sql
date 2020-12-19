@@ -1,4 +1,4 @@
-{% macro test_mutually_exclusive_ranges(model, lower_bound_column, upper_bound_column, partition_by=None, gaps='allowed') %}
+{% macro test_mutually_exclusive_ranges(model, lower_bound_column, upper_bound_column, partition_by=None, gaps='allowed', zero_length='not_allowed') %}
 
 {% if gaps == 'not_allowed' %}
     {% set allow_gaps_operator='=' %}
@@ -13,7 +13,17 @@
     {{ exceptions.raise_compiler_error(
         "`gaps` argument for mutually_exclusive_ranges test must be one of ['not_allowed', 'allowed', 'required'] Got: '" ~ gaps ~"'.'"
     ) }}
-
+{% endif %}
+{% if zero_length == 'not_allowed' %}
+    {% set allow_zero_length_operator='<' %}
+    {% set allow_zero_length_operator_in_words='less_than' %}
+{% elif zero_length == 'allowed' %}
+    {% set allow_zero_length_operator='<=' %}
+    {% set allow_zero_length_operator_in_words='less_than_or_equal_to' %}
+{% else %}
+    {{ exceptions.raise_compiler_error(
+        "`zero_length` argument for mutually_exclusive_ranges test must be one of ['not_allowed', 'allowed'] Got: '" ~ zero_length ~"'.'"
+    ) }}
 {% endif %}
 
 {% set partition_clause="partition by " ~ partition_by if partition_by else '' %}
@@ -51,9 +61,9 @@ calc as (
         -- Coalesce it to return an error on the null case (implicit assumption
         -- these columns are not_null)
         coalesce(
-            lower_bound < upper_bound,
+            lower_bound {{ allow_zero_length_operator }} upper_bound,
             false
-        ) as lower_bound_less_than_upper_bound,
+        ) as lower_bound_{{ allow_zero_length_operator_in_words }}_upper_bound,
 
         -- For each record: upper_bound {{ allow_gaps_operator }} the next lower_bound.
         -- Coalesce it to handle null cases for the last record.
@@ -75,7 +85,7 @@ validation_errors as (
 
     where not(
         -- THE FOLLOWING SHOULD BE TRUE --
-        lower_bound_less_than_upper_bound
+        lower_bound_{{ allow_zero_length_operator_in_words }}_upper_bound
         and upper_bound_{{ allow_gaps_operator_in_words }}_next_lower_bound
     )
 )

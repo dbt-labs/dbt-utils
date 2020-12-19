@@ -361,6 +361,15 @@ models:
           upper_bound_column: ended_at
           partition_by: customer_id
           gaps: required
+  
+  # test that each customer can have subscriptions that start and end on the same date
+  - name: subscriptions
+    tests:
+      - dbt_utils.mutually_exclusive_ranges:
+          lower_bound_column: started_at
+          upper_bound_column: ended_at
+          partition_by: customer_id
+          zero_length_range_allowed: true
 ```
 **Args:**
 * `lower_bound_column` (required): The name of the column that represents the
@@ -372,6 +381,8 @@ upper value of the range. Must be not null.
 argument to indicate which column to partition by. `default=none`
 * `gaps` (optional): Whether there can be gaps are allowed between ranges.
 `default='allowed', one_of=['not_allowed', 'allowed', 'required']`
+* `zero_length_range_allowed` (optional): Whether ranges can start and end on the same date.
+`default=False`
 
 **Note:** Both `lower_bound_column` and `upper_bound_column` should be not null.
 If this is not the case in your data source, consider passing a coalesce function
@@ -417,6 +428,24 @@ the lower bound of the next record (common for date ranges).
 | 0           | 1           |
 | 2           | 3           |
 | 4           | 5           |
+
+**Understanding the `zero_length_range_allowed` parameter:**
+Here are a number of examples for each allowed `zero_length_range_allowed` parameter.
+* `zero_length_range_allowed: false`: (default) The upper bound of each record must be greater than its lower bound.
+
+| lower_bound | upper_bound |
+|-------------|-------------|
+| 0           | 1           |
+| 1           | 2           |
+| 2           | 3           |
+
+* `zero_length_range_allowed: true`: The upper bound of each record can be greater than or equal to its lower bound.
+
+| lower_bound | upper_bound |
+|-------------|-------------|
+| 0           | 1           |
+| 2           | 2           |
+| 3           | 4           |
 
 #### unique_combination_of_columns ([source](macros/schema_tests/unique_combination_of_columns.sql))
 This test confirms that the combination of columns is unique. For example, the

@@ -51,7 +51,6 @@ Returns:
                 from {{ target_relation }}
                 group by 1
                 order by 2 {{ sort_direction if sort_direction else "desc" }}
-                {% endif %}
                 {% if max_records is not none %}
                 limit {{ max_records }}
                 {% endif %}

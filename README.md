@@ -394,9 +394,9 @@ the lower bound of the next record (common for date ranges).
 | 2           | 3           |
 | 4           | 5           |
 
-**Understanding the `zero_length` parameter:**
-Here are a number of examples for each allowed `zero_length` parameter.
-* `zero_length:not_allowed`: The upper bound of each record must be greater than its lower bound.
+**Understanding the `zero_length_range_allowed` parameter:**
+Here are a number of examples for each allowed `zero_length_range_allowed` parameter.
+* `zero_length_range_allowed:false`: (default) The upper bound of each record must be greater than its lower bound.
 
 | lower_bound | upper_bound |
 |-------------|-------------|
@@ -404,7 +404,7 @@ Here are a number of examples for each allowed `zero_length` parameter.
 | 1           | 2           |
 | 2           | 3           |
 
-* `zero_length:allowed`: The upper bound of each record can be greater than or equal to its lower bound.
+* `zero_length_range_allowed:true`: The upper bound of each record can be greater than or equal to its lower bound.
 
 | lower_bound | upper_bound |
 |-------------|-------------|

@@ -1,4 +1,4 @@
-{% macro test_mutually_exclusive_ranges(model, lower_bound_column, upper_bound_column, partition_by=None, gaps='allowed', zero_length='not_allowed') %}
+{% macro test_mutually_exclusive_ranges(model, lower_bound_column, upper_bound_column, partition_by=None, gaps='allowed', zero_length_range_allowed=False) %}
 
 {% if gaps == 'not_allowed' %}
     {% set allow_gaps_operator='=' %}
@@ -14,15 +14,15 @@
         "`gaps` argument for mutually_exclusive_ranges test must be one of ['not_allowed', 'allowed', 'required'] Got: '" ~ gaps ~"'.'"
     ) }}
 {% endif %}
-{% if zero_length == 'not_allowed' %}
+{% if not zero_length_range_allowed %}
     {% set allow_zero_length_operator='<' %}
     {% set allow_zero_length_operator_in_words='less_than' %}
-{% elif zero_length == 'allowed' %}
+{% elif zero_length_range_allowed %}
     {% set allow_zero_length_operator='<=' %}
     {% set allow_zero_length_operator_in_words='less_than_or_equal_to' %}
 {% else %}
     {{ exceptions.raise_compiler_error(
-        "`zero_length` argument for mutually_exclusive_ranges test must be one of ['not_allowed', 'allowed'] Got: '" ~ zero_length ~"'.'"
+        "`zero_length_range_allowed` argument for mutually_exclusive_ranges test must be one of [true, false] Got: '" ~ zero_length ~"'.'"
     ) }}
 {% endif %}
 

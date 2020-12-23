@@ -1,4 +1,9 @@
 {% macro test_cardinality_equality(model, to, field) %}
+    {{ adapter.dispatch('test_cardinality_equality', packages = dbt_utils._get_utils_namespaces())(model, to, field) }}
+
+{% endmacro %}
+
+{% macro default__test_cardinality_equality(model, to, field) %}
 
 {% set column_name = kwargs.get('column_name', kwargs.get('from')) %}
 

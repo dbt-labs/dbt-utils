@@ -1,4 +1,8 @@
 {% macro test_unique_where(model) %}
+  {{ adapter.dispatch('test_unique_where', packages = dbt_utils._get_utils_namespaces())(model) }}
+{% endmacro %}
+
+{% macro default__test_unique_where(model) %}
 
 {% set column_name = kwargs.get('column_name', kwargs.get('arg')) %}
 {% set where = kwargs.get('where', kwargs.get('arg')) %}

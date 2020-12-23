@@ -1,4 +1,8 @@
 {% macro test_relationships_where(model, to, field) %}
+  {{ adapter.dispatch('test_relationships_where', packages = dbt_utils._get_utils_namespaces())(model, to, field) }}
+{% endmacro %}
+
+{% macro test_relationships_where(model, to, field) %}
 
 {% set column_name = kwargs.get('column_name', kwargs.get('from')) %}
 {% set from_condition = kwargs.get('from_condition', "true") %}

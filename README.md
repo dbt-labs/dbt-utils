@@ -461,6 +461,34 @@ Here are a number of examples for each allowed `zero_length_range_allowed` param
 | 2           | 2           |
 | 3           | 4           |
 
+#### sequential_values ([source](macros/schema_tests/sequential_values.sql))
+This test confirms that a column contains sequential values. It can be used
+for both numeric values, and datetime values, as follows:
+```yml
+version: 2
+
+seeds:
+  - name: util_even_numbers
+    columns:
+      - name: i
+        tests:
+          - dbt_utils.sequential_values:
+              interval: 2
+
+
+  - name: util_hours
+    columns:
+      - name: date_hour
+        tests:
+          - dbt_utils.sequential_values:
+              interval: 1
+              datepart: 'hour'
+```
+
+**Args:**
+* `interval` (default=1): The gap between two sequential values
+* `datepart` (default=None): Used when the gaps are a unit of time. If omitted, the test will check for a numeric gap.
+
 #### unique_combination_of_columns ([source](macros/schema_tests/unique_combination_of_columns.sql))
 This test confirms that the combination of columns is unique. For example, the
 combination of month and product is unique, however neither column is unique

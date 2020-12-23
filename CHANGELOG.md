@@ -68,6 +68,7 @@ If you were relying on the position to match up your optional arguments, this ma
 - Bump `require-dbt-version` to `[">=0.18.0", "<0.20.0"]` to support dbt v0.19.0 ([#308](https://github.com/fishtown-analytics/dbt-utils/pull/308), [#309](https://github.com/fishtown-analytics/dbt-utils/pull/309))
 
 ## Fixes
+* Add `slugify` macro, and use it in the pivot macro. :rotating_light: This macro uses the `re` module, which is only available in dbt v0.19.0+. As a result, this feature introduces a breaking change. ([#314](https://github.com/fishtown-analytics/dbt-utils/pull/314))
 
 # dbt-utils v0.6.2
 

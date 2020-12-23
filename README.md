@@ -932,8 +932,8 @@ Usage:
 ```
 
 ---
-### Logger
-#### pretty_time ([source](macros/logger/pretty_time.sql))
+### Jinja Helpers
+#### pretty_time ([source](macros/jinja_helpers/pretty_time.sql))
 This macro returns a string of the current timestamp, optionally taking a datestring format.
 ```sql
 {#- This will return a string like '14:50:34' -#}
@@ -943,7 +943,7 @@ This macro returns a string of the current timestamp, optionally taking a datest
 {{ dbt_utils.pretty_time(format='%Y-%m-%d %H:%M:%S') }}
 ```
 
-#### pretty_log_format ([source](macros/logger/pretty_log_format.sql))
+#### pretty_log_format ([source](macros/jinja_helpers/pretty_log_format.sql))
 This macro formats the input in a way that will print nicely to the command line when you `log` it.
 ```sql
 {#- This will return a string like:
@@ -952,7 +952,7 @@ This macro formats the input in a way that will print nicely to the command line
 
 {{ dbt_utils.pretty_log_format("my pretty message") }}
 ```
-#### log_info ([source](macros/logger/log_info.sql))
+#### log_info ([source](macros/jinja_helpers/log_info.sql))
 This macro logs a formatted message (with a timestamp) to the command line.
 ```sql
 {{ dbt_utils.log_info("my pretty message") }}
@@ -961,6 +961,40 @@ This macro logs a formatted message (with a timestamp) to the command line.
 ```
 11:07:28 | 1 of 1 START table model analytics.fct_orders........................ [RUN]
 11:07:31 + my pretty message
+```
+
+#### slugify ([source](macros/jinja_helpers/slugify.sql))
+This macro is useful for transforming Jinja strings into "slugs", and can be useful when using a Jinja object as a column name, especially when that Jinja object is not hardcoded.
+
+For this example, let's pretend that we have payment methods in our payments table like `['venmo App', 'ca$h-money']`, which we can't use as a column name due to the spaces and special characters. This macro does its best to strip those out in a sensible way: `['venmo_app',
+'cah_money']`.
+
+```sql
+{%- set payment_methods = dbt_utils.get_column_values(
+    table=ref('raw_payments'),
+    column='payment_method'
+) -%}
+
+select
+order_id,
+{%- for payment_method in payment_methods %}
+sum(case when payment_method = '{{ payment_method }}' then amount end)
+  as {{ slugify(payment_method) }}_amount,
+
+{% endfor %}
+...
+```
+
+```sql
+select
+order_id,
+
+sum(case when payment_method = 'Venmo App' then amount end)
+  as venmo_app_amount,
+
+sum(case when payment_method = 'ca$h money' then amount end)
+  as cah_money_amount,
+...
 ```
 
 ### Materializations

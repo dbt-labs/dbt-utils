@@ -6,6 +6,10 @@
 * Make `expression_is_true` work as a column test (code originally in [#226](https://github.com/fishtown-analytics/dbt-utils/pull/226/) from [@elliottohara](https://github.com/elliottohara), merged via [#313])
 * Allow individual columns in star macro to be aliased (code originally in [#230](https://github.com/fishtown-analytics/dbt-utils/pull/230/) from [@elliottohara](https://github.com/elliottohara), merged via [#245]) 
 
+
+## Fixes
+* Handle booleans gracefully in the unpivot macro ([#305](https://github.com/fishtown-analytics/dbt-utils/pull/305) [@avishalom](https://github.com/avishalom))
+
 # dbt-utils v0.6.2
 
 ## Fixes

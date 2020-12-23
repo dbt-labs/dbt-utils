@@ -5,8 +5,9 @@
 select count(*)
 from (
     select
-
-      count({{ column_name }})
+        {# subquery aggregate columns need aliases #}
+        {# thus: 'unique_values' #}
+      count({{ column_name }}) as unique_values
 
     from {{ model }}
 

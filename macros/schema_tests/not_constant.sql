@@ -8,7 +8,7 @@ select count(*)
 from (
 
     select
-          count(distinct {{ column_name }})
+          count(distinct {{ column_name }}) as filler_column
 
     from {{ model }}
 

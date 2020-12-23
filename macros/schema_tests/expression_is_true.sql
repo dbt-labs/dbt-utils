@@ -13,7 +13,11 @@ validation_errors as (
     select
         *
     from meet_condition
-    where not( {{ expression if column_name is none else [column_name, expression] | join(' ')  }})
+    {% if column_name is none %}
+    where not({{ expression }})
+    {%- else %}
+    where not({{ column_name }} {{ expression }})
+    {%- endif %}
 
 )
 

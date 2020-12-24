@@ -43,13 +43,7 @@ Returns:
 
                 select
                     {{ column }} as value,
-                    {%- if sort_column is none %}
-                    count(*) as sort_column
-                    {% else %}
-                    {# We take the max sort value for each value to make sure 
-                        there are no duplicate rows for each value #}
-                    max({{ sort_column }}) as sort_column
-                    {% endif %}
+                    {{ order_by }} as sort_column
                 from {{ target_relation }}
                 group by 1
                 order by {{ order_by }} {{ sort_direction or "desc" }}

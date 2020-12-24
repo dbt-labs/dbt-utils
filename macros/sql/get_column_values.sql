@@ -10,13 +10,15 @@ Returns:
     A list of distinct values for the specified columns
 #}
 
-{% macro get_column_values(table, column, sort_column=none, sort_direction=none, max_records=none, default=none) -%}
+{% macro get_column_values(table, column, max_records=none, default=none, order_by=none, sort_direction=none) -%}
 
 {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
     {%- if not execute -%}
         {{ return('') }}
     {% endif %}
 {#--  #}
+
+    {% set order_by = kwargs.get('order_by', 'count(*)')
 
     {%- set target_relation = adapter.get_relation(database=table.database,
                                           schema=table.schema,
@@ -50,8 +52,9 @@ Returns:
                     {% endif %}
                 from {{ target_relation }}
                 group by 1
-                order by 2 {{ sort_direction if sort_direction else "desc" }}
+                order by {{ order_by }} {{ sort_direction or "desc" }}
                 {% if max_records is not none %}
+                
                 limit {{ max_records }}
                 {% endif %}
 

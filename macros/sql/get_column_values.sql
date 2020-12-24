@@ -18,7 +18,7 @@ Returns:
     {% endif %}
 {#--  #}
 
-    {% set order_by = kwargs.get('order_by', 'count(*)')
+    {%- set order_by = kwargs.get('order_by', 'count(*)') -%}
 
     {%- set target_relation = adapter.get_relation(database=table.database,
                                           schema=table.schema,

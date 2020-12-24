@@ -442,7 +442,7 @@ group by 1
 This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation).
 It takes an options `default` argument for compiling when the relation does not already exist.
 
-The `sort_column` argument allows for sorting of values. The default is highest to lowest frequency of values. You can also specify a `sort_direction`.
+The `order_by` argument allows for sorting of values. The default is highest to lowest frequency of values. You can also specify a `sort_direction`.
 
 Usage:
 ```
@@ -458,7 +458,7 @@ Usage:
 
 ```
 -- Returns a list of user names sorted by name from the `users` table
-{% set names = dbt_utils.get_column_values(table=ref('users'), column='name', sort_column='name', default=[]) %}
+{% set names = dbt_utils.get_column_values(table=ref('users'), column='name', default=[], order_by='name') %}
 
 {% for name in names %}
     ...
@@ -469,7 +469,19 @@ Usage:
 
 ```
 -- Returns a list of user cities sorted by name from the `users` table
-{% set cities = dbt_utils.get_column_values(table=ref('users'), column='city_name', sort_column='city_name', default=[]) %}
+{% set cities = dbt_utils.get_column_values(table=ref('users'), column='city_name', default=[], order_by='city_name') %}
+
+{% for city in cities %}
+    ...
+{% endfor %}
+
+...
+```
+
+
+```
+-- Returns a list of user cities sorted by name from the `users` table
+{% set cities = dbt_utils.get_column_values(table=ref('users'), column='city_name', default=[], order_by='max(created_at)') %}
 
 {% for city in cities %}
     ...

@@ -18,7 +18,15 @@ Returns:
     {% endif %}
 {#--  #}
 
-    {%- set order_by = kwargs.get('order_by', 'count(*)') -%}
+    {%- set order_by = order_by if order_by else 'count(*)' -%}
+    {%- set order_by = 'max(' ~ order_by ~ ')' if order_by == column else order_by -%}
+    {%- set sort_direction -%}
+        {%- if order_by == column -%}
+        {{ sort_direction or 'asc' }} 
+        {%- else -%}
+        {{ sort_direction or 'desc' }}
+        {%- endif -%}
+    {%- endset -%}
 
     {%- set target_relation = adapter.get_relation(database=table.database,
                                           schema=table.schema,
@@ -46,7 +54,7 @@ Returns:
                     {{ order_by }} as sort_column
                 from {{ target_relation }}
                 group by 1
-                order by {{ order_by }} {{ sort_direction or "desc" }}
+                order by {{ order_by }} {{ sort_direction }}
                 {% if max_records is not none %}
                 
                 limit {{ max_records }}

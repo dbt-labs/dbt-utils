@@ -6,7 +6,7 @@ if [[ ! -f $VENV ]]; then
     . $VENV
 
     pip install --upgrade pip setuptools
-    pip install  "dbt>=0.18.0,<0.19.0"
+    pip install --pre "dbt<0.20.0"
 fi
 
 . $VENV

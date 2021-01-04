@@ -16,7 +16,7 @@ jobs:
             echo $BIGQUERY_SERVICE_ACCOUNT_JSON > ${HOME}/bigquery-service-key.json
 
       - restore_cache:
-          key: deps1-{{ .Branch }}
+          key: deps2-{{ .Branch }}
 
       - run:
           name: "Run Tests - Postgres"

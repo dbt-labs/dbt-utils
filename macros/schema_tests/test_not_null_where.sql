@@ -1,5 +1,5 @@
 {% macro test_not_null_where(model) %}
-  {{ adapter.dispatch('test_not_null_where', packages = dbt_utils._get_utils_namespaces())(model) }}
+  {{ adapter.dispatch('test_not_null_where', packages = dbt_utils._get_utils_namespaces())(model, **kwargs) }}
 {% endmacro %}
 
 {% macro default__test_not_null_where(model) %}

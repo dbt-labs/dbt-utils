@@ -1,6 +1,6 @@
 
 {% macro test_not_constant(model) %}
-  {{ adapter.dispatch('test_not_constant', packages = dbt_utils._get_utils_namespaces())(model) }}
+  {{ adapter.dispatch('test_not_constant', packages = dbt_utils._get_utils_namespaces())(model, **kwargs) }}
 {% endmacro %}
 
 {% macro default__test_not_constant(model) %}

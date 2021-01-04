@@ -1,5 +1,5 @@
 {% macro test_relationships_where(model, to, field) %}
-  {{ adapter.dispatch('test_relationships_where', packages = dbt_utils._get_utils_namespaces())(model, to, field) }}
+  {{ adapter.dispatch('test_relationships_where', packages = dbt_utils._get_utils_namespaces())(model, to, field, **kwargs) }}
 {% endmacro %}
 
 {% macro default__test_relationships_where(model, to, field) %}

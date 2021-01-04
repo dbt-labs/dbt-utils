@@ -37,6 +37,9 @@ If you were relying on the position to match up your optional arguments, this ma
 
 * Added optional `where` clause in `unique_combination_of_columns` test macro [#295](https://github.com/fishtown-analytics/dbt-utils/pull/295) [findinpath](https://github.com/findinpath)
 
+## Breaking changes:
+- [Potential breaking change] The BigQuery implementations of `dateadd` and `datediff` macros now use `timestamp` types instead of `datetime` types, to be more consistent with other warehouses ([#318](https://github.com/fishtown-analytics/dbt-utils/pull/318))
+
 ## Features
 * Add new `accepted_range` test ([#276](https://github.com/fishtown-analytics/dbt-utils/pull/276) [@joellabes](https://github.com/joellabes))
 * Make `expression_is_true` work as a column test (code originally in [#226](https://github.com/fishtown-analytics/dbt-utils/pull/226/) from [@elliottohara](https://github.com/elliottohara), merged via [#313])

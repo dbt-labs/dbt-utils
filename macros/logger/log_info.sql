@@ -3,5 +3,5 @@
 {% endmacro %}
 
 {% macro default__log_info(message) %}
-    {{ log(pretty_log_format(message), info=True) }}
+    {{ log(dbt_utils.pretty_log_format(message), info=True) }}
 {% endmacro %}

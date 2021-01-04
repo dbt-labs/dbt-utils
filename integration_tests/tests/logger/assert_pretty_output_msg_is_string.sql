@@ -1,4 +1,4 @@
-{% if dbt_utils.pretty_log_format() is string %}
+{% if pretty_log_format() is string %}
     {# Return 0 rows for the test to pass #}
     select 1 limit 0
 {% else %}

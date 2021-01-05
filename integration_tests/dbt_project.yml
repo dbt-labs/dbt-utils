@@ -2,6 +2,7 @@
 name: 'dbt_utils_integration_tests'
 version: '1.0'
 
+
 profile: 'integration_tests'
 
 # require-dbt-version: inherit this from dbt-utils

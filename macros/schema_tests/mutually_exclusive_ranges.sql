@@ -1,4 +1,4 @@
-{% macro test_mutually_exclusive_ranges(model, lower_bound_column, upper_bound_column, partition_by=None, gaps='allowed') %}
+{% macro test_mutually_exclusive_ranges(model, lower_bound_column, upper_bound_column, partition_by=None, gaps='allowed', gap_interval_constraints=None) %}
 
 {% if gaps == 'not_allowed' %}
     {% set allow_gaps_operator='=' %}
@@ -9,19 +9,32 @@
 {% elif gaps == 'required' %}
     {% set allow_gaps_operator='<' %}
     {% set allow_gaps_operator_in_words='less_than' %}
-{% elif gaps == 'consecutive_dates' %}
+{% elif gaps == 'interval_constrained' %}
     {% set allow_gaps_operator='=' %}
     {% set allow_gaps_operator_in_words='equal_to' %}
 {% else %}
     {{ exceptions.raise_compiler_error(
-        "`gaps` argument for mutually_exclusive_ranges test must be one of ['not_allowed', 'allowed', 'required', 'consecutive_dates'] Got: '" ~ gaps ~"'.'"
+        "`gaps` argument for mutually_exclusive_ranges test must be one of ['not_allowed', 'allowed', 'required', 'interval_constrained'] Got: '" ~ gaps ~"'.'"
     ) }}
 {% endif %}
 
-{% if gaps == 'consecutive_dates' %}
-     {% set next_bound_for_comparison='day_before_next_lower_bound' %}
+{% if gaps == 'interval_constrained' %}
+    {% if not gap_interval_constraints %}
+        {{ exceptions.raise_compiler_error(
+            "When `gaps: interval_constrained` the `gap_interval_constraints` argument must also be supplied."
+        ) }}
+    {% endif %}
+    {% if not gap_interval_constraints.fixed_interval %}
+        {{ exceptions.raise_compiler_error(
+            "`fixed_interval` must be specified in `gap_interval_constraints`."
+        ) }}
+    {% endif %}
 {% else %}
-     {% set next_bound_for_comparison='next_lower_bound' %}
+    {% if gap_interval_constraints %}
+        {{ exceptions.raise_compiler_error(
+            "`gap_interval_constraints` can only be used with `gaps: interval_constrained`."
+        ) }}
+    {% endif %}
 {% endif %}
 
 {% set partition_clause="partition by " ~ partition_by if partition_by else '' %}
@@ -30,21 +43,29 @@ with window_functions as (
 
     select
         {% if partition_by %}
-        {{ partition_by }},
+            {# Include columns that will be partitioned by if there are any #}
+            {{ partition_by }},
         {% endif %}
         {{ lower_bound_column }} as lower_bound,
         {{ upper_bound_column }} as upper_bound,
 
         lead(
-            {% if gaps == 'consecutive_dates' %}
-            {{ dbt_utils.dateadd('day', -1, lower_bound_column) }}
+            {% if gaps == 'interval_constrained' %}
+                {% if gap_interval_constraints.date_part %}
+                    {{ dbt_utils.dateadd(
+                        {{ gap_interval_constraints.date_part }},
+                        -{{ gap_interval_constraints.fixed_interval }},
+                        lower_bound_column
+                    ) }}
+                {% else %}
+                    lower_bound_column - {{ gap_interval_constraints.fixed_interval }}
             {% else %}
-            {{ lower_bound_column }}
+                {{ lower_bound_column }}
             {% endif %}
         ) over (
             {{ partition_clause }}
             order by {{ lower_bound_column }}
-        ) as {{ next_bound_for_comparison }},
+        ) as next_comparison_lower_bound,
 
         row_number() over (
             {{ partition_clause }}
@@ -69,13 +90,13 @@ calc as (
             false
         ) as lower_bound_less_than_upper_bound,
 
-        -- For each record: upper_bound {{ allow_gaps_operator }} {{ next_bound_for_comparison }}.
+        -- For each record: upper_bound {{ allow_gaps_operator }} next_comparison_lower_bound.
         -- Coalesce it to handle null cases for the last record.
         coalesce(
-            upper_bound {{ allow_gaps_operator }} {{ next_bound_for_comparison }},
+            upper_bound {{ allow_gaps_operator }} next_comparison_lower_bound,
             is_last_record,
             false
-        ) as upper_bound_{{ allow_gaps_operator_in_words }}_{{ next_bound_for_comparison }}
+        ) as upper_bound_{{ allow_gaps_operator_in_words }}_next_comparison_lower_bound
 
     from window_functions
 ),
@@ -89,7 +110,7 @@ validation_errors as (
     where not(
         -- THE FOLLOWING SHOULD BE TRUE --
         lower_bound_less_than_upper_bound
-        and upper_bound_{{ allow_gaps_operator_in_words }}_{{ next_bound_for_comparison }}
+        and upper_bound_{{ allow_gaps_operator_in_words }}_next_comparison_lower_bound
     )
 )
 

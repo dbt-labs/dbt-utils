@@ -81,7 +81,7 @@ models:
           upper_bound_column: upper_bound
           gaps: not_allowed
 
-  - name: data_test_mutually_exclusive_ranges_with_gaps
+  - name: data_test_mutually_exclusive_ranges_gaps
     tests:
       - dbt_utils.mutually_exclusive_ranges:
           lower_bound_column: valid_from
@@ -95,13 +95,37 @@ models:
           partition_by: subscription_id
           gaps: required
 
-  - name: data_test_mutually_exclusive_ranges_with_gaps_consecutive
+  - name: data_test_mutually_exclusive_ranges_gaps_of_1_day
     tests:
       - dbt_utils.mutually_exclusive_ranges:
           lower_bound_column: valid_from
           upper_bound_column: coalesce(valid_to, '2099-01-01')
           partition_by: subscription_id
-          gaps: consecutive_dates
+          gaps: interval_constrained
+          gap_interval_constraints:
+              fixed_interval: 1
+              date_part: day
+
+  - name: data_test_mutually_exclusive_ranges_gaps_of_2_hours
+    tests:
+      - dbt_utils.mutually_exclusive_ranges:
+          lower_bound_column: valid_from
+          upper_bound_column: coalesce(valid_to, '2099-01-01 00:00:00')
+          partition_by: subscription_id
+          gaps: interval_constrained
+          gap_interval_constraints:
+              fixed_interval: 2
+              date_part: "hour"
+
+  - name: data_test_mutually_exclusive_ranges_gaps_of_3
+    tests:
+      - dbt_utils.mutually_exclusive_ranges:
+          lower_bound_column: valid_from
+          upper_bound_column: coalesce(valid_to, 999)
+          partition_by: subscription_id
+          gaps: interval_constrained
+          gap_interval_constraints:
+              fixed_interval: 3
 
   - name: data_unique_combination_of_columns
     tests:

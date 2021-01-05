@@ -1,4 +1,4 @@
-{%- macro surrogate_key(field_list=none) -%}
+{%- macro surrogate_key(field_list) -%}
     {# needed for safe_add to allow for non-keyword arguments see SO post #}
     {# https://stackoverflow.com/questions/13944751/args-kwargs-in-jinja2-macros #}
     {% set frustrating_jinja_feature = varargs %}

@@ -1,5 +1,5 @@
 {% macro test_cardinality_equality(model, to, field) %}
-    {{ adapter.dispatch('test_cardinality_equality', packages = dbt_utils._get_utils_namespaces())(model, to, field, **kwargs) }}
+    {{ return(adapter.dispatch('test_cardinality_equality', packages = dbt_utils._get_utils_namespaces())(model, to, field, **kwargs)) }}
 
 {% endmacro %}
 

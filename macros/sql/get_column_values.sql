@@ -11,7 +11,7 @@ Returns:
 #}
 
 {% macro get_column_values(table, column, max_records=none, default=none) -%}
-    {{ adapter.dispatch('get_column_values', packages = dbt_utils._get_utils_namespaces())(table, column, max_records=none, default=none) }}
+    {{ return(adapter.dispatch('get_column_values', packages = dbt_utils._get_utils_namespaces())(table, column, max_records=none, default=none)) }}
 {% endmacro %}
 
 {% macro default__get_column_values(table, column, max_records=none, default=none) -%}

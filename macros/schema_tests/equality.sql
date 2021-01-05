@@ -1,5 +1,5 @@
 {% macro test_equality(model) %}
-  {{ adapter.dispatch('test_equality', packages = dbt_utils._get_utils_namespaces())(model, **kwargs) }}
+  {{ return(adapter.dispatch('test_equality', packages = dbt_utils._get_utils_namespaces())(model, **kwargs)) }}
 {% endmacro %}
 
 {% macro default__test_equality(model) %}

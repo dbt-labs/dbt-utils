@@ -1,5 +1,5 @@
 {%- macro group_by(n) -%}
-    {{ adapter.dispatch('group_by', packages = dbt_utils._get_utils_namespaces())(n) }}
+    {{ return(adapter.dispatch('group_by', packages = dbt_utils._get_utils_namespaces())(n)) }}
 {% endmacro %}
 
 {%- macro default__group_by(n) -%}

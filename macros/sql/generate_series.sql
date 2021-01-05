@@ -16,7 +16,7 @@
 
 
 {% macro generate_series(upper_bound) %}
-    {{ adapter.dispatch('generate_series', packages = dbt_utils._get_utils_namespaces())(upper_bound) }}
+    {{ return(adapter.dispatch('generate_series', packages = dbt_utils._get_utils_namespaces())(upper_bound)) }}
 {% endmacro %}
 
 {% macro default__generate_series(upper_bound) %}

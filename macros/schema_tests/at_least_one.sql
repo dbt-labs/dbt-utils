@@ -1,5 +1,5 @@
 {% macro test_at_least_one(model) %}
-  {{ adapter.dispatch('test_at_least_one', packages = dbt_utils._get_utils_namespaces())(model, **kwargs) }}
+  {{ return(adapter.dispatch('test_at_least_one', packages = dbt_utils._get_utils_namespaces())(model, **kwargs)) }}
 {% endmacro %}
 
 {% macro default__test_at_least_one(model) %}

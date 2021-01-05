@@ -7,7 +7,7 @@ The arguments should be float type.
 #}
 
 {% macro haversine_distance(lat1,lon1,lat2,lon2) -%}
-    {{ adapter.dispatch('haversine_distance', packages = dbt_utils._get_utils_namespaces())(lat1,lon1,lat2,lon2) }}
+    {{ return(adapter.dispatch('haversine_distance', packages = dbt_utils._get_utils_namespaces())(lat1,lon1,lat2,lon2)) }}
 {% endmacro %}
 
 {% macro default__haversine_distance(lat1,lon1,lat2,lon2) -%}

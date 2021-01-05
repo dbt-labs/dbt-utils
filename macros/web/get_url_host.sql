@@ -1,5 +1,5 @@
 {% macro get_url_host(field) -%}
-    {{ adapter.dispatch('get_url_host', packages = dbt_utils._get_utils_namespaces())(field) }}
+    {{ return(adapter.dispatch('get_url_host', packages = dbt_utils._get_utils_namespaces())(field)) }}
 {% endmacro %}
 
 {% macro default__get_url_host(field) -%}

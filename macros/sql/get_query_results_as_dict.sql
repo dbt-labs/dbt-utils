@@ -1,5 +1,5 @@
 {% macro get_query_results_as_dict(query) %}
-    {{ adapter.dispatch('get_query_results_as_dict', packages = dbt_utils._get_utils_namespaces())(query) }}
+    {{ return(adapter.dispatch('get_query_results_as_dict', packages = dbt_utils._get_utils_namespaces())(query)) }}
 {% endmacro %}
 
 {% macro default__get_query_results_as_dict(query) %}

@@ -1,5 +1,5 @@
 {% macro test_mutually_exclusive_ranges(model, lower_bound_column, upper_bound_column, partition_by=None, gaps='allowed') %}
-  {{ adapter.dispatch('test_mutually_exclusive_ranges', packages = dbt_utils._get_utils_namespaces())(model, lower_bound_column, upper_bound_column, partition_by=None, gaps='allowed') }}
+  {{ return(adapter.dispatch('test_mutually_exclusive_ranges', packages = dbt_utils._get_utils_namespaces())(model, lower_bound_column, upper_bound_column, partition_by=None, gaps='allowed')) }}
 {% endmacro %}
 
 {% macro default__test_mutually_exclusive_ranges(model, lower_bound_column, upper_bound_column, partition_by=None, gaps='allowed') %}

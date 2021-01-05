@@ -8,6 +8,7 @@
 * Add new schema test, `not_accepted_values` ([#284](https://github.com/fishtown-analytics/dbt-utils/pull/284) [@JavierMonton](https://github.com/JavierMonton))
 * Add `column_metadata_tests` to the `equality` test ([#298](https://github.com/fishtown-analytics/dbt-utils/pull/298))
 
+
 ## Fixes
 * Handle booleans gracefully in the unpivot macro ([#305](https://github.com/fishtown-analytics/dbt-utils/pull/305) [@avishalom](https://github.com/avishalom))
 

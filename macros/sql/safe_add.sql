@@ -1,4 +1,6 @@
 {%- macro safe_add() -%}
+    {# needed for safe_add to allow for non-keyword arguments #}
+    {% set dummy_var = args %}
     {{ return(adapter.dispatch('safe_add', packages = dbt_utils._get_utils_namespaces())(*args)) }}
 {% endmacro %}
 

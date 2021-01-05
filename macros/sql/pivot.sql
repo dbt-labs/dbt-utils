@@ -51,7 +51,7 @@ Arguments:
                else_value=0,
                quote_identifiers=True,
                distinct=False) %}
-    {{ return(adapter.dispatch('pivot', packages = dbt_utils._get_utils_namespaces())(column, values, alias=True, agg='sum', cmp='=', prefix='', suffix='', then_value=1, else_value=0, quote_identifiers=True, distinct=False)) }}
+    {{ return(adapter.dispatch('pivot', packages = dbt_utils._get_utils_namespaces())(column, values, alias, agg, cmp, prefix, suffix, then_value, else_value, quote_identifiers, distinct)) }}
 {% endmacro %}
 
 {% macro default__pivot(column,

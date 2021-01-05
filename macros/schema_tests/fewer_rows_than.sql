@@ -4,32 +4,36 @@
 
 with a as (
 
-    select count(*) as count_model from {{ model }}
+    select count(*) as count_ourmodel from {{ model }}
 
 ),
 b as (
 
-    select count(*) as count_comparison from {{ compare_model }}
+    select count(*) as count_comparisonmodel from {{ compare_model }}
 
 ),
 counts as (
 
     select
-        (select count_model from a) as count_model,
-        (select count_comparison from b) as count_comparison
+        (select count_ourmodel from a) as count_model_with_fewer_rows,
+        (select count_comparisonmodel from b) as count_model_with_more_rows
 
 ),
 final as (
 
     select 
         case
-            when count_model > count_comparison then count_model - count_comparison + 1
-            when count_model = count_comparison then count_model - count_comparison
-        else 0 end as excess_rows
+            -- fail the test if we have more rows than the reference model and return the row count delta
+            when count_model_with_fewer_rows > count_model_with_more_rows then (count_model_with_fewer_rows - count_model_with_more_rows)
+            -- fail the test if they are the same number
+            when count_model = count_comparison then 1
+            -- pass the test if the delta is positive (i.e. return the number 0)
+            else 0 
+    end as row_count_delta
     from counts
 
 )
 
-select excess_rows from final
+select row_count_delta from final
 
 {% endmacro %}

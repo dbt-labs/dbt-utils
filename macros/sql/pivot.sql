@@ -51,6 +51,20 @@ Arguments:
                else_value=0,
                quote_identifiers=True,
                distinct=False) %}
+    {{ adapter.dispatch('pivot', packages = dbt_utils._get_utils_namespaces())(column, values, alias=True, agg='sum', cmp='=', prefix='', suffix='', then_value=1, else_value=0, quote_identifiers=True, distinct=False) }}
+{% endmacro %}
+
+{% macro default__pivot(column,
+               values,
+               alias=True,
+               agg='sum',
+               cmp='=',
+               prefix='',
+               suffix='',
+               then_value=1,
+               else_value=0,
+               quote_identifiers=True,
+               distinct=False) %}
   {% for v in values %}
     {{ agg }}(
       {% if distinct %} distinct {% endif %}

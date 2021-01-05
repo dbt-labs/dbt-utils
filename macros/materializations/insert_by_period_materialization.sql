@@ -1,4 +1,8 @@
 {% macro get_period_boundaries(target_schema, target_table, timestamp_field, start_date, stop_date, period) -%}
+    {{ adapter.dispatch('get_period_boundaries', packages = dbt_utils._get_utils_namespaces())(target_schema, target_table, timestamp_field, start_date, stop_date, period) }}
+{% endmacro %}
+
+{% macro default__get_period_boundaries(target_schema, target_table, timestamp_field, start_date, stop_date, period) -%}
 
   {% call statement('period_boundaries', fetch_result=True) -%}
     with data as (

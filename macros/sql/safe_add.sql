@@ -1,4 +1,8 @@
 {%- macro safe_add() -%}
+    {{ adapter.dispatch('safe_add', packages = dbt_utils._get_utils_namespaces())() }}
+{% endmacro %}
+
+{%- macro default__safe_add() -%}
 
 {% set fields = [] %}
 

@@ -1,4 +1,8 @@
 {%- macro surrogate_key(field_list) -%}
+    {{ adapter.dispatch('surrogate_key', packages = dbt_utils._get_utils_namespaces())(field_list) }}
+{% endmacro %}
+
+{%- macro default__surrogate_key(field_list) -%}
 
 {%- if varargs|length >= 1 or field_list is string %}
 

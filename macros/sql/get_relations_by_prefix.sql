@@ -1,4 +1,8 @@
 {% macro get_relations_by_prefix(schema, prefix, exclude='', database=target.database) %}
+    {{ adapter.dispatch('get_relations_by_prefix', packages = dbt_utils._get_utils_namespaces())(schema, prefix, exclude='', database=target.database) }}
+{% endmacro %}
+
+{% macro default__get_relations_by_prefix(schema, prefix, exclude='', database=target.database) %}
 
     {%- call statement('get_tables', fetch_result=True) %}
 

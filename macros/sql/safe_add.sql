@@ -1,7 +1,7 @@
 {%- macro safe_add() -%}
     {# needed for safe_add to allow for non-keyword arguments see SO post #}
     {# https://stackoverflow.com/questions/13944751/args-kwargs-in-jinja2-macros #}
-    {# {{args}} #}
+    {# {{varargs}} #}
     {{ return(adapter.dispatch('safe_add', packages = dbt_utils._get_utils_namespaces())(*args)) }}
 {% endmacro %}
 

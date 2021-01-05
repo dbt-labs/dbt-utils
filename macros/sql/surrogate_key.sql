@@ -1,7 +1,7 @@
 {%- macro surrogate_key(field_list=none) -%}
     {# needed for safe_add to allow for non-keyword arguments see SO post #}
     {# https://stackoverflow.com/questions/13944751/args-kwargs-in-jinja2-macros #}
-    {# {{args}} #}
+    {# {{varargs}} #}
     {{ return(adapter.dispatch('surrogate_key', packages = dbt_utils._get_utils_namespaces())(field_list, *args)) }}
 {% endmacro %}
 

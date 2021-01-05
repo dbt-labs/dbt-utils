@@ -181,6 +181,25 @@ models:
 
 ```
 
+This macro can also be used at the column level. When this is done, the `expression` is evaluated against the column.  
+
+```yaml
+version: 2
+models: 
+    - name: model_name
+      columns: 
+        - name: col_a
+          tests:
+            - dbt_utils.expression_is_true:
+                expression: '>= 1'
+        - name: col_b
+          tests:
+            - dbt_utils.expression_is_true:
+                expression: '= 1'
+                condition: col_a = 1
+      
+```
+
 
 #### recency ([source](macros/schema_tests/recency.sql))
 This schema test asserts that there is data in the referenced model at least as recent as the defined interval prior to the current timestamp.
@@ -281,6 +300,22 @@ models:
               where: "_deleted = false"
 ```
 
+#### not_accepted_values ([source](macros/schema_tests/not_accepted_values.sql))
+This test validates that there are no rows that match the given values.
+
+Usage:
+```yaml
+version: 2
+
+models:
+  - name: my_model
+    columns:
+      - name: city
+        tests:
+          - dbt_utils.not_accepted_values:
+              values: ['Barcelona', 'New York']
+```
+
 #### relationships_where ([source](macros/schema_tests/relationships_where.sql))
 This test validates the referential integrity between two relations (same as the core relationships schema test) with an added predicate to filter out some rows from the test. This is useful to exclude records such as test entities, rows created in the last X minutes/hours to account for temporary gaps due to ETL limitations, etc.
 
@@ -326,6 +361,15 @@ models:
           upper_bound_column: ended_at
           partition_by: customer_id
           gaps: required
+  
+  # test that each customer can have subscriptions that start and end on the same date
+  - name: subscriptions
+    tests:
+      - dbt_utils.mutually_exclusive_ranges:
+          lower_bound_column: started_at
+          upper_bound_column: ended_at
+          partition_by: customer_id
+          zero_length: allowed
 ```
 **Args:**
 * `lower_bound_column` (required): The name of the column that represents the
@@ -336,7 +380,9 @@ upper value of the range. Must be not null.
 (e.g. all periods for a single subscription_id are mutually exclusive), use this
 argument to indicate which column to partition by. `default=none`
 * `gaps` (optional): Whether there can be gaps are allowed between ranges.
-`default='allowed', one_of=['not_allowed', 'allowed', 'required', 'consecutive_dates']`
+`default='allowed', one_of=['not_allowed', 'allowed', 'required', 'interval_constrained']`
+* `zero_length_range_allowed` (optional): Whether ranges can start and end on the same date.
+`default=false, one_of=[true, false]`
 
 **Note:** Both `lower_bound_column` and `upper_bound_column` should be not null.
 If this is not the case in your data source, consider passing a coalesce function
@@ -384,14 +430,51 @@ the lower bound of the next record (common for date ranges).
 | 2           | 3           |
 | 5           | 6           |
 
-* `gaps:consecutive_dates`: There must be a gap of one day between the upper bound of one record and
-the lower bound of the next record. Upper and lower bound columns must both be date columns.
+* `gaps:interval_constrained`: Specify a required interval between the upper bound of one record and
+the lower bound of the next record. If working with date or datetime columns include the optional `datepart` argument.
+
+```yaml
+version: 2
+
+models:
+  - name: age_buckets
+    tests:
+      - dbt_utils.mutually_exclusive_ranges:
+          lower_bound_column: lower_bound
+          upper_bound_column: coalesce(upper_bound, 999)
+          gaps: interval_constrained
+          gap_interval_constraints:
+              fixed_interval: 3
+
+  - name: datetime_buckets
+    tests:
+      - dbt_utils.mutually_exclusive_ranges:
+          lower_bound_column: valid_from
+          upper_bound_column: coalesce(valid_to, '2099-01-01 00:00:00')
+          partition_by: subscription_id
+          gaps: interval_constrained
+          gap_interval_constraints:
+              fixed_interval: 2
+              datepart: hour
+```
+
+**Understanding the `zero_length_range_allowed` parameter:**
+Here are a number of examples for each allowed `zero_length_range_allowed` parameter.
+* `zero_length_range_allowed:false`: (default) The upper bound of each record must be greater than its lower bound.
 
 | lower_bound | upper_bound |
 |-------------|-------------|
-| 2020-01-01  | 2020-01-06  |
-| 2020-01-07  | 2020-03-15  |
-| 2020-03-16  | 2020-04-23  |
+| 0           | 1           |
+| 1           | 2           |
+| 2           | 3           |
+
+* `zero_length_range_allowed:true`: The upper bound of each record can be greater than or equal to its lower bound.
+
+| lower_bound | upper_bound |
+|-------------|-------------|
+| 0           | 1           |
+| 2           | 2           |
+| 3           | 4           |
 
 #### unique_combination_of_columns ([source](macros/schema_tests/unique_combination_of_columns.sql))
 This test confirms that the combination of columns is unique. For example, the
@@ -426,6 +509,19 @@ An optional `quote_columns` parameter (`default=false`) can also be used if a co
           - month
           - group
         quote_columns: true
+```
+
+An optional `where` parameter can also be used in order to isolate the rows of the data set on which the uniqueness
+constraint needs to be verified.
+
+```yaml
+- name: revenue_by_product_by_month
+  tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - month
+          - group
+        where: year >= 2020
 ```
 
 
@@ -565,11 +661,11 @@ Usage:
 
 #### star ([source](macros/sql/star.sql))
 This macro generates a list of all fields that exist in the `from` relation, excluding any fields listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with the star macro. This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias.
-
+It also has an optional arg that allows aliasing of individual columns.
 Usage:
 ```
 select
-{{ dbt_utils.star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"]) }}
+{{ dbt_utils.star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"], aliases={"field_x":"pretty_name", "field_y":"another_pretty_name"}) }}
 from {{ref('my_model')}}
 ```
 
@@ -673,6 +769,7 @@ Arguments:
 
 #### unpivot ([source](macros/sql/unpivot.sql))
 This macro "un-pivots" a table from wide format to long format. Functionality is similar to pandas [melt](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.melt.html) function.
+Boolean values are replaced with the strings 'true'|'false'
 
 Usage:
 ```

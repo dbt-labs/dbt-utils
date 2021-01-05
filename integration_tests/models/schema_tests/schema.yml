@@ -20,6 +20,16 @@ models:
       - dbt_utils.expression_is_true:
           expression: col_a = 0.5
           condition: col_b = 0.5
+    columns:
+      - name: col_a
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: + col_b = 1
+      - name: col_b
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: = 0.5
+              condition: col_a = 0.5
 
   - name: test_recency
     tests:
@@ -64,6 +74,13 @@ models:
           - dbt_utils.not_null_where:
               where: "_deleted = false"
 
+  - name: data_test_not_accepted_values
+    columns:
+      - name: city
+        tests:
+          - dbt_utils.not_accepted_values:
+              values: ['Madrid', 'Berlin']
+
   - name: data_test_relationships_where_table_2
     columns:
       - name: id
@@ -88,7 +105,14 @@ models:
           partition_by: subscription_id
           gaps: required
 
-  - name: data_test_mutually_exclusive_ranges_gaps_of_1_day
+  - name: data_test_mutually_exclusive_ranges_no_gaps
+    tests:
+      - dbt_utils.mutually_exclusive_ranges:
+          lower_bound_column: lower_bound
+          upper_bound_column: upper_bound
+          gaps: not_allowed
+
+  - name: data_test_mutually_exclusive_ranges_with_gaps_of_1_day
     tests:
       - dbt_utils.mutually_exclusive_ranges:
           lower_bound_column: valid_from
@@ -97,9 +121,9 @@ models:
           gaps: interval_constrained
           gap_interval_constraints:
               fixed_interval: 1
-              date_part: day
+              datepart: day
 
-  - name: data_test_mutually_exclusive_ranges_gaps_of_2_hours
+  - name: data_test_mutually_exclusive_ranges_with_gaps_of_2_hours
     tests:
       - dbt_utils.mutually_exclusive_ranges:
           lower_bound_column: valid_from
@@ -108,9 +132,9 @@ models:
           gaps: interval_constrained
           gap_interval_constraints:
               fixed_interval: 2
-              date_part: hour
+              datepart: hour
 
-  - name: data_test_mutually_exclusive_ranges_gaps_of_3
+  - name: data_test_mutually_exclusive_ranges_with_gaps_of_3
     tests:
       - dbt_utils.mutually_exclusive_ranges:
           lower_bound_column: lower_bound
@@ -119,12 +143,13 @@ models:
           gap_interval_constraints:
               fixed_interval: 3
 
-  - name: data_test_mutually_exclusive_ranges_no_gaps
+  - name: data_test_mutually_exclusive_ranges_with_gaps_zero_length
     tests:
       - dbt_utils.mutually_exclusive_ranges:
-          lower_bound_column: lower_bound
-          upper_bound_column: upper_bound
-          gaps: not_allowed
+          lower_bound_column: valid_from
+          upper_bound_column: valid_to
+          partition_by: subscription_id
+          zero_length_range_allowed: true
 
   - name: data_unique_combination_of_columns
     tests:

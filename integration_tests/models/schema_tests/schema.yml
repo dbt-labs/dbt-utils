@@ -74,13 +74,6 @@ models:
               field: id
               from_condition: id <> 4
 
-  - name: data_test_mutually_exclusive_ranges_no_gaps
-    tests:
-      - dbt_utils.mutually_exclusive_ranges:
-          lower_bound_column: lower_bound
-          upper_bound_column: upper_bound
-          gaps: not_allowed
-
   - name: data_test_mutually_exclusive_ranges_gaps
     tests:
       - dbt_utils.mutually_exclusive_ranges:
@@ -115,17 +108,23 @@ models:
           gaps: interval_constrained
           gap_interval_constraints:
               fixed_interval: 2
-              date_part: "hour"
+              date_part: hour
 
   - name: data_test_mutually_exclusive_ranges_gaps_of_3
     tests:
       - dbt_utils.mutually_exclusive_ranges:
-          lower_bound_column: valid_from
-          upper_bound_column: coalesce(valid_to, 999)
-          partition_by: subscription_id
+          lower_bound_column: lower_bound
+          upper_bound_column: coalesce(upper_bound, 999)
           gaps: interval_constrained
           gap_interval_constraints:
               fixed_interval: 3
+
+  - name: data_test_mutually_exclusive_ranges_no_gaps
+    tests:
+      - dbt_utils.mutually_exclusive_ranges:
+          lower_bound_column: lower_bound
+          upper_bound_column: upper_bound
+          gaps: not_allowed
 
   - name: data_unique_combination_of_columns
     tests:

@@ -53,12 +53,13 @@ with window_functions as (
             {% if gaps == 'interval_constrained' %}
                 {% if gap_interval_constraints.date_part %}
                     {{ dbt_utils.dateadd(
-                        {{ gap_interval_constraints.date_part }},
-                        -{{ gap_interval_constraints.fixed_interval }},
+                        gap_interval_constraints.date_part,
+                        -gap_interval_constraints.fixed_interval,
                         lower_bound_column
                     ) }}
                 {% else %}
-                    lower_bound_column - {{ gap_interval_constraints.fixed_interval }}
+                    {{ lower_bound_column }} - {{ gap_interval_constraints.fixed_interval }}
+                {% endif %}
             {% else %}
                 {{ lower_bound_column }}
             {% endif %}

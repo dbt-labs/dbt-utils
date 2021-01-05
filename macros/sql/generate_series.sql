@@ -1,5 +1,5 @@
 {% macro get_powers_of_two(upper_bound) %}
-    {{ adapter.dispatch('get_powers_of_two', packages = dbt_utils._get_utils_namespaces())(upper_bound) }}
+    {{ return(adapter.dispatch('get_powers_of_two', packages = dbt_utils._get_utils_namespaces())(upper_bound)) }}
 {% endmacro %}
 
 {% macro default__get_powers_of_two(upper_bound) %}

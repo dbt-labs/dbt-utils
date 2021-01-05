@@ -1,5 +1,5 @@
 {%- macro safe_add() -%}
-    {{ return(adapter.dispatch('safe_add', packages = dbt_utils._get_utils_namespaces())(*args) }}
+    {{ return(adapter.dispatch('safe_add', packages = dbt_utils._get_utils_namespaces())(*args)) }}
 {% endmacro %}
 
 {%- macro default__safe_add() -%}

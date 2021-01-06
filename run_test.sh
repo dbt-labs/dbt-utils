@@ -24,5 +24,8 @@ if [[ ! -z $3 ]]; then _seeds="--select $3 --full-refresh"; fi
 
 dbt deps --target $1
 dbt seed --target $1 $_seeds
+if [ $1 == 'redshift' ]; then
+    dbt run -x -m test_insert_by_period --full-refresh --target redshift
+fi
 dbt run -x --target $1 $_models
 dbt test -x --target $1 $_models

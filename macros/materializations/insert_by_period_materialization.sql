@@ -142,7 +142,9 @@
           from {{tmp_relation.include(schema=False)}}
       );
     {%- endcall %}
-    {%- set rows_inserted = (load_result('main-' ~ i)['status'].split(" "))[2] | int -%}
+    {% set result = load_result('main-' ~ i) %}
+    {% set rows_inserted = result['response']['rows_affected'] %}
+    {% endif %}
     {%- set sum_rows_inserted = loop_vars['sum_rows_inserted'] + rows_inserted -%}
     {%- if loop_vars.update({'sum_rows_inserted': sum_rows_inserted}) %} {% endif -%}
 
@@ -165,7 +167,7 @@
 
   {%- set status_string = "INSERT " ~ loop_vars['sum_rows_inserted'] -%}
 
-  {% call noop_statement(name='main', status=status_string) -%}
+  {% call noop_statement(name='main', message=status_string) -%}
     -- no-op
   {%- endcall %}
 

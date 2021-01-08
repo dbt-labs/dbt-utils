@@ -1,8 +1,12 @@
 # dbt-utils v0.6.4
 
+### Fixes
 - Fix `insert_by_period` to support `dbt v0.19.0`, with backwards compatibility for earlier versions ([#319](https://github.com/fishtown-analytics/dbt-utils/pull/319), [#320](https://github.com/fishtown-analytics/dbt-utils/pull/320))
+
+### Under the hood
 - Speed up CI via threads, workflows ([#315](https://github.com/fishtown-analytics/dbt-utils/pull/315), [#316](https://github.com/fishtown-analytics/dbt-utils/pull/316))
 - Fix `equality` test when used with ephemeral models + explicit column set ([#321](https://github.com/fishtown-analytics/dbt-utils/pull/321))
+- Fix `get_query_results_as_dict` integration test with consistent ordering ([#322](https://github.com/fishtown-analytics/dbt-utils/pull/322))
 
 # dbt-utils v0.6.3
 

@@ -1,23 +1,15 @@
 
-version: 2
+version: 2.1
 
 jobs:
-  build:
+  
+  integration-postgres:
     docker:
       - image: circleci/python:3.6.3-stretch
       - image: circleci/postgres:9.6.5-alpine-ram
 
     steps:
       - checkout
-
-      - run:
-          run: setup_creds
-          command: |
-            echo $BIGQUERY_SERVICE_ACCOUNT_JSON > ${HOME}/bigquery-service-key.json
-
-      - restore_cache:
-          key: deps1-{{ .Branch }}
-
       - run:
           name: "Run Tests - Postgres"
           environment:
@@ -27,22 +19,58 @@ jobs:
             POSTGRES_TEST_PORT: 5432
             POSTGRES_TEST_DBNAME: circle_test
           command: ./run_test.sh postgres
+      - store_artifacts:
+          path: ./logs
 
+  integration-redshift:
+    docker:
+      - image: circleci/python:3.6.3-stretch
+    steps:
+      - checkout
       - run:
           name: "Run Tests - Redshift"
           command: ./run_test.sh redshift
+      - store_artifacts:
+          path: ./logs
 
+  integration-snowflake:
+    docker:
+      - image: circleci/python:3.6.3-stretch
+    steps:
+      - checkout
       - run:
           name: "Run Tests - Snowflake"
           command: ./run_test.sh snowflake
-
+      - store_artifacts:
+          path: ./logs          
+  
+  integration-bigquery:
+    environment:
+      BIGQUERY_SERVICE_KEY_PATH: "/home/circleci/bigquery-service-key.json"
+    docker:
+      - image: circleci/python:3.6.3-stretch
+    steps:
+      - checkout
+      - run:
+          name: "Set up credentials"
+          command: echo $BIGQUERY_SERVICE_ACCOUNT_JSON > ${HOME}/bigquery-service-key.json
       - run:
           name: "Run Tests - BigQuery"
-          environment:
-              BIGQUERY_SERVICE_KEY_PATH: "/home/circleci/bigquery-service-key.json"
           command: ./run_test.sh bigquery
+      - store_artifacts:
+          path: ./logs
 
-      - save_cache:
-          key: deps1-{{ .Branch }}
-          paths:
-            - "venv"
+workflows:
+  version: 2
+  test-all:
+    jobs:
+      - integration-postgres
+      - integration-redshift:
+          requires:
+            - integration-postgres
+      - integration-snowflake:
+          requires:
+            - integration-postgres
+      - integration-bigquery:
+          requires:
+            - integration-postgres

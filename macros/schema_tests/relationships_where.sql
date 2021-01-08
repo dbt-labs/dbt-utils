@@ -1,6 +1,8 @@
 {% macro test_relationships_where(model, to, field) %}
 
 {% set column_name = kwargs.get('column_name', kwargs.get('from')) %}
+{# T-SQL has no boolean data type so we use 1=1 which returns TRUE #}
+{# ref https://stackoverflow.com/a/7170753/3842610 #}
 {% set from_condition = kwargs.get('from_condition', "1=1") %}
 {% set to_condition = kwargs.get('to_condition', "1=1") %}
 

@@ -5,9 +5,9 @@
 select count(*)
 from (
     select
-        {# subquery aggregate columns need aliases #}
-        {# thus: 'unique_values' #}
-      count({{ column_name }}) as unique_values
+        {# In TSQL, subquery aggregate columns need aliases #}
+        {# thus: a filler col name, 'filler_column' #}
+      count({{ column_name }}) as filler_column
 
     from {{ model }}
 

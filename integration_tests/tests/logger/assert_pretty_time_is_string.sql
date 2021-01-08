@@ -1,6 +1,6 @@
 {% if dbt_utils.pretty_time() is string %}
     {# Return 0 rows for the test to pass #}
-    select 1 as col_name where 0=1
+    select 1 as col_name FROM DUAL where 0=1
 {% else %}
     {# Return >0 rows for the test to fail #}
     select 1

@@ -77,5 +77,5 @@ Instead, we'll manually check that the values of these dictionaries are equivale
 {% endif %}
 
 {{ log(ns.err_msg, info=True) }}
-select 1 as col_name {% if ns.pass %} where 0=1 {% endif %}
+select 1 as col_name {% if ns.pass %} {{ limit_zero }} {% endif %}
 {% endif %}

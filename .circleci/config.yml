@@ -1,6 +1,9 @@
 
 version: 2.1
 
+orbs:
+  queue: eddiewebb/queue@1.5.0
+
 jobs:
   
   integration-postgres:
@@ -64,7 +67,10 @@ workflows:
   version: 2
   test-all:
     jobs:
-      - integration-postgres
+      - queue/block_workflow
+      - integration-postgres:
+          requires:
+            - queue/block_workflow
       - integration-redshift:
           requires:
             - integration-postgres

@@ -1,5 +1,9 @@
 
 {% macro test_not_constant(model) %}
+  {{ return(adapter.dispatch('test_not_constant', packages = dbt_utils._get_utils_namespaces())(model, **kwargs)) }}
+{% endmacro %}
+
+{% macro default__test_not_constant(model) %}
 
 {% set column_name = kwargs.get('column_name', kwargs.get('arg')) %}
 

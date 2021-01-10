@@ -1,5 +1,8 @@
 {% macro get_intervals_between(start_date, end_date, datepart) -%}
+    {{ return(adapter.dispatch('get_intervals_between', packages = dbt_utils._get_utils_namespaces())(start_date, end_date, datepart)) }}
+{%- endmacro %}
 
+{% macro default__get_intervals_between(start_date, end_date, datepart) -%}
     {%- call statement('get_intervals_between', fetch_result=True) %}
 
         select {{dbt_utils.datediff(start_date, end_date, datepart)}}
@@ -21,6 +24,10 @@
 
 
 {% macro date_spine(datepart, start_date, end_date) %}
+    {{ return(adapter.dispatch('date_spine', packages = dbt_utils._get_utils_namespaces())(datepart, start_date, end_date)) }}
+{%- endmacro %}
+
+{% macro default__date_spine(datepart, start_date, end_date) %}
 
 /*
 call as follows:

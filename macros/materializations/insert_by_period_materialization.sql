@@ -1,4 +1,8 @@
 {% macro get_period_boundaries(target_schema, target_table, timestamp_field, start_date, stop_date, period) -%}
+    {{ return(adapter.dispatch('get_period_boundaries', packages = dbt_utils._get_utils_namespaces())(target_schema, target_table, timestamp_field, start_date, stop_date, period)) }}
+{% endmacro %}
+
+{% macro default__get_period_boundaries(target_schema, target_table, timestamp_field, start_date, stop_date, period) -%}
 
   {% call statement('period_boundaries', fetch_result=True) -%}
     with data as (
@@ -25,6 +29,10 @@
 {%- endmacro %}
 
 {% macro get_period_sql(target_cols_csv, sql, timestamp_field, period, start_timestamp, stop_timestamp, offset) -%}
+    {{ return(adapter.dispatch('get_period_sql', packages = dbt_utils._get_utils_namespaces())(target_cols_csv, sql, timestamp_field, period, start_timestamp, stop_timestamp, offset)) }}
+{% endmacro %}
+
+{% macro default__get_period_sql(target_cols_csv, sql, timestamp_field, period, start_timestamp, stop_timestamp, offset) -%}
 
   {%- set period_filter -%}
     ("{{timestamp_field}}" >  '{{start_timestamp}}'::timestamp + interval '{{offset}} {{period}}' and

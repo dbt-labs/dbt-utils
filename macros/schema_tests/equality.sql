@@ -1,4 +1,8 @@
 {% macro test_equality(model) %}
+  {{ return(adapter.dispatch('test_equality', packages = dbt_utils._get_utils_namespaces())(model, **kwargs)) }}
+{% endmacro %}
+
+{% macro default__test_equality(model) %}
 
 
 {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}

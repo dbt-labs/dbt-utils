@@ -1,4 +1,8 @@
 {% macro test_relationships_where(model, to, field) %}
+  {{ return(adapter.dispatch('test_relationships_where', packages = dbt_utils._get_utils_namespaces())(model, to, field, **kwargs)) }}
+{% endmacro %}
+
+{% macro default__test_relationships_where(model, to, field) %}
 
 {% set column_name = kwargs.get('column_name', kwargs.get('from')) %}
 {# T-SQL has no boolean data type so we use 1=1 which returns TRUE #}

@@ -1,5 +1,5 @@
 {% macro date_trunc(datepart, date) -%}
-  {{ adapter.dispatch('date_trunc', packages = dbt_utils._get_utils_namespaces()) (datepart, date) }}
+  {{ return(adapter.dispatch('date_trunc', packages = dbt_utils._get_utils_namespaces()) (datepart, date)) }}
 {%- endmacro %}
 
 {% macro default__date_trunc(datepart, date) %}

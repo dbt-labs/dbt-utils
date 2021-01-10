@@ -7,6 +7,7 @@
 - Speed up CI via threads, workflows ([#315](https://github.com/fishtown-analytics/dbt-utils/pull/315), [#316](https://github.com/fishtown-analytics/dbt-utils/pull/316))
 - Fix `equality` test when used with ephemeral models + explicit column set ([#321](https://github.com/fishtown-analytics/dbt-utils/pull/321))
 - Fix `get_query_results_as_dict` integration test with consistent ordering ([#322](https://github.com/fishtown-analytics/dbt-utils/pull/322))
+- All macros are now properly dispatched, making it possible for non-core adapters to implement a shim package for dbt-utils ([#312](https://github.com/fishtown-analytics/dbt-utils/pull/312)) Thanks [@chaerinlee1](https://github.com/chaerinlee1) and [@swanderz](https://github.com/swanderz)
 
 # dbt-utils v0.6.3
 

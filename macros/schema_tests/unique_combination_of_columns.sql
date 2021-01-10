@@ -1,4 +1,8 @@
 {% macro test_unique_combination_of_columns(model, quote_columns = false) %}
+  {{ return(adapter.dispatch('test_unique_combination_of_columns', packages = dbt_utils._get_utils_namespaces())(model, quote_columns, **kwargs)) }}
+{% endmacro %}
+
+{% macro default__test_unique_combination_of_columns(model, quote_columns = false) %}
 
 {%- set columns = kwargs.get('combination_of_columns', kwargs.get('arg')) %}
 

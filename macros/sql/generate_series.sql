@@ -1,4 +1,8 @@
 {% macro get_powers_of_two(upper_bound) %}
+    {{ return(adapter.dispatch('get_powers_of_two', packages = dbt_utils._get_utils_namespaces())(upper_bound)) }}
+{% endmacro %}
+
+{% macro default__get_powers_of_two(upper_bound) %}
 
     {% if upper_bound <= 0 %}
     {{ exceptions.raise_compiler_error("upper bound must be positive") }}
@@ -12,6 +16,10 @@
 
 
 {% macro generate_series(upper_bound) %}
+    {{ return(adapter.dispatch('generate_series', packages = dbt_utils._get_utils_namespaces())(upper_bound)) }}
+{% endmacro %}
+
+{% macro default__generate_series(upper_bound) %}
 
     {% set n = dbt_utils.get_powers_of_two(upper_bound) %}
 

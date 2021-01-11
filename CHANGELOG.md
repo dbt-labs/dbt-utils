@@ -9,6 +9,7 @@
 - Fix `get_query_results_as_dict` integration test with consistent ordering ([#322](https://github.com/fishtown-analytics/dbt-utils/pull/322))
 - All macros are now properly dispatched, making it possible for non-core adapters to implement a shim package for dbt-utils ([#312](https://github.com/fishtown-analytics/dbt-utils/pull/312)) Thanks [@chaerinlee1](https://github.com/chaerinlee1) and [@swanderz](https://github.com/swanderz)
 - Small, non-breaking changes to accomdate TSQL (can't group by column number references, no real TRUE/FALSE values, aggregation CTEs need named columns) ([#310](https://github.com/fishtown-analytics/dbt-utils/pull/310)) Thanks [@swanderz](https://github.com/swanderz)
+- Make `get_relations_by_pattern` and `get_relations_by_prefix` more powerful by returning `relation.type`
 
 # dbt-utils v0.6.3
 

@@ -1,5 +1,14 @@
 {% macro test_cardinality_equality(model, to, field) %}
 
+    {{ return(adapter.dispatch('test_cardinality_equality', packages = dbt_utils._get_utils_namespaces())(model, to, field, **kwargs)) }}
+
+{% endmacro %}
+
+{% macro default__test_cardinality_equality(model, to, field) %}
+
+{# T-SQL doesn't let you use numbers as aliases for columns #}
+{# Thus, no "GROUP BY 1" #}
+
 {% set column_name = kwargs.get('column_name', kwargs.get('from')) %}
 
 
@@ -8,7 +17,7 @@ select
   {{ column_name }},
   count(*) as num_rows
 from {{ model }}
-group by 1
+group by {{ column_name }}
 ),
 
 table_b as (
@@ -16,7 +25,7 @@ select
   {{ field }},
   count(*) as num_rows
 from {{ to }}
-group by 1
+group by {{ column_name }}
 ),
 
 except_a as (

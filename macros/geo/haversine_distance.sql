@@ -7,6 +7,10 @@ The arguments should be float type.
 #}
 
 {% macro haversine_distance(lat1,lon1,lat2,lon2) -%}
+    {{ return(adapter.dispatch('haversine_distance', packages = dbt_utils._get_utils_namespaces())(lat1,lon1,lat2,lon2)) }}
+{% endmacro %}
+
+{% macro default__haversine_distance(lat1,lon1,lat2,lon2) -%}
 
     2 * 3961 * asin(sqrt((sin(radians(({{lat2}} - {{lat1}}) / 2))) ^ 2 +
     cos(radians({{lat1}})) * cos(radians({{lat2}})) *

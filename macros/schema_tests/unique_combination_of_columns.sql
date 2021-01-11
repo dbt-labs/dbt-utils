@@ -1,4 +1,8 @@
-{% macro test_unique_combination_of_columns(model, combination_of_columns, quote_columns = false, where = None) %}
+{% macro test_unique_combination_of_columns(model, combination_of_columns, quote_columns=false, where=None) %}
+  {{ return(adapter.dispatch('test_unique_combination_of_columns', packages = dbt_utils._get_utils_namespaces())(model, combination_of_columns, quote_columns, where)) }}
+{% endmacro %}
+
+{% macro default__test_unique_combination_of_columns(model, combination_of_columns, quote_columns=false, where=None) %}
 
 
 {% if not quote_columns %}

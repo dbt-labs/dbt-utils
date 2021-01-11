@@ -6,7 +6,7 @@ if [[ ! -f $VENV ]]; then
     . $VENV
 
     pip install --upgrade pip setuptools
-    pip install  "dbt>=0.18.0,<0.19.0"
+    pip install --pre "dbt<0.20.0"
 fi
 
 . $VENV
@@ -24,5 +24,8 @@ if [[ ! -z $3 ]]; then _seeds="--select $3 --full-refresh"; fi
 
 dbt deps --target $1
 dbt seed --target $1 $_seeds
-dbt run --target $1 $_models
-dbt test --target $1 $_models
+if [ $1 == 'redshift' ]; then
+    dbt run -x -m test_insert_by_period --full-refresh --target redshift
+fi
+dbt run -x --target $1 $_models
+dbt test -x --target $1 $_models

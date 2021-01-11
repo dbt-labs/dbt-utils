@@ -1,4 +1,8 @@
 {% macro get_relations_by_prefix(schema, prefix, exclude='', database=target.database) %}
+    {{ return(adapter.dispatch('get_relations_by_prefix', packages = dbt_utils._get_utils_namespaces())(schema, prefix, exclude, database)) }}
+{% endmacro %}
+
+{% macro default__get_relations_by_prefix(schema, prefix, exclude='', database=target.database) %}
 
     {%- call statement('get_tables', fetch_result=True) %}
 
@@ -11,7 +15,12 @@
     {%- if table_list and table_list['table'] -%}
         {%- set tbl_relations = [] -%}
         {%- for row in table_list['table'] -%}
-            {%- set tbl_relation = api.Relation.create(database, row.table_schema, row.table_name) -%}
+            {%- set tbl_relation = api.Relation.create(
+                database=database,
+                schema=row.table_schema,
+                identifier=row.table_name,
+                type=row.table_type
+            ) -%}
             {%- do tbl_relations.append(tbl_relation) -%}
         {%- endfor -%}
 

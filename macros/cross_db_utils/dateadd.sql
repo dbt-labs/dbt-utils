@@ -1,5 +1,5 @@
 {% macro dateadd(datepart, interval, from_date_or_timestamp) %}
-  {{ adapter.dispatch('dateadd', packages = dbt_utils._get_utils_namespaces())(datepart, interval, from_date_or_timestamp) }}
+  {{ return(adapter.dispatch('dateadd', packages = dbt_utils._get_utils_namespaces())(datepart, interval, from_date_or_timestamp)) }}
 {% endmacro %}
 
 

@@ -1,4 +1,9 @@
 {% macro get_query_results_as_dict(query) %}
+    {{ return(adapter.dispatch('get_query_results_as_dict', packages = dbt_utils._get_utils_namespaces())(query)) }}
+{% endmacro %}
+
+{% macro default__get_query_results_as_dict(query) %}
+
 {# This macro returns a dictionary of the form {column_name: (tuple_of_results)} #}
 
     {%- call statement('get_query_results', fetch_result=True,auto_begin=false) -%}

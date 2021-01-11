@@ -1,4 +1,8 @@
 {% macro get_period_boundaries(target_schema, target_table, timestamp_field, start_date, stop_date, period) -%}
+    {{ return(adapter.dispatch('get_period_boundaries', packages = dbt_utils._get_utils_namespaces())(target_schema, target_table, timestamp_field, start_date, stop_date, period)) }}
+{% endmacro %}
+
+{% macro default__get_period_boundaries(target_schema, target_table, timestamp_field, start_date, stop_date, period) -%}
 
   {% call statement('period_boundaries', fetch_result=True) -%}
     with data as (
@@ -25,6 +29,10 @@
 {%- endmacro %}
 
 {% macro get_period_sql(target_cols_csv, sql, timestamp_field, period, start_timestamp, stop_timestamp, offset) -%}
+    {{ return(adapter.dispatch('get_period_sql', packages = dbt_utils._get_utils_namespaces())(target_cols_csv, sql, timestamp_field, period, start_timestamp, stop_timestamp, offset)) }}
+{% endmacro %}
+
+{% macro default__get_period_sql(target_cols_csv, sql, timestamp_field, period, start_timestamp, stop_timestamp, offset) -%}
 
   {%- set period_filter -%}
     ("{{timestamp_field}}" >  '{{start_timestamp}}'::timestamp + interval '{{offset}} {{period}}' and
@@ -142,7 +150,13 @@
           from {{tmp_relation.include(schema=False)}}
       );
     {%- endcall %}
-    {%- set rows_inserted = (load_result('main-' ~ i)['status'].split(" "))[2] | int -%}
+    {% set result = load_result('main-' ~ i) %}
+    {% if 'response' in result.keys() %} {# added in v0.19.0 #}
+        {% set rows_inserted = result['response']['rows_affected'] %}
+    {% else %} {# older versions #}
+        {% set rows_inserted = result['status'].split(" ")[2] | int %}
+    {% endif %}
+    
     {%- set sum_rows_inserted = loop_vars['sum_rows_inserted'] + rows_inserted -%}
     {%- if loop_vars.update({'sum_rows_inserted': sum_rows_inserted}) %} {% endif -%}
 
@@ -165,7 +179,7 @@
 
   {%- set status_string = "INSERT " ~ loop_vars['sum_rows_inserted'] -%}
 
-  {% call noop_statement(name='main', status=status_string) -%}
+  {% call noop_statement('main', status_string) -%}
     -- no-op
   {%- endcall %}
 

@@ -11,6 +11,10 @@ Returns:
 #}
 
 {% macro get_column_values(table, column, max_records=none, default=none) -%}
+    {{ return(adapter.dispatch('get_column_values', packages = dbt_utils._get_utils_namespaces())(table, column, max_records, default)) }}
+{% endmacro %}
+
+{% macro default__get_column_values(table, column, max_records=none, default=none) -%}
 
 {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
     {%- if not execute -%}

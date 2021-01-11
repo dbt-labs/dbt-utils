@@ -100,9 +100,9 @@ This macro returns the sql required to build a date spine. The spine will includ
 Usage:
 ```
 {{ dbt_utils.date_spine(
-    datepart="minute",
-    start_date="to_date('01/01/2016', 'mm/dd/yyyy')",
-    end_date="dateadd(week, 1, current_date)"
+    datepart="day",
+    start_date="cast('2019-01-01' as date)",
+    end_date="cast('2020-01-01' as date)"
    )
 }}
 ```
@@ -569,7 +569,61 @@ Usage:
 
 ...
 ```
-#### get_relations_by_prefix
+
+
+#### get_relations_by_pattern ([source](macros/sql/get_relations_by_pattern.sql))
+
+Returns a list of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation)
+that match a given schema- or table-name pattern.
+
+This macro is particularly handy when paired with `union_relations`.
+
+**Usage:**
+```
+-- Returns a list of relations that match schema_pattern%.table
+{% set relations = dbt_utils.get_relations_by_pattern('schema_pattern%', 'table_pattern') %}
+
+-- Returns a list of relations that match schema_pattern.table_pattern%
+{% set relations = dbt_utils.get_relations_by_pattern('schema_pattern', 'table_pattern%') %}
+
+-- Returns a list of relations as above, excluding any that end in `deprecated`
+{% set relations = dbt_utils.get_relations_by_pattern('schema_pattern', 'table_pattern%', '%deprecated') %}
+
+-- Example using the union_relations macro
+{% set event_relations = dbt_utils.get_relations_by_pattern('venue%', 'clicks') %}
+{{ dbt_utils.union_relations(relations = event_relations) }}
+```
+
+**Args:**
+* `schema_pattern` (required): The schema pattern to inspect for relations.
+* `table_pattern` (required): The name of the table/view (case insensitive).
+* `exclude` (optional): Exclude any relations that match this table pattern.
+* `database` (optional, default = `target.database`): The database to inspect
+for relations.
+
+**Examples:**
+Generate drop statements for all Relations that match a naming pattern:
+```sql
+{% set relations_to_drop = dbt_utils.get_relations_by_pattern(
+    schema_pattern='public',
+    table_pattern='dbt\_%'
+) %}
+
+{% set sql_to_execute = [] %}
+
+{{ log('Statements to run:', info=True) }}
+
+{% for relation in relations_to_drop %}
+    {% set drop_command -%}
+    -- drop {{ relation.type }} {{ relation }} cascade;
+    {%- endset %}
+    {% do log(drop_command, info=True) %}
+    {% do sql_to_execute.append(drop_command) %}
+{% endfor %}
+```
+
+#### get_relations_by_prefix ([source](macros/sql/get_relations_by_prefix.sql))
+> This macro will soon be deprecated in favor of the more flexible `get_relations_by_pattern` macro (above)
 Returns a list of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation)
 that match a given prefix, with an optional exclusion pattern. It's particularly
 handy paired with `union_relations`.
@@ -590,35 +644,6 @@ handy paired with `union_relations`.
 * `schema` (required): The schema to inspect for relations.
 * `prefix` (required): The prefix of the table/view (case insensitive)
 * `exclude` (optional): Exclude any relations that match this pattern.
-* `database` (optional, default = `target.database`): The database to inspect
-for relations.
-
-#### get_relations_by_pattern
-> This was built from the get_relations_by_prefix macro.
-
-Returns a list of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation)
-that match a given schema or table pattern and table/view name with an optional exclusion pattern. Like its cousin
-get_relations_by_prefix, it's particularly handy paired with `union_relations`.
-**Usage:**
-```
--- Returns a list of relations that match schema%.table
-{% set relations = dbt_utils.get_relations_by_pattern('schema_pattern%', 'table_pattern') %}
-
--- Returns a list of relations that match schema.table%
-{% set relations = dbt_utils.get_relations_by_pattern('schema_pattern', 'table_pattern%') %}
-
--- Returns a list of relations as above, excluding any that end in `deprecated`
-{% set relations = dbt_utils.get_relations_by_pattern('schema_pattern', 'table_pattern%', '%deprecated') %}
-
--- Example using the union_relations macro
-{% set event_relations = dbt_utils.get_relations_by_pattern('venue%', 'clicks') %}
-{{ dbt_utils.union_relations(relations = event_relations) }}
-```
-
-**Args:**
-* `schema_pattern` (required): The schema pattern to inspect for relations.
-* `table_pattern` (required): The name of the table/view (case insensitive).
-* `exclude` (optional): Exclude any relations that match this table pattern.
 * `database` (optional, default = `target.database`): The database to inspect
 for relations.
 

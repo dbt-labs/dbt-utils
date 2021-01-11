@@ -17,7 +17,7 @@
 
 
 {% set actual_dictionary=dbt_utils.get_query_results_as_dict(
-    "select * from " ~ ref('data_get_query_results_as_dict')
+    "select * from " ~ ref('data_get_query_results_as_dict') ~ " order by 1"
 ) %}
 {#-
 For reasons that remain unclear, Jinja won't return True for actual_dictionary == expected_dictionary.
@@ -77,5 +77,5 @@ Instead, we'll manually check that the values of these dictionaries are equivale
 {% endif %}
 
 {{ log(ns.err_msg, info=True) }}
-select 1 {% if ns.pass %} limit 0 {% endif %}
+select 1 as col_name {% if ns.pass %} {{ limit_zero() }} {% endif %}
 {% endif %}

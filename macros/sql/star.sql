@@ -1,5 +1,8 @@
 {% macro star(from, relation_alias=False, except=[], aliases={}) -%}
+    {{ return(adapter.dispatch('star', packages = dbt_utils._get_utils_namespaces())(from, relation_alias, except, aliases)) }}
+{% endmacro %}
 
+{% macro default__star(from, relation_alias=False, except=[], aliases={}) -%}
     {%- do dbt_utils._is_relation(from, 'star') -%}
     {%- do dbt_utils._is_ephemeral(from, 'star') -%}
 

@@ -18,6 +18,9 @@
         and table_name not ilike '{{ exclude }}'
 
 {% endmacro %}
+         
+       
+
 
 
 {% macro bigquery__get_tables_by_pattern_sql(schema_pattern, table_pattern, exclude='', database=target.database) %}
@@ -74,3 +77,21 @@
 
 
 {% endmacro %}
+         
+         
+{% macro sqlserver__get_tables_by_pattern_sql(schema_pattern, table_pattern, exclude='', database=target.database) %}
+
+        select distinct
+            table_schema as "table_schema",
+            table_name as "table_name",
+            case table_type
+                when 'BASE TABLE' then 'table'
+                else lower(table_type)
+            end as "table_type"
+        from {{ adapter.quote(database) }}.information_schema.tables
+        where table_schema like lower('{{ schema_pattern }}')
+        and table_name like lower('{{ table_pattern }}')
+        and table_name not like lower('{{ exclude }}')
+
+{% endmacro %}
+

@@ -12,7 +12,7 @@
                 when 'BASE TABLE' then 'table'
                 else lower(table_type)
             end as "table_type"
-        from {{ database }}.information_schema.tables
+        from {{ adapter.quote(database) }}.information_schema.tables
         where table_schema ilike '{{ schema_pattern }}'
         and table_name ilike '{{ table_pattern }}'
         and table_name not ilike '{{ exclude }}'

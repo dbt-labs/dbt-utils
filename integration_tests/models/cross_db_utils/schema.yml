@@ -12,7 +12,7 @@ models:
       - assert_equal:
           actual: actual
           expected: expected
-        
+
   - name: test_current_timestamp
     tests:
       - assert_equal:

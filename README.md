@@ -11,6 +11,14 @@ While these macros are cross database, they do not support all databases.
 These macros are provided to make date calculations easier and are not a core part of dbt.
 Most date macros are not supported on postgres.
 
+#### ceil ([source](macros/cross_db_utils/ceil.sql))
+This macro returns the smallest integer.
+
+Usage:
+```
+{{ dbt_utils.ceil(fields) }}
+```
+
 #### current_timestamp ([source](macros/cross_db_utils/current_timestamp.sql))
 This macro returns the current timestamp.
 
@@ -95,7 +103,7 @@ Usage:
 ---
 ### Date/Time
 #### date_spine ([source](macros/datetime/date_spine.sql))
-This macro returns the sql required to build a date spine. The spine will include the `start_date` (if it is aligned to the `datepart`), but it will not include the `end_date`. 
+This macro returns the sql required to build a date spine. The spine will include the `start_date` (if it is aligned to the `datepart`), but it will not include the `end_date`.
 
 Usage:
 ```

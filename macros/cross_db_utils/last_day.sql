@@ -25,8 +25,12 @@ testing is required to validate that it will work on other dateparts.
 {% macro postgres__last_day(date, datepart) -%}
 
     {%- if datepart == 'quarter' -%}
-    {{ exceptions.raise_compiler_error(
-        "dbt_utils.last_day is not supported for datepart 'quarter' on this adapter") }}
+    -- postgres dateadd does not support quarter interval.
+    cast(
+        {{dbt_utils.dateadd('day', '-1',
+        dbt_utils.dateadd('month', '3', dbt_utils.date_trunc(datepart, date))
+        )}}
+        as date)
     {%- else -%}
     {{dbt_utils.default_last_day(date, datepart)}}
     {%- endif -%}

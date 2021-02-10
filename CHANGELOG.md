@@ -1,3 +1,7 @@
+# dbt-utils v0.6.5
+### Fixes
+- Fix `cardinality_equality` test when the two tables' column names differed ([#334](https://github.com/fishtown-analytics/dbt-utils/pull/334)) [@joellabes](https://github.com/joellabes)
+
 # dbt-utils v0.6.4
 
 ### Fixes

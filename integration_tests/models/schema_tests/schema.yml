@@ -108,9 +108,9 @@ models:
       - name: same_name
         tests:
           - cardinality_equality:
-              to: data_cardinality_equality_b
+              to: ref('data_cardinality_equality_b')
               field: same_name
           - cardinality_equality:
-              to: data_cardinality_equality_b
+              to: ref('data_cardinality_equality_b')
               field: different_name
           

@@ -14,7 +14,7 @@ Most date macros are not supported on postgres.
 #### current_timestamp ([source](macros/cross_db_utils/current_timestamp.sql))
 This macro returns the current timestamp.
 
-Usage:
+**Usage:**
 ```
 {{ dbt_utils.current_timestamp() }}
 ```
@@ -22,7 +22,7 @@ Usage:
 #### dateadd ([source](macros/cross_db_utils/dateadd.sql))
 This macro adds a time/day interval to the supplied date/timestamp. Note: The `datepart` argument is database-specific.
 
-Usage:
+**Usage:**
 ```
 {{ dbt_utils.dateadd(datepart='day', interval=1, from_date_or_timestamp="'2017-01-01'") }}
 ```
@@ -30,16 +30,15 @@ Usage:
 #### datediff ([source](macros/cross_db_utils/datediff.sql))
 This macro calculates the difference between two dates.
 
-Usage:
+**Usage:**
 ```
 {{ dbt_utils.datediff("'2018-01-01'", "'2018-01-20'", 'day') }}
 ```
 
-
 #### split_part ([source](macros/cross_db_utils/split_part.sql))
 This macro splits a string of text using the supplied delimiter and returns the supplied part number (1-indexed).
 
-Usage:
+**Usage:**
 ```
 {{ dbt_utils.split_part(string_text='1,2,3', delimiter_text=',', part_number=1) }}
 ```
@@ -47,7 +46,7 @@ Usage:
 #### date_trunc ([source](macros/cross_db_utils/date_trunc.sql))
 Truncates a date or timestamp to the specified datepart. Note: The `datepart` argument is database-specific.
 
-Usage:
+**Usage:**
 ```
 {{ dbt_utils.date_trunc(datepart, date) }}
 ```
@@ -58,7 +57,7 @@ Gets the last day for a given date and datepart. Notes:
 - The `datepart` argument is database-specific.
 - This macro currently only supports dateparts of `month` and `quarter`.
 
-Usage:
+**Usage:**
 ```
 {{ dbt_utils.last_day(date, datepart) }}
 ```
@@ -87,17 +86,20 @@ Notes:
     `num_buckets + 1` if the expression is greater than or equal to max_value.
 
 
-Usage:
+**Usage:**
 ```
 {{ dbt_utils.width_bucket(expr, min_value, max_value, num_buckets) }}
 ```
 
 ---
+
 ### Date/Time
 #### date_spine ([source](macros/datetime/date_spine.sql))
+
 This macro returns the sql required to build a date spine. The spine will include the `start_date` (if it is aligned to the `datepart`), but it will not include the `end_date`. 
 
-Usage:
+**Usage:**
+
 ```
 {{ dbt_utils.date_spine(
     datepart="day",
@@ -106,12 +108,14 @@ Usage:
    )
 }}
 ```
+
 ---
+
 ### Geo
 #### haversine_distance ([source](macros/geo/haversine_distance.sql))
 This macro calculates the [haversine distance](http://daynebatten.com/2015/09/latitude-longitude-distance-sql/) between a pair of x/y coordinates.
 
-Usage:
+**Usage:**
 ```
 {{ dbt_utils.haversine_distance(lat1=<float>,lon1=<float>,lat2=<float>,lon2=<float>) }}
 ```
@@ -120,7 +124,7 @@ Usage:
 #### equal_rowcount ([source](macros/schema_tests/equal_rowcount.sql))
 This schema test asserts the that two relations have the same number of rows.
 
-Usage:
+**Usage:**
 ```yaml
 version: 2
 
@@ -135,7 +139,7 @@ models:
 #### equality ([source](macros/schema_tests/equality.sql))
 This schema test asserts the equality of two relations. Optionally specify a subset of columns to compare.
 
-Usage:
+**Usage:**
 ```yaml
 version: 2
 
@@ -153,7 +157,7 @@ models:
 #### expression_is_true ([source](macros/schema_tests/expression_is_true.sql))
 This schema test asserts that a valid sql expression is true for all records. This is useful when checking integrity across columns, for example, that a total is equal to the sum of its parts, or that at least one column is true.
 
-Usage:
+**Usage:**
 ```yaml
 version: 2
 
@@ -168,7 +172,8 @@ models:
 The macro accepts an optional parameter `condition` that allows for asserting
 the `expression` on a subset of all records.
 
-Usage:
+**Usage:**
+
 ```yaml
 version: 2
 
@@ -185,7 +190,7 @@ models:
 #### recency ([source](macros/schema_tests/recency.sql))
 This schema test asserts that there is data in the referenced model at least as recent as the defined interval prior to the current timestamp.
 
-Usage:
+**Usage:**
 ```yaml
 version: 2
 
@@ -201,7 +206,7 @@ models:
 #### at_least_one ([source](macros/schema_tests/at_least_one.sql))
 This schema test asserts if column has at least one value.
 
-Usage:
+**Usage:**
 ```yaml
 version: 2
 
@@ -218,7 +223,7 @@ models:
 #### not_constant ([source](macros/schema_tests/not_constant.sql))
 This schema test asserts if column does not have same value in all rows.
 
-Usage:
+**Usage:**
 ```yaml
 version: 2
 
@@ -234,7 +239,7 @@ models:
 #### cardinality_equality ([source](macros/schema_tests/cardinality_equality.sql))
 This schema test asserts if values in a given column have exactly the same cardinality as values from a different column in a different model.
 
-Usage:
+**Usage:**
 ```yaml
 version: 2
 
@@ -252,7 +257,7 @@ models:
 #### unique_where ([source](macros/schema_tests/unique_where.sql))
 This test validates that there are no duplicate values present in a field for a subset of rows by specifying a `where` clause.
 
-Usage:
+**Usage:**
 ```yaml
 version: 2
 
@@ -268,7 +273,7 @@ models:
 #### not_null_where ([source](macros/schema_tests/not_null_where.sql))
 This test validates that there are no null values present in a column for a subset of rows by specifying a `where` clause.
 
-Usage:
+**Usage:**
 ```yaml
 version: 2
 
@@ -284,7 +289,7 @@ models:
 #### relationships_where ([source](macros/schema_tests/relationships_where.sql))
 This test validates the referential integrity between two relations (same as the core relationships schema test) with an added predicate to filter out some rows from the test. This is useful to exclude records such as test entities, rows created in the last X minutes/hours to account for temporary gaps due to ETL limitations, etc.
 
-Usage:
+**Usage:**
 ```yaml
 version: 2
 
@@ -423,7 +428,7 @@ An optional `quote_columns` parameter (`default=false`) can also be used if a co
 #### get_query_results_as_dict ([source](macros/sql/get_query_results_as_dict.sql))
 This macro returns a dictionary from a sql query, so that you don't need to interact with the Agate library to operate on the result
 
-Usage:
+**Usage:**
 ```
 -- Returns a dictionary of the users table where the state is California
 {% set california_cities = dbt_utils.get_query_results_as_dict("select * from" ~ ref('cities') ~ "where state = 'CA' and city is not null ") %}
@@ -442,7 +447,7 @@ group by 1
 This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation).
 It takes an options `default` argument for compiling when the relation does not already exist.
 
-Usage:
+**Usage:**
 ```
 -- Returns a list of the top 50 states in the `users` table
 {% set states = dbt_utils.get_column_values(table=ref('users'), column='state', max_records=50, default=[]) %}
@@ -508,10 +513,13 @@ Generate drop statements for all Relations that match a naming pattern:
 
 #### get_relations_by_prefix ([source](macros/sql/get_relations_by_prefix.sql))
 > This macro will soon be deprecated in favor of the more flexible `get_relations_by_pattern` macro (above)
+
 Returns a list of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation)
 that match a given prefix, with an optional exclusion pattern. It's particularly
 handy paired with `union_relations`.
+
 **Usage:**
+
 ```
 -- Returns a list of relations that match schema.prefix%
 {% set relations = dbt_utils.get_relations_by_prefix('my_schema', 'my_prefix') %}
@@ -534,7 +542,7 @@ for relations.
 #### group_by ([source](macros/sql/groupby.sql))
 This macro build a group by statement for fields 1...N
 
-Usage:
+**Usage:**
 ```
 {{ dbt_utils.group_by(n=3) }} --> group by 1,2,3
 ```
@@ -542,7 +550,7 @@ Usage:
 #### star ([source](macros/sql/star.sql))
 This macro generates a list of all fields that exist in the `from` relation, excluding any fields listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with the star macro. This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias.
 
-Usage:
+**Usage:**
 ```
 select
 {{ dbt_utils.star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"]) }}
@@ -578,7 +586,7 @@ the column that records the source of this row.
 #### generate_series ([source](macros/sql/generate_series.sql))
 This macro implements a cross-database mechanism to generate an arbitrarily long list of numbers. Specify the maximum number you'd like in your list and it will create a 1-indexed SQL result set.
 
-Usage:
+**Usage:**
 ```
 {{ dbt_utils.generate_series(upper_bound=1000) }}
 ```
@@ -586,7 +594,7 @@ Usage:
 #### surrogate_key ([source](macros/sql/surrogate_key.sql))
 Implements a cross-database way to generate a hashed surrogate key using the fields specified.
 
-Usage:
+**Usage:**
 ```
 {{ dbt_utils.surrogate_key(['field_a', 'field_b'[,...]]) }}
 ```
@@ -594,7 +602,7 @@ Usage:
 #### safe_add ([source](macros/sql/safe_add.sql))
 Implements a cross-database way to sum nullable fiellds using the fields specified.
 
-Usage:
+**Usage:**
 ```
 {{ dbt_utils.safe_add('field_a', 'field_b'[,...]) }}
 ```
@@ -602,12 +610,12 @@ Usage:
 #### pivot ([source](macros/sql/pivot.sql))
 This macro pivots values from rows to columns.
 
-Usage:
+**Usage:**
 ```
 {{ dbt_utils.pivot(<column>, <list of values>) }}
 ```
 
-Example:
+**Example:**
 
     Input: orders
 
@@ -634,7 +642,7 @@ Example:
     | S    | 2   | 1    |
     | M    | 1   | 0    |
 
-Arguments:
+**Arguments:**
 
     - column: Column name, required
     - values: List of row values to turn into columns, required
@@ -650,7 +658,7 @@ Arguments:
 #### unpivot ([source](macros/sql/unpivot.sql))
 This macro "un-pivots" a table from wide format to long format. Functionality is similar to pandas [melt](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.melt.html) function.
 
-Usage:
+**Usage:**
 ```
 {{ dbt_utils.unpivot(
   relation=ref('table_name'),
@@ -695,7 +703,7 @@ Usage:
 #### get_url_parameter ([source](macros/web/get_url_parameter.sql))
 This macro extracts a url parameter from a column containing a url.
 
-Usage:
+**Usage:**
 ```
 {{ dbt_utils.get_url_parameter(field='page_url', url_parameter='utm_source') }}
 ```
@@ -703,7 +711,7 @@ Usage:
 #### get_url_host ([source](macros/web/get_url_host.sql))
 This macro extracts a hostname from a column containing a url.
 
-Usage:
+**Usage:**
 ```
 {{ dbt_utils.get_url_host(field='page_url') }}
 ```
@@ -711,12 +719,13 @@ Usage:
 #### get_url_path ([source](macros/web/get_url_path.sql))
 This macro extracts a page path from a column containing a url.
 
-Usage:
+**Usage:**
 ```
 {{ dbt_utils.get_url_path(field='page_url') }}
 ```
 
 ---
+
 ### Logger
 #### pretty_time ([source](macros/logger/pretty_time.sql))
 This macro returns a string of the current timestamp, optionally taking a datestring format.
@@ -758,7 +767,7 @@ Should a run of a model using this materialization be interrupted, a subsequent 
 
 Progress is logged in the command line for easy monitoring.
 
-Usage:
+**Usage:**
 ```sql
 {{
   config(
@@ -780,13 +789,13 @@ with events as (
 ....complex aggregates here....
 
 ```
-Configuration values:
+**Configuration values:**
 * `period`: period to break the model into, must be a valid [datepart](https://docs.aws.amazon.com/redshift/latest/dg/r_Dateparts_for_datetime_functions.html) (default='Week')
 * `timestamp_field`: the column name of the timestamp field that will be used to break the model into smaller queries
 * `start_date`: literal date or timestamp - generally choose a date that is earlier than the start of your data
 * `stop_date`: literal date or timestamp (default=current_timestamp)
 
-Caveats:
+**Caveats:**
 * This materialization is compatible with dbt 0.10.1.
 * This materialization has been written for Redshift.
 * This materialization can only be used for a model where records are not expected to change after they are created.
@@ -824,7 +833,7 @@ variable in your project, when dbt searches for implementations of a dispatched
 `dbt_utils` macro, it will search through your listed packages _before_ using
 the implementations defined in `dbt_utils`.
 
-Set the variable:
+**Set the variable:**
 ```yml
 vars:
   dbt_utils_dispatch_list:

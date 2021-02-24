@@ -107,10 +107,10 @@ models:
     columns:
       - name: same_name
         tests:
-          - cardinality_equality:
+          - dbt_utils.cardinality_equality:
               to: ref('data_cardinality_equality_b')
               field: same_name
-          - cardinality_equality:
+          - dbt_utils.cardinality_equality:
               to: ref('data_cardinality_equality_b')
               field: different_name
           

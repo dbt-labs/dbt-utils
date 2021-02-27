@@ -95,7 +95,7 @@ Notes:
 
 ### Date/Time
 #### date_spine ([source](macros/datetime/date_spine.sql))
-This macro returns the sql required to build a date spine. The spine will include the `start_date` (if it is aligned to the `datepart`), but it will not include the `end_date`. 
+This macro returns the sql required to build a date spine. The spine will include the `start_date` (if it is aligned to the `datepart`), but it will not include the `end_date`.
 
 **Usage:**
 
@@ -114,9 +114,12 @@ This macro returns the sql required to build a date spine. The spine will includ
 #### haversine_distance ([source](macros/geo/haversine_distance.sql))
 This macro calculates the [haversine distance](http://daynebatten.com/2015/09/latitude-longitude-distance-sql/) between a pair of x/y coordinates.
 
+Optionally takes a `unit` string parameter ('km' or 'mi') which defaults to miles (imperial system).
+
 **Usage:**
+
 ```
-{{ dbt_utils.haversine_distance(lat1=<float>,lon1=<float>,lat2=<float>,lon2=<float>) }}
+{{ dbt_utils.haversine_distance(lat1=<float>,lon1=<float>,lat2=<float>,lon2=<float>, unit='mi'<sting>) }}
 ```
 ---
 ### Schema Tests

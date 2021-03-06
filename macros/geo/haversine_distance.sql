@@ -10,12 +10,13 @@ The arguments should be float type.
     {{ return(adapter.dispatch('haversine_distance', packages = dbt_utils._get_utils_namespaces())(lat1,lon1,lat2,lon2,unit)) }}
 {% endmacro %}
 
-{% macro default__haversine_distance(lat1,lon1,lat2,lon2,unit='km') -%}
+{% macro default__haversine_distance(lat1,lon1,lat2,lon2,unit) -%}
+{{log(unit, info=true)}}
 {# vanilla macro is in miles #}
-    {% set conversion = '' %}
+    {% set conversion_rate = '' %}
 {% if unit == 'km' %}
 {# we multiply miles result to get it in kms #}
-    {% set conversion = '* 1.60934' %}
+    {% set conversion_rate = '* 1.60934' %}
 {% endif %}
 
     2 * 3961 * asin(sqrt((sin(radians(({{lat2}} - {{lat1}}) / 2))) ^ 2 +

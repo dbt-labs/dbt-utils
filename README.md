@@ -119,7 +119,7 @@ Optionally takes a `unit` string parameter ('km' or 'mi') which defaults to mile
 **Usage:**
 
 ```
-{{ dbt_utils.haversine_distance(lat1=<float>,lon1=<float>,lat2=<float>,lon2=<float>, unit='mi'<sting>) }}
+{{ dbt_utils.haversine_distance(lat1=<float>,lon1=<float>,lat2=<float>,lon2=<float>, unit='mi'<string>) }}
 ```
 ---
 ### Schema Tests

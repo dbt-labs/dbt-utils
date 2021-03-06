@@ -11,7 +11,6 @@ The arguments should be float type.
 {% endmacro %}
 
 {% macro default__haversine_distance(lat1,lon1,lat2,lon2,unit) -%}
-{{log(unit, info=true)}}
 {# vanilla macro is in miles #}
     {% set conversion_rate = '' %}
 {% if unit == 'km' %}

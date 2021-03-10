@@ -828,7 +828,7 @@ Set a variable in your `dbt_project.yml`:
 ```yml
 vars:
   dbt_utils_dispatch_list:
-    - my_analytics_proj          # likely the name of your root project (only the root folder)
+    - first_package_to_search    # likely the name of your root project (only the root folder)
     - second_package_to_search   # likely an "add-on" package, such as spark_utils
     # dbt_utils is always the last place searched
 ```

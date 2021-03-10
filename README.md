@@ -811,9 +811,10 @@ We welcome contributions to this repo! To contribute a new feature or a fix, ple
 
 ### Dispatch macros
 
-**Note:** This is primarily relevant to users and maintainers of community-supported
-database plugins, or if you want to override a default function. If you use Postgres,
-Redshift, Snowflake, or Bigquery, this likely does not apply to you.
+**Note:** This is primarily relevant to:
+- Users and maintainers of community-supported [adapter plugins](https://docs.getdbt.com/docs/available-adapters)
+- Users who wish to override a low-lying `dbt_utils` macro with a custom implementation, and have that implementation used by other `dbt_utils` macros
+If you use Postgres, Redshift, Snowflake, or Bigquery, this likely does not apply to you.
 
 dbt v0.18.0 introduces `adapter.dispatch()`, a reliable way to define different implementations of the same macro
 across different databases.

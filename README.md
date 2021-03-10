@@ -138,6 +138,20 @@ models:
 
 ```
 
+#### fewer_rows_than ([source](macros/schema_tests/fewer_rows_than.sql))
+This schema test asserts that this model has fewer rows than the referenced model.
+
+Usage:
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    tests:
+      - dbt_utils.fewer_rows_than:
+          compare_model: ref('other_table_name')
+```
+
 #### equality ([source](macros/schema_tests/equality.sql))
 This schema test asserts the equality of two relations. Optionally specify a subset of columns to compare.
 

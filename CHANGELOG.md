@@ -7,6 +7,7 @@
 * Add new schema test, `sequential_values` ([#318](https://github.com/fishtown-analytics/dbt-utils/pull/318), inspired by [@hundredwatt](https://github.com/hundredwatt))
 * Support `quarter` in the `postgres__last_day` macro ([#333](https://github.com/fishtown-analytics/dbt-utils/pull/333/files), [@seunghanhong](https://github.com/seunghanhong))
 * Add new argument, `unit`, to `haversine_distance` [#340](https://github.com/fishtown-analytics/dbt-utils/pull/340) [@bastienboutonnet](https://github.com/bastienboutonnet)
+* Add new schema test, `fewer_rows_than` (code originally in [#221](https://github.com/fishtown-analytics/dbt-utils/pull/230/) from [@dmarts](https://github.com/dmarts), merged via [#343])
 
 
 ## Fixes

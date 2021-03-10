@@ -824,7 +824,7 @@ variable in your project, when dbt searches for implementations of a dispatched
 `dbt_utils` macro, it will search through your listed packages _before_ using
 the implementations defined in `dbt_utils`.
 
-Set the property `var` in `dbt_project.yml`:
+Set a variable in your `dbt_project.yml`:
 ```yml
 vars:
   dbt_utils_dispatch_list:

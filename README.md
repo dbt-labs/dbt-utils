@@ -95,7 +95,7 @@ Usage:
 ---
 ### Date/Time
 #### date_spine ([source](macros/datetime/date_spine.sql))
-This macro returns the sql required to build a date spine. The spine will include the `start_date` (if it is aligned to the `datepart`), but it will not include the `end_date`. 
+This macro returns the sql required to build a date spine. The spine will include the `start_date` (if it is aligned to the `datepart`), but it will not include the `end_date`.
 
 Usage:
 ```
@@ -130,6 +130,20 @@ models:
       - dbt_utils.equal_rowcount:
           compare_model: ref('other_table_name')
 
+```
+
+#### fewer_rows_than ([source](macros/schema_tests/fewer_rows_than.sql))
+This schema test asserts that this model has fewer rows than the referenced model.
+
+Usage:
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    tests:
+      - dbt_utils.fewer_rows_than:
+          compare_model: ref('other_table_name')
 ```
 
 #### equality ([source](macros/schema_tests/equality.sql))
@@ -181,13 +195,13 @@ models:
 
 ```
 
-This macro can also be used at the column level. When this is done, the `expression` is evaluated against the column.  
+This macro can also be used at the column level. When this is done, the `expression` is evaluated against the column.
 
 ```yaml
 version: 2
-models: 
+models:
     - name: model_name
-      columns: 
+      columns:
         - name: col_a
           tests:
             - dbt_utils.expression_is_true:
@@ -197,7 +211,7 @@ models:
             - dbt_utils.expression_is_true:
                 expression: '= 1'
                 condition: col_a = 1
-      
+
 ```
 
 
@@ -361,7 +375,7 @@ models:
           upper_bound_column: ended_at
           partition_by: customer_id
           gaps: required
-  
+
   # test that each customer can have subscriptions that start and end on the same date
   - name: subscriptions
     tests:
@@ -497,9 +511,9 @@ constraint needs to be verified.
 
 
 #### accepted_range ([source](macros/schema_tests/accepted_range.sql))
-This test checks that a column's values fall inside an expected range. Any combination of `min_value` and `max_value` is allowed, and the range can be inclusive or exclusive. Provide a `where` argument to filter to specific records only. 
+This test checks that a column's values fall inside an expected range. Any combination of `min_value` and `max_value` is allowed, and the range can be inclusive or exclusive. Provide a `where` argument to filter to specific records only.
 
-In addition to comparisons to a scalar value, you can also compare to another column's values. Any data type that supports the `>` or `<` operators can be compared, so you could also run tests like checking that all order dates are in the past. 
+In addition to comparisons to a scalar value, you can also compare to another column's values. Any data type that supports the `>` or `<` operators can be compared, so you could also run tests like checking that all order dates are in the past.
 
 Usage:
 ```yaml
@@ -513,19 +527,19 @@ models:
           - dbt_utils.accepted_range:
               min_value: 0
               inclusive: false
-      
+
       - name: account_created_at
         tests:
           - dbt_utils.accepted_range:
               max_value: "getdate()"
               #inclusive is true by default
-      
+
       - name: num_returned_orders
         tests:
           - dbt_utils.accepted_range:
               min_value: 0
               max_value: "num_orders"
-      
+
       - name: num_web_sessions
         tests:
           - dbt_utils.accepted_range:

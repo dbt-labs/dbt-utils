@@ -833,7 +833,7 @@ vars:
     # dbt_utils is always the last place searched
 ```
 
-When overriding macros, you need to prefix their names with `default__` (note the two underscores).
+If overriding a dispatched macro with a custom implementation in your own project's `macros/` directory, you must name your custom macro with a prefix: either `default__` (note the two underscores), or the name of your adapter followed by two underscores. For example, if you're running on Postgres and wish to override the behavior of `dbt_utils.datediff` (such that `dbt_utils.date_spine` will use your version instead), you can do this by defining a macro called either `default__datediff` or `postgres__datediff`.
 
 When running on Spark, if dbt needs to dispatch `dbt_utils.datediff`, it will search for the following in order:
 ```

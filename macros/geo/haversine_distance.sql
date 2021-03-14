@@ -23,3 +23,17 @@ The arguments should be float type.
     (sin(radians(({{lon2}} - {{lon1}}) / 2))) ^ 2)) {{conversion_rate}}
 
 {%- endmacro %}
+
+{% macro snowflake__haversine_distance(lat1,lon1,lat2,lon2,unit) -%}
+{# vanilla macro is in miles #}
+    {% set conversion_rate = '' %}
+{% if unit == 'km' %}
+{# we multiply miles result to get it in kms #}
+    {% set conversion_rate = '* 1.60934' %}
+{% endif %}
+
+    2 * 3961 * asin(sqrt(pow((sin(radians(({{lat2}} - {{lat1}}) / 2))), 2) +
+    cos(radians({{lat1}})) * cos(radians({{lat2}})) *
+    pow((sin(radians(({{lon2}} - {{lon1}}) / 2))), 2))) {{conversion_rate}}
+
+{%- endmacro %}

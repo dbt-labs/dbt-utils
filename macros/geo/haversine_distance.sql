@@ -31,10 +31,10 @@ The arguments should be float type.
 
 
 {% macro bigquery__haversine_distance(lat1,lon1,lat2,lon2,unit) -%}
-{% set r_lat1 = dbt_utils.degrees_to_radians(lat1) %}
-{% set r_lat2 = dbt_utils.degrees_to_radians(lat2) %}
-{% set r_lon1 = dbt_utils.degrees_to_radians(lon1) %}
-{% set r_lon2 = dbt_utils.degrees_to_radians(lon2) %}
+{% set radians_lat1 = dbt_utils.degrees_to_radians(lat1) %}
+{% set radians_lat2 = dbt_utils.degrees_to_radians(lat2) %}
+{% set radians_lon1 = dbt_utils.degrees_to_radians(lon1) %}
+{% set radians_lon2 = dbt_utils.degrees_to_radians(lon2) %}
 {# vanilla macro is in miles #}
     {% set conversion_rate = '' %}
 {% if unit == 'km' %}
@@ -42,9 +42,9 @@ The arguments should be float type.
     {% set conversion_rate = '* 1.60934' %}
 {% endif %}
 
-    2 * 3961 * asin(sqrt(pow(sin(({{r_lat2}} - {{r_lat1}}) / 2), 2) +
-    cos({{r_lat1}}) * cos({{r_lat2}}) *
-    pow(sin(({{r_lon2}} - {{r_lon1}}) / 2), 2))) {{conversion_rate}}
+    2 * 3961 * asin(sqrt(pow(sin(({{radians_lat2}} - {{radians_lat1}}) / 2), 2) +
+    cos({{radians_lat1}}) * cos({{radians_lat2}}) *
+    pow(sin(({{radians_lon2}} - {{radians_lon1}}) / 2), 2))) {{conversion_rate}}
 
 {%- endmacro %}
 

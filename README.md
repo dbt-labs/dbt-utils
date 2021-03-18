@@ -592,7 +592,7 @@ Usage:
 ```
 
 #### safe_add ([source](macros/sql/safe_add.sql))
-Implements a cross-database way to sum nullable fiellds using the fields specified.
+Implements a cross-database way to sum nullable fields using the fields specified.
 
 Usage:
 ```

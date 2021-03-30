@@ -656,14 +656,38 @@ Usage:
 ```
 
 #### star ([source](macros/sql/star.sql))
-This macro generates a list of all fields that exist in the `from` relation, excluding any fields listed in the `except` argument (case insensitive). The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with the star macro. This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias.
+This macro generates a list of all fields that exist in the `from` relation, excluding any fields listed in the `except` argument. The construction is identical to `select * from {{ ref('my_model') }}`, replacing star (`*`) with the star macro.
 
 Usage:
-```
+```sql
+-- Example 1
 select
-{{ dbt_utils.star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"], aliases={"field_x":"pretty_name", "field_y":"another_pretty_name"}) }}
-from {{ref('my_model')}}
+  {{ dbt_utils.star(ref('my_model')) }}
+from {{ ref('my_model') }}
 ```
+```sql
+select
+  {{ dbt_utils.star(ref('my_model'), except=['deleted_at']) }}
+from {{ ref('my_model') }} as
+```
+```sql
+select
+  {{ dbt_utils.star(
+    from=ref('my_model'),
+    relation_alias='my_alias',
+    except=["exclude_field_1", "exclude_field_2"],
+    case_sensitive_except=false,
+    aliases={"field_x":"pretty_name", "field_y":"another_pretty_name"}
+  ) }}
+from {{ ref('my_model') }} as my_alias
+```
+
+Arguments:
+- `from` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source` function) that contains the list of columns you wish to select from
+- `relation_alias` (optional, default=None): If used, the columns will be prefixed with this alias (i.e. `my_alias.my_column` instead of `my_column`.) Useful if your `from` statement aliases the relation (especially useful if you have a join in this query).
+- `except` (optional, default=[]): a list of column names to exclude
+- `case_sensitive_except` (optional, default=True): When true, columns in the `except` array must have the same casing as columns in the relation (i.e. `except=['my_col']` will _not_ exclude a column named 'MY_COL')
+- `aliases` (optional, default={}): A dictionary of column aliases
 
 #### union_relations ([source](macros/sql/union.sql))
 

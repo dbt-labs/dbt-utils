@@ -1,11 +1,11 @@
-
-{% set exclude_field = 'field_3' %}
-
-
 with data as (
 
     select
-        {{ dbt_utils.star(from=ref('data_star'), except=[exclude_field]) }}
+        {{ dbt_utils.star(
+            from=ref('data_star'),
+            except=['field_3'],
+            case_sensitive_except=False
+        ) }}
 
     from {{ ref('data_star') }}
 

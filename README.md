@@ -660,27 +660,62 @@ This macro generates a list of all fields that exist in the `from` relation, exc
 
 Usage:
 ```sql
--- Example 1
 select
   {{ dbt_utils.star(ref('my_model')) }}
 from {{ ref('my_model') }}
 ```
+
+<details><summary>Example compiled code</summary>
+
+```txt
+select
+  id,
+  first_name,
+  deleted_at
+from my_schema.my_model
+```
+
+</details><br>
+
 ```sql
 select
   {{ dbt_utils.star(ref('my_model'), except=['deleted_at']) }}
 from {{ ref('my_model') }} as
 ```
+
+<details><summary>Example compiled code</summary>
+
+```txt
+select
+  id,
+  first_name
+from my_schema.my_model
+```
+
+</details><br>
+
 ```sql
 select
   {{ dbt_utils.star(
     from=ref('my_model'),
     relation_alias='my_alias',
-    except=["exclude_field_1", "exclude_field_2"],
+    except=["deleted_at", "exclude_field_2"],
     case_sensitive_except=false,
-    aliases={"field_x":"pretty_name", "field_y":"another_pretty_name"}
+    aliases={"id":"customer_id"}
   ) }}
 from {{ ref('my_model') }} as my_alias
 ```
+
+<details><summary>Example compiled code</summary>
+
+```txt
+select
+  my_alias.id as customer_id,
+  my_alias.first_name
+from my_schema.my_model as my_alias
+```
+
+</details><br>
 
 Arguments:
 - `from` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source` function) that contains the list of columns you wish to select from

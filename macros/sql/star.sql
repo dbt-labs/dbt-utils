@@ -2,7 +2,7 @@
     {{ return(adapter.dispatch('star', packages = dbt_utils._get_utils_namespaces())(from, relation_alias, except, case_sensitive_except, aliases)) }}
 {% endmacro %}
 
-{% macro default__star(from, relation_alias=False, except=[], case_sensitive_except=True, aliases={}) -%}
+{% macro default__star(from, relation_alias=None, except=[], case_sensitive_except=True, aliases={}) -%}
     {%- do dbt_utils._is_relation(from, 'star') -%}
     {%- do dbt_utils._is_ephemeral(from, 'star') -%}
 

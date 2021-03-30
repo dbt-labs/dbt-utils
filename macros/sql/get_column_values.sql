@@ -14,7 +14,6 @@
                                           schema=table.schema,
                                          identifier=table.identifier) -%}
 
-    {# If no sort column is supplied, we use the default descending frequency count. #}
     {%- call statement('get_column_values', fetch_result=true) %}
 
         {%- if not target_relation and default is none -%}

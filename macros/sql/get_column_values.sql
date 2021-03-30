@@ -4,11 +4,10 @@
 
 {% macro default__get_column_values(table, column, order_by='count(*) desc', max_records=none, default=none) -%}
 
-{#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
+    {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
     {%- if not execute -%}
         {{ return('') }}
     {% endif %}
-{#--  #}
 
     {%- set target_relation = adapter.get_relation(database=table.database,
                                           schema=table.schema,

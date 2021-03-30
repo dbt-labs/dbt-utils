@@ -1,4 +1,40 @@
 # dbt-utils v0.7.0 (unreleased)
+
+## :rotating_light: Breaking changes
+
+
+### get_column_values
+The order of (optional) arguments has changed in the `get_column_values` macro:
+Before:
+```jinja
+{% macro get_column_values(table, column, order_by='count(*) desc', max_records=none, default=none) -%}
+...
+{% endmacro %}
+```
+
+After:
+```jinja
+{% macro get_column_values(table, column, max_records=none, default=none) -%}
+...
+{% endmacro %}
+```
+If you were relying on the position to match up your optional arguments, this may be a breaking change — in general, we recommend that you explicitly declare any optional arguments (if not all of your arguments!)
+```
+-- before: the `50` will now be passed through as the `order_by` argument
+{% set payment_methods = dbt_utils.get_column_values(
+        ref('stg_payments'),
+        'payment_method',
+        50
+) %}
+
+-- after
+{% set payment_methods = dbt_utils.get_column_values(
+        ref('stg_payments'),
+        'payment_method',
+        max_records=50
+) %}
+```
+
 * Added optional `where` clause in `unique_combination_of_columns` test macro [#295](https://github.com/fishtown-analytics/dbt-utils/pull/295) [findinpath](https://github.com/findinpath)
 
 ## Features
@@ -7,9 +43,8 @@
 * Allow individual columns in star macro to be aliased (code originally in [#230](https://github.com/fishtown-analytics/dbt-utils/pull/230/) from [@elliottohara](https://github.com/elliottohara), merged via [#245])
 * Allow star macro to be case insensitive, and improve docs (code originally in [#281](https://github.com/fishtown-analytics/dbt-utils/pull/230/) via [@mdimercurio](https://github.com/mdimercurio), merged via [#348](https://github.com/fishtown-analytics/dbt-utils/pull/348/))
 * Add new schema test, `not_accepted_values` ([#284](https://github.com/fishtown-analytics/dbt-utils/pull/284) [@JavierMonton](https://github.com/JavierMonton))
-* Add new schema test, `fewer_rows_than` (code originally in [#221](https://github.com/fishtown-analytics/dbt-utils/pull/230/) from [@dmarts](https://github.com/dmarts), merged via [#343])
-- Adds ability to specify a `sort_column` and `sort_direction` in `get_column_values`
-
+* Add new schema test, `fewer_rows_than` (code originally in [#221](https://github.com/fishtown-analytics/dbt-utils/pull/230/) from [@dmarts](https://github.com/dmarts), merged via [#343](https://github.com/fishtown-analytics/dbt-utils/pull/343/))
+* Add new argument, `order_by`, to `get_column_values` (code originally in [#289](https://github.com/fishtown-analytics/dbt-utils/pull/289/) from [@clausherther](https://github.com/clausherther), merged via [#349](https://github.com/fishtown-analytics/dbt-utils/pull/349/))
 
 ## Fixes
 * Handle booleans gracefully in the unpivot macro ([#305](https://github.com/fishtown-analytics/dbt-utils/pull/305) [@avishalom](https://github.com/avishalom))

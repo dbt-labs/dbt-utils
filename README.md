@@ -569,54 +569,45 @@ group by 1
 ```
 
 #### get_column_values ([source](macros/sql/get_column_values.sql))
-This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation).
-It takes an options `default` argument for compiling when the relation does not already exist.
+This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation) as an array.
 
-The `order_by` argument allows for sorting of values. The default is highest to lowest frequency of values. You can also specify a `sort_direction`.
+Arguments:
+- `table` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
+- `column` (required): The name of the column you wish to find the column values of
+- `order_by` (optional, default=`'count(*) desc'`): How the results should be ordered. The default is to order by `count(*) desc`, i.e. decreasing frequency. Setting this as `'my_column'` will sort alphabetically, while `'min(created_at)'` will sort by when thevalue was first observed.
+- `max_records` (optional, default=`none`): The maximum number of column values you want to return
+- `default` (optional, default=`[]`): The results this macro should return if the relation has not yet been created (and therefore has no column values).
 
 Usage:
-```
--- Returns a list of the top 50 states in the `users` table
-{% set states = dbt_utils.get_column_values(table=ref('users'), column='state', max_records=50, default=[]) %}
+```sql
+-- Returns a list of the payment_methods in the stg_payments model_
+{% set payment_methods = dbt_utils.get_column_values(table=ref('stg_payments'), column='payment_method') %}
 
-{% for state in states %}
+{% for payment_method in payment_methods %}
     ...
 {% endfor %}
 
 ...
 ```
 
-```
--- Returns a list of user names sorted by name from the `users` table
-{% set names = dbt_utils.get_column_values(table=ref('users'), column='name', default=[], order_by='name') %}
-
-{% for name in names %}
-    ...
-{% endfor %}
-
-...
+```sql
+-- Returns the list sorted alphabetically
+{% set payment_methods = dbt_utils.get_column_values(
+        table=ref('stg_payments'),
+        column='payment_method',
+        order_by='payment_method'
+) %}
 ```
 
-```
--- Returns a list of user cities sorted by name from the `users` table
-{% set cities = dbt_utils.get_column_values(table=ref('users'), column='city_name', default=[], order_by='city_name') %}
-
-{% for city in cities %}
-    ...
-{% endfor %}
-
-...
-```
-
-
-```
--- Returns a list of user cities sorted by name from the `users` table
-{% set cities = dbt_utils.get_column_values(table=ref('users'), column='city_name', default=[], order_by='max(created_at)') %}
-
-{% for city in cities %}
-    ...
-{% endfor %}
-
+```sql
+-- Returns the list sorted my most recently observed
+{% set payment_methods = dbt_utils.get_column_values(
+        table=ref('stg_payments'),
+        column='payment_method',
+        order_by='max(created_at) desc',
+        max_records=50,
+        default=['bank_transfer', 'coupon', 'credit_card']
+%}
 ...
 ```
 

@@ -1,8 +1,44 @@
 # dbt-utils v0.7.0 (unreleased)
 ## Breaking changes
+
+### get_column_values
+The order of (optional) arguments has changed in the `get_column_values` macro.
+
+Before:
+```jinja
+{% macro get_column_values(table, column, order_by='count(*) desc', max_records=none, default=none) -%}
+...
+{% endmacro %}
+```
+
+After:
+```jinja
+{% macro get_column_values(table, column, max_records=none, default=none) -%}
+...
+{% endmacro %}
+```
+If you were relying on the position to match up your optional arguments, this may be a breaking change — in general, we recommend that you explicitly declare any optional arguments (if not all of your arguments!)
+```
+-- before: This works on previous version of dbt-utils, but on 0.7.0, the `50` would be passed through as the `order_by` argument
+{% set payment_methods = dbt_utils.get_column_values(
+        ref('stg_payments'),
+        'payment_method',
+        50
+) %}
+
+-- after
+{% set payment_methods = dbt_utils.get_column_values(
+        ref('stg_payments'),
+        'payment_method',
+        max_records=50
+) %}
+```
+
 ## Features
+* Add new argument, `order_by`, to `get_column_values` (code originally in [#289](https://github.com/fishtown-analytics/dbt-utils/pull/289/) from [@clausherther](https://github.com/clausherther), merged via [#349](https://github.com/fishtown-analytics/dbt-utils/pull/349/))
 
 ## Fixes
+
 
 ## Under the hood
 
@@ -16,7 +52,6 @@
 * Support `quarter` in the `postgres__last_day` macro ([#333](https://github.com/fishtown-analytics/dbt-utils/pull/333/files) [@seunghanhong](https://github.com/seunghanhong))
 * Add new argument, `unit`, to `haversine_distance` ([#340](https://github.com/fishtown-analytics/dbt-utils/pull/340) [@bastienboutonnet](https://github.com/bastienboutonnet))
 * Add new schema test, `fewer_rows_than` (code originally in [#221](https://github.com/fishtown-analytics/dbt-utils/pull/230/) from [@dmarts](https://github.com/dmarts), merged via [#343](https://github.com/fishtown-analytics/dbt-utils/pull/343/))
-
 
 ## Fixes
 * Handle booleans gracefully in the unpivot macro ([#305](https://github.com/fishtown-analytics/dbt-utils/pull/305) [@avishalom](https://github.com/avishalom))

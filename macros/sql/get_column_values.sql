@@ -55,7 +55,7 @@ Returns:
 
     {%- if value_list and value_list['data'] -%}
         {%- set values = value_list['data'] | map(attribute=0) | list %}
-        {{ return(values|sort)) }}
+        {{ return(values|sort) }}
     {%- else -%}
         {{ return(default) }}
     {%- endif -%}

@@ -20,13 +20,11 @@ validation_errors as (
     select
         *
     from windowed
-    where not({{ column_name }} =
     {% if datepart %}
-        {{ dbt_utils.dateadd(datepart, interval, 'previous_' + column_name) }}
+    where not(cast({{ column_name }} as timestamp)= cast({{ dbt_utils.dateadd(datepart, interval, 'previous_' + column_name) }} as timestamp))
     {% else %}
-        previous_{{ column_name }} + {{ interval }}
+    where not({{ column_name }} = previous_{{ column_name }} + {{ interval }})
     {% endif %}
-    )
 )
 
 select

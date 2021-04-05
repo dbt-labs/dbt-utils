@@ -16,3 +16,12 @@ seeds:
           - dbt_utils.sequential_values:
               interval: 1
               datepart: 'hour'
+
+  - name: data_test_sequential_values_across_cols
+    columns:
+      - name: lower_limit
+        tests:
+          - dbt_utils.sequential_values:
+              comparison_column_name: upper_limit
+              interval: 1
+

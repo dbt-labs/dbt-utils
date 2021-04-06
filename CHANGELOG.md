@@ -1,3 +1,8 @@
+# dbt-utils v0.6.5
+
+### Fixes
+- Fix a bug in `get_relation_by_prefix` that happens with Snowflake external tables. Now the macro will retrieve tables that match the prefix which are external tables ([#350](https://github.com/fishtown-analytics/dbt-utils/issues/350))
+
 # dbt-utils v0.6.4
 
 ### Fixes

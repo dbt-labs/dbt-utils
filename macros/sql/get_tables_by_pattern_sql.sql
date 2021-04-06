@@ -10,6 +10,7 @@
             table_name as "table_name",
             case table_type
                 when 'BASE TABLE' then 'table'
+                when 'EXTERNAL TABLE' then 'external'
                 else lower(table_type)
             end as "table_type"
         from {{ database }}.information_schema.tables

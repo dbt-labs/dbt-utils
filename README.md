@@ -95,7 +95,7 @@ Usage:
 ---
 ### Date/Time
 #### date_spine ([source](macros/datetime/date_spine.sql))
-This macro returns the sql required to build a date spine. The spine will include the `start_date` (if it is aligned to the `datepart`), but it will not include the `end_date`. 
+This macro returns the sql required to build a date spine. The spine will include the `start_date` (if it is aligned to the `datepart`), but it will not include the `end_date`.
 
 Usage:
 ```
@@ -130,6 +130,20 @@ models:
       - dbt_utils.equal_rowcount:
           compare_model: ref('other_table_name')
 
+```
+
+#### fewer_rows_than ([source](macros/schema_tests/fewer_rows_than.sql))
+This schema test asserts that this model has fewer rows than the referenced model.
+
+Usage:
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    tests:
+      - dbt_utils.fewer_rows_than:
+          compare_model: ref('other_table_name')
 ```
 
 #### equality ([source](macros/schema_tests/equality.sql))
@@ -178,6 +192,25 @@ models:
       - dbt_utils.expression_is_true:
           expression: "col_a + col_b = total"
           condition: "created_at > '2018-12-31'"
+
+```
+
+This macro can also be used at the column level. When this is done, the `expression` is evaluated against the column.
+
+```yaml
+version: 2
+models:
+    - name: model_name
+      columns:
+        - name: col_a
+          tests:
+            - dbt_utils.expression_is_true:
+                expression: '>= 1'
+        - name: col_b
+          tests:
+            - dbt_utils.expression_is_true:
+                expression: '= 1'
+                condition: col_a = 1
 
 ```
 
@@ -281,6 +314,22 @@ models:
               where: "_deleted = false"
 ```
 
+#### not_accepted_values ([source](macros/schema_tests/not_accepted_values.sql))
+This test validates that there are no rows that match the given values.
+
+Usage:
+```yaml
+version: 2
+
+models:
+  - name: my_model
+    columns:
+      - name: city
+        tests:
+          - dbt_utils.not_accepted_values:
+              values: ['Barcelona', 'New York']
+```
+
 #### relationships_where ([source](macros/schema_tests/relationships_where.sql))
 This test validates the referential integrity between two relations (same as the core relationships schema test) with an added predicate to filter out some rows from the test. This is useful to exclude records such as test entities, rows created in the last X minutes/hours to account for temporary gaps due to ETL limitations, etc.
 
@@ -326,6 +375,15 @@ models:
           upper_bound_column: ended_at
           partition_by: customer_id
           gaps: required
+
+  # test that each customer can have subscriptions that start and end on the same date
+  - name: subscriptions
+    tests:
+      - dbt_utils.mutually_exclusive_ranges:
+          lower_bound_column: started_at
+          upper_bound_column: ended_at
+          partition_by: customer_id
+          zero_length: allowed
 ```
 **Args:**
 * `lower_bound_column` (required): The name of the column that represents the
@@ -337,6 +395,8 @@ upper value of the range. Must be not null.
 argument to indicate which column to partition by. `default=none`
 * `gaps` (optional): Whether there can be gaps are allowed between ranges.
 `default='allowed', one_of=['not_allowed', 'allowed', 'required']`
+* `zero_length` (optional): Whether ranges can start and end on the same date.
+`default='not_allowed', one_of=['not_allowed', 'allowed']`
 
 **Note:** Both `lower_bound_column` and `upper_bound_column` should be not null.
 If this is not the case in your data source, consider passing a coalesce function
@@ -383,6 +443,52 @@ the lower bound of the next record (common for date ranges).
 | 2           | 3           |
 | 4           | 5           |
 
+**Understanding the `zero_length_range_allowed` parameter:**
+Here are a number of examples for each allowed `zero_length_range_allowed` parameter.
+* `zero_length_range_allowed:false`: (default) The upper bound of each record must be greater than its lower bound.
+
+| lower_bound | upper_bound |
+|-------------|-------------|
+| 0           | 1           |
+| 1           | 2           |
+| 2           | 3           |
+
+* `zero_length_range_allowed:true`: The upper bound of each record can be greater than or equal to its lower bound.
+
+| lower_bound | upper_bound |
+|-------------|-------------|
+| 0           | 1           |
+| 2           | 2           |
+| 3           | 4           |
+
+#### sequential_values ([source](macros/schema_tests/sequential_values.sql))
+This test confirms that a column contains sequential values. It can be used
+for both numeric values, and datetime values, as follows:
+```yml
+version: 2
+
+seeds:
+  - name: util_even_numbers
+    columns:
+      - name: i
+        tests:
+          - dbt_utils.sequential_values:
+              interval: 2
+
+
+  - name: util_hours
+    columns:
+      - name: date_hour
+        tests:
+          - dbt_utils.sequential_values:
+              interval: 1
+              datepart: 'hour'
+```
+
+**Args:**
+* `interval` (default=1): The gap between two sequential values
+* `datepart` (default=None): Used when the gaps are a unit of time. If omitted, the test will check for a numeric gap.
+
 #### unique_combination_of_columns ([source](macros/schema_tests/unique_combination_of_columns.sql))
 This test confirms that the combination of columns is unique. For example, the
 combination of month and product is unique, however neither column is unique
@@ -418,6 +524,58 @@ An optional `quote_columns` parameter (`default=false`) can also be used if a co
         quote_columns: true
 ```
 
+An optional `where` parameter can also be used in order to isolate the rows of the data set on which the uniqueness
+constraint needs to be verified.
+
+```yaml
+- name: revenue_by_product_by_month
+  tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - month
+          - group
+        where: year >= 2020
+```
+
+
+#### accepted_range ([source](macros/schema_tests/accepted_range.sql))
+This test checks that a column's values fall inside an expected range. Any combination of `min_value` and `max_value` is allowed, and the range can be inclusive or exclusive. Provide a `where` argument to filter to specific records only.
+
+In addition to comparisons to a scalar value, you can also compare to another column's values. Any data type that supports the `>` or `<` operators can be compared, so you could also run tests like checking that all order dates are in the past.
+
+Usage:
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    columns:
+      - name: user_id
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+
+      - name: account_created_at
+        tests:
+          - dbt_utils.accepted_range:
+              max_value: "getdate()"
+              #inclusive is true by default
+
+      - name: num_returned_orders
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: "num_orders"
+
+      - name: num_web_sessions
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: false
+              where: "num_orders > 0"
+```
+
 ---
 ### SQL helpers
 #### get_query_results_as_dict ([source](macros/sql/get_query_results_as_dict.sql))
@@ -439,24 +597,49 @@ group by 1
 ```
 
 #### get_column_values ([source](macros/sql/get_column_values.sql))
-This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation).
-It takes an options `default` argument for compiling when the relation does not already exist.
+This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation) as an array.
+
+Arguments:
+- `table` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
+- `column` (required): The name of the column you wish to find the column values of
+- `order_by` (optional, default=`'count(*) desc'`): How the results should be ordered. The default is to order by `count(*) desc`, i.e. decreasing frequency. Setting this as `'my_column'` will sort alphabetically, while `'min(created_at)'` will sort by when thevalue was first observed.
+- `max_records` (optional, default=`none`): The maximum number of column values you want to return
+- `default` (optional, default=`[]`): The results this macro should return if the relation has not yet been created (and therefore has no column values).
 
 Usage:
-```
--- Returns a list of the top 50 states in the `users` table
-{% set states = dbt_utils.get_column_values(table=ref('users'), column='state', max_records=50, default=[]) %}
+```sql
+-- Returns a list of the payment_methods in the stg_payments model_
+{% set payment_methods = dbt_utils.get_column_values(table=ref('stg_payments'), column='payment_method') %}
 
-{% for state in states %}
+{% for payment_method in payment_methods %}
     ...
 {% endfor %}
 
 ...
 ```
 
+```sql
+-- Returns the list sorted alphabetically
+{% set payment_methods = dbt_utils.get_column_values(
+        table=ref('stg_payments'),
+        column='payment_method',
+        order_by='payment_method'
+) %}
+```
 
-#### get_relations_by_pattern ([source](macros/sql/get_relations_by_pattern.sql))
+```sql
+-- Returns the list sorted my most recently observed
+{% set payment_methods = dbt_utils.get_column_values(
+        table=ref('stg_payments'),
+        column='payment_method',
+        order_by='max(created_at) desc',
+        max_records=50,
+        default=['bank_transfer', 'coupon', 'credit_card']
+%}
+...
+```
 
+#### get_relations_by_prefix
 Returns a list of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation)
 that match a given schema- or table-name pattern.
 
@@ -540,14 +723,73 @@ Usage:
 ```
 
 #### star ([source](macros/sql/star.sql))
-This macro generates a list of all fields that exist in the `from` relation, excluding any fields listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with the star macro. This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias.
+This macro generates a list of all fields that exist in the `from` relation, excluding any fields listed in the `except` argument. The construction is identical to `select * from {{ ref('my_model') }}`, replacing star (`*`) with the star macro.
 
 Usage:
-```
+```sql
 select
-{{ dbt_utils.star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"]) }}
-from {{ref('my_model')}}
+  {{ dbt_utils.star(ref('my_model')) }}
+from {{ ref('my_model') }}
 ```
+
+<details><summary>Example compiled code</summary>
+
+```txt
+select
+  id,
+  first_name,
+  deleted_at
+from my_schema.my_model
+```
+
+</details><br>
+
+```sql
+select
+  {{ dbt_utils.star(ref('my_model'), except=['deleted_at']) }}
+from {{ ref('my_model') }} as
+```
+
+<details><summary>Example compiled code</summary>
+
+```txt
+select
+  id,
+  first_name
+from my_schema.my_model
+```
+
+</details><br>
+
+```sql
+select
+  {{ dbt_utils.star(
+    from=ref('my_model'),
+    relation_alias='my_alias',
+    except=["deleted_at", "exclude_field_2"],
+    case_sensitive_except=false,
+    aliases={"id":"customer_id"}
+  ) }}
+from {{ ref('my_model') }} as my_alias
+```
+
+<details><summary>Example compiled code</summary>
+
+```txt
+select
+  my_alias.id as customer_id,
+  my_alias.first_name
+from my_schema.my_model as my_alias
+```
+
+</details><br>
+
+Arguments:
+- `from` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source` function) that contains the list of columns you wish to select from
+- `relation_alias` (optional, default=None): If used, the columns will be prefixed with this alias (i.e. `my_alias.my_column` instead of `my_column`.) Useful if your `from` statement aliases the relation (especially useful if you have a join in this query).
+- `except` (optional, default=[]): a list of column names to exclude
+- `case_sensitive_except` (optional, default=True): When true, columns in the `except` array must have the same casing as columns in the relation (i.e. `except=['my_col']` will _not_ exclude a column named 'MY_COL')
+- `aliases` (optional, default={}): A dictionary of column aliases
 
 #### union_relations ([source](macros/sql/union.sql))
 
@@ -649,6 +891,7 @@ Arguments:
 
 #### unpivot ([source](macros/sql/unpivot.sql))
 This macro "un-pivots" a table from wide format to long format. Functionality is similar to pandas [melt](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.melt.html) function.
+Boolean values are replaced with the strings 'true'|'false'
 
 Usage:
 ```
@@ -717,8 +960,8 @@ Usage:
 ```
 
 ---
-### Logger
-#### pretty_time ([source](macros/logger/pretty_time.sql))
+### Jinja Helpers
+#### pretty_time ([source](macros/jinja_helpers/pretty_time.sql))
 This macro returns a string of the current timestamp, optionally taking a datestring format.
 ```sql
 {#- This will return a string like '14:50:34' -#}
@@ -728,7 +971,7 @@ This macro returns a string of the current timestamp, optionally taking a datest
 {{ dbt_utils.pretty_time(format='%Y-%m-%d %H:%M:%S') }}
 ```
 
-#### pretty_log_format ([source](macros/logger/pretty_log_format.sql))
+#### pretty_log_format ([source](macros/jinja_helpers/pretty_log_format.sql))
 This macro formats the input in a way that will print nicely to the command line when you `log` it.
 ```sql
 {#- This will return a string like:
@@ -737,7 +980,7 @@ This macro formats the input in a way that will print nicely to the command line
 
 {{ dbt_utils.pretty_log_format("my pretty message") }}
 ```
-#### log_info ([source](macros/logger/log_info.sql))
+#### log_info ([source](macros/jinja_helpers/log_info.sql))
 This macro logs a formatted message (with a timestamp) to the command line.
 ```sql
 {{ dbt_utils.log_info("my pretty message") }}
@@ -746,6 +989,40 @@ This macro logs a formatted message (with a timestamp) to the command line.
 ```
 11:07:28 | 1 of 1 START table model analytics.fct_orders........................ [RUN]
 11:07:31 + my pretty message
+```
+
+#### slugify ([source](macros/jinja_helpers/slugify.sql))
+This macro is useful for transforming Jinja strings into "slugs", and can be useful when using a Jinja object as a column name, especially when that Jinja object is not hardcoded.
+
+For this example, let's pretend that we have payment methods in our payments table like `['venmo App', 'ca$h-money']`, which we can't use as a column name due to the spaces and special characters. This macro does its best to strip those out in a sensible way: `['venmo_app',
+'cah_money']`.
+
+```sql
+{%- set payment_methods = dbt_utils.get_column_values(
+    table=ref('raw_payments'),
+    column='payment_method'
+) -%}
+
+select
+order_id,
+{%- for payment_method in payment_methods %}
+sum(case when payment_method = '{{ payment_method }}' then amount end)
+  as {{ slugify(payment_method) }}_amount,
+
+{% endfor %}
+...
+```
+
+```sql
+select
+order_id,
+
+sum(case when payment_method = 'Venmo App' then amount end)
+  as venmo_app_amount,
+
+sum(case when payment_method = 'ca$h money' then amount end)
+  as cah_money_amount,
+...
 ```
 
 ### Materializations

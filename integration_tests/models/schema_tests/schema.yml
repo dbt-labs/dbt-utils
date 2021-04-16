@@ -126,6 +126,18 @@ models:
           combination_of_columns:
             - month
             - product
+  
+  - name: data_cardinality_equality_a
+    columns:
+      - name: same_name
+        tests:
+          - dbt_utils.cardinality_equality:
+              to: ref('data_cardinality_equality_b')
+              field: same_name
+          - dbt_utils.cardinality_equality:
+              to: ref('data_cardinality_equality_b')
+              field: different_name
+          
 
   - name: data_test_accepted_range
     columns:
@@ -145,3 +157,4 @@ models:
               min_value: 0
               inclusive: true
               where: "id <> -1"
+

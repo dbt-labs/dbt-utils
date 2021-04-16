@@ -78,7 +78,7 @@ Arguments:
       {% if quote_identifiers %}
             as {{ adapter.quote(prefix ~ v ~ suffix) }}
       {% else %}
-        as {{prefix ~ v ~ suffix }}
+        as {{ dbt_utils.slugify(prefix ~ v ~ suffix) }}
       {% endif %}
     {% endif %}
     {% if not loop.last %},{% endif %}

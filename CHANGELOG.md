@@ -36,6 +36,7 @@ If you were relying on the position to match up your optional arguments, this ma
 
 ## Features
 * Add new argument, `order_by`, to `get_column_values` (code originally in [#289](https://github.com/fishtown-analytics/dbt-utils/pull/289/) from [@clausherther](https://github.com/clausherther), merged via [#349](https://github.com/fishtown-analytics/dbt-utils/pull/349/))
+* Add `slugify` macro, and use it in the pivot macro. :rotating_light: This macro uses the `re` module, which is only available in dbt v0.19.0+. As a result, this feature introduces a breaking change. ([#314](https://github.com/fishtown-analytics/dbt-utils/pull/314))
 
 ## Fixes
 

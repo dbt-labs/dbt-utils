@@ -1088,9 +1088,10 @@ We welcome contributions to this repo! To contribute a new feature or a fix, ple
 
 ### Dispatch macros
 
-**Note:** This is primarily relevant to users and maintainers of community-supported
-database plugins. If you use Postgres, Redshift, Snowflake, or Bigquery, this likely
-does not apply to you.
+**Note:** This is primarily relevant to:
+- Users and maintainers of community-supported [adapter plugins](https://docs.getdbt.com/docs/available-adapters)
+- Users who wish to override a low-lying `dbt_utils` macro with a custom implementation, and have that implementation used by other `dbt_utils` macros
+If you use Postgres, Redshift, Snowflake, or Bigquery, this likely does not apply to you.
 
 dbt v0.18.0 introduces `adapter.dispatch()`, a reliable way to define different implementations of the same macro
 across different databases.
@@ -1101,14 +1102,16 @@ variable in your project, when dbt searches for implementations of a dispatched
 `dbt_utils` macro, it will search through your listed packages _before_ using
 the implementations defined in `dbt_utils`.
 
-Set the variable:
+Set a variable in your `dbt_project.yml`:
 ```yml
 vars:
   dbt_utils_dispatch_list:
-    - first_package_to_search    # likely the name of your root project
+    - first_package_to_search    # likely the name of your root project (only the root folder)
     - second_package_to_search   # likely an "add-on" package, such as spark_utils
     # dbt_utils is always the last place searched
 ```
+
+If overriding a dispatched macro with a custom implementation in your own project's `macros/` directory, you must name your custom macro with a prefix: either `default__` (note the two underscores), or the name of your adapter followed by two underscores. For example, if you're running on Postgres and wish to override the behavior of `dbt_utils.datediff` (such that `dbt_utils.date_spine` will use your version instead), you can do this by defining a macro called either `default__datediff` or `postgres__datediff`.
 
 When running on Spark, if dbt needs to dispatch `dbt_utils.datediff`, it will search for the following in order:
 ```

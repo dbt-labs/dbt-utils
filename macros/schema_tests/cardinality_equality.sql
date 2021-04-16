@@ -25,7 +25,7 @@ select
   {{ field }},
   count(*) as num_rows
 from {{ to }}
-group by {{ column_name }}
+group by {{ field }}
 ),
 
 except_a as (

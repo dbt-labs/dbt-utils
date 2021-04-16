@@ -15,6 +15,7 @@
 * Fix `cardinality_equality` test when the two tables' column names differed ([#334](https://github.com/fishtown-analytics/dbt-utils/pull/334)) [@joellabes](https://github.com/joellabes)
 
 ## Under the hood
+* Fix Markdown formatting for hub rendering ([#336](https://github.com/fishtown-analytics/dbt-utils/issues/350), [@coapacetic](https://github.com/coapacetic))
 
 # dbt-utils v0.6.4
 

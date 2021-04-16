@@ -1,6 +1,57 @@
-# dbt-utils v0.6.5
-### Fixes
-- Fix `cardinality_equality` test when the two tables' column names differed ([#334](https://github.com/fishtown-analytics/dbt-utils/pull/334)) [@joellabes](https://github.com/joellabes)
+# dbt-utils v0.7.0 (unreleased)
+
+## :rotating_light: Breaking changes
+
+
+### get_column_values
+The order of (optional) arguments has changed in the `get_column_values` macro:
+Before:
+```jinja
+{% macro get_column_values(table, column, order_by='count(*) desc', max_records=none, default=none) -%}
+...
+{% endmacro %}
+```
+
+After:
+```jinja
+{% macro get_column_values(table, column, max_records=none, default=none) -%}
+...
+{% endmacro %}
+```
+If you were relying on the position to match up your optional arguments, this may be a breaking change — in general, we recommend that you explicitly declare any optional arguments (if not all of your arguments!)
+```
+-- before: the `50` will now be passed through as the `order_by` argument
+{% set payment_methods = dbt_utils.get_column_values(
+        ref('stg_payments'),
+        'payment_method',
+        50
+) %}
+
+-- after
+{% set payment_methods = dbt_utils.get_column_values(
+        ref('stg_payments'),
+        'payment_method',
+        max_records=50
+) %}
+```
+
+* Added optional `where` clause in `unique_combination_of_columns` test macro [#295](https://github.com/fishtown-analytics/dbt-utils/pull/295) [findinpath](https://github.com/findinpath)
+
+## Features
+* Add new `accepted_range` test ([#276](https://github.com/fishtown-analytics/dbt-utils/pull/276) [@joellabes](https://github.com/joellabes))
+* Make `expression_is_true` work as a column test (code originally in [#226](https://github.com/fishtown-analytics/dbt-utils/pull/226/) from [@elliottohara](https://github.com/elliottohara), merged via [#313])
+* Allow individual columns in star macro to be aliased (code originally in [#230](https://github.com/fishtown-analytics/dbt-utils/pull/230/) from [@elliottohara](https://github.com/elliottohara), merged via [#245])
+* Allow star macro to be case insensitive, and improve docs (code originally in [#281](https://github.com/fishtown-analytics/dbt-utils/pull/230/) via [@mdimercurio](https://github.com/mdimercurio), merged via [#348](https://github.com/fishtown-analytics/dbt-utils/pull/348/))
+* Add new schema test, `not_accepted_values` ([#284](https://github.com/fishtown-analytics/dbt-utils/pull/284) [@JavierMonton](https://github.com/JavierMonton))
+* Add new schema test, `fewer_rows_than` (code originally in [#221](https://github.com/fishtown-analytics/dbt-utils/pull/230/) from [@dmarts](https://github.com/dmarts), merged via [#343](https://github.com/fishtown-analytics/dbt-utils/pull/343/))
+* Add new argument, `order_by`, to `get_column_values` (code originally in [#289](https://github.com/fishtown-analytics/dbt-utils/pull/289/) from [@clausherther](https://github.com/clausherther), merged via [#349](https://github.com/fishtown-analytics/dbt-utils/pull/349/))
+* Add new schema test, `sequential_values` ([#318](https://github.com/fishtown-analytics/dbt-utils/pull/318), inspried by [@hundredwatt](https://github.com/hundredwatt))
+
+
+## Fixes
+* Handle booleans gracefully in the unpivot macro ([#305](https://github.com/fishtown-analytics/dbt-utils/pull/305) [@avishalom](https://github.com/avishalom))
+* Fix a bug in `get_relation_by_prefix` that happens with Snowflake external tables. Now the macro will retrieve tables that match the prefix which are external tables ([#350](https://github.com/fishtown-analytics/dbt-utils/issues/350))
+* Fix `cardinality_equality` test when the two tables' column names differed ([#334](https://github.com/fishtown-analytics/dbt-utils/pull/334)) [@joellabes](https://github.com/joellabes)
 
 # dbt-utils v0.6.4
 
@@ -20,12 +71,12 @@
 - Bump `require-dbt-version` to `[">=0.18.0", "<0.20.0"]` to support dbt v0.19.0 ([#308](https://github.com/fishtown-analytics/dbt-utils/pull/308), [#309](https://github.com/fishtown-analytics/dbt-utils/pull/309))
 
 ## Fixes
+* Add `slugify` macro, and use it in the pivot macro. :rotating_light: This macro uses the `re` module, which is only available in dbt v0.19.0+. As a result, this feature introduces a breaking change. ([#314](https://github.com/fishtown-analytics/dbt-utils/pull/314))
 
 # dbt-utils v0.6.2
 
 ## Fixes
 - Fix the logic in `get_tables_by_pattern_sql` to ensure non-default arguments are respected ([#279](https://github.com/fishtown-analytics/dbt-utils/pull/279))
-
 
 # dbt-utils v0.6.1
 

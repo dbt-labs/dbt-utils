@@ -6,6 +6,26 @@ Check [dbt Hub](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/) for
 ----
 
 ## Macros
+
+### Operations
+Self contained procedures that allow us to affect data or run data-related operations
+
+#### compare_objects ([source](macros/operations/compare_objects.sql))
+This macro generates a result set comparing value diffs across two version of the same model.
+
+- The `comparison_schema` argument is required and takes in the schema where your development model deployed.
+- The `object_name` argument is required and takes in the name of the model in question.
+- The `primary_key` argument is required and takes in the column name of the primary key (can also be a concatenation of multiple fields)
+- The `prod_database` argument is required and defaulted to *ANALYTICS_DW*, takes in the database name where the original model exists
+- The `prod_schema` argument is required and defaulted to *ANALYSIS*, takes in the schema name where the original model exists
+- The `sql_where` argument is not required, but takes in a condition (or set of conditions) to filter down both the prod and comparison object datasets
+
+Usage:
+```
+dbt run-operation compare_objects --args "{comparison_schema : dbt_kevin, object_name: claim_transaction_calendar_date, primary_key : 'claim_uuid || claim_coverage_type ||  calendar_date', sql_where: calendar_date < '2020-08-15'}"
+
+```
+
 ### Cross-database
 While these macros are cross database, they do not support all databases.
 These macros are provided to make date calculations easier and are not a core part of dbt.
@@ -440,7 +460,7 @@ group by 1
 
 #### get_column_values ([source](macros/sql/get_column_values.sql))
 This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation).
-It takes an options `default` argument for compiling when the relation does not already exist.
+It takes an options `default` argument for compiling when the relation does not already exist. The column values are returned in alphabetical order ascending.
 
 Usage:
 ```

@@ -41,7 +41,7 @@ Returns:
 
             from {{ target_relation }}
             group by 1
-            order by count(*) desc
+            order by 1 asc
 
             {% if max_records is not none %}
             limit {{ max_records }}
@@ -55,7 +55,7 @@ Returns:
 
     {%- if value_list and value_list['data'] -%}
         {%- set values = value_list['data'] | map(attribute=0) | list %}
-        {{ return(values|sort) }}
+        {{ return(values) }}
     {%- else -%}
         {{ return(default) }}
     {%- endif -%}

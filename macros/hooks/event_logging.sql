@@ -10,7 +10,7 @@
 
 {% macro get_audit_relation() %}
 
-    {%- set audit_schema=get_audit_schema() -%}
+    {%- set audit_schema=cc_dbt_utils.get_audit_schema() -%}
 
     {%- set audit_table =
         api.Relation.create(
@@ -26,7 +26,7 @@
 
 {% macro log_audit_event(event_name, schema, relation, user, target_name, is_full_refresh, target_warehouse) %}
 
-    insert into {{ get_audit_relation() }} (
+    insert into {{ cc_dbt_utils.get_audit_relation() }} (
         event_name,
         event_timestamp,
         event_schema,
@@ -35,7 +35,7 @@
         event_target,
         event_is_full_refresh,
         invocation_id,
-        event_warehouse
+        target_warehouse
     )
 
     values (
@@ -56,7 +56,7 @@
 
 
 {% macro create_audit_schema() %}
-    create schema if not exists {{ get_audit_schema() }}
+    create schema if not exists {{ cc_dbt_utils.get_audit_schema() }}
 {% endmacro %}
 
 
@@ -74,7 +74,7 @@
        ["target_warehouse", "varchar(512)"],
     ] -%}
 
-    {% set audit_table = get_audit_relation() -%}
+    {% set audit_table = cc_dbt_utils.get_audit_relation() -%}
 
     {% set audit_table_exists = adapter.get_relation(audit_table.database, audit_table.schema, audit_table.name) -%}
 
@@ -117,24 +117,24 @@
 
 
 {% macro log_run_start_event() %}
-    {{ log_audit_event('run started', user=target.user, target_name=target.name, is_full_refresh=flags.FULL_REFRESH) }}
+    {{ cc_dbt_utils.log_audit_event('run started', user=target.user, target_name=target.name, is_full_refresh=flags.FULL_REFRESH) }}
 {% endmacro %}
 
 
 {% macro log_run_end_event() %}
-    {{ log_audit_event('run completed', user=target.user, target_name=target.name, is_full_refresh=flags.FULL_REFRESH) }}
+    {{ cc_dbt_utils.log_audit_event('run completed', user=target.user, target_name=target.name, is_full_refresh=flags.FULL_REFRESH) }}
 {% endmacro %}
 
 
 {% macro log_model_start_event() %}
-    {{ log_audit_event(
+    {{ cc_dbt_utils.log_audit_event(
         'model deployment started', schema=this.schema, relation=this.name, user=target.user, target_name=target.name, target_warehouse=target.warehouse, is_full_refresh=flags.FULL_REFRESH
     ) }}
 {% endmacro %}
 
 
 {% macro log_model_end_event() %}
-    {{ log_audit_event(
+    {{ cc_dbt_utils.log_audit_event(
         'model deployment completed', schema=this.schema, relation=this.name, user=target.user, target_name=target.name, target_warehouse=target.warehouse, is_full_refresh=flags.FULL_REFRESH
     ) }}
 {% endmacro %}

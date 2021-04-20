@@ -24,7 +24,7 @@
 
 {% endmacro %}
 
-{% macro log_audit_event(event_name, schema, relation, user, target_name, is_full_refresh) %}
+{% macro log_audit_event(event_name, schema, relation, user, target_name, is_full_refresh, target_warehouse) %}
 
     insert into {{ get_audit_relation() }} (
         event_name,
@@ -34,7 +34,8 @@
         event_user,
         event_target,
         event_is_full_refresh,
-        invocation_id
+        invocation_id,
+        event_warehouse
     )
 
     values (
@@ -45,7 +46,8 @@
         {% if variable != None %}'{{ user }}'{% else %}null::varchar(512){% endif %},
         {% if variable != None %}'{{ target_name }}'{% else %}null::varchar(512){% endif %},
         {% if variable != None %}{% if is_full_refresh %}TRUE{% else %}FALSE{% endif %}{% else %}null::boolean{% endif %},
-        '{{ invocation_id }}'
+        '{{ invocation_id }}',
+        {% if variable != None %}'{{ target_warehouse }}'{% else %}null::varchar(512){% endif %}
     );
     
     commit;
@@ -69,6 +71,7 @@
        ["event_target", "varchar(512)"],
        ["event_is_full_refresh", "boolean"],
        ["invocation_id", "varchar(512)"],
+       ["target_warehouse", "varchar(512)"],
     ] -%}
 
     {% set audit_table = get_audit_relation() -%}
@@ -125,13 +128,13 @@
 
 {% macro log_model_start_event() %}
     {{ log_audit_event(
-        'model deployment started', schema=this.schema, relation=this.name, user=target.user, target_name=target.name, is_full_refresh=flags.FULL_REFRESH
+        'model deployment started', schema=this.schema, relation=this.name, user=target.user, target_name=target.name, target_warehouse=target.warehouse, is_full_refresh=flags.FULL_REFRESH
     ) }}
 {% endmacro %}
 
 
 {% macro log_model_end_event() %}
     {{ log_audit_event(
-        'model deployment completed', schema=this.schema, relation=this.name, user=target.user, target_name=target.name, is_full_refresh=flags.FULL_REFRESH
+        'model deployment completed', schema=this.schema, relation=this.name, user=target.user, target_name=target.name, target_warehouse=target.warehouse, is_full_refresh=flags.FULL_REFRESH
     ) }}
 {% endmacro %}

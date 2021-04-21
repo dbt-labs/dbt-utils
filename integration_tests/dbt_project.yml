@@ -53,7 +53,7 @@ seeds:
     sql:
       data_events_20180103:
         +schema: events
-    
+
     schema_tests:
       data_test_sequential_timestamps:
         +column_types:

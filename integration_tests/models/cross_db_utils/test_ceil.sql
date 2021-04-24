@@ -6,7 +6,7 @@ with data as (
 )
 
 select
-    {{ dbt_utils.ceil(input) }} as actual,
+    {{ dbt_utils.ceil('input') }} as actual,
     output as expected
 
 from data

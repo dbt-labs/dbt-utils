@@ -1,3 +1,9 @@
+# dbt-utils v0.6.5
+
+### Under the hood
+
+- in `generate_series()` use `power()` instead of `pow()` as they are syn onyms in most SQL dialects, but some dialects only have `power()` [#354](https://github.com/fishtown-analytics/dbt-utils/pull/354)
+
 # dbt-utils v0.6.4
 
 ### Fixes

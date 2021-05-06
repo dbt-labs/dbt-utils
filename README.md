@@ -6,34 +6,32 @@ Check [dbt Hub](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/) for
 ----
 
 ## Contents
+
+**[Schema tests](#schema-tests)**
+  - [equal_rowcount](#equal_rowcount-source)
+  - [equality](#equality-source)
+  - [expression_is_true](#expression_is_true-source)
+  - [recency](#recency-source)
+  - [at_least_one](#at_least_one-source)
+  - [not_constant](#not_constant)
+  - [cardinality_equality](#cardinality_equality-source)
+  - [unique_where](#unique_where-source)
+  - [not_null_where](#not_null_where-source)
+  - [relationships_where](#relationships_where-source)
+  - [mutually_exclusive_ranges](#mutually_exclusive_ranges-source)
+  - [unique_combination_of_columns](#unique_combination_of_columns-source)
+
 **[Macros](#macros)**
-- [Cross-database macros](#cross-database-macros):
-    - [current_timestamp](#current_timestamp-source)
-    - [dateadd](#date_add-source)
-    - [datediff](#datadiff-source)
-    - [split_part](#split_part-source)
-    - [last_day](#last_day-source)
-    - [width_bucket](#width_bucket-source)
-- [Date/time macros](#datetime-macros):
-    - [date_spine](#date-spine_source)
-- [Schema tests](#schema-tests):
-    - [equal_rowcount](#equal_rowcount-source)
-    - [equality](#equality-source)
-    - [expression_is_true](#expression_is_true-source)
-    - [recency](#recency-source)
-    - [at_least_one](#at_least_one-source)
-    - [not_constant](#not_constant)
-    - [cardinality_equality](#cardinality_equality-source)
-    - [unique_where](#unique_where-source)
-    - [not_null_where](#not_null_where-source)
-    - [relationships_where](#relationships_where-source)
-    - [mutually_exclusive_ranges](#mutually_exclusive_ranges-source)
-    - [unique_combination_of_columns](#unique_combination_of_columns-source)
-- [SQL helpers](sql-helpers)
+
+- [Introspective macros](#introspective-macros):
     - [get_query_results_as_dict](#get_query_results_as_dict-source)
     - [get_column_values](#get_column_values-source)
     - [get_relations_by_pattern](#get_relations_by_pattern-source)
     - [get_relations_by_prefix](#get_relations_by_prefix-source)
+
+- [SQL generators](sql-generators)
+    - [date_spine](#date-spine_source)
+    - [haversine_distance](haversine_distance-source)]
     - [group_by](#group_by-source)
     - [star](#star-source)
     - [union_relations](#union_relations-source)
@@ -42,10 +40,20 @@ Check [dbt Hub](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/) for
     - [safe_add](#safe_add-source)
     - [pivot](#pivot-source)
     - [unpivot](#unpivot-source)
+
 - [Web macros](#web-macros)
     - [get_url_parameter](#get_url_parameter-source)
     - [get_url_host](#get_url_host-source)
     - [get_url_path](#get_url_path-source)
+
+- [Cross-database macros](#cross-database-macros):
+    - [current_timestamp](#current_timestamp-source)
+    - [dateadd](#date_add-source)
+    - [datediff](#datadiff-source)
+    - [split_part](#split_part-source)
+    - [last_day](#last_day-source)
+    - [width_bucket](#width_bucket-source)
+
 - [Jinja helpers](#jinja-helpers)
     - [pretty_time](#pretty_time-source)
     - [pretty_log_format](#pretty_log_format-source)
@@ -55,124 +63,6 @@ Check [dbt Hub](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/) for
 [Materializations](#materializations):
 - [insert_by_period](#insert_by_period-source)
 
-----
-
-## Macros
-### Cross-database macros
-While these macros are cross database, they do not support all databases.
-These macros are provided to make date calculations easier and are not a core part of dbt.
-Most date macros are not supported on postgres.
-
-#### current_timestamp ([source](macros/cross_db_utils/current_timestamp.sql))
-This macro returns the current timestamp.
-
-**Usage:**
-```
-{{ dbt_utils.current_timestamp() }}
-```
-
-#### dateadd ([source](macros/cross_db_utils/dateadd.sql))
-This macro adds a time/day interval to the supplied date/timestamp. Note: The `datepart` argument is database-specific.
-
-**Usage:**
-```
-{{ dbt_utils.dateadd(datepart='day', interval=1, from_date_or_timestamp="'2017-01-01'") }}
-```
-
-#### datediff ([source](macros/cross_db_utils/datediff.sql))
-This macro calculates the difference between two dates.
-
-**Usage:**
-```
-{{ dbt_utils.datediff("'2018-01-01'", "'2018-01-20'", 'day') }}
-```
-
-#### split_part ([source](macros/cross_db_utils/split_part.sql))
-This macro splits a string of text using the supplied delimiter and returns the supplied part number (1-indexed).
-
-**Usage:**
-```
-{{ dbt_utils.split_part(string_text='1,2,3', delimiter_text=',', part_number=1) }}
-```
-
-#### date_trunc ([source](macros/cross_db_utils/date_trunc.sql))
-Truncates a date or timestamp to the specified datepart. Note: The `datepart` argument is database-specific.
-
-**Usage:**
-```
-{{ dbt_utils.date_trunc(datepart, date) }}
-```
-
-#### last_day ([source](macros/cross_db_utils/last_day.sql))
-Gets the last day for a given date and datepart. Notes:
-
-- The `datepart` argument is database-specific.
-- This macro currently only supports dateparts of `month` and `quarter`.
-
-**Usage:**
-```
-{{ dbt_utils.last_day(date, datepart) }}
-```
-
-#### width_bucket ([source](macros/cross_db_utils/width_bucket.sql))
-This macro is modeled after the `width_bucket` function natively available in Snowflake.
-
-From the original Snowflake [documentation](https://docs.snowflake.net/manuals/sql-reference/functions/width_bucket.html):
-
-Constructs equi-width histograms, in which the histogram range is divided into intervals of identical size, and returns the bucket number into which the value of an expression falls, after it has been evaluated. The function returns an integer value or null (if any input is null).
-Notes:
-
-- `expr`
-  The expression for which the histogram is created. This expression must evaluate to a numeric value or to a value that can be implicitly converted to a numeric value.
-
-- `min_value` and `max_value`
-  The low and high end points of the acceptable range for the expression. The end points must also evaluate to numeric values and not be equal.
-
-- `num_buckets`
-  The desired number of buckets; must be a positive integer value. A value from the expression is assigned to each bucket, and the function then returns the corresponding bucket number.
-
-  When an expression falls outside the range, the function returns:
-
-    `0` if the expression is less than min_value.
-
-    `num_buckets + 1` if the expression is greater than or equal to max_value.
-
-
-**Usage:**
-```
-{{ dbt_utils.width_bucket(expr, min_value, max_value, num_buckets) }}
-```
-
----
-
-### Date/time macros
-#### date_spine ([source](macros/datetime/date_spine.sql))
-This macro returns the sql required to build a date spine. The spine will include the `start_date` (if it is aligned to the `datepart`), but it will not include the `end_date`.
-
-**Usage:**
-
-```
-{{ dbt_utils.date_spine(
-    datepart="day",
-    start_date="cast('2019-01-01' as date)",
-    end_date="cast('2020-01-01' as date)"
-   )
-}}
-```
-
----
-
-### Geo
-#### haversine_distance ([source](macros/geo/haversine_distance.sql))
-This macro calculates the [haversine distance](http://daynebatten.com/2015/09/latitude-longitude-distance-sql/) between a pair of x/y coordinates.
-
-Optionally takes a `unit` string parameter ('km' or 'mi') which defaults to miles (imperial system).
-
-**Usage:**
-
-```
-{{ dbt_utils.haversine_distance(lat1=<float>,lon1=<float>,lat2=<float>,lon2=<float>, unit='mi'<string>) }}
-```
 ---
 ### Schema Tests
 #### equal_rowcount ([source](macros/schema_tests/equal_rowcount.sql))
@@ -193,7 +83,7 @@ models:
 #### fewer_rows_than ([source](macros/schema_tests/fewer_rows_than.sql))
 This schema test asserts that this model has fewer rows than the referenced model.
 
-Usage:
+**Usage:**
 ```yaml
 version: 2
 
@@ -237,7 +127,7 @@ models:
 
 ```
 
-The macro accepts an optional parameter `condition` that allows for asserting
+The macro accepts an optional argument `condition` that allows for asserting
 the `expression` on a subset of all records.
 
 **Usage:**
@@ -472,9 +362,11 @@ models:
         partition_by: customer_id
         gaps: allowed
 ```
+<details>
+<summary><strong>Understanding the <code>gaps</code> argument:</strong>
+</summary>
 
-**Understanding the `gaps` parameter:**
-Here are a number of examples for each allowed `gaps` parameter.
+Here are a number of examples for each allowed `gaps` argument.
 * `gaps:not_allowed`: The upper bound of one record must be the lower bound of
 the next record.
 
@@ -502,8 +394,12 @@ the lower bound of the next record (common for date ranges).
 | 2           | 3           |
 | 4           | 5           |
 
-**Understanding the `zero_length_range_allowed` parameter:**
-Here are a number of examples for each allowed `zero_length_range_allowed` parameter.
+</details>
+
+<details>
+<summary><strong>Understanding the <code>zero_length_range_allowed</code> argument:</strong></summary>
+
+Here are a number of examples for each allowed `zero_length_range_allowed` argument.
 * `zero_length_range_allowed:false`: (default) The upper bound of each record must be greater than its lower bound.
 
 | lower_bound | upper_bound |
@@ -519,6 +415,9 @@ Here are a number of examples for each allowed `zero_length_range_allowed` param
 | 0           | 1           |
 | 2           | 2           |
 | 3           | 4           |
+
+</details>
+<br>
 
 #### sequential_values ([source](macros/schema_tests/sequential_values.sql))
 This test confirms that a column contains sequential values. It can be used
@@ -571,7 +470,7 @@ case we recommend using this test instead.
           - product
 ```
 
-An optional `quote_columns` parameter (`default=false`) can also be used if a column name needs to be quoted.
+An optional `quote_columns` argument (`default=false`) can also be used if a column name needs to be quoted.
 
 ```yaml
 - name: revenue_by_product_by_month
@@ -583,7 +482,7 @@ An optional `quote_columns` parameter (`default=false`) can also be used if a co
         quote_columns: true
 ```
 
-An optional `where` parameter can also be used in order to isolate the rows of the data set on which the uniqueness
+An optional `where` argument can also be used in order to isolate the rows of the data set on which the uniqueness
 constraint needs to be verified.
 
 ```yaml
@@ -634,9 +533,11 @@ models:
               inclusive: false
               where: "num_orders > 0"
 ```
+---
+## Macros
 
 ---
-### SQL helpers
+### Introspective macros
 #### get_query_results_as_dict ([source](macros/sql/get_query_results_as_dict.sql))
 This macro returns a dictionary from a sql query, so that you don't need to interact with the Agate library to operate on the result
 
@@ -777,6 +678,47 @@ handy paired with `union_relations`.
 * `database` (optional, default = `target.database`): The database to inspect
 for relations.
 
+
+### SQL generators
+#### date_spine ([source](macros/datetime/date_spine.sql))
+This macro returns the sql required to build a table of all days / months / years (often referred to as a "date spine"). The spine will include the `start_date` (if it is aligned to the `datepart`), but it will not include the `end_date`.
+
+**Usage:**
+
+```
+{{ dbt_utils.date_spine(
+    datepart="day",
+    start_date="cast('2021-01-01' as date)",
+    end_date="cast('2022-01-01' as date)"
+   )
+}}
+```
+
+This would return a table like so:
+| date_day   |
+|------------|
+| 2021-01-01 |
+| 2021-01-02 |
+| 2021-01-03 |
+| ...        |
+| 2021-12-31 |
+
+**Args:**
+- `datepart`: A valid
+
+---
+
+#### haversine_distance ([source](macros/geo/haversine_distance.sql))
+This macro calculates the [haversine distance](http://daynebatten.com/2015/09/latitude-longitude-distance-sql/) between a pair of x/y coordinates.
+
+Optionally takes a `unit` string argument ('km' or 'mi') which defaults to miles (imperial system).
+
+**Usage:**
+
+```
+{{ dbt_utils.haversine_distance(lat1=<float>,lon1=<float>,lat2=<float>,lon2=<float>, unit='mi'<string>) }}
+```
+
 #### group_by ([source](macros/sql/groupby.sql))
 This macro build a group by statement for fields 1...N
 
@@ -874,7 +816,7 @@ relations will be filled with `null` where not present. An new column
 * `exclude` (optional): A list of column names that should be excluded from
 the final query.
 * `include` (optional): A list of column names that should be included in the
-final query. Note the `include` and `exclude` parameters are mutually exclusive.
+final query. Note the `include` and `exclude` arguments are mutually exclusive.
 * `column_override` (optional): A dictionary of explicit column type overrides,
 e.g. `{"some_field": "varchar(100)"}`.``
 * `source_column_name` (optional, `default="_dbt_source_relation"`): The name of
@@ -1023,6 +965,94 @@ This macro extracts a page path from a column containing a url.
 ```
 
 ---
+
+### Cross-database macros
+While these macros are cross database, they do not support all databases.
+These macros are provided to make date calculations easier and are not a core part of dbt.
+Most date macros are not supported on postgres.
+
+#### current_timestamp ([source](macros/cross_db_utils/current_timestamp.sql))
+This macro returns the current timestamp.
+
+**Usage:**
+```
+{{ dbt_utils.current_timestamp() }}
+```
+
+#### dateadd ([source](macros/cross_db_utils/dateadd.sql))
+This macro adds a time/day interval to the supplied date/timestamp. Note: The `datepart` argument is database-specific.
+
+**Usage:**
+```
+{{ dbt_utils.dateadd(datepart='day', interval=1, from_date_or_timestamp="'2017-01-01'") }}
+```
+
+#### datediff ([source](macros/cross_db_utils/datediff.sql))
+This macro calculates the difference between two dates.
+
+**Usage:**
+```
+{{ dbt_utils.datediff("'2018-01-01'", "'2018-01-20'", 'day') }}
+```
+
+#### split_part ([source](macros/cross_db_utils/split_part.sql))
+This macro splits a string of text using the supplied delimiter and returns the supplied part number (1-indexed).
+
+**Usage:**
+```
+{{ dbt_utils.split_part(string_text='1,2,3', delimiter_text=',', part_number=1) }}
+```
+
+#### date_trunc ([source](macros/cross_db_utils/date_trunc.sql))
+Truncates a date or timestamp to the specified datepart. Note: The `datepart` argument is database-specific.
+
+**Usage:**
+```
+{{ dbt_utils.date_trunc(datepart, date) }}
+```
+
+#### last_day ([source](macros/cross_db_utils/last_day.sql))
+Gets the last day for a given date and datepart. Notes:
+
+- The `datepart` argument is database-specific.
+- This macro currently only supports dateparts of `month` and `quarter`.
+
+**Usage:**
+```
+{{ dbt_utils.last_day(date, datepart) }}
+```
+
+#### width_bucket ([source](macros/cross_db_utils/width_bucket.sql))
+This macro is modeled after the `width_bucket` function natively available in Snowflake.
+
+From the original Snowflake [documentation](https://docs.snowflake.net/manuals/sql-reference/functions/width_bucket.html):
+
+Constructs equi-width histograms, in which the histogram range is divided into intervals of identical size, and returns the bucket number into which the value of an expression falls, after it has been evaluated. The function returns an integer value or null (if any input is null).
+Notes:
+
+- `expr`
+  The expression for which the histogram is created. This expression must evaluate to a numeric value or to a value that can be implicitly converted to a numeric value.
+
+- `min_value` and `max_value`
+  The low and high end points of the acceptable range for the expression. The end points must also evaluate to numeric values and not be equal.
+
+- `num_buckets`
+  The desired number of buckets; must be a positive integer value. A value from the expression is assigned to each bucket, and the function then returns the corresponding bucket number.
+
+  When an expression falls outside the range, the function returns:
+
+    `0` if the expression is less than min_value.
+
+    `num_buckets + 1` if the expression is greater than or equal to max_value.
+
+
+**Usage:**
+```
+{{ dbt_utils.width_bucket(expr, min_value, max_value, num_buckets) }}
+```
+
+---
+
 
 ### Jinja Helpers
 #### pretty_time ([source](macros/jinja_helpers/pretty_time.sql))

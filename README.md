@@ -5,8 +5,60 @@ Check [dbt Hub](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/) for
 
 ----
 
+## Contents
+**[Macros](#macros)**
+- [Cross-database macros](#cross-database-macros):
+    - [current_timestamp](#current_timestamp-source)
+    - [dateadd](#date_add-source)
+    - [datediff](#datadiff-source)
+    - [split_part](#split_part-source)
+    - [last_day](#last_day-source)
+    - [width_bucket](#width_bucket-source)
+- [Date/time macros](#datetime-macros):
+    - [date_spine](#date-spine_source)
+- [Schema tests](#schema-tests):
+    - [equal_rowcount](#equal_rowcount-source)
+    - [equality](#equality-source)
+    - [expression_is_true](#expression_is_true-source)
+    - [recency](#recency-source)
+    - [at_least_one](#at_least_one-source)
+    - [not_constant](#not_constant)
+    - [cardinality_equality](#cardinality_equality-source)
+    - [unique_where](#unique_where-source)
+    - [not_null_where](#not_null_where-source)
+    - [relationships_where](#relationships_where-source)
+    - [mutually_exclusive_ranges](#mutually_exclusive_ranges-source)
+    - [unique_combination_of_columns](#unique_combination_of_columns-source)
+- [SQL helpers](sql-helpers)
+    - [get_query_results_as_dict](#get_query_results_as_dict-source)
+    - [get_column_values](#get_column_values-source)
+    - [get_relations_by_pattern](#get_relations_by_pattern-source)
+    - [get_relations_by_prefix](#get_relations_by_prefix-source)
+    - [group_by](#group_by-source)
+    - [star](#star-source)
+    - [union_relations](#union_relations-source)
+    - [generate_series](#generate_series-source)
+    - [surrogate_key](#surrogate_key-source)
+    - [safe_add](#safe_add-source)
+    - [pivot](#pivot-source)
+    - [unpivot](#unpivot-source)
+- [Web macros](#web-macros)
+    - [get_url_parameter](#get_url_parameter-source)
+    - [get_url_host](#get_url_host-source)
+    - [get_url_path](#get_url_path-source)
+- [Jinja helpers](#jinja-helpers)
+    - [pretty_time](#pretty_time-source)
+    - [pretty_log_format](#pretty_log_format-source)
+    - [log_info](#log_info-source)
+    - [slugify](#slugify-source)
+
+[Materializations](#materializations):
+- [insert_by_period](#insert_by_period-source)
+
+----
+
 ## Macros
-### Cross-database
+### Cross-database macros
 While these macros are cross database, they do not support all databases.
 These macros are provided to make date calculations easier and are not a core part of dbt.
 Most date macros are not supported on postgres.
@@ -93,7 +145,7 @@ Notes:
 
 ---
 
-### Date/Time
+### Date/time macros
 #### date_spine ([source](macros/datetime/date_spine.sql))
 This macro returns the sql required to build a date spine. The spine will include the `start_date` (if it is aligned to the `datepart`), but it will not include the `end_date`.
 
@@ -945,7 +997,7 @@ Boolean values are replaced with the strings 'true'|'false'
 - `value_name`: column name in the resulting table for value
 
 ---
-### Web
+### Web macros
 #### get_url_parameter ([source](macros/web/get_url_parameter.sql))
 This macro extracts a url parameter from a column containing a url.
 

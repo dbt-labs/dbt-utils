@@ -712,14 +712,20 @@ This would return a table like so:
 #### haversine_distance ([source](macros/geo/haversine_distance.sql))
 This macro calculates the [haversine distance](http://daynebatten.com/2015/09/latitude-longitude-distance-sql/) between a pair of x/y coordinates.
 
-Optionally takes a `unit` string argument ('km' or 'mi') which defaults to miles (imperial system).
-
 **Usage:**
 
 ```
-{{ dbt_utils.haversine_distance(lat1=<float>,lon1=<float>,lat2=<float>,lon2=<float>, unit='mi'<string>) }}
+{{ dbt_utils.haversine_distance(48.864716, 2.349014, 52.379189, 4.899431) }}
+
+{{ dbt_utils.haversine_distance(48.864716, 2.349014, 52.379189, 4.899431, unit='km') }}
 ```
 
+**Arguments:**
+- `lat1` (required): latitude of first location
+- `lon1` (required): longitude of first location
+- `lat2` (required): latitude of second location
+- `lon3` (required): longitude of second location
+- `unit` (optional, default=`'mi'`): one of `mi` (miles) or `km` (kilometers)
 #### group_by ([source](macros/sql/groupby.sql))
 This macro build a group by statement for fields 1...N
 

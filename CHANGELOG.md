@@ -20,7 +20,7 @@ After:
 ```
 If you were relying on the position to match up your optional arguments, this may be a breaking change — in general, we recommend that you explicitly declare any optional arguments (if not all of your arguments!)
 ```
--- before: the `50` will now be passed through as the `order_by` argument
+-- before:
 {% set payment_methods = dbt_utils.get_column_values(
         ref('stg_payments'),
         'payment_method',
@@ -35,8 +35,6 @@ If you were relying on the position to match up your optional arguments, this ma
 ) %}
 ```
 
-* Added optional `where` clause in `unique_combination_of_columns` test macro [#295](https://github.com/fishtown-analytics/dbt-utils/pull/295) [findinpath](https://github.com/findinpath)
-
 ## Features
 * Add new `accepted_range` test ([#276](https://github.com/fishtown-analytics/dbt-utils/pull/276) [@joellabes](https://github.com/joellabes))
 * Make `expression_is_true` work as a column test (code originally in [#226](https://github.com/fishtown-analytics/dbt-utils/pull/226/) from [@elliottohara](https://github.com/elliottohara), merged via [#313])
@@ -46,6 +44,8 @@ If you were relying on the position to match up your optional arguments, this ma
 * Add new schema test, `fewer_rows_than` (code originally in [#221](https://github.com/fishtown-analytics/dbt-utils/pull/230/) from [@dmarts](https://github.com/dmarts), merged via [#343](https://github.com/fishtown-analytics/dbt-utils/pull/343/))
 * Add new argument, `order_by`, to `get_column_values` (code originally in [#289](https://github.com/fishtown-analytics/dbt-utils/pull/289/) from [@clausherther](https://github.com/clausherther), merged via [#349](https://github.com/fishtown-analytics/dbt-utils/pull/349/))
 * Add new schema test, `sequential_values` ([#318](https://github.com/fishtown-analytics/dbt-utils/pull/318), inspried by [@hundredwatt](https://github.com/hundredwatt))
+* Added optional `where` clause in `unique_combination_of_columns` test macro [#295](https://github.com/fishtown-analytics/dbt-utils/pull/295) [@findinpath](https://github.com/findinpath)
+* Add new argument, `unit`, to `haversine_distance` [#340](https://github.com/fishtown-analytics/dbt-utils/pull/340) [@bastienboutonnet](https://github.com/bastienboutonnet)
 
 
 ## Fixes

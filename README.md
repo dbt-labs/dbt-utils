@@ -24,10 +24,10 @@ Check [dbt Hub](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/) for
 **[Macros](#macros)**
 
 - [Introspective macros](#introspective-macros):
-    - [get_query_results_as_dict](#get_query_results_as_dict-source)
     - [get_column_values](#get_column_values-source)
     - [get_relations_by_pattern](#get_relations_by_pattern-source)
     - [get_relations_by_prefix](#get_relations_by_prefix-source)
+    - [get_query_results_as_dict](#get_query_results_as_dict-source)
 
 - [SQL generators](sql-generators)
     - [date_spine](#date-spine_source)
@@ -538,34 +538,11 @@ models:
 
 ---
 ### Introspective macros
-#### get_query_results_as_dict ([source](macros/sql/get_query_results_as_dict.sql))
-This macro returns a dictionary from a sql query, so that you don't need to interact with the Agate library to operate on the result
 
-**Usage:**
-```
--- Returns a dictionary of the users table where the state is California
-{% set california_cities = dbt_utils.get_query_results_as_dict("select * from" ~ ref('cities') ~ "where state = 'CA' and city is not null ") %}
-select
-  city,
-{% for city in california_cities %}
-  sum(case when city = {{ city }} then 1 else 0 end) as users_in_{{ city }},
-{% endfor %}
-  count(*) as total
-from {{ ref('users') }}
-
-group by 1
-```
+These macros run a query and return the results of the query as objects. They are typically abstractions over the [statement blocks](https://docs.getdbt.com/reference/dbt-jinja-functions/statement-blocks) in dbt.
 
 #### get_column_values ([source](macros/sql/get_column_values.sql))
 This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation) as an array.
-
-Arguments:
-- `table` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
-- `column` (required): The name of the column you wish to find the column values of
-- `order_by` (optional, default=`'count(*) desc'`): How the results should be ordered. The default is to order by `count(*) desc`, i.e. decreasing frequency. Setting this as `'my_column'` will sort alphabetically, while `'min(created_at)'` will sort by when thevalue was first observed.
-- `max_records` (optional, default=`none`): The maximum number of column values you want to return
-- `default` (optional, default=`[]`): The results this macro should return if the relation has not yet been created (and therefore has no column values).
-
 
 **Usage:**
 ```sql
@@ -579,6 +556,15 @@ Arguments:
 ...
 ```
 
+**Arguments:**
+- `table` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
+- `column` (required): The name of the column you wish to find the column values of
+- `order_by` (optional, default=`'count(*) desc'`): How the results should be ordered. The default is to order by `count(*) desc`, i.e. decreasing frequency. Setting this as `'my_column'` will sort alphabetically, while `'min(created_at)'` will sort by when the value was first observed.
+- `max_records` (optional, default=`none`): The maximum number of column values you want to return
+- `default` (optional, default=`[]`): The results this macro should return if the relation has not yet been created (and therefore has no column values).
+
+
+**Additional examples:**
 ```sql
 -- Returns the list sorted alphabetically
 {% set payment_methods = dbt_utils.get_column_values(
@@ -679,9 +665,28 @@ handy paired with `union_relations`.
 for relations.
 
 
+#### get_query_results_as_dict ([source](macros/sql/get_query_results_as_dict.sql))
+This macro returns a dictionary from a sql query, so that you don't need to interact with the Agate library to operate on the result
+
+**Usage:**
+```
+-- Returns a dictionary of the users table where the state is California
+{% set california_cities = dbt_utils.get_query_results_as_dict("select * from" ~ ref('cities') ~ "where state = 'CA' and city is not null ") %}
+select
+  city,
+{% for city in california_cities %}
+  sum(case when city = {{ city }} then 1 else 0 end) as users_in_{{ city }},
+{% endfor %}
+  count(*) as total
+from {{ ref('users') }}
+
+group by 1
+```
+---
 ### SQL generators
+These macros generate SQL (either a complete query, or a part of a query). They often implement patterns that should be easy in SQL, but for some reason are much harder than they need to be.
 #### date_spine ([source](macros/datetime/date_spine.sql))
-This macro returns the sql required to build a table of all days / months / years (often referred to as a "date spine"). The spine will include the `start_date` (if it is aligned to the `datepart`), but it will not include the `end_date`.
+This macro returns the sql required to build a table of all days / months / years (often referred to as a "date spine" table). The spine will include the `start_date` (if it is aligned to the `datepart`), but it will not include the `end_date`.
 
 **Usage:**
 
@@ -703,10 +708,6 @@ This would return a table like so:
 | ...        |
 | 2021-12-31 |
 
-**Args:**
-- `datepart`: A valid
-
----
 
 #### haversine_distance ([source](macros/geo/haversine_distance.sql))
 This macro calculates the [haversine distance](http://daynebatten.com/2015/09/latitude-longitude-distance-sql/) between a pair of x/y coordinates.
@@ -723,8 +724,12 @@ Optionally takes a `unit` string argument ('km' or 'mi') which defaults to miles
 This macro build a group by statement for fields 1...N
 
 **Usage:**
+```sql
+{{ dbt_utils.group_by(n=3) }}
 ```
-{{ dbt_utils.group_by(n=3) }} --> group by 1,2,3
+Would compile to:
+```sql
+group by 1,2,3
 ```
 
 #### star ([source](macros/sql/star.sql))
@@ -839,7 +844,7 @@ Implements a cross-database way to generate a hashed surrogate key using the fie
 ```
 
 #### safe_add ([source](macros/sql/safe_add.sql))
-Implements a cross-database way to sum nullable fiellds using the fields specified.
+Implements a cross-database way to sum nullable fields using the fields specified.
 
 **Usage:**
 ```
@@ -940,6 +945,7 @@ Boolean values are replaced with the strings 'true'|'false'
 
 ---
 ### Web macros
+These macros are useful for parsing web URLs
 #### get_url_parameter ([source](macros/web/get_url_parameter.sql))
 This macro extracts a url parameter from a column containing a url.
 

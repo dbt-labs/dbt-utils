@@ -1,16 +1,11 @@
-{% macro test_cardinality_equality(model, to, field) %}
+{% test cardinality_equality(model, column_name, to, field) %}
+    {{ return(adapter.dispatch('test_cardinality_equality', packages = dbt_utils._get_utils_namespaces())(model, column_name, to, field)) }}
+{% endtest %}
 
-    {{ return(adapter.dispatch('test_cardinality_equality', packages = dbt_utils._get_utils_namespaces())(model, to, field, **kwargs)) }}
+{% macro default__test_cardinality_equality(model, column_name, to, field) %}
 
-{% endmacro %}
-
-{% macro default__test_cardinality_equality(model, to, field) %}
-
-{# T-SQL doesn't let you use numbers as aliases for columns #}
+{# T-SQL does not let you use numbers as aliases for columns #}
 {# Thus, no "GROUP BY 1" #}
-
-{% set column_name = kwargs.get('column_name', kwargs.get('from')) %}
-
 
 with table_a as (
 select
@@ -52,7 +47,7 @@ unioned as (
   from except_b
 )
 
-select count(*)
+select *
 from unioned
 
 {% endmacro %}

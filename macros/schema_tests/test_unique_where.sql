@@ -1,24 +1,12 @@
-{% macro test_unique_where(model) %}
-  {{ return(adapter.dispatch('test_unique_where', packages = dbt_utils._get_utils_namespaces())(model, **kwargs)) }}
-{% endmacro %}
+{% test unique_where(model, column_name) %}
+  {%- set deprecation_warning = '
+    Warning: `dbt_utils.unique_where` is no longer supported.
+    Starting in dbt v0.20.0, the built-in `unique` test supports a `where` config.
+    ' -%}
+  {%- do exceptions.warn(deprecation_warning) -%}
+  {{ return(adapter.dispatch('test_unique_where', packages = dbt_utils._get_utils_namespaces())(model, column_name)) }}
+{% endtest %}
 
-{% macro default__test_unique_where(model) %}
-
-{% set column_name = kwargs.get('column_name', kwargs.get('arg')) %}
-{% set where = kwargs.get('where', kwargs.get('arg')) %}
-
-select count(*)
-from (
-
-    select
-        {{ column_name }}
-
-    from {{ model }}
-    where {{ column_name }} is not null
-      {% if where %} and {{ where }} {% endif %}
-    group by {{ column_name }}
-    having count(*) > 1
-
-) validation_errors
-
+{% macro default__test_unique_where(model, column_name) %}
+  {{ return(test_unique(model, column_name)) }}
 {% endmacro %}

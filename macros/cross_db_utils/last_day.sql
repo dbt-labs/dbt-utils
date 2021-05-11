@@ -36,3 +36,10 @@ testing is required to validate that it will work on other dateparts.
     {%- endif -%}
 
 {%- endmacro %}
+
+{# redshift should use default instead of postgres #}
+{% macro redshift__last_day(date, datepart) %}
+
+    {{ return(dbt_utils.default__last_day(date, datepart)) }}
+
+{% endmacro %}

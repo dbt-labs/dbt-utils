@@ -1,8 +1,8 @@
-{% macro test_cardinality_equality(model, to, field) %}
+{% test cardinality_equality(model, to, field) %}
 
     {{ return(adapter.dispatch('test_cardinality_equality', packages = dbt_utils._get_utils_namespaces())(model, to, field, **kwargs)) }}
 
-{% endmacro %}
+{% endtest %}
 
 {% macro default__test_cardinality_equality(model, to, field) %}
 
@@ -52,7 +52,7 @@ unioned as (
   from except_b
 )
 
-select count(*)
+select *
 from unioned
 
 {% endmacro %}

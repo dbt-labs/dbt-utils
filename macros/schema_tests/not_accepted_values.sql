@@ -1,4 +1,4 @@
-{% macro test_not_accepted_values(model, values) %}
+{% test not_accepted_values(model, values) %}
 
 {% set column_name = kwargs.get('column_name', kwargs.get('field')) %}
 {% set quote_values = kwargs.get('quote', True) %}
@@ -31,7 +31,7 @@ validation_errors as (
 
 )
 
-select count(*) as validation_errors
+select *
 from validation_errors
 
-{% endmacro %}
+{% endtest %}

@@ -1,6 +1,6 @@
-{% macro test_unique_combination_of_columns(model, combination_of_columns, quote_columns=false, where=None) %}
+{% test unique_combination_of_columns(model, combination_of_columns, quote_columns=false, where=None) %}
   {{ return(adapter.dispatch('test_unique_combination_of_columns', packages = dbt_utils._get_utils_namespaces())(model, combination_of_columns, quote_columns, where)) }}
-{% endmacro %}
+{% endtest %}
 
 {% macro default__test_unique_combination_of_columns(model, combination_of_columns, quote_columns=false, where=None) %}
 
@@ -26,13 +26,13 @@ with validation_errors as (
     select
         {{ columns_csv }}
     from {{ model }}
-    {% if where %}where {{ where }} {% endif %}
+    {% if where %}where {{ where }} {% endif %} -- TODO
     group by {{ columns_csv }}
     having count(*) > 1
 
 )
 
-select count(*)
+select *
 from validation_errors
 
 

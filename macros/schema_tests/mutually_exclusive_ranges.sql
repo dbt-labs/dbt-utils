@@ -1,6 +1,10 @@
-{% macro test_mutually_exclusive_ranges(model, lower_bound_column, upper_bound_column, partition_by=None, gaps='allowed', zero_length_range_allowed=False) %}
+{% test mutually_exclusive_ranges(model, lower_bound_column, upper_bound_column, partition_by=None, gaps='allowed', zero_length_range_allowed=False) %}
+  {% do log(kwargs, info = true) %}
+  {% do log(partition_by, info = true) %}
+  {% do log(gaps, info = true) %}
+  {% do log(zero_length_range_allowed, info = true) %}
   {{ return(adapter.dispatch('test_mutually_exclusive_ranges', packages = dbt_utils._get_utils_namespaces())(model, lower_bound_column, upper_bound_column, partition_by, gaps, zero_length_range_allowed)) }}
-{% endmacro %}
+{% endtest %}
 
 {% macro default__test_mutually_exclusive_ranges(model, lower_bound_column, upper_bound_column, partition_by=None, gaps='allowed', zero_length_range_allowed=False) %}
 
@@ -94,5 +98,5 @@ validation_errors as (
     )
 )
 
-select count(*) from validation_errors
+select * from validation_errors
 {% endmacro %}

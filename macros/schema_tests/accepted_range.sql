@@ -1,11 +1,11 @@
-{% macro test_accepted_range(model, min_value = none, max_value = none, inclusive = true, where = "true") %}
+{% test accepted_range(model, min_value = none, max_value = none, inclusive = true, where = 'true') %}
 
 {%- set column_name = kwargs.get('column_name', kwargs.get('field')) -%}
 
 with meet_condition as(
   select {{ column_name }} 
   from {{ model }}
-  where {{ where }}
+  where {{ where }} -- TODO
 ),
 
 validation_errors as (
@@ -26,7 +26,7 @@ validation_errors as (
   {%- endif %}
 )
 
-select count(*)
+select *
 from validation_errors
 
-{% endmacro %}
+{% endtest %}

@@ -1,13 +1,13 @@
-{% macro test_expression_is_true(model, condition='1=1') %}
+{% test expression_is_true(model, condition='1=1') %}
 {# T-SQL has no boolean data type so we use 1=1 which returns TRUE #}
 {# ref https://stackoverflow.com/a/7170753/3842610 #}
   {{ return(adapter.dispatch('test_expression_is_true', packages = dbt_utils._get_utils_namespaces())(model, condition, **kwargs)) }}
-{% endmacro %}
+{% endtest %}
 
 {% macro default__test_expression_is_true(model, condition) %}
 
-{% set expression = kwargs.get('expression', kwargs.get('arg')) %}
-{% set column_name = kwargs.get('column_name') %}
+{%- set expression = kwargs.get('expression', kwargs.get('arg')) -%}
+{%- set column_name = kwargs.get('column_name') -%}
 
 with meet_condition as (
 
@@ -27,7 +27,7 @@ validation_errors as (
 
 )
 
-select count(*)
+select *
 from validation_errors
 
 {% endmacro %}

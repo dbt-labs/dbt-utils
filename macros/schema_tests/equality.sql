@@ -1,6 +1,6 @@
-{% macro test_equality(model) %}
+{% test equality(model) %}
   {{ return(adapter.dispatch('test_equality', packages = dbt_utils._get_utils_namespaces())(model, **kwargs)) }}
-{% endmacro %}
+{% endtest %}
 
 {% macro default__test_equality(model) %}
 
@@ -74,6 +74,8 @@ final as (
 
 )
 
+-- TODO
 select count from final
+where count != 0
 
 {% endmacro %}

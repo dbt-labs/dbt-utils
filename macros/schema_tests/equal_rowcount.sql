@@ -1,6 +1,6 @@
-{% macro test_equal_rowcount(model) %}
+{% test equal_rowcount(model) %}
   {{ return(adapter.dispatch('test_equal_rowcount', packages = dbt_utils._get_utils_namespaces())(model, **kwargs)) }}
-{% endmacro %}
+{% endtest %}
 
 {% macro default__test_equal_rowcount(model) %}
 
@@ -31,6 +31,8 @@ final as (
 
 )
 
+-- TODO
 select diff_count from final
+where diff_count != 0
 
 {% endmacro %}

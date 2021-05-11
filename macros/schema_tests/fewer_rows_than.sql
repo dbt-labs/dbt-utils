@@ -1,6 +1,6 @@
-{% macro test_fewer_rows_than(model) %}
+{% test fewer_rows_than(model) %}
   {{ return(adapter.dispatch('test_fewer_rows_than', packages = dbt_utils._get_utils_namespaces())(model, combination_of_columns, quote_columns, where)) }}
-{% endmacro %}
+{% endtest %}
 
 {% macro default__test_fewer_rows_than(model) %}
 
@@ -38,6 +38,8 @@ final as (
 
 )
 
+-- TODO
 select row_count_delta from final
+where row_count_delta != 0
 
 {% endmacro %}

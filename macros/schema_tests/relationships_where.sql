@@ -1,6 +1,6 @@
-{% macro test_relationships_where(model, to, field) %}
+{% test relationships_where(model, to, field) %}
   {{ return(adapter.dispatch('test_relationships_where', packages = dbt_utils._get_utils_namespaces())(model, to, field, **kwargs)) }}
-{% endmacro %}
+{% endtest %}
 
 {% macro default__test_relationships_where(model, to, field) %}
 
@@ -18,7 +18,7 @@ with left_table as (
   from {{model}}
 
   where {{column_name}} is not null
-    and {{from_condition}}
+    and {{from_condition}}  -- TODO
 
 ),
 
@@ -49,6 +49,6 @@ exceptions as (
 
 )
 
-select count(*) from exceptions
+select * from exceptions
 
 {% endmacro %}

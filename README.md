@@ -685,7 +685,7 @@ group by 1
 ---
 ### SQL generators
 These macros generate SQL (either a complete query, or a part of a query). They often implement patterns that should be easy in SQL, but for some reason are much harder than they need to be.
-#### date_spine ([source](macros/datetime/date_spine.sql))
+#### date_spine ([source](macros/sql/date_spine.sql))
 This macro returns the sql required to build a table of all days / months / years (often referred to as a "date spine" table). The spine will include the `start_date` (if it is aligned to the `datepart`), but it will not include the `end_date`.
 
 **Usage:**
@@ -709,7 +709,7 @@ This would return a table like so:
 | 2021-12-31 |
 
 
-#### haversine_distance ([source](macros/geo/haversine_distance.sql))
+#### haversine_distance ([source](macros/sql/haversine_distance.sql))
 This macro calculates the [haversine distance](http://daynebatten.com/2015/09/latitude-longitude-distance-sql/) between a pair of x/y coordinates.
 
 **Usage:**

@@ -1,7 +1,9 @@
-# dbt-utils v0.7.0 (unreleased)
+# dbt-utils v0.7.0
 
 ## :rotating_light: Breaking changes
 
+### dbt v0.19.0
+This package now includes some functionality that requires dbt v0.19.0 or greater. You'll need to make sure your project is using 0.19.0 before upgrading your dbt-utils version.
 
 ### get_column_values
 The order of (optional) arguments has changed in the `get_column_values` macro:

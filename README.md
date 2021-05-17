@@ -511,7 +511,9 @@ Generate drop statements for all Relations that match a naming pattern:
 Returns a list of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation)
 that match a given prefix, with an optional exclusion pattern. It's particularly
 handy paired with `union_relations`.
+
 **Usage:**
+
 ```
 -- Returns a list of relations that match schema.prefix%
 {% set relations = dbt_utils.get_relations_by_prefix('my_schema', 'my_prefix') %}

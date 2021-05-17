@@ -13,7 +13,7 @@ final as (
                     lon2='lon_2',
                     unit='mi'
                     )
-            }} as numeric
+            }} as {{ dbt_utils.type_numeric() }}
         ) as actual
     from data
 
@@ -29,7 +29,7 @@ final as (
                     lat2='lat_2',
                     lon2='lon_2',
                     )
-            }} as numeric
+            }} as {{ dbt_utils.type_numeric() }}
         ) as actual
     from data
 )

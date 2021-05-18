@@ -17,6 +17,7 @@
 
 ## Under the hood
 * Fix Markdown formatting for hub rendering ([#336](https://github.com/fishtown-analytics/dbt-utils/issues/350), [@coapacetic](https://github.com/coapacetic))
+* Reorder readme and improve docs
 
 # dbt-utils v0.6.4
 

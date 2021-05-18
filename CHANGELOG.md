@@ -1,3 +1,10 @@
+# dbt-utils v0.6.5 (unreleased)
+## Features
+
+## Fixes
+
+## Under the hood
+
 # dbt-utils v0.6.4
 
 ### Fixes

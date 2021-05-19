@@ -1,3 +1,11 @@
+# dbt-utils v0.7.0 (unreleased)
+## Breaking changes
+## Features
+
+## Fixes
+
+## Under the hood
+
 # dbt-utils v0.6.5
 ## Features
 * Add new `accepted_range` test ([#276](https://github.com/fishtown-analytics/dbt-utils/pull/276) [@joellabes](https://github.com/joellabes))

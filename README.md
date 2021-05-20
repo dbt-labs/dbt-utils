@@ -16,6 +16,7 @@ Check [dbt Hub](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/) for
   - [cardinality_equality](#cardinality_equality-source)
   - [unique_where](#unique_where-source)
   - [not_null_where](#not_null_where-source)
+  - [not_null_proportion](#not_null_proportion-source)
   - [relationships_where](#relationships_where-source)
   - [mutually_exclusive_ranges](#mutually_exclusive_ranges-source)
   - [unique_combination_of_columns](#unique_combination_of_columns-source)
@@ -250,6 +251,22 @@ models:
         tests:
           - dbt_utils.not_null_where:
               where: "_deleted = false"
+```
+
+#### not_null_proportion ([source](macros/schema_tests/not_null_proportion.sql))
+This test validates that the proportion of non-null values present in a column is between a specified range [`at_least`, `at_most`] where `at_most` is an optional argument (default: `1.0`).
+
+**Usage:**
+```yaml
+version: 2
+
+models:
+  - name: my_model
+    columns:
+      - name: id
+        tests:
+          - dbt_utils.not_null_proportion:
+              at_least: 0.95
 ```
 
 #### not_accepted_values ([source](macros/schema_tests/not_accepted_values.sql))

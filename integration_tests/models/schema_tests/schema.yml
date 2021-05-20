@@ -157,3 +157,14 @@ models:
               inclusive: true
               where: "id <> -1"
 
+  - name: data_not_null_proportion
+    columns:
+      - name: point_5
+        tests:
+          - dbt_utils.not_null_proportion:
+              at_least: 0.5
+              at_most: 0.5
+      - name: point_9
+        tests:
+          - dbt_utils.not_null_proportion:
+              at_least: 0.9

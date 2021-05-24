@@ -1,5 +1,5 @@
 {% test accepted_range(model, column_name, min_value=none, max_value=none, inclusive=true) %}
-  {{ return(adapter.dispatch('test_accepted_range', packages = dbt_utils._get_utils_namespaces())(model, column_name, min_value, max_value, inclusive)) }}
+  {{ return(adapter.dispatch('test_accepted_range', 'dbt_utils')(model, column_name, min_value, max_value, inclusive)) }}
 {% endtest %}
 
 {% macro default__test_accepted_range(model, column_name, min_value=none, max_value=none, inclusive=true) %}

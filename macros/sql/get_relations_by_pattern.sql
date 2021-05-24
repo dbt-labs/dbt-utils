@@ -1,5 +1,5 @@
 {% macro get_relations_by_pattern(schema_pattern, table_pattern, exclude='', database=target.database) %}
-    {{ return(adapter.dispatch('get_relations_by_pattern', packages = dbt_utils._get_utils_namespaces())(schema_pattern, table_pattern, exclude, database)) }}
+    {{ return(adapter.dispatch('get_relations_by_pattern', 'dbt_utils')(schema_pattern, table_pattern, exclude, database)) }}
 {% endmacro %}
 
 {% macro default__get_relations_by_pattern(schema_pattern, table_pattern, exclude='', database=target.database) %}

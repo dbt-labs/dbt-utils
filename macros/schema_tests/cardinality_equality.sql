@@ -1,5 +1,5 @@
 {% test cardinality_equality(model, column_name, to, field) %}
-    {{ return(adapter.dispatch('test_cardinality_equality', packages = dbt_utils._get_utils_namespaces())(model, column_name, to, field)) }}
+    {{ return(adapter.dispatch('test_cardinality_equality', 'dbt_utils')(model, column_name, to, field)) }}
 {% endtest %}
 
 {% macro default__test_cardinality_equality(model, column_name, to, field) %}

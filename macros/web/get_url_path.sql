@@ -1,5 +1,5 @@
 {% macro get_url_path(field) -%}
-    {{ return(adapter.dispatch('get_url_path', packages = dbt_utils._get_utils_namespaces())(field)) }}
+    {{ return(adapter.dispatch('get_url_path', 'dbt_utils')(field)) }}
 {% endmacro %}
 
 {% macro default__get_url_path(field) -%}

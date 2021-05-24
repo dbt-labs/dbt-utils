@@ -1,5 +1,5 @@
 {% macro get_column_values(table, column, order_by='count(*) desc', max_records=none, default=none) -%}
-    {{ return(adapter.dispatch('get_column_values', packages = dbt_utils._get_utils_namespaces())(table, column, order_by, max_records, default)) }}
+    {{ return(adapter.dispatch('get_column_values', 'dbt_utils')(table, column, order_by, max_records, default)) }}
 {% endmacro %}
 
 {% macro default__get_column_values(table, column, order_by='count(*) desc', max_records=none, default=none) -%}

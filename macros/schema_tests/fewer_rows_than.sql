@@ -1,5 +1,5 @@
 {% test fewer_rows_than(model, compare_model) %}
-  {{ return(adapter.dispatch('test_fewer_rows_than', packages = dbt_utils._get_utils_namespaces())(model, compare_model)) }}
+  {{ return(adapter.dispatch('test_fewer_rows_than', 'dbt_utils')(model, compare_model)) }}
 {% endtest %}
 
 {% macro default__test_fewer_rows_than(model, compare_model) %}

@@ -1,5 +1,5 @@
 {% test recency(model, field, datepart, interval) %}
-  {{ return(adapter.dispatch('test_recency', packages = dbt_utils._get_utils_namespaces())(model, field, datepart, interval)) }}
+  {{ return(adapter.dispatch('test_recency', 'dbt_utils')(model, field, datepart, interval)) }}
 {% endtest %}
 
 {% macro default__test_recency(model, field, datepart, interval) %}

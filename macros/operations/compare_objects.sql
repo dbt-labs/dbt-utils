@@ -235,8 +235,15 @@ dbt run-operation compare_objects --args "{comparison_schema: dbt_kevin, object_
   	{%- endfor -%}
 
 	{% do log('seems like we finished!', True) %}
-    {% do log('check the dbt_model_comparison_results table in your comparison schema for the results, should be listed under invocation_id {0}'.format(invocation_id_value.rows[0][0]), True) %}
+    {% do log('check the dbt_model_comparison_results table in your comparison schema for the results, should be listed under invocation_id {0}:'.format(invocation_id_value.rows[0][0]), True) %}
+    {% set query_string %}
+        
+    select *
+    from {{target.database}}.{{target.schema}}.dbt_model_comparison_results
+    where invocation_id = '{{ invocation_id_value.rows[0][0] }}'
 
+    {% endset %}
+    {% do log('{0}'.format(query_string), True) %}
     
 {% endmacro %}
 

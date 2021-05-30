@@ -2,7 +2,7 @@
 
 ### Under the hood
 
-- use `power()` instead of `pow()` as they are synonyms in most SQL dialects, but some dialects only have `power()` [#354](https://github.com/fishtown-analytics/dbt-utils/pull/354)
+- use `power()` instead of `pow()` in `generate_series()` and `haversine_distance()` as they are synonyms in most SQL dialects, but some dialects only have `power()` [#354](https://github.com/fishtown-analytics/dbt-utils/pull/354)
 # dbt-utils v0.6.5
 ## Features
 * Add new `accepted_range` test ([#276](https://github.com/fishtown-analytics/dbt-utils/pull/276) [@joellabes](https://github.com/joellabes))

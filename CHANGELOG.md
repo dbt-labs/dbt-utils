@@ -1,3 +1,8 @@
+# dbt-utils v0.6.6
+
+## Fixes
+
+- make `sequential_values` schema test use `dbt_utils.type_timestamp()` to allow for compatibility with db's without timestamp data type. [#376](https://github.com/fishtown-analytics/dbt-utils/pull/376) from [@swanderz](https://github.com/swanderz)
 # dbt-utils v0.6.5
 ## Features
 * Add new `accepted_range` test ([#276](https://github.com/fishtown-analytics/dbt-utils/pull/276) [@joellabes](https://github.com/joellabes))

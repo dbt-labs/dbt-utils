@@ -1,4 +1,4 @@
-# dbt-utils vNext
+# dbt-utils v0.6.6
 
 ## Fixes
 

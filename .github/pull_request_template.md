@@ -2,6 +2,7 @@ This is a:
 - [ ] bug fix PR with no breaking changes — please ensure the base branch is `master`
 - [ ] new functionality — please ensure the base branch is the latest `dev/` branch
 - [ ] a breaking change — please ensure the base branch is the latest `dev/` branch
+- [ ] a new macro — please ensure the macro is properly dispatched (for an example check out [the `star()` source](https://github.com/fishtown-analytics/dbt-utils/blob/master/macros/sql/star.sql))
 
 ## Description & motivation
 <!---

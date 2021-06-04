@@ -14,6 +14,9 @@
     current_timestamp
 {% endmacro %}
 
+{% macro athena__current_timestamp() %}
+    current_timestamp
+{% endmacro %}
 
 
 {% macro current_timestamp_in_utc() -%}
@@ -30,4 +33,8 @@
 
 {% macro postgres__current_timestamp_in_utc() %}
     (current_timestamp at time zone 'utc')::{{dbt_utils.type_timestamp()}}
+{% endmacro %}
+
+{% macro athena_current_timestamp_in_utc() %}
+     (current_timestamp at time zone 'utc')
 {% endmacro %}

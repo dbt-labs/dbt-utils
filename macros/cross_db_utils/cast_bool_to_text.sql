@@ -13,3 +13,10 @@
         when {{ field }} is false then 'false'
     end::text
 {% endmacro %}
+
+{% macro athena__cast_bool_to_text(field) %}
+    case
+        when {{ field }} = true then 'true'
+        when {{ field }} = false then 'false'
+    end
+{% endmacro %}

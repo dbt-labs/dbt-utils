@@ -28,3 +28,13 @@
     {{ from_date_or_timestamp }} + ((interval '1 {{ datepart }}') * ({{ interval }}))
 
 {% endmacro %}
+
+{% macro athena__dateadd(datepart, interval, from_date_or_timestamp) %}
+
+    date_add(
+        '{{ datepart }}',
+        {{ interval }},
+        {{ from_date_or_timestamp }}
+        )
+
+{% endmacro %}

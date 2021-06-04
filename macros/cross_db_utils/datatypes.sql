@@ -20,6 +20,10 @@
     varchar
 {% endmacro %}
 
+{% macro athena__type_string() %}
+    varchar
+{% endmacro %}
+
 
 
 {# timestamp  -------------------------------------------------     #}
@@ -51,6 +55,10 @@
     float64
 {% endmacro %}
 
+{% macro athena__type_float() %}
+    double
+{% endmacro %}
+
 {# numeric  ------------------------------------------------     #}
 
 {%- macro type_numeric() -%}
@@ -63,6 +71,10 @@
 
 {% macro bigquery__type_numeric() %}
     numeric
+{% endmacro %}
+
+{% macro bigquery__type_numeric() %}
+    decimal(28, 6)
 {% endmacro %}
 
 
@@ -92,4 +104,8 @@
 
 {% macro bigquery__type_int() %}
     int64
+{% endmacro %}
+
+{% macro athena_type_int() %}
+    integer
 {% endmacro %}

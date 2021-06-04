@@ -16,7 +16,7 @@
         api.Relation.create(
             database=target.database,
             schema=audit_schema,
-            identifier='dbt_audit_log_raw',
+            identifier='dbt_audit_log_raw_v2',
             type='table'
         ) -%}
 
@@ -24,33 +24,22 @@
 
 {% endmacro %}
 
-{% macro log_audit_event(event_name, schema, relation, user, target_name, is_full_refresh, target_warehouse) %}
+
+{% macro log_audit_event(event_data, created_at) %}
 
     insert into {{ cc_dbt_utils.get_audit_relation() }} (
-        event_name,
-        event_timestamp,
-        event_schema,
-        event_model,
-        event_user,
-        event_target,
-        event_is_full_refresh,
-        invocation_id,
-        target_warehouse
+        event_data,
+        created_at
     )
 
     values (
-        '{{ event_name }}',
-        {{ cc_dbt_utils.current_timestamp_in_utc() }},
-        {% if variable != None %}'{{ schema }}'{% else %}null::varchar(512){% endif %},
-        {% if variable != None %}'{{ relation }}'{% else %}null::varchar(512){% endif %},
-        {% if variable != None %}'{{ user }}'{% else %}null::varchar(512){% endif %},
-        {% if variable != None %}'{{ target_name }}'{% else %}null::varchar(512){% endif %},
-        {% if variable != None %}{% if is_full_refresh %}TRUE{% else %}FALSE{% endif %}{% else %}null::boolean{% endif %},
-        '{{ invocation_id }}',
-        {% if variable != None %}'{{ target_warehouse }}'{% else %}null::varchar(512){% endif %}
+        {% if variable != None %}'{{ event_data }}'{% else %}null::varchar(16777216){% endif %},
+        {{ cc_dbt_utils.current_timestamp_in_utc() }}
+        
     );
-    
+
     commit;
+
 
 {% endmacro %}
 
@@ -60,18 +49,12 @@
 {% endmacro %}
 
 
-{% macro create_audit_log_table() -%}
+{% macro create_audit_log_table() %}
 
     {% set required_columns = [
-       ["event_name", "varchar(512)"],
-       ["event_timestamp", cc_dbt_utils.type_timestamp()],
-       ["event_schema", "varchar(512)"],
-       ["event_model", "varchar(512)"],
-       ["event_user", "varchar(512)"],
-       ["event_target", "varchar(512)"],
-       ["event_is_full_refresh", "boolean"],
-       ["invocation_id", "varchar(512)"],
-       ["target_warehouse", "varchar(512)"],
+       ["event_data", "varchar(16777216)"],
+       ["created_at", cc_dbt_utils.type_timestamp()]
+    
     ] -%}
 
     {% set audit_table = cc_dbt_utils.get_audit_relation() -%}
@@ -113,28 +96,14 @@
         )
     {%- endif -%}
 
-{%- endmacro %}
+{% endmacro -%}
 
 
-{% macro log_run_start_event() %}
-    {{ cc_dbt_utils.log_audit_event('run started', user=target.user, target_name=target.name, is_full_refresh=flags.FULL_REFRESH) }}
-{% endmacro %}
+{% macro log_run_end_event(results, flags, target) %}
+    {% set run_audit=cc_dbt_utils.get_run_audit(results, flags, target) %}
+    
+    {{ cc_dbt_utils.log_audit_event(run_audit) }}
 
-
-{% macro log_run_end_event() %}
-    {{ cc_dbt_utils.log_audit_event('run completed', user=target.user, target_name=target.name, is_full_refresh=flags.FULL_REFRESH) }}
-{% endmacro %}
-
-
-{% macro log_model_start_event() %}
-    {{ cc_dbt_utils.log_audit_event(
-        'model deployment started', schema=this.schema, relation=this.name, user=target.user, target_name=target.name, target_warehouse=target.warehouse, is_full_refresh=flags.FULL_REFRESH
-    ) }}
-{% endmacro %}
-
-
-{% macro log_model_end_event() %}
-    {{ cc_dbt_utils.log_audit_event(
-        'model deployment completed', schema=this.schema, relation=this.name, user=target.user, target_name=target.name, target_warehouse=target.warehouse, is_full_refresh=flags.FULL_REFRESH
-    ) }}
+    commit;
+    
 {% endmacro %}

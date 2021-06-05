@@ -1106,29 +1106,26 @@ We welcome contributions to this repo! To contribute a new feature or a fix, ple
 **Note:** This is primarily relevant to:
 - Users and maintainers of community-supported [adapter plugins](https://docs.getdbt.com/docs/available-adapters)
 - Users who wish to override a low-lying `dbt_utils` macro with a custom implementation, and have that implementation used by other `dbt_utils` macros
+
 If you use Postgres, Redshift, Snowflake, or Bigquery, this likely does not apply to you.
 
-dbt v0.18.0 introduces `adapter.dispatch()`, a reliable way to define different implementations of the same macro
-across different databases.
+dbt v0.18.0 introduced [`adapter.dispatch()`](https://docs.getdbt.com/reference/dbt-jinja-functions/adapter#dispatch), a reliable way to define different implementations of the same macro across different databases.
 
-All dispatched macros in `dbt_utils` have an override setting: a `var` named
-`dbt_utils_dispatch_list` that accepts a list of package names. If you set this
-variable in your project, when dbt searches for implementations of a dispatched
-`dbt_utils` macro, it will search through your listed packages _before_ using
-the implementations defined in `dbt_utils`.
+dbt v0.20.0 introduced a new project-level `dispatch` config that enables an "override" setting for all dispatched macros. If you set this config in your project, when dbt searches for implementations of a macro in the `dbt_utils` namespace, it will search through your list of packages instead of just looking in the `dbt_utils` package.
 
-Set a variable in your `dbt_project.yml`:
+Set the config in `dbt_project.yml`:
 ```yml
-vars:
-  dbt_utils_dispatch_list:
-    - first_package_to_search    # likely the name of your root project (only the root folder)
-    - second_package_to_search   # likely an "add-on" package, such as spark_utils
-    # dbt_utils is always the last place searched
+dispatch:
+  - macro_namespace: dbt_utils
+    search_order:
+      - first_package_to_search    # likely the name of your root project
+      - second_package_to_search   # could be a "shim" package, such as spark_utils
+      - dbt_utils                  # always include dbt_utils as the last place to search
 ```
 
 If overriding a dispatched macro with a custom implementation in your own project's `macros/` directory, you must name your custom macro with a prefix: either `default__` (note the two underscores), or the name of your adapter followed by two underscores. For example, if you're running on Postgres and wish to override the behavior of `dbt_utils.datediff` (such that `dbt_utils.date_spine` will use your version instead), you can do this by defining a macro called either `default__datediff` or `postgres__datediff`.
 
-When running on Spark, if dbt needs to dispatch `dbt_utils.datediff`, it will search for the following in order:
+Let's say we have the config defined above, and we're running on Spark. When dbt goes to dispatch `dbt_utils.datediff`, it will search for macros the following in order:
 ```
 first_package_to_search.spark__datediff
 first_package_to_search.default__datediff

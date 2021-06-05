@@ -1,7 +1,13 @@
 # dbt-utils v0.7.0 (unreleased)
 ## Breaking changes
 
-### get_column_values
+### 🚨 New dbt version
+
+dbt v0.20.0 or greater is required for this release. If you are not ready to upgrade, consider using a previous release of this package. In accordance with the version upgrade, this package release includes breaking changes to:
+- Generic (schema) tests
+- `dispatch` functionality
+
+### 🚨 get_column_values
 The order of (optional) arguments has changed in the `get_column_values` macro.
 
 Before:

@@ -1,5 +1,5 @@
 {% macro replace(field, old_chars, new_chars) -%}
-    {{ return(adapter.dispatch('replace', packages = dbt_utils._get_utils_namespaces()) (field, old_chars, new_chars)) }}
+    {{ return(adapter.dispatch('replace', 'dbt_utils') (field, old_chars, new_chars)) }}
 {% endmacro %}
 
 

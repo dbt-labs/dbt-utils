@@ -1,5 +1,5 @@
 {% macro get_relations_by_prefix(schema, prefix, exclude='', database=target.database) %}
-    {{ return(adapter.dispatch('get_relations_by_prefix', packages = dbt_utils._get_utils_namespaces())(schema, prefix, exclude, database)) }}
+    {{ return(adapter.dispatch('get_relations_by_prefix', 'dbt_utils')(schema, prefix, exclude, database)) }}
 {% endmacro %}
 
 {% macro default__get_relations_by_prefix(schema, prefix, exclude='', database=target.database) %}

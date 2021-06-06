@@ -1,10 +1,10 @@
-{% macro test_sequential_values(model, column_name, interval=1, datepart=None) %}
+{% test sequential_values(model, column_name, interval=1, datepart=None) %}
 
-  {{ return(adapter.dispatch('test_sequential_values', packages=dbt_utils._get_utils_namespaces())(model, column_name, interval, datepart, **kwargs)) }}
+  {{ return(adapter.dispatch('test_sequential_values', 'dbt_utils')(model, column_name, interval, datepart)) }}
 
-{% endmacro %}
+{% endtest %}
 
-{% macro default__test_sequential_values(model, column_name, interval, datepart) %}
+{% macro default__test_sequential_values(model, column_name, interval=1, datepart=None) %}
 
 with windowed as (
 
@@ -21,14 +21,13 @@ validation_errors as (
         *
     from windowed
     {% if datepart %}
-    where not(cast({{ column_name }} as timestamp)= cast({{ dbt_utils.dateadd(datepart, interval, 'previous_' + column_name) }} as timestamp))
+    where not(cast({{ column_name }} as {{ dbt_utils.type_timestamp() }})= cast({{ dbt_utils.dateadd(datepart, interval, 'previous_' + column_name) }} as {{ dbt_utils.type_timestamp() }}))
     {% else %}
     where not({{ column_name }} = previous_{{ column_name }} + {{ interval }})
     {% endif %}
 )
 
-select
-    count(*)
+select *
 from validation_errors
 
 {% endmacro %}

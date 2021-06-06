@@ -1,27 +1,80 @@
-# dbt-utils vNext
+# dbt-utils Next
 
-### Under the hood
 
-- use `power()` instead of `pow()` in `generate_series()` and `haversine_distance()` as they are synonyms in most SQL dialects, but some dialects only have `power()` [#354](https://github.com/fishtown-analytics/dbt-utils/pull/354)
+# dbt-utils v0.7.0 (unreleased)
+## Breaking changes
+
+### 🚨 New dbt version
+
+dbt v0.20.0 or greater is required for this release. If you are not ready to upgrade, consider using a previous release of this package. In accordance with the version upgrade, this package release includes breaking changes to:
+- Generic (schema) tests
+- `dispatch` functionality
+
+### 🚨 get_column_values
+The order of (optional) arguments has changed in the `get_column_values` macro.
+
+Before:
+```jinja
+{% macro get_column_values(table, column, order_by='count(*) desc', max_records=none, default=none) -%}
+...
+{% endmacro %}
+```
+
+After:
+```jinja
+{% macro get_column_values(table, column, max_records=none, default=none) -%}
+...
+{% endmacro %}
+```
+If you were relying on the position to match up your optional arguments, this may be a breaking change — in general, we recommend that you explicitly declare any optional arguments (if not all of your arguments!)
+```
+-- before: This works on previous version of dbt-utils, but on 0.7.0, the `50` would be passed through as the `order_by` argument
+{% set payment_methods = dbt_utils.get_column_values(
+        ref('stg_payments'),
+        'payment_method',
+        50
+) %}
+
+-- after
+{% set payment_methods = dbt_utils.get_column_values(
+        ref('stg_payments'),
+        'payment_method',
+        max_records=50
+) %}
+```
+
+## Features
+* Add new argument, `order_by`, to `get_column_values` (code originally in [#289](https://github.com/fishtown-analytics/dbt-utils/pull/289/) from [@clausherther](https://github.com/clausherther), merged via [#349](https://github.com/fishtown-analytics/dbt-utils/pull/349/))
+* Add `slugify` macro, and use it in the pivot macro. :rotating_light: This macro uses the `re` module, which is only available in dbt v0.19.0+. As a result, this feature introduces a breaking change. ([#314](https://github.com/fishtown-analytics/dbt-utils/pull/314))
+
+## Under the hood
+* Update the default implementation of concat macro to use `||` operator ([#373](https://github.com/fishtown-analytics/dbt-utils/pull/314) [@ChristopheDuong](https://github.com/ChristopheDuong)). Note this may be a breaking change for spark users.
+- Use `power()` instead of `pow()` in `generate_series()` and `haversine_distance()` as they are synonyms in most SQL dialects, but some dialects only have `power()` ([#354](https://github.com/fishtown-analytics/dbt-utils/pull/354) from [@swanderz](https://github.com/swanderz))
+
+# dbt-utils v0.6.6
+
+## Fixes
+
+- make `sequential_values` schema test use `dbt_utils.type_timestamp()` to allow for compatibility with db's without timestamp data type. [#376](https://github.com/fishtown-analytics/dbt-utils/pull/376) from [@swanderz](https://github.com/swanderz)
+
 # dbt-utils v0.6.5
 ## Features
 * Add new `accepted_range` test ([#276](https://github.com/fishtown-analytics/dbt-utils/pull/276) [@joellabes](https://github.com/joellabes))
-* Make `expression_is_true` work as a column test (code originally in [#226](https://github.com/fishtown-analytics/dbt-utils/pull/226/) from [@elliottohara](https://github.com/elliottohara), merged via [#313])
+* Make `expression_is_true` work as a column test (code originally in [#226](https://github.com/fishtown-analytics/dbt-utils/pull/226/) from [@elliottohara](https://github.com/elliottohara), merged via [#313](https://github.com/fishtown-analytics/dbt-utils/pull/313/))
 * Add new schema test, `not_accepted_values` ([#284](https://github.com/fishtown-analytics/dbt-utils/pull/284) [@JavierMonton](https://github.com/JavierMonton))
-* Support a new argument, `zero_length_range_allowed` in the `mutually_exclusive_ranges` test ([#307](https://github.com/fishtown-analytics/dbt-utils/pull/307) [@zemekeng](https://github.com/zemekeneng))
+* Support a new argument, `zero_length_range_allowed` in the `mutually_exclusive_ranges` test ([#307](https://github.com/fishtown-analytics/dbt-utils/pull/307) [@zemekeneng](https://github.com/zemekeneng))
 * Add new schema test, `sequential_values` ([#318](https://github.com/fishtown-analytics/dbt-utils/pull/318), inspired by [@hundredwatt](https://github.com/hundredwatt))
-* Support `quarter` in the `postgres__last_day` macro ([#333](https://github.com/fishtown-analytics/dbt-utils/pull/333/files), [@seunghanhong](https://github.com/seunghanhong))
-* Add new argument, `unit`, to `haversine_distance` [#340](https://github.com/fishtown-analytics/dbt-utils/pull/340) [@bastienboutonnet](https://github.com/bastienboutonnet)
-* Add new schema test, `fewer_rows_than` (code originally in [#221](https://github.com/fishtown-analytics/dbt-utils/pull/230/) from [@dmarts](https://github.com/dmarts), merged via [#343])
-
+* Support `quarter` in the `postgres__last_day` macro ([#333](https://github.com/fishtown-analytics/dbt-utils/pull/333/files) [@seunghanhong](https://github.com/seunghanhong))
+* Add new argument, `unit`, to `haversine_distance` ([#340](https://github.com/fishtown-analytics/dbt-utils/pull/340) [@bastienboutonnet](https://github.com/bastienboutonnet))
+* Add new schema test, `fewer_rows_than` (code originally in [#221](https://github.com/fishtown-analytics/dbt-utils/pull/230/) from [@dmarts](https://github.com/dmarts), merged via [#343](https://github.com/fishtown-analytics/dbt-utils/pull/343/))
 
 ## Fixes
 * Handle booleans gracefully in the unpivot macro ([#305](https://github.com/fishtown-analytics/dbt-utils/pull/305) [@avishalom](https://github.com/avishalom))
-* Fix a bug in `get_relation_by_prefix` that happens with Snowflake external tables. Now the macro will retrieve tables that match the prefix which are external tables ([#350](https://github.com/fishtown-analytics/dbt-utils/issues/350))
-* Fix `cardinality_equality` test when the two tables' column names differed ([#334](https://github.com/fishtown-analytics/dbt-utils/pull/334)) [@joellabes](https://github.com/joellabes)
+* Fix a bug in `get_relation_by_prefix` that happens with Snowflake external tables. Now the macro will retrieve tables that match the prefix which are external tables ([#351](https://github.com/fishtown-analytics/dbt-utils/pull/351))
+* Fix `cardinality_equality` test when the two tables' column names differed ([#334](https://github.com/fishtown-analytics/dbt-utils/pull/334) [@joellabes](https://github.com/joellabes))
 
 ## Under the hood
-* Fix Markdown formatting for hub rendering ([#336](https://github.com/fishtown-analytics/dbt-utils/issues/350), [@coapacetic](https://github.com/coapacetic))
+* Fix Markdown formatting for hub rendering ([#336](https://github.com/fishtown-analytics/dbt-utils/issues/350) [@coapacetic](https://github.com/coapacetic))
 * Reorder readme and improve docs
 
 # dbt-utils v0.6.4

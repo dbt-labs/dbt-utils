@@ -48,6 +48,7 @@ If you were relying on the position to match up your optional arguments, this ma
 
 
 ## Under the hood
+* Update the default implementation of concat macro to use `||` operator ([#373](https://github.com/fishtown-analytics/dbt-utils/pull/314) [@ChristopheDuong](https://github.com/ChristopheDuong)). Note this may be a breaking change for spark users.
 
 # dbt-utils v0.6.5
 ## Features

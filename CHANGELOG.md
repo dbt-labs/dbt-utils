@@ -44,11 +44,14 @@ If you were relying on the position to match up your optional arguments, this ma
 * Add new argument, `order_by`, to `get_column_values` (code originally in [#289](https://github.com/fishtown-analytics/dbt-utils/pull/289/) from [@clausherther](https://github.com/clausherther), merged via [#349](https://github.com/fishtown-analytics/dbt-utils/pull/349/))
 * Add `slugify` macro, and use it in the pivot macro. :rotating_light: This macro uses the `re` module, which is only available in dbt v0.19.0+. As a result, this feature introduces a breaking change. ([#314](https://github.com/fishtown-analytics/dbt-utils/pull/314))
 
-## Fixes
-
-
 ## Under the hood
 * Update the default implementation of concat macro to use `||` operator ([#373](https://github.com/fishtown-analytics/dbt-utils/pull/314) [@ChristopheDuong](https://github.com/ChristopheDuong)). Note this may be a breaking change for spark users.
+
+# dbt-utils v0.6.6
+
+## Fixes
+
+- make `sequential_values` schema test use `dbt_utils.type_timestamp()` to allow for compatibility with db's without timestamp data type. [#376](https://github.com/fishtown-analytics/dbt-utils/pull/376) from [@swanderz](https://github.com/swanderz)
 
 # dbt-utils v0.6.5
 ## Features

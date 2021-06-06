@@ -19,8 +19,9 @@ clean-targets:         # directories to be removed by `dbt clean`
     - "target"
     - "dbt_modules"
 
-vars:
-  dbt_utils_dispatch_list: ['dbt_utils_integration_tests']
+dispatch:
+  - macro_namespace: 'dbt_utils'
+    search_order: ['dbt_utils_integration_tests', 'dbt_utils']
 
 seeds:
 

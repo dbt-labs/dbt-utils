@@ -510,8 +510,14 @@ These macros run a query and return the results of the query as objects. They ar
 
 
 #### get_column_values ([source](macros/sql/get_column_values.sql))
-This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation).
-It takes an options `default` argument for compiling when the relation does not already exist.
+This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation) as an array.
+
+Arguments:
+- `table` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
+- `column` (required): The name of the column you wish to find the column values of
+- `order_by` (optional, default=`'count(*) desc'`): How the results should be ordered. The default is to order by `count(*) desc`, i.e. decreasing frequency. Setting this as `'my_column'` will sort alphabetically, while `'min(created_at)'` will sort by when thevalue was first observed.
+- `max_records` (optional, default=`none`): The maximum number of column values you want to return
+- `default` (optional, default=`[]`): The results this macro should return if the relation has not yet been created (and therefore has no column values).
 
 
 **Usage:**
@@ -519,15 +525,35 @@ It takes an options `default` argument for compiling when the relation does not 
 -- Returns a list of the payment_methods in the stg_payments model_
 {% set payment_methods = dbt_utils.get_column_values(table=ref('stg_payments'), column='payment_method') %}
 
-{% for state in states %}
+{% for payment_method in payment_methods %}
     ...
 {% endfor %}
 
 ...
 ```
 
-#### get_relations_by_pattern ([source](macros/sql/get_relations_by_pattern.sql))
+```sql
+-- Returns the list sorted alphabetically
+{% set payment_methods = dbt_utils.get_column_values(
+        table=ref('stg_payments'),
+        column='payment_method',
+        order_by='payment_method'
+) %}
+```
 
+```sql
+-- Returns the list sorted my most recently observed
+{% set payment_methods = dbt_utils.get_column_values(
+        table=ref('stg_payments'),
+        column='payment_method',
+        order_by='max(created_at) desc',
+        max_records=50,
+        default=['bank_transfer', 'coupon', 'credit_card']
+%}
+...
+```
+
+#### get_relations_by_pattern ([source](macros/sql/get_relations_by_pattern.sql))
 Returns a list of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation)
 that match a given schema- or table-name pattern.
 
@@ -948,8 +974,8 @@ When an expression falls outside the range, the function returns:
 
 
 ---
-### Logger
-#### pretty_time ([source](macros/logger/pretty_time.sql))
+### Jinja Helpers
+#### pretty_time ([source](macros/jinja_helpers/pretty_time.sql))
 This macro returns a string of the current timestamp, optionally taking a datestring format.
 ```sql
 {#- This will return a string like '14:50:34' -#}
@@ -959,7 +985,7 @@ This macro returns a string of the current timestamp, optionally taking a datest
 {{ dbt_utils.pretty_time(format='%Y-%m-%d %H:%M:%S') }}
 ```
 
-#### pretty_log_format ([source](macros/logger/pretty_log_format.sql))
+#### pretty_log_format ([source](macros/jinja_helpers/pretty_log_format.sql))
 This macro formats the input in a way that will print nicely to the command line when you `log` it.
 ```sql
 {#- This will return a string like:
@@ -968,7 +994,7 @@ This macro formats the input in a way that will print nicely to the command line
 
 {{ dbt_utils.pretty_log_format("my pretty message") }}
 ```
-#### log_info ([source](macros/logger/log_info.sql))
+#### log_info ([source](macros/jinja_helpers/log_info.sql))
 This macro logs a formatted message (with a timestamp) to the command line.
 ```sql
 {{ dbt_utils.log_info("my pretty message") }}
@@ -977,6 +1003,40 @@ This macro logs a formatted message (with a timestamp) to the command line.
 ```
 11:07:28 | 1 of 1 START table model analytics.fct_orders........................ [RUN]
 11:07:31 + my pretty message
+```
+
+#### slugify ([source](macros/jinja_helpers/slugify.sql))
+This macro is useful for transforming Jinja strings into "slugs", and can be useful when using a Jinja object as a column name, especially when that Jinja object is not hardcoded.
+
+For this example, let's pretend that we have payment methods in our payments table like `['venmo App', 'ca$h-money']`, which we can't use as a column name due to the spaces and special characters. This macro does its best to strip those out in a sensible way: `['venmo_app',
+'cah_money']`.
+
+```sql
+{%- set payment_methods = dbt_utils.get_column_values(
+    table=ref('raw_payments'),
+    column='payment_method'
+) -%}
+
+select
+order_id,
+{%- for payment_method in payment_methods %}
+sum(case when payment_method = '{{ payment_method }}' then amount end)
+  as {{ slugify(payment_method) }}_amount,
+
+{% endfor %}
+...
+```
+
+```sql
+select
+order_id,
+
+sum(case when payment_method = 'Venmo App' then amount end)
+  as venmo_app_amount,
+
+sum(case when payment_method = 'ca$h money' then amount end)
+  as cah_money_amount,
+...
 ```
 
 ### Materializations
@@ -1046,29 +1106,26 @@ We welcome contributions to this repo! To contribute a new feature or a fix, ple
 **Note:** This is primarily relevant to:
 - Users and maintainers of community-supported [adapter plugins](https://docs.getdbt.com/docs/available-adapters)
 - Users who wish to override a low-lying `dbt_utils` macro with a custom implementation, and have that implementation used by other `dbt_utils` macros
+
 If you use Postgres, Redshift, Snowflake, or Bigquery, this likely does not apply to you.
 
-dbt v0.18.0 introduces `adapter.dispatch()`, a reliable way to define different implementations of the same macro
-across different databases.
+dbt v0.18.0 introduced [`adapter.dispatch()`](https://docs.getdbt.com/reference/dbt-jinja-functions/adapter#dispatch), a reliable way to define different implementations of the same macro across different databases.
 
-All dispatched macros in `dbt_utils` have an override setting: a `var` named
-`dbt_utils_dispatch_list` that accepts a list of package names. If you set this
-variable in your project, when dbt searches for implementations of a dispatched
-`dbt_utils` macro, it will search through your listed packages _before_ using
-the implementations defined in `dbt_utils`.
+dbt v0.20.0 introduced a new project-level `dispatch` config that enables an "override" setting for all dispatched macros. If you set this config in your project, when dbt searches for implementations of a macro in the `dbt_utils` namespace, it will search through your list of packages instead of just looking in the `dbt_utils` package.
 
-Set a variable in your `dbt_project.yml`:
+Set the config in `dbt_project.yml`:
 ```yml
-vars:
-  dbt_utils_dispatch_list:
-    - first_package_to_search    # likely the name of your root project (only the root folder)
-    - second_package_to_search   # likely an "add-on" package, such as spark_utils
-    # dbt_utils is always the last place searched
+dispatch:
+  - macro_namespace: dbt_utils
+    search_order:
+      - first_package_to_search    # likely the name of your root project
+      - second_package_to_search   # could be a "shim" package, such as spark_utils
+      - dbt_utils                  # always include dbt_utils as the last place to search
 ```
 
 If overriding a dispatched macro with a custom implementation in your own project's `macros/` directory, you must name your custom macro with a prefix: either `default__` (note the two underscores), or the name of your adapter followed by two underscores. For example, if you're running on Postgres and wish to override the behavior of `dbt_utils.datediff` (such that `dbt_utils.date_spine` will use your version instead), you can do this by defining a macro called either `default__datediff` or `postgres__datediff`.
 
-When running on Spark, if dbt needs to dispatch `dbt_utils.datediff`, it will search for the following in order:
+Let's say we have the config defined above, and we're running on Spark. When dbt goes to dispatch `dbt_utils.datediff`, it will search for macros the following in order:
 ```
 first_package_to_search.spark__datediff
 first_package_to_search.default__datediff

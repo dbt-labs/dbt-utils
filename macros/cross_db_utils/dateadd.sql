@@ -1,5 +1,5 @@
 {% macro dateadd(datepart, interval, from_date_or_timestamp) %}
-  {{ return(adapter.dispatch('dateadd', packages = dbt_utils._get_utils_namespaces())(datepart, interval, from_date_or_timestamp)) }}
+  {{ return(adapter.dispatch('dateadd', 'dbt_utils')(datepart, interval, from_date_or_timestamp)) }}
 {% endmacro %}
 
 
@@ -26,5 +26,12 @@
 {% macro postgres__dateadd(datepart, interval, from_date_or_timestamp) %}
 
     {{ from_date_or_timestamp }} + ((interval '1 {{ datepart }}') * ({{ interval }}))
+
+{% endmacro %}
+
+{# redshift should use default instead of postgres #}
+{% macro redshift__dateadd(datepart, interval, from_date_or_timestamp) %}
+
+    {{ return(dbt_utils.default__dateadd(datepart, interval, from_date_or_timestamp)) }}
 
 {% endmacro %}

@@ -23,9 +23,9 @@ The arguments should be float type.
     {{ exceptions.raise_compiler_error("unit input must be one of 'mi' or 'km'. Got " ~ unit) }}
 {% endif %}
 
-    2 * 3961 * asin(sqrt(pow((sin(radians(({{ lat2 }} - {{ lat1 }}) / 2))), 2) +
+    2 * 3961 * asin(sqrt(power((sin(radians(({{ lat2 }} - {{ lat1 }}) / 2))), 2) +
     cos(radians({{lat1}})) * cos(radians({{lat2}})) *
-    pow((sin(radians(({{ lon2 }} - {{ lon1 }}) / 2))), 2))) * {{ conversion_rate }}
+    power((sin(radians(({{ lon2 }} - {{ lon1 }}) / 2))), 2))) * {{ conversion_rate }}
 
 {%- endmacro %}
 
@@ -43,9 +43,9 @@ The arguments should be float type.
 {% else %}
     {{ exceptions.raise_compiler_error("unit input must be one of 'mi' or 'km'. Got " ~ unit) }}
 {% endif %}
-    2 * 3961 * asin(sqrt(pow(sin(({{ radians_lat2 }} - {{ radians_lat1 }}) / 2), 2) +
+    2 * 3961 * asin(sqrt(power(sin(({{ radians_lat2 }} - {{ radians_lat1 }}) / 2), 2) +
     cos({{ radians_lat1 }}) * cos({{ radians_lat2 }}) *
-    pow(sin(({{ radians_lon2 }} - {{ radians_lon1 }}) / 2), 2))) * {{ conversion_rate }}
+    power(sin(({{ radians_lon2 }} - {{ radians_lon1 }}) / 2), 2))) * {{ conversion_rate }}
 
 {%- endmacro %}
 

@@ -30,7 +30,7 @@
     select
 
     {% for i in range(n) %}
-    p{{i}}.generated_number * pow(2, {{i}})
+    p{{i}}.generated_number * power(2, {{i}})
     {% if not loop.last %} + {% endif %}
     {% endfor %}
     + 1

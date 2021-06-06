@@ -28,9 +28,9 @@ Check [dbt Hub](https://hub.getdbt.com/fishtown-analytics/dbt_utils/latest/) for
     - [get_relations_by_prefix](#get_relations_by_prefix-source)
     - [get_query_results_as_dict](#get_query_results_as_dict-source)
 
-- [SQL generators](sql-generators)
-    - [date_spine](#date-spine_source)
-    - [haversine_distance](haversine_distance-source)]
+- [SQL generators](#sql-generators)
+    - [date_spine](#date_spine-source)
+    - [haversine_distance](#haversine_distance-source)
     - [group_by](#group_by-source)
     - [star](#star-source)
     - [union_relations](#union_relations-source)

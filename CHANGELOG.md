@@ -1,12 +1,14 @@
 # dbt-utils Next
 
 
-# dbt-utils v0.7.0 (unreleased)
+# dbt-utils v0.7.0
 ## Breaking changes
 
 ### 🚨 New dbt version
 
-dbt v0.20.0 or greater is required for this release. If you are not ready to upgrade, consider using a previous release of this package. In accordance with the version upgrade, this package release includes breaking changes to:
+dbt v0.20.0 or greater is required for this release. If you are not ready to upgrade, consider using a previous release of this package.
+
+In accordance with the version upgrade, this package release includes breaking changes to:
 - Generic (schema) tests
 - `dispatch` functionality
 
@@ -48,7 +50,7 @@ If you were relying on the position to match up your optional arguments, this ma
 * Add `slugify` macro, and use it in the pivot macro. :rotating_light: This macro uses the `re` module, which is only available in dbt v0.19.0+. As a result, this feature introduces a breaking change. ([#314](https://github.com/fishtown-analytics/dbt-utils/pull/314))
 
 ## Under the hood
-* Update the default implementation of concat macro to use `||` operator ([#373](https://github.com/fishtown-analytics/dbt-utils/pull/314) [@ChristopheDuong](https://github.com/ChristopheDuong)). Note this may be a breaking change for spark users.
+* Update the default implementation of concat macro to use `||` operator ([#373](https://github.com/fishtown-analytics/dbt-utils/pull/314) from [@ChristopheDuong](https://github.com/ChristopheDuong)). Note this may be a breaking change for adapters that support `concat()` but not `||`, such as Apache Spark.
 - Use `power()` instead of `pow()` in `generate_series()` and `haversine_distance()` as they are synonyms in most SQL dialects, but some dialects only have `power()` ([#354](https://github.com/fishtown-analytics/dbt-utils/pull/354) from [@swanderz](https://github.com/swanderz))
 
 # dbt-utils v0.6.6

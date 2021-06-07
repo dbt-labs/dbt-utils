@@ -1,5 +1,5 @@
 {% macro datediff(first_date, second_date, datepart) %}
-  {{ return(adapter.dispatch('datediff', packages = dbt_utils._get_utils_namespaces())(first_date, second_date, datepart)) }}
+  {{ return(adapter.dispatch('datediff', 'dbt_utils')(first_date, second_date, datepart)) }}
 {% endmacro %}
 
 
@@ -57,12 +57,17 @@
 
 {% endmacro %}
 
-{% macro athena__datediff(first_date, second_date, datepart) %}
+{# redshift should use default instead of postgres #}
+{% macro redshift__datediff(first_date, second_date, datepart) %}
 
+    {{ return(dbt_utils.default__datediff(first_date, second_date, datepart)) }}
+
+{% endmacro %}
+
+{% macro athena__datediff(first_date, second_date, datepart) %}
     date_diff(
         '{{ datepart }}',
         {{ first_date }},
         {{ second_date }}
         )
-
 {% endmacro %}

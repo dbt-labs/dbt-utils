@@ -13,7 +13,7 @@ Arguments:
 #}
 
 {% macro unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', table=none) -%}
-    {{ return(adapter.dispatch('unpivot', packages = dbt_utils._get_utils_namespaces())(relation, cast_to, exclude, remove, field_name, value_name, table)) }}
+    {{ return(adapter.dispatch('unpivot', 'dbt_utils')(relation, cast_to, exclude, remove, field_name, value_name, table)) }}
 {% endmacro %}
 
 {% macro default__unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', table=none) -%}

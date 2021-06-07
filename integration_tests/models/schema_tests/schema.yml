@@ -86,7 +86,6 @@ models:
       - name: id
         tests:
           - dbt_utils.relationships_where:
-              from: id
               to: ref('data_test_relationships_where_table_1')
               field: id
               from_condition: id <> 4

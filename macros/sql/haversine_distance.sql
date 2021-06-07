@@ -11,7 +11,7 @@ The arguments should be float type.
 {%- endmacro %}
 
 {% macro haversine_distance(lat1, lon1, lat2, lon2, unit='mi') -%}
-    {{ return(adapter.dispatch('haversine_distance', packages = dbt_utils._get_utils_namespaces())(lat1,lon1,lat2,lon2,unit)) }}
+    {{ return(adapter.dispatch('haversine_distance', 'dbt_utils')(lat1,lon1,lat2,lon2,unit)) }}
 {% endmacro %}
 
 {% macro default__haversine_distance(lat1, lon1, lat2, lon2, unit='mi') -%}
@@ -23,9 +23,9 @@ The arguments should be float type.
     {{ exceptions.raise_compiler_error("unit input must be one of 'mi' or 'km'. Got " ~ unit) }}
 {% endif %}
 
-    2 * 3961 * asin(sqrt(pow((sin(radians(({{ lat2 }} - {{ lat1 }}) / 2))), 2) +
+    2 * 3961 * asin(sqrt(power((sin(radians(({{ lat2 }} - {{ lat1 }}) / 2))), 2) +
     cos(radians({{lat1}})) * cos(radians({{lat2}})) *
-    pow((sin(radians(({{ lon2 }} - {{ lon1 }}) / 2))), 2))) * {{ conversion_rate }}
+    power((sin(radians(({{ lon2 }} - {{ lon1 }}) / 2))), 2))) * {{ conversion_rate }}
 
 {%- endmacro %}
 
@@ -43,9 +43,9 @@ The arguments should be float type.
 {% else %}
     {{ exceptions.raise_compiler_error("unit input must be one of 'mi' or 'km'. Got " ~ unit) }}
 {% endif %}
-    2 * 3961 * asin(sqrt(pow(sin(({{ radians_lat2 }} - {{ radians_lat1 }}) / 2), 2) +
+    2 * 3961 * asin(sqrt(power(sin(({{ radians_lat2 }} - {{ radians_lat1 }}) / 2), 2) +
     cos({{ radians_lat1 }}) * cos({{ radians_lat2 }}) *
-    pow(sin(({{ radians_lon2 }} - {{ radians_lon1 }}) / 2), 2))) * {{ conversion_rate }}
+    power(sin(({{ radians_lon2 }} - {{ radians_lon1 }}) / 2), 2))) * {{ conversion_rate }}
 
 {%- endmacro %}
 

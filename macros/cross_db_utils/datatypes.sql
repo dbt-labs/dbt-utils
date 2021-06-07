@@ -73,7 +73,7 @@
     numeric
 {% endmacro %}
 
-{% macro bigquery__type_numeric() %}
+{% macro athena__type_numeric() %}
     decimal(28, 6)
 {% endmacro %}
 

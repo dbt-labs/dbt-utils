@@ -1,5 +1,5 @@
 {% macro ceil(field) -%}
-  {{ return(adapter.dispatch('ceil', packages = dbt_utils._get_utils_namespaces())(fields)) }}
+  {{ return(adapter.dispatch('ceil', packages = dbt_utils._get_utils_namespaces())(field)) }}
 {%- endmacro %}
 
 {% macro default__ceil(field) -%}

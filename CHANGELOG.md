@@ -52,6 +52,7 @@ If you were relying on the position to match up your optional arguments, this ma
 ## Under the hood
 * Update the default implementation of concat macro to use `||` operator ([#373](https://github.com/fishtown-analytics/dbt-utils/pull/314) from [@ChristopheDuong](https://github.com/ChristopheDuong)). Note this may be a breaking change for adapters that support `concat()` but not `||`, such as Apache Spark.
 - Use `power()` instead of `pow()` in `generate_series()` and `haversine_distance()` as they are synonyms in most SQL dialects, but some dialects only have `power()` ([#354](https://github.com/fishtown-analytics/dbt-utils/pull/354) from [@swanderz](https://github.com/swanderz))
+- Make `get_column_values` return the default value passed as a parameter instead of an empty string before compilation ([#304](https://github.com/dbt-labs/dbt-utils/pull/386) from [@jmriego](https://github.com/jmriego)
 
 # dbt-utils v0.6.6
 

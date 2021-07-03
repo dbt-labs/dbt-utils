@@ -6,7 +6,7 @@
 
     {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
     {%- if not execute -%}
-        {{ return('') }}
+        {{ return(default) }}
     {% endif %}
 
     {%- set target_relation = adapter.get_relation(database=table.database,

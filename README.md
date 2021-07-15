@@ -1049,7 +1049,7 @@ Should a run of a model using this materialization be interrupted, a subsequent 
 
 Progress is logged in the command line for easy monitoring.
 
-**Simple usage:**
+##### Simple usage:
 ```sql
 {{
   config(
@@ -1072,8 +1072,8 @@ with events as (
 
 ```
 
-**Usage with dbt Segment sessionization models:**<br>
-Sessionization models built by the [dbt Segment package](https://github.com/dbt-labs/segment) can be very large, hence the desire to use the `insert_by_period` materialization.
+##### Usage with dbt Segment sessionization models:
+Sessionization models built by the [dbt Segment package](https://github.com/dbt-labs/segment) (or similar approaches) can be very large, which natrually creates a desire to use the `insert_by_period` materialization for their initial builds.
 
 Unfortunately, the simple usage shown above will not work for sessionization models built by the dbt Segment package. This lack of extendability is caused by some [unusually complex SQL](https://github.com/dbt-labs/segment/blob/master/models/sessionization/segment_web_page_views__sessionized.sql) in the sessionization modeing logic:
 ```sql
@@ -1113,7 +1113,7 @@ with pageviews as (
 
 select * from session_ids
 ```
-In order to use the `insert_by_period` materialization with Segment sessionization models, you can set an optional `lookback_interval` config parameter that modifies the period window to lookback an additional interval at the start of each period (analougous to `'segment_sessionization_trailing_window`). The SQL above can then be replaced with:
+In order to use the `insert_by_period` materialization with Segment sessionization models, you can set an optional `lookback_interval` parameter that modifies the period window to lookback an additional interval at the start of each period (analougous to `'segment_sessionization_trailing_window`). The SQL above can then be replaced with:
 ```sql
 {{
     config(

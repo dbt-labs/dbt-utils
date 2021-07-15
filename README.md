@@ -1072,28 +1072,41 @@ with events as (
 
 ```
 
-**Advanced usage:**<br>
-Unfortunately, the simple usage of this materialization shown above will not work for sessionization models built by the [dbt Segment package](https://github.com/dbt-labs/segment). These sessionization models can be very large, hence the desire to use the `insert_by_period` materialization. This lack of extendability to sessionization models is caused by some [unusually complex SQL](https://github.com/dbt-labs/segment/blob/master/models/sessionization/segment_web_page_views__sessionized.sql) in the modeing logic:
+**Usage with dbt Segment sessionization models:**<br>
+Sessionization models built by the [dbt Segment package](https://github.com/dbt-labs/segment) can be very large, hence the desire to use the `insert_by_period` materialization.
+
+Unfortunately, the simple usage shown above will not work for sessionization models built by the dbt Segment package. This lack of extendability is caused by some [unusually complex SQL](https://github.com/dbt-labs/segment/blob/master/models/sessionization/segment_web_page_views__sessionized.sql) in the sessionization modeing logic:
 ```sql
 with pageviews as (
-    -- This CTE selects ALL page views for users seen some specified number of
-    -- hours (set by the `segment_sessionization_trailing_window` variable)
-    -- before the last timestamp in {{ this }} model.
+    /*
+    This CTE selects ALL page views for users seen some specified number of
+    hours (set by the `segment_sessionization_trailing_window` variable)
+    before the last timestamp in {{ this }} model.
+    */
     select * from {{ref('segment_web_page_views')}}
+
     {% if is_incremental() %}
+
     where anonymous_id in (
+
         select distinct anonymous_id
+
         from {{ref('segment_web_page_views')}}
         where cast(tstamp as datetime) >= (
+
           select
             {{ dbt_utils.dateadd(
                 'hour',
                 -var('segment_sessionization_trailing_window'),
                 'max(tstamp)'
             ) }}
+
           from {{ this }})
-        )
+
+    )
+
     {% endif %}
+
 ),
 
 ... sessionization logic continues ...
@@ -1117,13 +1130,19 @@ In order to use the `insert_by_period` materialization with Segment sessionizati
 }}
 
 with pageviews as (
+
     select *
+
     from {{ref('segment_web_page_views')}}
     where anonymous_id in (
+
         select distinct anonymous_id
+
         from {{ref('segment_web_page_views')}}
-        where __PERIOD_FILTER_WITH_LOOKBACK__  -- Replaced in the materialization code with a filter that includes an additional lookback interval added to the start of each period.
+        where __PERIOD_FILTER_WITH_LOOKBACK__  -- This will be replaced with a filter in the materialization code that includes the additional lookback interval.
+
     )
+
 ),
 
 ... sessionization logic continues ...
@@ -1139,7 +1158,9 @@ where __PERIOD_FILTER__
 * `timestamp_field`: the column name of the timestamp field that will be used to break the model into smaller queries
 * `start_date`: literal date or timestamp - generally choose a date that is earlier than the start of your data
 * `stop_date`: literal date or timestamp (default=current_timestamp)
-* `lookback_interval`: The interval string (e.g., `'2 days'`) that will be used to define the the lookback interval to add to the start of each period during materialization. Should be equivalent in time to the `segment_sessionization_trailing_window` used in the Segment dbt package.
+* `lookback_interval`: The lookback interval to be added to the start of each period during materialization. Must be a valid literal interval (e.g., `'2 days'`). Value should be:
+    * Equivalent in time to the `segment_sessionization_trailing_window` used in the Segment dbt package.
+    * Greater than the maximum session duration you would reasonably expect.
 
 **Caveats:**
 * This materialization is compatible with dbt >= 0.10.1.

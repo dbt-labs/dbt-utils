@@ -10,25 +10,16 @@
 	)
 }}
 
-with events as (
-	select *
-	from {{ ref('data_insert_by_period_with_lookback') }}
-	where __PERIOD_FILTER_WITH_LOOKBACK__
-)
-
-select * from events
-
-
 with pageviews as (
 
     select *
 
-    from {{ref('data_insert_by_period_with_lookback')}}
+    from {{ref('data_pageviews')}}
     where anonymous_id in (
 
         select distinct anonymous_id
 
-        from {{ref('data_insert_by_period_with_lookback')}}
+        from {{ref('data_pageviews')}}
         where __PERIOD_FILTER_WITH_LOOKBACK__
 
     )
@@ -42,7 +33,6 @@ numbered as (
     --multiple devices.
 
     select
-
         *,
 
         row_number() over (
@@ -61,7 +51,6 @@ lagged as (
     --period of inactivity.
 
     select
-
         *,
 
         lag(tstamp) over (
@@ -80,6 +69,7 @@ diffed as (
     select
         *,
         {{ dbt_utils.datediff('previous_tstamp', 'tstamp', 'second') }} as period_of_inactivity
+
     from lagged
 
 ),
@@ -92,10 +82,12 @@ new_sessions as (
 
     select
         *,
+
         case
-            when period_of_inactivity <= {{var('segment_inactivity_cutoff')}} then 0  -- Cutoff is set to 1 day in dbt_project.yml
+            when period_of_inactivity <= {{var('segment_inactivity_cutoff')}} then 0  -- Cutoff is set to 1 day (86,400s) in dbt_project.yml
             else 1
         end as new_session
+
     from diffed
 
 ),
@@ -107,7 +99,6 @@ session_numbers as (
     --calculations.
 
     select
-
         *,
 
         sum(new_session) over (
@@ -126,23 +117,19 @@ session_ids as (
     --`anonymous_id` and `session_number`.
 
     select
+        *,
+        anonymous_id || '--' || session_number as session_id
 
-        {{dbt_utils.star(ref('data_insert_by_period_with_lookback'))}},
+        {# Replaced below with above to simplify test #}
+
+        {# {{dbt_utils.star(ref('data_insert_by_period_with_lookback'))}},
         page_view_number,
-        {{dbt_utils.surrogate_key(['anonymous_id', 'session_number'])}} as session_id
+        {{dbt_utils.surrogate_key(['anonymous_id', 'session_number'])}} as session_id #}
 
     from session_numbers
 
 ),
 
-filtered as (
-
-    select *
-    from session_ids
-    where __PERIOD_FILTER__
-
-)
-
-select id
-from filtered
-where new_session = 1
+select *
+from session_ids
+where __PERIOD_FILTER__

@@ -5,10 +5,4 @@
 	)
 }}
 
-select id
-from {{ ref('data_insert_by_period') }}
-where id in (
-    select id
-    from {{ ref('data_insert_by_period') }}
-    where new_session = 1
-)
+select * from {{ ref('expected_pageviews__sessionized') }}

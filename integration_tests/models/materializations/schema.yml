@@ -5,3 +5,8 @@ models:
     tests:
       - dbt_utils.equality:
           compare_model: ref('expected_insert_by_period')
+
+    - name: test_insert_by_period_with_lookback
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('expected_insert_by_period_with_lookback')

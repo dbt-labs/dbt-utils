@@ -3,9 +3,12 @@
 		materialized = 'insert_by_period',
 		period = 'week',
         lookback_interval = '2 days',
-		timestamp_field = 'created_at',
+		timestamp_field = 'tstamp',
 		start_date = '2020-01-01',
 		stop_date = '2020-02-01',
+        unique_key = 'id',
+        sort = 'tstamp',
+        dist = 'id',
 		enabled=(target.type == 'redshift')
 	)
 }}
@@ -128,7 +131,7 @@ session_ids as (
 
     from session_numbers
 
-),
+)
 
 select *
 from session_ids

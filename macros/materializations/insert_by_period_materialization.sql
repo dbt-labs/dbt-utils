@@ -63,19 +63,19 @@
   {%- set period = config.get('period') or 'week' -%}
   {%- set lookback_interval = config.get('lookback_interval') -%}
 
-  {%- if sql.find('__PERIOD_FILTER__') == -1 -%}
+  {%- if (sql.find('__PERIOD_FILTER__') == -1) and (sql.find('__PERIOD_FILTER_WITH_LOOKBACK__') == -1) -%}
     {%- set error_message -%}
-      Model '{{ model.unique_id }}' does not include the required string '__PERIOD_FILTER__' in its sql
+      Model '{{ model.unique_id }}' does not include one of the required strings '__PERIOD_FILTER__' or '__PERIOD_FILTER_WITH_LOOKBACK__' in its sql
     {%- endset -%}
     {{ exceptions.raise_compiler_error(error_message) }}
   {%- endif -%}
 
-  {%- if sql.find('__PERIOD_FILTER_WITH_LOOKBACK__') == -1 -%}
+  {# {%- if sql.find('__PERIOD_FILTER_WITH_LOOKBACK__') == -1 -%}
     {%- set error_message -%}
       Model '{{ model.unique_id }}' does not include the required string '__PERIOD_FILTER_WITH_LOOKBACK__' in its sql
     {%- endset -%}
     {{ exceptions.raise_compiler_error(error_message) }}
-  {%- endif -%}
+  {%- endif -%} #}
 
   {%- set identifier = model['name'] -%}
 

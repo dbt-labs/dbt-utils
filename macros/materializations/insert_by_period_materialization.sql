@@ -2,6 +2,7 @@
     {{ return(adapter.dispatch('get_period_boundaries', 'dbt_utils')(target_schema, target_table, timestamp_field, start_date, stop_date, period, lookback_interval)) }}
 {% endmacro %}
 
+
 {% macro default__get_period_boundaries(target_schema, target_table, timestamp_field, start_date, stop_date, period, lookback_interval) -%}
 
   {% call statement('period_boundaries', fetch_result=True) -%}
@@ -70,13 +71,6 @@
     {{ exceptions.raise_compiler_error(error_message) }}
   {%- endif -%}
 
-  {# {%- if sql.find('__PERIOD_FILTER_WITH_LOOKBACK__') == -1 -%}
-    {%- set error_message -%}
-      Model '{{ model.unique_id }}' does not include the required string '__PERIOD_FILTER_WITH_LOOKBACK__' in its sql
-    {%- endset -%}
-    {{ exceptions.raise_compiler_error(error_message) }}
-  {%- endif -%} #}
-
   {%- set identifier = model['name'] -%}
 
   {%- set old_relation = adapter.get_relation(database=database, schema=schema, identifier=identifier) -%}
@@ -121,12 +115,12 @@
   {%- endif %}
 
   {% set _ = dbt_utils.get_period_boundaries(schema,
-                                             identifier,
-                                             timestamp_field,
-                                             start_date,
-                                             stop_date,
-                                             period,
-                                             lookback_interval) %}
+                                              identifier,
+                                              timestamp_field,
+                                              start_date,
+                                              stop_date,
+                                              period,
+                                              lookback_interval) %}
   {%- set start_timestamp = load_result('period_boundaries')['data'][0][0] | string -%}
   {%- set stop_timestamp = load_result('period_boundaries')['data'][0][1] | string -%}
   {%- set num_periods = load_result('period_boundaries')['data'][0][2] | int -%}
@@ -150,13 +144,13 @@
                                                schema=schema, type='table') -%}
     {% call statement() -%}
       {% set tmp_table_sql = dbt_utils.get_period_sql(target_cols_csv,
-                                                      sql,
-                                                      timestamp_field,
-                                                      period,
-                                                      start_timestamp,
-                                                      stop_timestamp,
-                                                      lookback_interval,
-                                                      i) %}
+                                                       sql,
+                                                       timestamp_field,
+                                                       period,
+                                                       start_timestamp,
+                                                       stop_timestamp,
+                                                       i,
+                                                       lookback_interval) %}
       {{dbt.create_table_as(True, tmp_relation, tmp_table_sql)}}
     {%- endcall %}
 
@@ -208,3 +202,4 @@
   {{ return({'relations': [target_relation]}) }}
 
 {%- endmaterialization %}
+

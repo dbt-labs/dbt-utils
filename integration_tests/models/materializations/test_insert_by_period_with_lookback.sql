@@ -4,7 +4,7 @@
 		period = 'week',
         lookback_interval = '2 days',
 		timestamp_field = 'tstamp',
-		start_date = '2020-01-01',
+		start_date = '2019-12-31',
 		stop_date = '2020-02-01',
         unique_key = 'id',
         sort = 'tstamp',

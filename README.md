@@ -1158,7 +1158,7 @@ where __PERIOD_FILTER__
 * `timestamp_field`: the column name of the timestamp field that will be used to break the model into smaller queries
 * `start_date`: literal date or timestamp - generally choose a date that is earlier than the start of your data
 * `stop_date`: literal date or timestamp (default=current_timestamp)
-* `lookback_interval`: The lookback interval to be added to the start of each period during materialization. Must be a valid literal interval (e.g., `'2 days'`). Value should be:
+* `lookback_interval`: The lookback interval to be added to the start of each period during materialization. Must be a valid interval literal (e.g., `'2 days'`). Value should be:
     * Equivalent in time to the `segment_sessionization_trailing_window` used in the Segment dbt package.
     * Greater than the maximum session duration you would reasonably expect.
 

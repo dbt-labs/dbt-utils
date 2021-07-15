@@ -1049,7 +1049,7 @@ Should a run of a model using this materialization be interrupted, a subsequent 
 
 Progress is logged in the command line for easy monitoring.
 
-**Usage:**
+**Simple usage:**
 ```sql
 {{
   config(
@@ -1072,14 +1072,77 @@ with events as (
 
 ```
 
+**Advanced usage:**<br>
+Unfortunately, the simple usage of this materialization shown above will not work for sessionization models built by the [dbt Segment package](https://github.com/dbt-labs/segment). These sessionization models can be very large, hence the desire to use the `insert_by_period` materialization. This lack of extendability to sessionization models is caused by some [unusually complex SQL](https://github.com/dbt-labs/segment/blob/master/models/sessionization/segment_web_page_views__sessionized.sql) in the modeing logic:
+```sql
+with pageviews as (
+    -- This CTE selects ALL page views for users seen some specified number of
+    -- hours (set by the `segment_sessionization_trailing_window` variable)
+    -- before the last timestamp in {{ this }} model.
+    select * from {{ref('segment_web_page_views')}}
+    {% if is_incremental() %}
+    where anonymous_id in (
+        select distinct anonymous_id
+        from {{ref('segment_web_page_views')}}
+        where cast(tstamp as datetime) >= (
+          select
+            {{ dbt_utils.dateadd(
+                'hour',
+                -var('segment_sessionization_trailing_window'),
+                'max(tstamp)'
+            ) }}
+          from {{ this }})
+        )
+    {% endif %}
+),
+
+... sessionization logic continues ...
+
+select * from session_ids
+```
+In order to use the `insert_by_period` materialization with Segment sessionization models, you can set an optional `lookback_interval` config parameter that modifies the period window to lookback an additional interval at the start of each period (analougous to `'segment_sessionization_trailing_window`). The SQL above can then be replaced with:
+```sql
+{{
+    config(
+        materialized = "insert_by_period",
+        period = "week",
+        lookback_interval = "2 days",
+        timestamp_field = "tstamp",
+        start_date = "2018-01-01",
+        stop_date = "2018-06-01"
+        unique_key = "id",
+        sort = "tstamp",
+        dist = "id"
+    )
+}}
+
+with pageviews as (
+    select *
+    from {{ref('segment_web_page_views')}}
+    where anonymous_id in (
+        select distinct anonymous_id
+        from {{ref('segment_web_page_views')}}
+        where __PERIOD_FILTER_WITH_LOOKBACK__  -- Replaced in the materialization code with a filter that includes an additional lookback interval added to the start of each period.
+    )
+),
+
+... sessionization logic continues ...
+
+-- You can still use __PERIOD_FILTER__ in the same model too
+select *
+from session_ids
+where __PERIOD_FILTER__
+```
+
 **Configuration values:**
 * `period`: period to break the model into, must be a valid [datepart](https://docs.aws.amazon.com/redshift/latest/dg/r_Dateparts_for_datetime_functions.html) (default='Week')
 * `timestamp_field`: the column name of the timestamp field that will be used to break the model into smaller queries
 * `start_date`: literal date or timestamp - generally choose a date that is earlier than the start of your data
 * `stop_date`: literal date or timestamp (default=current_timestamp)
+* `lookback_interval`: The interval string (e.g., `'2 days'`) that will be used to define the the lookback interval to add to the start of each period during materialization. Should be equivalent in time to the `segment_sessionization_trailing_window` used in the Segment dbt package.
 
 **Caveats:**
-* This materialization is compatible with dbt 0.10.1.
+* This materialization is compatible with dbt >= 0.10.1.
 * This materialization has been written for Redshift.
 * This materialization can only be used for a model where records are not expected to change after they are created.
 * Any model post-hooks that use `{{ this }}` will fail using this materialization. For example:

@@ -1073,7 +1073,7 @@ with events as (
 ```
 
 ##### Usage with dbt Segment sessionization models:
-Sessionization models built by the [dbt Segment package](https://github.com/dbt-labs/segment) (or similar approaches) can be very large, which natrually creates a desire to use the `insert_by_period` materialization for their initial builds.
+Sessionization models built by the [dbt Segment package](https://github.com/dbt-labs/segment) (or similar approaches) can be very large, which makes them a natural candidate for the `insert_by_period` materialization for their initial builds.
 
 Unfortunately, the simple usage shown above will not work for sessionization models built by the dbt Segment package. This lack of extendability is caused by some [unusually complex SQL](https://github.com/dbt-labs/segment/blob/master/models/sessionization/segment_web_page_views__sessionized.sql) in the sessionization modeing logic:
 ```sql

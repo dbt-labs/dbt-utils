@@ -19,7 +19,7 @@ clean-targets:         # directories to be removed by `dbt clean`
     - "target"
     - "dbt_modules"
 
- vars:
+vars:
   # Sessionization inactivity cutoff: if time gap betweeen page/track calls exceed this # of seconds, start new session.
   # Used in `test_insert_by_period_with_lookback.sql`
   segment_inactivity_cutoff: 60 * 60 * 24  # 1 day for simplicity

@@ -1,5 +1,5 @@
 {% macro get_period_boundaries(target_schema, target_table, timestamp_field, start_date, stop_date, period, lookback_interval) -%}
-    {{ return(adapter.dispatch('get_period_boundaries', packages = dbt_utils._get_utils_namespaces())(target_schema, target_table, timestamp_field, start_date, stop_date, period, lookback_interval)) }}
+    {{ return(adapter.dispatch('get_period_boundaries', 'dbt_utils')(target_schema, target_table, timestamp_field, start_date, stop_date, period, lookback_interval)) }}
 {% endmacro %}
 
 {% macro default__get_period_boundaries(target_schema, target_table, timestamp_field, start_date, stop_date, period, lookback_interval) -%}
@@ -29,7 +29,7 @@
 {%- endmacro %}
 
 {% macro get_period_sql(target_cols_csv, sql, timestamp_field, period, start_timestamp, stop_timestamp, offset, lookback_interval) -%}
-    {{ return(adapter.dispatch('get_period_sql', packages = dbt_utils._get_utils_namespaces())(target_cols_csv, sql, timestamp_field, period, start_timestamp, stop_timestamp, offset, lookback_interval)) }}
+    {{ return(adapter.dispatch('get_period_sql', 'dbt_utils')(target_cols_csv, sql, timestamp_field, period, start_timestamp, stop_timestamp, offset, lookback_interval)) }}
 {% endmacro %}
 
 {% macro default__get_period_sql(target_cols_csv, sql, timestamp_field, period, start_timestamp, stop_timestamp, offset, lookback_interval) -%}
@@ -59,7 +59,7 @@
 {% materialization insert_by_period, default -%}
   {%- set timestamp_field = config.require('timestamp_field') -%}
   {%- set start_date = config.require('start_date') -%}
-  {%- set stop_date = config.get('stop_date') or '' -%}  -- There was an extra '}' at the end of this line, removed.
+  {%- set stop_date = config.get('stop_date') or '' -%}
   {%- set period = config.get('period') or 'week' -%}
   {%- set lookback_interval = config.get('lookback_interval') -%}
 

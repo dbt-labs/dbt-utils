@@ -1,5 +1,6 @@
 # dbt-utils Next
-
+## Features
+* Add new `lookback_interval` parameter to the [`insert_by_period`](https://github.com/dbt-labs/dbt-utils#insert_by_period-source) materialization ([#XX]() from [@GClunies](https://github.com/GClunies)) enabling the materialization to be used with sessionization models built by the [dbt Segment package](https://github.com/dbt-labs/segment).
 
 # dbt-utils v0.7.0
 ## Breaking changes

@@ -1072,16 +1072,20 @@ with events as (
 
 ```
 
-##### Usage with dbt Segment sessionization models:
-Sessionization models built by the [dbt Segment package](https://github.com/dbt-labs/segment) (or similar approaches) can be very large, which makes them a natural candidate for the `insert_by_period` materialization for their initial builds.
+##### Usage with dbt Segment package models:
+Sessionization models built by the [dbt Segment package](https://github.com/dbt-labs/segment) (or similar approaches) can be very large and complex. In particular, the [`segment_web_page_views__sessionized`](https://github.com/dbt-labs/segment/blob/master/models/sessionization/segment_web_page_views__sessionized.sql)model. This makes it a natural candidate for the `insert_by_period` materialization
+during initial builds.
 
-Unfortunately, the simple usage shown above will not work for sessionization models built by the dbt Segment package. This lack of extendability is caused by some [unusually complex SQL](https://github.com/dbt-labs/segment/blob/master/models/sessionization/segment_web_page_views__sessionized.sql) in the sessionization modeing logic:
+Unfortunately, the simple usage shown above will not work for the `segment_web_page_views__sessionized` model. This is caused by some [unusually complex SQL](https://github.com/dbt-labs/segment/blob/master/models/sessionization/segment_web_page_views__sessionized.sql) that handles re-sessionization of user page views in the model logic:
 ```sql
+-- filename: segment_web_page_views__sessionized.sql
+
 with pageviews as (
     /*
     This CTE selects ALL page views for users seen some specified number of
     hours (set by the `segment_sessionization_trailing_window` variable)
-    before the last timestamp in {{ this }} model.
+    before the last timestamp in {{ this }} model. These users page views are
+    up for re-sessionization.
     */
     select * from {{ref('segment_web_page_views')}}
 
@@ -1113,8 +1117,10 @@ with pageviews as (
 
 select * from session_ids
 ```
-In order to use the `insert_by_period` materialization with Segment sessionization models, you can set an optional `lookback_interval` parameter that modifies the period window to lookback an additional interval at the start of each period (analougous to `'segment_sessionization_trailing_window`). The SQL above can then be replaced with:
+To apply the `insert_by_period` materialization to the `segment_web_page_views__sessionized` model, you can set an optional `lookback_interval` parameter that modifies the period's window to... *lookback*... an additional interval at the start of each period. This is analougous to the `'segment_sessionization_trailing_window` variable used by the dbt Segment package. The SQL above can then be replaced with:
 ```sql
+-- filename: segment_web_page_views__sessionized.sql
+
 {{
     config(
         materialized = "insert_by_period",
@@ -1159,8 +1165,8 @@ where __PERIOD_FILTER__
 * `start_date`: literal date or timestamp - generally choose a date that is earlier than the start of your data
 * `stop_date`: literal date or timestamp (default=current_timestamp)
 * `lookback_interval`: The lookback interval to be added to the start of each period during materialization. Must be a valid interval literal (e.g., `'2 days'`). Value should be:
-    * Equivalent in time to the `segment_sessionization_trailing_window` used in the Segment dbt package.
-    * Greater than the maximum session duration you would reasonably expect.
+    * *Equivalent in time* to the `segment_sessionization_trailing_window` used in the Segment dbt package.
+    * Greater than the maximum session duration you would reasonably expect in your users sessions.
 
 **Caveats:**
 * This materialization is compatible with dbt >= 0.10.1.

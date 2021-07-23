@@ -1,15 +1,12 @@
 # dbt-utils Next
 ## Features
-* Add new `lookback_interval` parameter to the [`insert_by_period`](https://github.com/dbt-labs/dbt-utils#insert_by_period-source) materialization ([#XX]() from [@GClunies](https://github.com/GClunies)) enabling the materialization to be used with sessionization models built by the [dbt Segment package](https://github.com/dbt-labs/segment).
+* Add new `lookback_interval` parameter to the [`insert_by_period`](https://github.com/dbt-labs/dbt-utils#insert_by_period-source) materialization ([#394](https://github.com/dbt-labs/dbt-utils/pull/394) from [@GClunies](https://github.com/GClunies)). Allows the materialization to be used with sessionization models built by the [dbt-Labs Segment package](https://github.com/dbt-labs/segment).
 
 # dbt-utils v0.7.0
 ## Breaking changes
 
 ### 🚨 New dbt version
-
-dbt v0.20.0 or greater is required for this release. If you are not ready to upgrade, consider using a previous release of this package.
-
-In accordance with the version upgrade, this package release includes breaking changes to:
+dbt v0.20.0 or greater is required for this release. If you are not ready to upgrade, consider using a previous release of this package. In accordance with the version upgrade, this package release includes breaking changes to:
 - Generic (schema) tests
 - `dispatch` functionality
 

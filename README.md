@@ -542,7 +542,7 @@ Arguments:
 ```
 
 ```sql
--- Returns the list sorted my most recently observed
+-- Returns the list sorted by most recently observed
 {% set payment_methods = dbt_utils.get_column_values(
         table=ref('stg_payments'),
         column='payment_method',

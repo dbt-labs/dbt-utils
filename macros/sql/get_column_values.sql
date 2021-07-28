@@ -1,5 +1,5 @@
 {% macro get_column_values(table, column, max_records=none, default=none) -%}
-    {{ return(adapter.dispatch('get_column_values', 'dbt_utils')(table, column, max_records, default)) }}
+    {{ return(adapter.dispatch('get_column_values', 'cc_dbt_utils')(table, column, max_records, default)) }}
 {% endmacro %}
 
 {% macro default__get_column_values(table, column, max_records=none, default=none) -%}

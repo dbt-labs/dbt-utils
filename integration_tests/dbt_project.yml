@@ -20,8 +20,8 @@ clean-targets:         # directories to be removed by `dbt clean`
     - "dbt_modules"
 
 dispatch:
-  - macro_namespace: 'dbt_utils'
-    search_order: ['dbt_utils_integration_tests', 'dbt_utils']
+  - macro_namespace: 'cc_dbt_utils'
+    search_order: ['dbt_utils_integration_tests', 'cc_dbt_utils']
 
 seeds:
 

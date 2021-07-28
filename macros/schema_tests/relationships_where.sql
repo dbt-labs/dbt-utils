@@ -1,5 +1,5 @@
 {% test relationships_where(model, column_name, to, field, from_condition="1=1", to_condition="1=1") %}
-  {{ return(adapter.dispatch('test_relationships_where', 'dbt_utils')(model, column_name, to, field, from_condition, to_condition)) }}
+  {{ return(adapter.dispatch('test_relationships_where', 'cc_dbt_utils')(model, column_name, to, field, from_condition, to_condition)) }}
 {% endtest %}
 
 {% macro default__test_relationships_where(model, column_name, to, field, from_condition="1=1", to_condition="1=1") %}

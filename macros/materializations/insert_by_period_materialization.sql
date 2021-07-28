@@ -1,5 +1,5 @@
 {% macro get_period_boundaries(target_schema, target_table, timestamp_field, start_date, stop_date, period) -%}
-    {{ return(adapter.dispatch('get_period_boundaries', 'dbt_utils')(target_schema, target_table, timestamp_field, start_date, stop_date, period)) }}
+    {{ return(adapter.dispatch('get_period_boundaries', 'cc_dbt_utils')(target_schema, target_table, timestamp_field, start_date, stop_date, period)) }}
 {% endmacro %}
 
 {% macro default__get_period_boundaries(target_schema, target_table, timestamp_field, start_date, stop_date, period) -%}
@@ -29,7 +29,7 @@
 {%- endmacro %}
 
 {% macro get_period_sql(target_cols_csv, sql, timestamp_field, period, start_timestamp, stop_timestamp, offset) -%}
-    {{ return(adapter.dispatch('get_period_sql', 'dbt_utils')(target_cols_csv, sql, timestamp_field, period, start_timestamp, stop_timestamp, offset)) }}
+    {{ return(adapter.dispatch('get_period_sql', 'cc_dbt_utils')(target_cols_csv, sql, timestamp_field, period, start_timestamp, stop_timestamp, offset)) }}
 {% endmacro %}
 
 {% macro default__get_period_sql(target_cols_csv, sql, timestamp_field, period, start_timestamp, stop_timestamp, offset) -%}

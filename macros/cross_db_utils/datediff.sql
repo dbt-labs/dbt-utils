@@ -1,5 +1,5 @@
 {% macro datediff(first_date, second_date, datepart) %}
-  {{ adapter.dispatch('datediff', packages = cc_dbt_utils._get_utils_namespaces())(first_date, second_date, datepart) }}
+  {{ return(adapter.dispatch('datediff', 'cc_dbt_utils')(first_date, second_date, datepart)) }}
 {% endmacro %}
 
 
@@ -54,5 +54,13 @@
     {% else %}
         {{ exceptions.raise_compiler_error("Unsupported datepart for macro datediff in postgres: {!r}".format(datepart)) }}
     {% endif %}
+
+{% endmacro %}
+
+
+{# redshift should use default instead of postgres #}
+{% macro redshift__datediff(first_date, second_date, datepart) %}
+
+    {{ return(dbt_utils.default__datediff(first_date, second_date, datepart)) }}
 
 {% endmacro %}

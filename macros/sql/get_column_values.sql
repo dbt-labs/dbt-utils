@@ -1,22 +1,13 @@
-{#
-This macro fetches the unique values for `column` in the table `table`
-
-Arguments:
-    table: A model `ref`, or a schema.table string for the table to query (Required)
-    column: The column to query for unique values
-    max_records: If provided, the maximum number of unique records to return (default: none)
-
-Returns:
-    A list of distinct values for the specified columns
-#}
-
 {% macro get_column_values(table, column, max_records=none, default=none) -%}
+    {{ return(adapter.dispatch('get_column_values', 'dbt_utils')(table, column, max_records, default)) }}
+{% endmacro %}
 
-{#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
+{% macro default__get_column_values(table, column, max_records=none, default=none) -%}
+
+    {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
     {%- if not execute -%}
         {{ return('') }}
     {% endif %}
-{#--  #}
 
     {%- set target_relation = adapter.get_relation(database=table.database,
                                           schema=table.schema,
@@ -36,12 +27,14 @@ Returns:
 
         {%- else -%}
 
+
             select
                 {{ column }} as value
 
             from {{ target_relation }}
             group by 1
             order by 1 asc
+            -- keep it hardcoded to 'order by 1 asc'
 
             {% if max_records is not none %}
             limit {{ max_records }}

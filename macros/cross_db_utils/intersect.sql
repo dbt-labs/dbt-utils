@@ -1,5 +1,5 @@
 {% macro intersect() %}
-  {{ adapter.dispatch('intersect', packages = cc_dbt_utils._get_utils_namespaces())() }}
+  {{ return(adapter.dispatch('intersect', 'cc_dbt_utils')()) }}
 {% endmacro %}
 
 

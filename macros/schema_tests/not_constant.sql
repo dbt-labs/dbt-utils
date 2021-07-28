@@ -1,20 +1,19 @@
 
-{% macro test_not_constant(model) %}
+{% test not_constant(model, column_name) %}
+  {{ return(adapter.dispatch('test_not_constant', 'dbt_utils')(model, column_name)) }}
+{% endtest %}
 
-{% set column_name = kwargs.get('column_name', kwargs.get('arg')) %}
+{% macro default__test_not_constant(model, column_name) %}
 
-select count(*)
 
-from (
+select
+    {# In TSQL, subquery aggregate columns need aliases #}
+    {# thus: a filler col name, 'filler_column' #}
+    count(distinct {{ column_name }}) as filler_column
 
-    select
-          count(distinct {{ column_name }})
+from {{ model }}
 
-    from {{ model }}
-
-    having count(distinct {{ column_name }}) = 1
-
-    ) validation_errors
+having count(distinct {{ column_name }}) = 1
 
 
 {% endmacro %}

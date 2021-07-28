@@ -1,14 +1,18 @@
-{% macro test_cardinality_equality(model, to, field) %}
+{% test cardinality_equality(model, column_name, to, field) %}
+    {{ return(adapter.dispatch('test_cardinality_equality', 'dbt_utils')(model, column_name, to, field)) }}
+{% endtest %}
 
-{% set column_name = kwargs.get('column_name', kwargs.get('from')) %}
+{% macro default__test_cardinality_equality(model, column_name, to, field) %}
 
+{# T-SQL does not let you use numbers as aliases for columns #}
+{# Thus, no "GROUP BY 1" #}
 
 with table_a as (
 select
   {{ column_name }},
   count(*) as num_rows
 from {{ model }}
-group by 1
+group by {{ column_name }}
 ),
 
 table_b as (
@@ -16,7 +20,7 @@ select
   {{ field }},
   count(*) as num_rows
 from {{ to }}
-group by 1
+group by {{ field }}
 ),
 
 except_a as (
@@ -43,7 +47,7 @@ unioned as (
   from except_b
 )
 
-select count(*)
+select *
 from unioned
 
 {% endmacro %}

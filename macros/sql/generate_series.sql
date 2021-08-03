@@ -1,4 +1,8 @@
 {% macro get_powers_of_two(upper_bound) %}
+    {{ return(adapter.dispatch('get_powers_of_two', 'cc_dbt_utils')(upper_bound)) }}
+{% endmacro %}
+
+{% macro default__get_powers_of_two(upper_bound) %}
 
     {% if upper_bound <= 0 %}
     {{ exceptions.raise_compiler_error("upper bound must be positive") }}
@@ -12,6 +16,10 @@
 
 
 {% macro generate_series(upper_bound) %}
+    {{ return(adapter.dispatch('generate_series', 'cc_dbt_utils')(upper_bound)) }}
+{% endmacro %}
+
+{% macro default__generate_series(upper_bound) %}
 
     {% set n = cc_dbt_utils.get_powers_of_two(upper_bound) %}
 
@@ -22,7 +30,7 @@
     select
 
     {% for i in range(n) %}
-    p{{i}}.generated_number * pow(2, {{i}})
+    p{{i}}.generated_number * power(2, {{i}})
     {% if not loop.last %} + {% endif %}
     {% endfor %}
     + 1

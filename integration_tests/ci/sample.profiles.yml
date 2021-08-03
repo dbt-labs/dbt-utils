@@ -17,7 +17,7 @@ integration_tests:
       port: "{{ env_var('POSTGRES_TEST_PORT') | as_number }}"
       dbname: "{{ env_var('POSTGRES_TEST_DBNAME') }}"
       schema: dbt_utils_integration_tests_postgres
-      threads: 1
+      threads: 5
 
     redshift:
       type: redshift
@@ -27,7 +27,7 @@ integration_tests:
       dbname: "{{ env_var('REDSHIFT_TEST_DBNAME') }}"
       port: "{{ env_var('REDSHIFT_TEST_PORT') | as_number }}"
       schema: dbt_utils_integration_tests_redshift
-      threads: 1
+      threads: 5
 
     bigquery:
       type: bigquery
@@ -35,7 +35,7 @@ integration_tests:
       keyfile: "{{ env_var('BIGQUERY_SERVICE_KEY_PATH') }}"
       project: "{{ env_var('BIGQUERY_TEST_DATABASE') }}"
       schema: dbt_utils_integration_tests_bigquery
-      threads: 1
+      threads: 10
 
     snowflake:
       type: snowflake
@@ -46,4 +46,4 @@ integration_tests:
       database: "{{ env_var('SNOWFLAKE_TEST_DATABASE') }}"
       warehouse: "{{ env_var('SNOWFLAKE_TEST_WAREHOUSE') }}"
       schema: dbt_utils_integration_tests_snowflake
-      threads: 1
+      threads: 10

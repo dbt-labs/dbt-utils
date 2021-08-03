@@ -1,5 +1,5 @@
 {% macro position(substring_text, string_text) -%}
-    {{ adapter.dispatch('position', packages = cc_dbt_utils._get_utils_namespaces()) (substring_text, string_text) }}
+    {{ return(adapter.dispatch('position', 'cc_dbt_utils') (substring_text, string_text)) }}
 {% endmacro %}
 
 

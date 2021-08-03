@@ -1,7 +1,7 @@
 This is a:
-- [ ] bug fix PR with no breaking changes (please change the base branch to `main`)
-- [ ] new functionality
-- [ ] a breaking change
+- [ ] bug fix PR with no breaking changes — please ensure the base branch is `master`
+- [ ] new functionality — please ensure the base branch is the latest `dev/` branch
+- [ ] a breaking change — please ensure the base branch is the latest `dev/` branch
 
 ## Description & motivation
 <!---
@@ -14,6 +14,7 @@ Describe your changes, and why you're making them.
     - [ ] Postgres
     - [ ] Redshift
     - [ ] Snowflake
+- [ ] I have "dispatched" any new macro(s) so non-core adapters can also use them (e.g. [the `star()` source](https://github.com/fishtown-analytics/dbt-utils/blob/master/macros/sql/star.sql))
 - [ ] I have updated the README.md (if applicable)
 - [ ] I have added tests & descriptions to my models (and macros if applicable)
-- [ ] I have added an entry to the changelog
+- [ ] I have added an entry to CHANGELOG.md

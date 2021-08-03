@@ -1,4 +1,11 @@
 {%- macro surrogate_key(columns, normalize_case = none) -%}
+    {# needed for safe_add to allow for non-keyword arguments see SO post #}
+    {# https://stackoverflow.com/questions/13944751/args-kwargs-in-jinja2-macros #}
+    {% set frustrating_jinja_feature = varargs %}
+    {{ return(adapter.dispatch('surrogate_key', 'cc_dbt_utils')(columns, normalize_case = none, *varargs)) }}
+{% endmacro %}
+
+{%- macro default__surrogate_key(columns, normalize_case = none) -%}
 
 {% set fields = [] %}
 

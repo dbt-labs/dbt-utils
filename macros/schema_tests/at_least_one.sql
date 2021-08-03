@@ -1,12 +1,15 @@
-{% macro test_at_least_one(model) %}
+{% test at_least_one(model, column_name) %}
+  {{ return(adapter.dispatch('test_at_least_one', 'cc_dbt_utils')(model, column_name)) }}
+{% endtest %}
 
-{% set column_name = kwargs.get('column_name', kwargs.get('arg')) %}
+{% macro default__test_at_least_one(model, column_name) %}
 
-select count(*)
+select *
 from (
     select
-
-      count({{ column_name }})
+        {# In TSQL, subquery aggregate columns need aliases #}
+        {# thus: a filler col name, 'filler_column' #}
+      count({{ column_name }}) as filler_column
 
     from {{ model }}
 

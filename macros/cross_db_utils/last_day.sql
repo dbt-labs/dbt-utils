@@ -4,7 +4,7 @@ testing is required to validate that it will work on other dateparts.
 */
 
 {% macro last_day(date, datepart) %}
-  {{ adapter.dispatch('last_day', packages = cc_dbt_utils._get_utils_namespaces()) (date, datepart) }}
+  {{ return(adapter.dispatch('last_day', 'cc_dbt_utils') (date, datepart)) }}
 {% endmacro %}
 
 
@@ -25,10 +25,21 @@ testing is required to validate that it will work on other dateparts.
 {% macro postgres__last_day(date, datepart) -%}
 
     {%- if datepart == 'quarter' -%}
-    {{ exceptions.raise_compiler_error(
-        "cc_dbt_utils.last_day is not supported for datepart 'quarter' on this adapter") }}
+    -- postgres dateadd does not support quarter interval.
+    cast(
+        {{cc_dbt_utils.dateadd('day', '-1',
+        cc_dbt_utils.dateadd('month', '3', cc_dbt_utils.date_trunc(datepart, date))
+        )}}
+        as date)
     {%- else -%}
     {{cc_dbt_utils.default_last_day(date, datepart)}}
     {%- endif -%}
 
 {%- endmacro %}
+
+{# redshift should use default instead of postgres #}
+{% macro redshift__last_day(date, datepart) %}
+
+    {{ return(cc_dbt_utils.default__last_day(date, datepart)) }}
+
+{% endmacro %}

@@ -1,4 +1,8 @@
 {% macro get_url_path(field) -%}
+    {{ return(adapter.dispatch('get_url_path', 'cc_dbt_utils')(field)) }}
+{% endmacro %}
+
+{% macro default__get_url_path(field) -%}
 
     {%- set stripped_url = 
         cc_dbt_utils.replace(

@@ -14,8 +14,12 @@
     -#}
 
 {% macro star(from, relation_alias=False, except=[], contains_item = none, include_or_exclude_contains_item = none, separator = ',', column_prefix = none) -%}
-    
+    {{ return(adapter.dispatch('star', 'cc_dbt_utils')(from, relation_alias, except)) }}
+{% endmacro %}
+
+{% macro default__star(from, relation_alias=False, except=[]) -%}
     {%- do cc_dbt_utils._is_relation(from, 'star') -%}
+    {%- do cc_dbt_utils._is_ephemeral(from, 'star') -%}
 
     {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
 

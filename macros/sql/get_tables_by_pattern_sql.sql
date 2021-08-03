@@ -1,13 +1,20 @@
 {% macro get_tables_by_pattern_sql(schema_pattern, table_pattern, exclude='', database=target.database) %}
-    {{ adapter.dispatch('get_tables_by_pattern_sql', packages = cc_dbt_utils._get_utils_namespaces())
-        (schema_pattern, table_pattern, exclude, database) }}
+    {{ return(adapter.dispatch('get_tables_by_pattern_sql', 'cc_dbt_utils')
+        (schema_pattern, table_pattern, exclude, database)) }}
 {% endmacro %}
 
 {% macro default__get_tables_by_pattern_sql(schema_pattern, table_pattern, exclude='', database=target.database) %}
 
         select distinct
-            table_schema as "table_schema", table_name as "table_name"
-        from {{database}}.information_schema.tables
+            table_schema as "table_schema",
+            table_name as "table_name",
+            case table_type
+                when 'BASE TABLE' then 'table'
+                when 'EXTERNAL TABLE' then 'external'
+                when 'MATERIALIZED VIEW' then 'materializedview'
+                else lower(table_type)
+            end as "table_type"
+        from {{ database }}.information_schema.tables
         where table_schema ilike '{{ schema_pattern }}'
         and table_name ilike '{{ table_pattern }}'
         and table_name not ilike '{{ exclude }}'
@@ -26,7 +33,12 @@
     {% set sql %}
         {% for schema in schemata %}
             select distinct
-                table_schema, table_name
+                table_schema,
+                table_name,
+                case table_type
+                    when 'BASE TABLE' then 'table'
+                    else lower(table_type)
+                end as table_type
 
             from {{ adapter.quote(database) }}.{{ schema }}.INFORMATION_SCHEMA.TABLES
             where lower(table_name) like lower ('{{ table_pattern }}')

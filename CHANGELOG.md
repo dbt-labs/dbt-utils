@@ -1,5 +1,8 @@
 # dbt-utils Next
 
+# dbt-utils v0.7.1
+## Fixes
+* "except" columns in the star macro handles case sensitivity ([#397](https://github.com/dbt-labs/dbt-utils/pull/397) [@danieldiamond](https://github.com/danieldiamond))
 
 # dbt-utils v0.7.0
 ## Breaking changes

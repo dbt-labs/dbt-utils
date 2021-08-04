@@ -14,9 +14,11 @@
     {%- set include_cols = [] %}
     {%- set cols = adapter.get_columns_in_relation(from) -%}
 
+    {#-- Perform case insensitive check against except columns  #}
+    {% set except = except | map('upper') | list %}
     {%- for col in cols -%}
 
-        {%- if col.column not in except -%}
+        {%- if col.column.upper() not in except -%}
             {% do include_cols.append(col.column) %}
 
         {%- endif %}

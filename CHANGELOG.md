@@ -1,4 +1,8 @@
-# dbt-utils Next
+# dbt-utils v0.7.1
+
+## Under the hood
+
+- Declare compatibility with dbt v0.21.0, which has no breaking changes for this package ([#398](https://github.com/fishtown-analytics/dbt-utils/pull/398))
 
 
 # dbt-utils v0.7.0

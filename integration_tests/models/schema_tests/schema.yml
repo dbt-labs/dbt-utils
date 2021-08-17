@@ -163,22 +163,22 @@ models:
         tests:
           - dbt_utils.sequential_values:
               interval: 1
-      - name: hour_interval
+      - name: one_hour_interval
         tests:
           - dbt_utils.sequential_values:
               interval: 1
               datepart: "hour"
-      - name: day_interval
+      - name: one_day_interval
         tests:
           - dbt_utils.sequential_values:
               interval: 1
               datepart: "day"
-      - name: month_interval
+      - name: one_month_interval
         tests:
           - dbt_utils.sequential_values:
               interval: 1
               datepart: "month"
-      - name: year_interval
+      - name: one_year_interval
         tests:
           - dbt_utils.sequential_values:
               interval: 1

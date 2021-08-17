@@ -421,11 +421,13 @@ seeds:
           - dbt_utils.sequential_values:
               interval: 1
               datepart: 'hour'
+              where: "updated_at >= '2021-01-01'"
 ```
 
 **Args:**
 * `interval` (default=1): The gap between two sequential values
 * `datepart` (default=None): Used when the gaps are a unit of time. If omitted, the test will check for a numeric gap.
+* `where` (default=1=1): If it is set, the test will check only on data matched with the condition.
 
 #### unique_combination_of_columns ([source](macros/schema_tests/unique_combination_of_columns.sql))
 This test confirms that the combination of columns is unique. For example, the

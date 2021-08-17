@@ -1,10 +1,10 @@
-{% test sequential_values(model, column_name, interval=1, datepart=None) %}
+{% test sequential_values(model, column_name, interval=1, datepart=None, where="1=1") %}
 
-  {{ return(adapter.dispatch('test_sequential_values', 'dbt_utils')(model, column_name, interval, datepart)) }}
+  {{ return(adapter.dispatch('test_sequential_values', 'dbt_utils')(model, column_name, interval, datepart, where)) }}
 
 {% endtest %}
 
-{% macro default__test_sequential_values(model, column_name, interval=1, datepart=None) %}
+{% macro default__test_sequential_values(model, column_name, interval=1, datepart=None, where="1=1") %}
 
 with windowed as (
 
@@ -14,6 +14,9 @@ with windowed as (
             order by {{ column_name }}
         ) as previous_{{ column_name }}
     from {{ model }}
+    {% if where %}
+    where {{ where }}
+    {% endif %}
 ),
 
 validation_errors as (

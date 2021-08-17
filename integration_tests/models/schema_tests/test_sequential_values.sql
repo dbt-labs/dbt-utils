@@ -16,5 +16,5 @@ select
         else 0
     end AS conditional_id
 from
-    generate_series(1, 10) i;
+    generate_series(1, 10) i
 {% endif %}

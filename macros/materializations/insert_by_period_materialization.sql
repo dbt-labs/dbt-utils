@@ -1,5 +1,13 @@
 
 {% materialization insert_by_period, default -%}
+  {%- if sql.find('__PERIOD_FILTER__') == -1 -%}
+    {%- set error_message -%}
+      Model '{{ model.unique_id }}' does not include the required string '__PERIOD_FILTER__' in its sql
+    {%- endset -%}
+    {{ exceptions.raise_compiler_error(error_message) }}
+  {%- endif -%}
+
+  {%- set start_date = config.require('start_date') -%}
 
   {% set unique_key = config.get('unique_key') %}
 
@@ -38,7 +46,7 @@
 
   {% if existing_relation is none %}
       {% set build_sql = create_table_as(False, target_relation, sql) %}
-{% elif trigger_full_refresh %}
+  {% elif trigger_full_refresh %}
       {#-- Make sure the backup doesn't exist so we don't encounter issues with the rename below #}
       {% set tmp_identifier = model['name'] + '__dbt_tmp' %}
       {% set backup_identifier = model['name'] + '__dbt_backup' %}

@@ -157,3 +157,54 @@ models:
               inclusive: true
               where: "id <> -1"
 
+  - name: test_recency
+    columns:
+      - name: id
+        tests:
+          - dbt_utils.sequential_values:
+              interval: 1
+      - name: hour_interval
+        tests:
+          - dbt_utils.sequential_values:
+              interval: 1
+              datepart: "hour"
+      - name: day_interval
+        tests:
+          - dbt_utils.sequential_values:
+              interval: 1
+              datepart: "day"
+      - name: month_interval
+        tests:
+          - dbt_utils.sequential_values:
+              interval: 1
+              datepart: "month"
+      - name: year_interval
+        tests:
+          - dbt_utils.sequential_values:
+              interval: 1
+              datepart: "year"
+      - name: two_hours_interval
+        tests:
+          - dbt_utils.sequential_values:
+              interval: 2
+              datepart: "hour"
+      - name: two_days_interval
+        tests:
+          - dbt_utils.sequential_values:
+              interval: 2
+              datepart: "day"
+      - name: two_months_interval
+        tests:
+          - dbt_utils.sequential_values:
+              interval: 2
+              datepart: "month"
+      - name: two_years_interval
+        tests:
+          - dbt_utils.sequential_values:
+              interval: 2
+              datepart: "year"
+      - name: conditional_id
+        tests:
+          - dbt_utils.sequential_values:
+              interval: 1
+              where: "id >= 5"

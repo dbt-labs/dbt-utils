@@ -45,7 +45,8 @@
   {% set trigger_full_refresh = (full_refresh_mode or existing_relation.is_view) %}
 
   {% if existing_relation is none %}
-      {% set build_sql = create_table_as(False, target_relation, sql) %}
+      {%- set empty_sql = sql | replace("__PERIOD_FILTER__", 'false') -%} -- We create an empty table
+      {% set build_sql = create_table_as(False, target_relation, empty_sql) %}
   {% elif trigger_full_refresh %}
       {#-- Make sure the backup doesn't exist so we don't encounter issues with the rename below #}
       {% set tmp_identifier = model['name'] + '__dbt_tmp' %}

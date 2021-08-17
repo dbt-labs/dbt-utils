@@ -157,7 +157,7 @@ models:
               inclusive: true
               where: "id <> -1"
 
-  - name: test_recency
+  - name: test_sequential_values
     columns:
       - name: id
         tests:

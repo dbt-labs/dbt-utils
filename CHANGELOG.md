@@ -4,6 +4,10 @@
 
 - Declare compatibility with dbt v0.21.0, which has no breaking changes for this package ([#398](https://github.com/fishtown-analytics/dbt-utils/pull/398))
 
+## Features
+
+- Allow user to provide any case type when defining the `exclude` argument in `dbt_utils.star()` ([#403](https://github.com/dbt-labs/dbt-utils/pull/403))
+
 
 # dbt-utils v0.7.0
 ## Breaking changes

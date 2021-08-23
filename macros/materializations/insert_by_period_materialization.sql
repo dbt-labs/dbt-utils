@@ -1,5 +1,6 @@
 
 {% materialization insert_by_period, default -%}
+  -- If there is no __PERIOD_FILTER__ specified, raise error. (Maybe create a macro for this.)
   {%- if sql.find('__PERIOD_FILTER__') == -1 -%}
     {%- set error_message -%}
       Model '{{ model.unique_id }}' does not include the required string '__PERIOD_FILTER__' in its sql
@@ -7,9 +8,14 @@
     {{ exceptions.raise_compiler_error(error_message) }}
   {%- endif -%}
 
+  -- Configuration (required)
+  {%- set timestamp_field = config.require('timestamp_field') -%}
   {%- set start_date = config.require('start_date') -%}
 
-  {% set unique_key = config.get('unique_key') %}
+  -- Configuration (others)
+  {%- set unique_key = config.get('unique_key') -%}
+  {%- set stop_date = config.get('stop_date') or '' -%}}
+  {%- set period = config.get('period') or 'day' -%}
 
   {% set target_relation = this.incorporate(type='table') %}
   {% set existing_relation = load_relation(this) %}

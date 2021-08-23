@@ -96,105 +96,58 @@
 
   -- Now that we have an empty table, let's put something in it.
 
-  -- 1st iteration
-  {%- set msg = "Running for " ~ period ~ " 1 of 2" -%}
-  {{ dbt_utils.log_info(msg) }}
+  {%- set number_of_periods = 12 -%} -- define some number manually for testing purposes
 
-  {%- set tmp_identifier = model['name'] ~ '__dbt_incremental_period_1_tmp' -%}
-  {%- set tmp_relation = api.Relation.create(identifier=tmp_identifier,
+  {% for i in range(number_of_periods) -%} 
+    {%- set msg = "Running for " ~ period ~ " " ~ i ~ " of " ~ number_of_periods -%}
+    {{ dbt_utils.log_info(msg) }}
+
+    {%- set tmp_identifier = model['name'] ~ '__dbt_incremental_period_' ~ i ~ '_tmp' -%}
+    {%- set tmp_relation = api.Relation.create(identifier=tmp_identifier,
                                               schema=schema, type='table') -%}
 
-  -- this is a macro (start)
-  {%- set period_filter -%}
-    ({{timestamp_field}} >  '2021-08-23 00:00:00'::timestamp + interval '0 {{period}}' and
-     {{timestamp_field}} <= '2021-08-23 00:00:00'::timestamp + interval '0 {{period}}' + interval '1 {{period}}' and
-     {{timestamp_field}} <  '{{stop_date}}'::timestamp)
-  {%- endset -%}
+    -- this is a macro (start)
+    {%- set period_filter -%}
+      ({{timestamp_field}} >  '2021-08-23 00:00:00'::timestamp + interval '{{i}} {{period}}' and
+      {{timestamp_field}} <= '2021-08-23 00:00:00'::timestamp + interval '{{i}} {{period}}' + interval '1 {{period}}' and
+      {{timestamp_field}} <  '{{stop_date}}'::timestamp)
+    {%- endset -%}
 
-  {%- set filtered_sql = sql | replace("__PERIOD_FILTER__", period_filter) -%} -- Filtering for 1st period
-  -- (end)
+    {%- set filtered_sql = sql | replace("__PERIOD_FILTER__", period_filter) -%} -- Filtering for 1st period
+    -- (end)
 
-  {{ dbt_utils.log_info("We are now calling the 1st iteration statement.") }}
+    {{ dbt_utils.log_info("We are now calling the " ~ (i + 1) ~ ". iteration statement.") }}
 
-  {% call statement() -%}
-    {% set tmp_table_sql = dbt_utils.simple_call(filtered_sql) %}
-    {{dbt.create_table_as(True, tmp_relation, tmp_table_sql)}}
-  {%- endcall %}
+    {% call statement() -%}
+      {% set tmp_table_sql = dbt_utils.simple_call(filtered_sql) %}
+      {{dbt.create_table_as(True, tmp_relation, tmp_table_sql)}}
+    {%- endcall %}
 
-  {{adapter.expand_target_column_types(from_relation=tmp_relation,
+    {{adapter.expand_target_column_types(from_relation=tmp_relation,
                                          to_relation=target_relation)}}
 
-  {{ dbt_utils.log_info("We are now inserting the result of the 1st iteration.") }}
+    {{ dbt_utils.log_info("We are now inserting the result of the " ~ (i + 1) ~ ". iteration.") }}
 
-  {%- set name = 'main-1' -%}
-  {% call statement(name, fetch_result=True) -%}
-    insert into {{target_relation}}
-    (
-        select
-            *
-        from {{tmp_relation.include(schema=False)}}
-    );
-  {%- endcall %}
+    {%- set name = 'main-' ~ i -%}
+    {% call statement(name, fetch_result=True) -%}
+      insert into {{target_relation}}
+      (
+          select
+              *
+          from {{tmp_relation.include(schema=False)}}
+      );
+    {%- endcall %}
 
-  {% set result = load_result('main-1') %}
+    {% set result = load_result('main-' ~ i) %}
     {% if 'response' in result.keys() %} {# added in v0.19.0 #}
         {% set rows_inserted = result['response']['rows_affected'] %}
     {% else %} {# older versions #}
         {% set rows_inserted = result['status'].split(" ")[2] | int %}
     {% endif %}
 
-  {%- set msg = "Ran for " ~ period ~ " 1 of 2; " ~ rows_inserted ~ " records inserted" -%}
-  {{ dbt_utils.log_info(msg) }}
-
-  -- 2nd iteration
-  {%- set msg = "Running for " ~ period ~ " 2 of 2" -%}
-  {{ dbt_utils.log_info(msg) }}
-
-  {%- set tmp_identifier = model['name'] ~ '__dbt_incremental_period_2_tmp' -%}
-  {%- set tmp_relation = api.Relation.create(identifier=tmp_identifier,
-                                              schema=schema, type='table') -%}
-
-  -- this is a macro (start)
-  {%- set period_filter -%}
-    ({{timestamp_field}} >  '2021-08-23 00:00:00'::timestamp + interval '1 {{period}}' and
-     {{timestamp_field}} <= '2021-08-23 00:00:00'::timestamp + interval '1 {{period}}' + interval '1 {{period}}' and
-     {{timestamp_field}} <  '{{stop_date}}'::timestamp)
-  {%- endset -%}
-
-  {%- set filtered_sql = sql | replace("__PERIOD_FILTER__", period_filter) -%} -- Filtering for 1st period
-  -- (end)
-
-  {{ dbt_utils.log_info("We are now calling the 2nd iteration statement.") }}
-
-  {% call statement() -%}
-    {% set tmp_table_sql = dbt_utils.simple_call(filtered_sql) %}
-    {{dbt.create_table_as(True, tmp_relation, tmp_table_sql)}}
-  {%- endcall %}
-
-  {{adapter.expand_target_column_types(from_relation=tmp_relation,
-                                         to_relation=target_relation)}}
-
-  {{ dbt_utils.log_info("We are now inserting the result of the 2nd iteration.") }}
-
-  {%- set name = 'main-2' -%}
-  {% call statement(name, fetch_result=True) -%}
-    insert into {{target_relation}}
-    (
-        select
-            *
-        from {{tmp_relation.include(schema=False)}}
-    );
-  {%- endcall %}
-
-  {% set result = load_result('main-2') %}
-    {% if 'response' in result.keys() %} {# added in v0.19.0 #}
-        {% set rows_inserted = result['response']['rows_affected'] %}
-    {% else %} {# older versions #}
-        {% set rows_inserted = result['status'].split(" ")[2] | int %}
-    {% endif %}
-
-  {%- set msg = "Ran for " ~ period ~ " 2 of 2; " ~ rows_inserted ~ " records inserted" -%}
-  {{ dbt_utils.log_info(msg) }}
+    {%- set msg = "Ran for " ~ period ~ " " ~ i ~ " of " ~ number_of_periods ~ "; " ~ rows_inserted ~ " records inserted" -%}
+    {{ dbt_utils.log_info(msg) }}
+  {%- endfor %}
 
   {% if need_swap %} 
       {% do adapter.rename_relation(target_relation, backup_relation) %} 

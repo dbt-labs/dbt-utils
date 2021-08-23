@@ -1,3 +1,9 @@
+{% macro simple_call(sql_code) -%}
+    select *
+    from (
+      {{sql_code}}
+    )
+{% endmacro %}
 
 {% materialization insert_by_period, default -%}
   -- If there is no __PERIOD_FILTER__ specified, raise error. (Maybe create a macro for this.)
@@ -15,7 +21,7 @@
   -- Configuration (others)
   {%- set unique_key = config.get('unique_key') -%}
   {%- set stop_date = config.get('stop_date') or '' -%}}
-  {%- set period = config.get('period') or 'day' -%}
+  {%- set period = config.get('period') or 'hour' -%}
 
   {% set target_relation = this.incorporate(type='table') %}
   {% set existing_relation = load_relation(this) %}
@@ -53,6 +59,8 @@
   {% if existing_relation is none %}
       {%- set empty_sql = sql | replace("__PERIOD_FILTER__", 'false') -%} -- We create an empty table
       {% set build_sql = create_table_as(False, target_relation, empty_sql) %}
+
+      {{ dbt_utils.log_info("We are in the existing_relation is none and creating an empty table.") }}
   {% elif trigger_full_refresh %}
       {#-- Make sure the backup doesn't exist so we don't encounter issues with the rename below #}
       {% set tmp_identifier = model['name'] + '__dbt_tmp' %}
@@ -60,22 +68,133 @@
       {% set intermediate_relation = existing_relation.incorporate(path={"identifier": tmp_identifier}) %}
       {% set backup_relation = existing_relation.incorporate(path={"identifier": backup_identifier}) %}
 
-      {% set build_sql = create_table_as(False, intermediate_relation, sql) %}
+      {% set unfiltered_sql = sql | replace("__PERIOD_FILTER__", 'true') %} -- Period filter should have no effect
+      {% set build_sql = create_table_as(False, intermediate_relation, unfiltered_sql) %}
       {% set need_swap = true %}
       {% do to_drop.append(backup_relation) %}
-  {% else %}
-    {% do run_query(create_table_as(True, tmp_relation, sql)) %}
+
+      {{ dbt_utils.log_info("We are in the elif trigger_full_refresh. So __PERIOD_FILTER__ is just set to true, thus it should have no effect.") }}
+  {% endif %}
+
+  -- Let's worry about this later. (If the table exists and it's not a full refresh)
+  {% if existing_relation and not trigger_full_refresh %}
+    {% set unfiltered_sql = sql | replace("__PERIOD_FILTER__", 'true') %} -- Period filter should have no effect. This is a BUG here. 
+    {% do run_query(create_table_as(True, tmp_relation, unfiltered_sql)) %}
     {% do adapter.expand_target_column_types(
              from_relation=tmp_relation,
              to_relation=target_relation) %}
     {% do process_schema_changes(on_schema_change, tmp_relation, existing_relation) %}
     {% set build_sql = incremental_upsert(tmp_relation, target_relation, unique_key=unique_key) %}
-  
+
+    {{ dbt_utils.log_info("We are in our custom case.") }}
   {% endif %}
 
+  {{ dbt_utils.log_info("Calling the empty table creation statement.") }}
   {% call statement("main") %}
       {{ build_sql }}
   {% endcall %}
+
+  -- Now that we have an empty table, let's put something in it.
+
+  -- 1st iteration
+  {%- set msg = "Running for " ~ period ~ " 1 of 2" -%}
+  {{ dbt_utils.log_info(msg) }}
+
+  {%- set tmp_identifier = model['name'] ~ '__dbt_incremental_period_1_tmp' -%}
+  {%- set tmp_relation = api.Relation.create(identifier=tmp_identifier,
+                                              schema=schema, type='table') -%}
+
+  -- this is a macro (start)
+  {%- set period_filter -%}
+    ({{timestamp_field}} >  '2021-08-23 00:00:00'::timestamp + interval '0 {{period}}' and
+     {{timestamp_field}} <= '2021-08-23 00:00:00'::timestamp + interval '0 {{period}}' + interval '1 {{period}}' and
+     {{timestamp_field}} <  '{{stop_date}}'::timestamp)
+  {%- endset -%}
+
+  {%- set filtered_sql = sql | replace("__PERIOD_FILTER__", period_filter) -%} -- Filtering for 1st period
+  -- (end)
+
+  {{ dbt_utils.log_info("We are now calling the 1st iteration statement.") }}
+
+  {% call statement() -%}
+    {% set tmp_table_sql = dbt_utils.simple_call(filtered_sql) %}
+    {{dbt.create_table_as(True, tmp_relation, tmp_table_sql)}}
+  {%- endcall %}
+
+  {{adapter.expand_target_column_types(from_relation=tmp_relation,
+                                         to_relation=target_relation)}}
+
+  {{ dbt_utils.log_info("We are now inserting the result of the 1st iteration.") }}
+
+  {%- set name = 'main-1' -%}
+  {% call statement(name, fetch_result=True) -%}
+    insert into {{target_relation}}
+    (
+        select
+            *
+        from {{tmp_relation.include(schema=False)}}
+    );
+  {%- endcall %}
+
+  {% set result = load_result('main-1') %}
+    {% if 'response' in result.keys() %} {# added in v0.19.0 #}
+        {% set rows_inserted = result['response']['rows_affected'] %}
+    {% else %} {# older versions #}
+        {% set rows_inserted = result['status'].split(" ")[2] | int %}
+    {% endif %}
+
+  {%- set msg = "Ran for " ~ period ~ " 1 of 2; " ~ rows_inserted ~ " records inserted" -%}
+  {{ dbt_utils.log_info(msg) }}
+
+  -- 2nd iteration
+  {%- set msg = "Running for " ~ period ~ " 2 of 2" -%}
+  {{ dbt_utils.log_info(msg) }}
+
+  {%- set tmp_identifier = model['name'] ~ '__dbt_incremental_period_2_tmp' -%}
+  {%- set tmp_relation = api.Relation.create(identifier=tmp_identifier,
+                                              schema=schema, type='table') -%}
+
+  -- this is a macro (start)
+  {%- set period_filter -%}
+    ({{timestamp_field}} >  '2021-08-23 00:00:00'::timestamp + interval '1 {{period}}' and
+     {{timestamp_field}} <= '2021-08-23 00:00:00'::timestamp + interval '1 {{period}}' + interval '1 {{period}}' and
+     {{timestamp_field}} <  '{{stop_date}}'::timestamp)
+  {%- endset -%}
+
+  {%- set filtered_sql = sql | replace("__PERIOD_FILTER__", period_filter) -%} -- Filtering for 1st period
+  -- (end)
+
+  {{ dbt_utils.log_info("We are now calling the 2nd iteration statement.") }}
+
+  {% call statement() -%}
+    {% set tmp_table_sql = dbt_utils.simple_call(filtered_sql) %}
+    {{dbt.create_table_as(True, tmp_relation, tmp_table_sql)}}
+  {%- endcall %}
+
+  {{adapter.expand_target_column_types(from_relation=tmp_relation,
+                                         to_relation=target_relation)}}
+
+  {{ dbt_utils.log_info("We are now inserting the result of the 2nd iteration.") }}
+
+  {%- set name = 'main-2' -%}
+  {% call statement(name, fetch_result=True) -%}
+    insert into {{target_relation}}
+    (
+        select
+            *
+        from {{tmp_relation.include(schema=False)}}
+    );
+  {%- endcall %}
+
+  {% set result = load_result('main-2') %}
+    {% if 'response' in result.keys() %} {# added in v0.19.0 #}
+        {% set rows_inserted = result['response']['rows_affected'] %}
+    {% else %} {# older versions #}
+        {% set rows_inserted = result['status'].split(" ")[2] | int %}
+    {% endif %}
+
+  {%- set msg = "Ran for " ~ period ~ " 2 of 2; " ~ rows_inserted ~ " records inserted" -%}
+  {{ dbt_utils.log_info(msg) }}
 
   {% if need_swap %} 
       {% do adapter.rename_relation(target_relation, backup_relation) %} 

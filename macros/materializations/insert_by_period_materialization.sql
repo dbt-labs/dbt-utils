@@ -1,9 +1,3 @@
-{% macro simple_call(sql_code) -%}
-    select *
-    from (
-      {{sql_code}}
-    )
-{% endmacro %}
 
 {% materialization insert_by_period, default -%}
   -- If there is no __PERIOD_FILTER__ specified, raise error. (Maybe create a macro for this.)
@@ -96,30 +90,37 @@
 
   -- Now that we have an empty table, let's put something in it.
 
-  {%- set number_of_periods = 12 -%} -- define some number manually for testing purposes
+  {% set _ = dbt_utils.get_period_boundaries(schema,
+                                              identifier,
+                                              timestamp_field,
+                                              start_date,
+                                              stop_date,
+                                              period) %}
+  {%- set start_timestamp = load_result('period_boundaries')['data'][0][0] | string -%}
+  {%- set stop_timestamp = load_result('period_boundaries')['data'][0][1] | string -%}
+  {%- set num_periods = load_result('period_boundaries')['data'][0][2] | int -%}
 
-  {% for i in range(number_of_periods) -%} 
-    {%- set msg = "Running for " ~ period ~ " " ~ i ~ " of " ~ number_of_periods -%}
+  {% set target_columns = adapter.get_columns_in_relation(target_relation) %}
+  {%- set target_cols_csv = target_columns | map(attribute='quoted') | join(', ') -%}
+
+  {% for i in range(num_periods) -%} 
+    {%- set msg = "Running for " ~ period ~ " " ~ (i + 1) ~ " of " ~ num_periods -%}
     {{ dbt_utils.log_info(msg) }}
 
     {%- set tmp_identifier = model['name'] ~ '__dbt_incremental_period_' ~ i ~ '_tmp' -%}
     {%- set tmp_relation = api.Relation.create(identifier=tmp_identifier,
                                               schema=schema, type='table') -%}
 
-    -- this is a macro (start)
-    {%- set period_filter -%}
-      ({{timestamp_field}} >  '2021-08-23 00:00:00'::timestamp + interval '{{i}} {{period}}' and
-      {{timestamp_field}} <= '2021-08-23 00:00:00'::timestamp + interval '{{i}} {{period}}' + interval '1 {{period}}' and
-      {{timestamp_field}} <  '{{stop_date}}'::timestamp)
-    {%- endset -%}
-
-    {%- set filtered_sql = sql | replace("__PERIOD_FILTER__", period_filter) -%} -- Filtering for 1st period
-    -- (end)
-
     {{ dbt_utils.log_info("We are now calling the " ~ (i + 1) ~ ". iteration statement.") }}
 
     {% call statement() -%}
-      {% set tmp_table_sql = dbt_utils.simple_call(filtered_sql) %}
+      {% set tmp_table_sql = dbt_utils.get_period_sql(target_cols_csv,
+                                                       sql,
+                                                       timestamp_field,
+                                                       period,
+                                                       start_timestamp,
+                                                       stop_timestamp,
+                                                       i) %}
       {{dbt.create_table_as(True, tmp_relation, tmp_table_sql)}}
     {%- endcall %}
 
@@ -145,7 +146,7 @@
         {% set rows_inserted = result['status'].split(" ")[2] | int %}
     {% endif %}
 
-    {%- set msg = "Ran for " ~ period ~ " " ~ i ~ " of " ~ number_of_periods ~ "; " ~ rows_inserted ~ " records inserted" -%}
+    {%- set msg = "Ran for " ~ period ~ " " ~ ( i + 1) ~ " of " ~ num_periods ~ "; " ~ rows_inserted ~ " records inserted" -%}
     {{ dbt_utils.log_info(msg) }}
   {%- endfor %}
 

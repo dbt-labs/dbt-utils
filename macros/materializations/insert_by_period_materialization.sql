@@ -55,6 +55,11 @@
       {% set build_sql = create_table_as(False, target_relation, empty_sql) %}
 
       {{ dbt_utils.log_info("We are in the existing_relation is none and creating an empty table.") }}
+      {{ dbt_utils.log_info("Calling the empty table creation statement.") }}
+      
+      {% call statement("main") %}
+          {{ build_sql }}
+      {% endcall %}
   {% elif trigger_full_refresh %}
       {#-- Make sure the backup doesn't exist so we don't encounter issues with the rename below #}
       {% set tmp_identifier = model['name'] + '__dbt_tmp' %}
@@ -72,7 +77,7 @@
 
   -- Let's worry about this later. (If the table exists and it's not a full refresh)
   {% if existing_relation and not trigger_full_refresh %}
-    {% set unfiltered_sql = sql | replace("__PERIOD_FILTER__", 'true') %} -- Period filter should have no effect. This is a BUG here. 
+    {% set unfiltered_sql = sql | replace("__PERIOD_FILTER__", 'false') %} -- Period filter should zero out everything. 
     {% do run_query(create_table_as(True, tmp_relation, unfiltered_sql)) %}
     {% do adapter.expand_target_column_types(
              from_relation=tmp_relation,
@@ -82,11 +87,6 @@
 
     {{ dbt_utils.log_info("We are in our custom case.") }}
   {% endif %}
-
-  {{ dbt_utils.log_info("Calling the empty table creation statement.") }}
-  {% call statement("main") %}
-      {{ build_sql }}
-  {% endcall %}
 
   -- Now that we have an empty table, let's put something in it.
 
@@ -141,12 +141,17 @@
 
     {% set result = load_result('main-' ~ i) %}
     {% if 'response' in result.keys() %} {# added in v0.19.0 #}
+      -- for some reason, if the result has 0 rows, then this doesn't work.
+      -- but only if it's the last... after the custom case. 
+      -- no error if the table is created in the same run
         {% set rows_inserted = result['response']['rows_affected'] %}
+        {{ dbt_utils.log_info(result['response']) }}
+        {{ dbt_utils.log_info(result) }}
     {% else %} {# older versions #}
         {% set rows_inserted = result['status'].split(" ")[2] | int %}
     {% endif %}
 
-    {%- set msg = "Ran for " ~ period ~ " " ~ ( i + 1) ~ " of " ~ num_periods ~ "; " ~ rows_inserted ~ " records inserted" -%}
+    {%- set msg = "Ran for " ~ period ~ " " ~ ( i + 1 ) ~ " of " ~ num_periods ~ "; " ~ rows_inserted ~ " records inserted" -%}
     {{ dbt_utils.log_info(msg) }}
   {%- endfor %}
 

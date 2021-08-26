@@ -1,4 +1,8 @@
 {% macro check_for_period_filter(model_unique_id, sql) %}
+    {{ return(adapter.dispatch('check_for_period_filter', 'dbt_utils')(model_unique_id, sql)) }}
+{% endmacro %}
+
+{% macro default__check_for_period_filter(model_unique_id, sql) %}
     {%- if sql.find('__PERIOD_FILTER__') == -1 -%}
         {%- set error_message -%}
         Model '{{ model_unique_id }}' does not include the required string '__PERIOD_FILTER__' in its sql

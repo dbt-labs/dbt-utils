@@ -56,7 +56,7 @@
 
       {{ dbt_utils.log_info("We are in the existing_relation is none and creating an empty table.") }}
       {{ dbt_utils.log_info("Calling the empty table creation statement.") }}
-      
+
       {% call statement("main") %}
           {{ build_sql }}
       {% endcall %}
@@ -113,30 +113,26 @@
 
     {{ dbt_utils.log_info("We are now calling the " ~ (i + 1) ~ ". iteration statement.") }}
 
-    {% call statement() -%}
-      {% set tmp_table_sql = dbt_utils.get_period_sql(target_cols_csv,
+    {% set tmp_table_sql = dbt_utils.get_period_sql(target_cols_csv,
                                                        sql,
                                                        timestamp_field,
                                                        period,
                                                        start_timestamp,
                                                        stop_timestamp,
                                                        i) %}
-      {{dbt.create_table_as(True, tmp_relation, tmp_table_sql)}}
-    {%- endcall %}
 
-    {{adapter.expand_target_column_types(from_relation=tmp_relation,
-                                         to_relation=target_relation)}}
+    {% do run_query(create_table_as(True, tmp_relation, tmp_table_sql)) %}
+
+    {% do adapter.expand_target_column_types(
+             from_relation=tmp_relation,
+             to_relation=target_relation) %}
 
     {{ dbt_utils.log_info("We are now inserting the result of the " ~ (i + 1) ~ ". iteration.") }}
 
     {%- set name = 'main-' ~ i -%}
+    {% set build_sql = incremental_upsert(tmp_relation, target_relation, unique_key=unique_key) %}
     {% call statement(name, fetch_result=True) -%}
-      insert into {{target_relation}}
-      (
-          select
-              *
-          from {{tmp_relation.include(schema=False)}}
-      );
+      {{ build_sql }}
     {%- endcall %}
 
     {% set result = load_result('main-' ~ i) %}

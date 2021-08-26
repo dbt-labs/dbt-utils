@@ -1,3 +1,12 @@
+{% macro check_for_period_filter(model_unique_id, sql) %}
+    {%- if sql.find('__PERIOD_FILTER__') == -1 -%}
+        {%- set error_message -%}
+        Model '{{ model_unique_id }}' does not include the required string '__PERIOD_FILTER__' in its sql
+        {%- endset -%}
+        {{ exceptions.raise_compiler_error(error_message) }}
+    {%- endif -%}
+{% endmacro %}
+
 {% macro get_period_boundaries(target_schema, target_table, timestamp_field, start_date, stop_date, period) -%}
     {{ return(adapter.dispatch('get_period_boundaries', 'dbt_utils')(target_schema, target_table, timestamp_field, start_date, stop_date, period)) }}
 {% endmacro %}

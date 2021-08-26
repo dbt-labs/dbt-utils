@@ -1,6 +1,6 @@
 
 {% materialization insert_by_period, default -%}
-  -- If there is no __PERIOD_FILTER__ specified, raise error. (Maybe create a macro for this.)
+  -- If there is no __PERIOD_FILTER__ specified, raise error.
   {{ dbt_utils.check_for_period_filter(model.unique_id, sql) }}
 
   -- Configuration (required)
@@ -70,19 +70,6 @@
       {{ dbt_utils.log_info("We are in the elif trigger_full_refresh. So __PERIOD_FILTER__ is just set to true, thus it should have no effect.") }}
   {% endif %}
 
-  -- Let's worry about this later. (If the table exists and it's not a full refresh)
-  {% if existing_relation and not trigger_full_refresh %}
-    {% set unfiltered_sql = sql | replace("__PERIOD_FILTER__", 'false') %} -- Period filter should zero out everything. 
-    {% do run_query(create_table_as(True, tmp_relation, unfiltered_sql)) %}
-    {% do adapter.expand_target_column_types(
-             from_relation=tmp_relation,
-             to_relation=target_relation) %}
-    {% do process_schema_changes(on_schema_change, tmp_relation, existing_relation) %}
-    {% set build_sql = incremental_upsert(tmp_relation, target_relation, unique_key=unique_key) %}
-
-    {{ dbt_utils.log_info("We are in our custom case.") }}
-  {% endif %}
-
   -- Now that we have an empty table, let's put something in it.
 
   {% set _ = dbt_utils.get_period_boundaries(schema,
@@ -97,6 +84,8 @@
 
   {% set target_columns = adapter.get_columns_in_relation(target_relation) %}
   {%- set target_cols_csv = target_columns | map(attribute='quoted') | join(', ') -%}
+
+  {%- set loop_vars = {'sum_rows_inserted': 0} -%}
 
   {% for i in range(num_periods) -%} 
     {%- set msg = "Running for " ~ period ~ " " ~ (i + 1) ~ " of " ~ num_periods -%}
@@ -142,6 +131,9 @@
         {% set rows_inserted = result['status'].split(" ")[2] | int %}
     {% endif %}
 
+    {%- set sum_rows_inserted = loop_vars['sum_rows_inserted'] + rows_inserted -%}
+    {%- if loop_vars.update({'sum_rows_inserted': sum_rows_inserted}) %} {% endif -%}
+
     {%- set msg = "Ran for " ~ period ~ " " ~ ( i + 1 ) ~ " of " ~ num_periods ~ "; " ~ rows_inserted ~ " records inserted" -%}
     {{ dbt_utils.log_info(msg) }}
   {%- endfor %}
@@ -167,6 +159,12 @@
   {% endfor %}
 
   {{ run_hooks(post_hooks, inside_transaction=False) }}
+
+  {%- set status_string = "INSERT " ~ loop_vars['sum_rows_inserted'] -%}
+
+  {% call noop_statement('main', status_string) -%}
+    -- no-op
+  {%- endcall %}
 
   {{ return({'relations': [target_relation]}) }}
 

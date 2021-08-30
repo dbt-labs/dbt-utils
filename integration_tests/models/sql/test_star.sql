@@ -1,7 +1,4 @@
-
--- TODO : Should the star macro use a case-insensitive comparison for the `except` field on Snowflake?
-
-{% set exclude_field = 'FIELD_3' if target.type == 'snowflake' else 'field_3' %}
+{% set exclude_field = 'field_3' %}
 
 
 with data as (

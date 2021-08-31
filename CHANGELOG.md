@@ -1,22 +1,9 @@
-# dbt-utils v0.7.1
-
-## Under the hood
-
-- Declare compatibility with dbt v0.21.0, which has no breaking changes for this package ([#398](https://github.com/fishtown-analytics/dbt-utils/pull/398))
-
-## Features
-
-- Allow user to provide any case type when defining the `exclude` argument in `dbt_utils.star()` ([#403](https://github.com/dbt-labs/dbt-utils/pull/403))
-
-
-# dbt-utils v0.7.0
+# dbt-utils v0.7.0 (unreleased)
 ## Breaking changes
 
 ### 🚨 New dbt version
 
-dbt v0.20.0 or greater is required for this release. If you are not ready to upgrade, consider using a previous release of this package.
-
-In accordance with the version upgrade, this package release includes breaking changes to:
+dbt v0.20.0 or greater is required for this release. If you are not ready to upgrade, consider using a previous release of this package. In accordance with the version upgrade, this package release includes breaking changes to:
 - Generic (schema) tests
 - `dispatch` functionality
 
@@ -58,8 +45,12 @@ If you were relying on the position to match up your optional arguments, this ma
 * Add `slugify` macro, and use it in the pivot macro. :rotating_light: This macro uses the `re` module, which is only available in dbt v0.19.0+. As a result, this feature introduces a breaking change. ([#314](https://github.com/fishtown-analytics/dbt-utils/pull/314))
 
 ## Under the hood
+<<<<<<< HEAD
 * Update the default implementation of concat macro to use `||` operator ([#373](https://github.com/fishtown-analytics/dbt-utils/pull/314) from [@ChristopheDuong](https://github.com/ChristopheDuong)). Note this may be a breaking change for adapters that support `concat()` but not `||`, such as Apache Spark.
 - Use `power()` instead of `pow()` in `generate_series()` and `haversine_distance()` as they are synonyms in most SQL dialects, but some dialects only have `power()` ([#354](https://github.com/fishtown-analytics/dbt-utils/pull/354) from [@swanderz](https://github.com/swanderz))
+=======
+* Update the default implementation of concat macro to use `||` operator ([#373](https://github.com/fishtown-analytics/dbt-utils/pull/314) [@ChristopheDuong](https://github.com/ChristopheDuong)). Note this may be a breaking change for spark users.
+>>>>>>> c5c892f98921112878476619b96fe10313f30e6f
 
 # dbt-utils v0.6.6
 

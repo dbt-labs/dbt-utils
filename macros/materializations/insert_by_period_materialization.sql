@@ -50,14 +50,6 @@
       {%- set empty_sql = sql | replace("__PERIOD_FILTER__", 'false') -%} 
       {% set build_sql = create_table_as(False, target_relation, empty_sql) %}
 
-      {% if existing_relation is none %}
-        {{ dbt_utils.log_info("We are in the existing_relation is none and creating an empty table.") }}
-      {% elif trigger_full_refresh %}
-        {{ dbt_utils.log_info("We are in the trigger_full_refresh mode and creating an empty table.") }}
-      {% endif %}
-
-      {{ dbt_utils.log_info("Calling the empty table creation statement.") }}
-
       {% call statement("main") %}
           {{ build_sql }}
       {% endcall %}
@@ -88,8 +80,6 @@
     {%- set tmp_relation = api.Relation.create(identifier=tmp_identifier,
                                               schema=schema, type='table') -%}
 
-    {{ dbt_utils.log_info("We are now calling the " ~ (i + 1) ~ ". iteration statement.") }}
-
     {% set tmp_table_sql = dbt_utils.get_period_sql(target_cols_csv,
                                                        sql,
                                                        timestamp_field,
@@ -104,8 +94,6 @@
              from_relation=tmp_relation,
              to_relation=target_relation) %}
 
-    {{ dbt_utils.log_info("We are now inserting the result of the " ~ (i + 1) ~ ". iteration.") }}
-
     {%- set name = 'main-' ~ i -%}
     {% set build_sql = incremental_upsert(tmp_relation, target_relation, unique_key=unique_key) %}
     {% call statement(name, fetch_result=True) -%}
@@ -115,8 +103,6 @@
     {% set result = load_result('main-' ~ i) %}
     {% if 'response' in result.keys() %} {# added in v0.19.0 #}
         {% set rows_inserted = result['response']['rows_affected'] %}
-        {{ dbt_utils.log_info(result['response']) }}
-        {{ dbt_utils.log_info(result) }}
     {% else %} {# older versions #}
         {% set rows_inserted = result['status'].split(" ")[2] | int %}
     {% endif %}
@@ -124,7 +110,7 @@
     {%- set sum_rows_inserted = loop_vars['sum_rows_inserted'] + rows_inserted -%}
     {%- if loop_vars.update({'sum_rows_inserted': sum_rows_inserted}) %} {% endif -%}
 
-    {%- set msg = "Ran for " ~ period ~ " " ~ ( i + 1 ) ~ " of " ~ num_periods ~ "; " ~ rows_inserted ~ " records inserted" -%}
+    {%- set msg = "Ran completed for " ~ period ~ " " ~ ( i + 1 ) ~ " of " ~ num_periods ~ "; " ~ rows_inserted ~ " records inserted" -%}
     {{ dbt_utils.log_info(msg) }}
   {%- endfor %}
 

@@ -1,7 +1,7 @@
 {{
 	config(
 		materialized = 'view',
-		enabled=(target.type == 'redshift')
+		enabled=(target.type == 'redshift' or target.type == 'snowflake')
 	)
 }}
 

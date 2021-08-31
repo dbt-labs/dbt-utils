@@ -10,7 +10,7 @@
   -- Configuration (others)
   {%- set unique_key = config.get('unique_key') -%}
   {%- set stop_date = config.get('stop_date') or '' -%}}
-  {%- set period = config.get('period') or 'hour' -%}
+  {%- set period = config.get('period') or 'week' -%}
 
   {% set target_relation = this.incorporate(type='table') %}
   {% set existing_relation = load_relation(this) %}

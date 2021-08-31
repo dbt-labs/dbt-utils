@@ -88,7 +88,7 @@
     {{target_cols_csv}}
   from (
     {{filtered_sql}}
-  )
+  ) as t -- has to have an alias
 
 {%- endmacro %}
 

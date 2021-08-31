@@ -76,9 +76,8 @@
     {%- set msg = "Running for " ~ period ~ " " ~ (i + 1) ~ " of " ~ num_periods -%}
     {{ dbt_utils.log_info(msg) }}
 
-    {%- set tmp_identifier = model['name'] ~ '__dbt_incremental_period_' ~ i ~ '_tmp' -%}
-    {%- set tmp_relation = api.Relation.create(identifier=tmp_identifier,
-                                              schema=schema, type='table') -%}
+    {%- set tmp_identifier_suffix = '__dbt_incremental_period_' ~ i ~ '_tmp' -%}
+    {% set tmp_relation = make_temp_relation(target_relation, tmp_identifier_suffix) %}
 
     {% set tmp_table_sql = dbt_utils.get_period_sql(target_cols_csv,
                                                        sql,

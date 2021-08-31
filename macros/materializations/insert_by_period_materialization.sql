@@ -45,29 +45,22 @@
   {# -- first check whether we want to full refresh for source view or config reasons #}
   {% set trigger_full_refresh = (full_refresh_mode or existing_relation.is_view) %}
 
-  {% if existing_relation is none %}
-      {%- set empty_sql = sql | replace("__PERIOD_FILTER__", 'false') -%} -- We create an empty table
+  {# -- we create an empty table if there is no exisiting relation or a full refresh is triggered #}
+  {% if existing_relation is none or trigger_full_refresh %}
+      {%- set empty_sql = sql | replace("__PERIOD_FILTER__", 'false') -%} 
       {% set build_sql = create_table_as(False, target_relation, empty_sql) %}
 
-      {{ dbt_utils.log_info("We are in the existing_relation is none and creating an empty table.") }}
+      {% if existing_relation is none %}
+        {{ dbt_utils.log_info("We are in the existing_relation is none and creating an empty table.") }}
+      {% elif trigger_full_refresh %}
+        {{ dbt_utils.log_info("We are in the trigger_full_refresh mode and creating an empty table.") }}
+      {% endif %}
+
       {{ dbt_utils.log_info("Calling the empty table creation statement.") }}
 
       {% call statement("main") %}
           {{ build_sql }}
       {% endcall %}
-  {% elif trigger_full_refresh %}
-      {#-- Make sure the backup doesn't exist so we don't encounter issues with the rename below #}
-      {% set tmp_identifier = model['name'] + '__dbt_tmp' %}
-      {% set backup_identifier = model['name'] + '__dbt_backup' %}
-      {% set intermediate_relation = existing_relation.incorporate(path={"identifier": tmp_identifier}) %}
-      {% set backup_relation = existing_relation.incorporate(path={"identifier": backup_identifier}) %}
-
-      {% set unfiltered_sql = sql | replace("__PERIOD_FILTER__", 'true') %} -- Period filter should have no effect
-      {% set build_sql = create_table_as(False, intermediate_relation, unfiltered_sql) %}
-      {% set need_swap = true %}
-      {% do to_drop.append(backup_relation) %}
-
-      {{ dbt_utils.log_info("We are in the elif trigger_full_refresh. So __PERIOD_FILTER__ is just set to true, thus it should have no effect.") }}
   {% endif %}
 
   -- Now that we have an empty table, let's put something in it.
@@ -121,9 +114,6 @@
 
     {% set result = load_result('main-' ~ i) %}
     {% if 'response' in result.keys() %} {# added in v0.19.0 #}
-      -- for some reason, if the result has 0 rows, then this doesn't work.
-      -- but only if it's the last... after the custom case. 
-      -- no error if the table is created in the same run
         {% set rows_inserted = result['response']['rows_affected'] %}
         {{ dbt_utils.log_info(result['response']) }}
         {{ dbt_utils.log_info(result) }}
@@ -137,11 +127,6 @@
     {%- set msg = "Ran for " ~ period ~ " " ~ ( i + 1 ) ~ " of " ~ num_periods ~ "; " ~ rows_inserted ~ " records inserted" -%}
     {{ dbt_utils.log_info(msg) }}
   {%- endfor %}
-
-  {% if need_swap %} 
-      {% do adapter.rename_relation(target_relation, backup_relation) %} 
-      {% do adapter.rename_relation(intermediate_relation, target_relation) %} 
-  {% endif %}
 
   {% do persist_docs(target_relation, model) %}
 

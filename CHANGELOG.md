@@ -4,6 +4,8 @@
 
 - Declare compatibility with dbt v0.21.0, which has no breaking changes for this package ([#398](https://github.com/fishtown-analytics/dbt-utils/pull/398))
 
+## Features
+* Modernize the `insert_by_period` materialization and make it Snowflake-compatible. 
 
 # dbt-utils v0.7.0
 ## Breaking changes

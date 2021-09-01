@@ -4,8 +4,7 @@
 		period = 'month',
 		timestamp_field = 'created_at',
 		start_date = '2018-01-01',
-		stop_date = '2018-06-01',
-		enabled=(target.type == 'redshift' or target.type == 'snowflake')
+		stop_date = '2018-06-01'
 	)
 }}
 

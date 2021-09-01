@@ -1082,16 +1082,6 @@ with events as (
 * This materialization is compatible with dbt 0.21.0.
 * This materialization has been written primarily for Snowflake.
 * This materialization can only be used for a model where records are not expected to change after they are created.
-* Any model post-hooks that use `{{ this }}` will fail using this materialization. For example:
-```yaml
-models:
-    project-name:
-        post-hook: "grant select on {{ this }} to db_reader"
-```
-A useful workaround is to change the above post-hook to:
-```yaml
-        post-hook: "grant select on {{ this.schema }}.{{ this.name }} to db_reader"
-```
 
 ----
 

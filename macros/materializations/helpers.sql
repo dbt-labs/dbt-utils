@@ -18,6 +18,11 @@
 {% macro default__get_period_boundaries(target_schema, target_table, timestamp_field, start_date, stop_date, period) -%}
 
   {% call statement('period_boundaries', fetch_result=True) -%}
+    {%- set target_schema_msg = " [DEBUG] (get_period_boundaries) target schema is: " ~ target_schema -%}
+    {%- set target_table_msg = " [DEBUG] (get_period_boundaries) target table is: " ~ target_table -%}
+    {{ dbt_utils.log_info(target_schema_msg) }}
+    {{ dbt_utils.log_info(target_table_msg) }}
+    
     with data as (
       select
           coalesce(max("{{timestamp_field}}"), '{{start_date}}')::timestamp as start_timestamp,

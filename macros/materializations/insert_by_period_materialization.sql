@@ -12,12 +12,7 @@
   {%- set stop_date = config.get('stop_date') or '' -%}}
   {%- set period = config.get('period') or 'week' -%}
 
-  {{ dbt_utils.log_info("[DEBUG] Parameters are set!") }}
-
   {% set target_relation = this.incorporate(type='table') %}
-
-  {%- set target_msg = "[DEBUG] Target is set to be " ~ target_relation -%}
-  {{ dbt_utils.log_info(target_msg) }}
 
   {% set existing_relation = load_relation(this) %}
   {% set tmp_relation = make_temp_relation(target_relation) %}
@@ -43,12 +38,8 @@
 
   {{ run_hooks(pre_hooks, inside_transaction=False) }}
 
-  {{ dbt_utils.log_info("[DEBUG] Prehooks (outside transaction) are done!") }}
-
   -- `BEGIN` happens here:
   {{ run_hooks(pre_hooks, inside_transaction=True) }}
-
-  {{ dbt_utils.log_info("[DEBUG] Prehooks (inside transaction) are done!") }}
 
   {% set to_drop = [] %}
 
@@ -60,20 +51,11 @@
       {%- set empty_sql = sql | replace("__PERIOD_FILTER__", 'false') -%} 
       {% set build_sql = create_table_as(False, target_relation, empty_sql) %}
 
-      {{ dbt_utils.log_info("[DEBUG] Within 'if existing_relation is none or trigger_full_refresh'!") }}
-      {%- set existing_relation_msg = "[DEBUG] Existing relation is: " ~ existing_relation -%}
-      {%- set trigger_full_refresh_msg = "[DEBUG] Trigger full refresh flag is: " ~ trigger_full_refresh -%}
-      {{ dbt_utils.log_info(existing_relation_msg) }}
-      {{ dbt_utils.log_info(trigger_full_refresh_msg) }}
-
       {% call statement("main") %}
-          {{ dbt_utils.log_info("[DEBUG] Executing the following:") }}
-          {{ dbt_utils.log_info(build_sql) }}
           {{ build_sql }}
       {% endcall %}
   {% endif %}
 
-  {{ dbt_utils.log_info("[DEBUG] We have an empty table now.") }}
   -- Now that we have an empty table, let's put something in it.
 
   {% set _ = dbt_utils.get_period_boundaries(schema,
@@ -86,31 +68,17 @@
   {%- set stop_timestamp = load_result('period_boundaries')['data'][0][1] | string -%}
   {%- set num_periods = load_result('period_boundaries')['data'][0][2] | int -%}
 
-
-  {%- set start_timestamp_msg = "[DEBUG] Start timestamp is: " ~ start_timestamp -%}
-  {%- set stop_timestamp_msg = "[DEBUG] End timestamp is: " ~ stop_timestamp -%}
-  {%- set num_periods_msg = "[DEBUG] Number of periods: " ~ num_periods ~ " " ~ period ~ "(s)" -%}
-  {{ dbt_utils.log_info(start_timestamp_msg) }}
-  {{ dbt_utils.log_info(stop_timestamp_msg) }}
-  {{ dbt_utils.log_info(num_periods_msg) }}
-
   {% set target_columns = adapter.get_columns_in_relation(target_relation) %}
   {%- set target_cols_csv = target_columns | map(attribute='quoted') | join(', ') -%}
 
   {%- set loop_vars = {'sum_rows_inserted': 0} -%}
 
   {% for i in range(num_periods) -%} 
-    {%- set loop_enter_msg = "[DEBUG] Entering the " ~ (i + 1) ~ ". iteration of the loop." -%}
-    {{ dbt_utils.log_info(loop_enter_msg) }}
-
     {%- set msg = "Running for " ~ period ~ " " ~ (i + 1) ~ " of " ~ num_periods -%}
     {{ dbt_utils.log_info(msg) }}
 
     {%- set tmp_identifier_suffix = '__dbt_incremental_period_' ~ i ~ '_tmp' -%}
     {% set tmp_relation = make_temp_relation(target_relation, tmp_identifier_suffix) %}
-
-    {%- set tmp_relation_msg = "[DEBUG] (Within loop) Termporary relation is: " ~ tmp_relation -%}
-    {{ dbt_utils.log_info(tmp_relation_msg) }}
 
     {% set tmp_table_sql = dbt_utils.get_period_sql(target_cols_csv,
                                                        sql,
@@ -129,8 +97,6 @@
     {%- set name = 'main-' ~ i -%}
     {% set build_sql = incremental_upsert(tmp_relation, target_relation, unique_key=unique_key) %}
     {% call statement(name, fetch_result=True) -%}
-      {{ dbt_utils.log_info("[DEBUG] (Within loop) Executing the following:") }}
-      {{ dbt_utils.log_info(build_sql) }}
       {{ build_sql }}
     {%- endcall %}
 
@@ -147,8 +113,6 @@
     {%- set msg = "Ran completed for " ~ period ~ " " ~ ( i + 1 ) ~ " of " ~ num_periods ~ "; " ~ rows_inserted ~ " records inserted" -%}
     {{ dbt_utils.log_info(msg) }}
   {%- endfor %}
-
-  {{ dbt_utils.log_info("[DEBUG] Out of the loop.") }}
 
   {% do persist_docs(target_relation, model) %}
 

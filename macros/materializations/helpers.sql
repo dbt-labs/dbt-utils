@@ -18,15 +18,7 @@
 {% macro default__get_period_boundaries(target_schema, target_table, timestamp_field, start_date, stop_date, period) -%}
 
   {% call statement('period_boundaries', fetch_result=True) -%}
-    {{ dbt_utils.log_info(model) }}
     {%- set model_name = model['name'] -%}
-    
-    {%- set target_schema_msg = " [DEBUG] (get_period_boundaries) target schema is: " ~ target_schema -%}
-    {%- set target_table_msg = " [DEBUG] (get_period_boundaries) target table is: " ~ target_table -%}
-    {%- set model_name_msg = " [DEBUG] (get_period_boundaries) model[name] is: " ~ model_name -%}
-    {{ dbt_utils.log_info(target_schema_msg) }}
-    {{ dbt_utils.log_info(target_table_msg) }}
-    {{ dbt_utils.log_info(model_name_msg) }}
     
     with data as (
       select

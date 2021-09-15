@@ -56,6 +56,7 @@ If you were relying on the position to match up your optional arguments, this ma
 ## Features
 * Add new argument, `order_by`, to `get_column_values` (code originally in [#289](https://github.com/fishtown-analytics/dbt-utils/pull/289/) from [@clausherther](https://github.com/clausherther), merged via [#349](https://github.com/fishtown-analytics/dbt-utils/pull/349/))
 * Add `slugify` macro, and use it in the pivot macro. :rotating_light: This macro uses the `re` module, which is only available in dbt v0.19.0+. As a result, this feature introduces a breaking change. ([#314](https://github.com/fishtown-analytics/dbt-utils/pull/314))
+* Add `not_null_proportion` schema test that allows the user to specify the minimum (`at_least`) tolerated proportion (e.g., `0.95`) of non-null values
 
 ## Under the hood
 * Update the default implementation of concat macro to use `||` operator ([#373](https://github.com/fishtown-analytics/dbt-utils/pull/314) from [@ChristopheDuong](https://github.com/ChristopheDuong)). Note this may be a breaking change for adapters that support `concat()` but not `||`, such as Apache Spark.

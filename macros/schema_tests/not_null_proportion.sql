@@ -1,5 +1,5 @@
 {% macro test_not_null_proportion(model) %}
-  {{ return(adapter.dispatch('test_not_null_proportion', macro_namespace = 'dbt_utils')(model, **kwargs)) }}
+  {{ return(adapter.dispatch('test_not_null_proportion', 'dbt_utils')(model, **kwargs)) }}
 {% endmacro %}
 
 {% macro default__test_not_null_proportion(model) %}

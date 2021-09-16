@@ -12,11 +12,21 @@
     {% endif %}
 
     {%- set include_cols = [] %}
+    {%- set exclude_cols_lower_cased = [] %}
+    {%- for col in except -%}
+      {% do exclude_cols_lower_cased.append(col|lower) %}
+    {%- endfor %}
     {%- set cols = adapter.get_columns_in_relation(from) -%}
+<<<<<<< HEAD
     {%- set except = except | map("lower") | list %}
     {%- for col in cols -%}
 
         {%- if col.column|lower not in except -%}
+=======
+    {%- for col in cols -%}
+
+        {%- if col.column|lower not in exclude_cols_lower_cased -%}
+>>>>>>> 5261bbad97a8665210bc35ca0e31f2459c85faf5
             {% do include_cols.append(col.column) %}
 
         {%- endif %}

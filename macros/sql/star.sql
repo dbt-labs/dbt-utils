@@ -12,10 +12,6 @@
     {% endif %}
 
     {%- set include_cols = [] %}
-    {%- set exclude_cols_lower_cased = [] %}
-    {%- for col in except -%}
-      {% do exclude_cols_lower_cased.append(col|lower) %}
-    {%- endfor %}
     {%- set cols = adapter.get_columns_in_relation(from) -%}
     {%- set except = except | map("lower") | list %}
     {%- for col in cols -%}

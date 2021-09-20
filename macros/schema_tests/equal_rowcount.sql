@@ -22,7 +22,7 @@ b as (
     select count(*) as count_b from {{ compare_model }}
 
 ),
-final as (
+final_counts as (
 
     select
         count_a,
@@ -33,6 +33,6 @@ final as (
 
 )
 
-select * from final
+select * from final_counts
 
 {% endmacro %}

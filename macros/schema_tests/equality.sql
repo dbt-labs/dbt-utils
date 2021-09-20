@@ -64,9 +64,9 @@ b_minus_a as (
 
 unioned as (
 
-    select 'a_minus_b' as which_diff, * from a_minus_b
+    select 'a_minus_b' as which_diff, a_minus_b.* from a_minus_b
     union all
-    select 'b_minus_a' as which_diff, * from b_minus_a
+    select 'b_minus_a' as which_diff, b_minus_a.* from b_minus_a
 
 )
 

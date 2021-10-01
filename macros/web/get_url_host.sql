@@ -8,7 +8,9 @@
     dbt_utils.split_part(
         dbt_utils.split_part(
             dbt_utils.replace(
-                dbt_utils.replace(field, "'http://'", "''"
+                dbt_utils.replace(
+                    dbt_utils.replace(field, "'android-app://'", "''"
+                    ), "'http://'", "''"
                 ), "'https://'", "''"
             ), "'/'", 1
         ), "'?'", 1

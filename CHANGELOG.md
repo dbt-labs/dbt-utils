@@ -1,12 +1,31 @@
+# dbt-utils v0.7.3
+
+## Under the hood
+
+- Fix bug introduced in 0.7.2 in dbt_utils.star which could cause the except argument to drop columns that were not explicitly specified ([#418](https://github.com/dbt-labs/dbt-utils/pull/418))
+- Remove deprecated argument from not_null_proportion ([#416](https://github.com/dbt-labs/dbt-utils/pull/416))
+- Change final select statement in not_null_proportion to avoid false positive failures ([#416](https://github.com/dbt-labs/dbt-utils/pull/416))
+
+# dbt-utils v0.7.2
+
+## Features
+
+- Add `not_null_proportion` schema test that allows the user to specify the minimum (`at_least`) tolerated proportion (e.g., `0.95`) of non-null values ([#411](https://github.com/dbt-labs/dbt-utils/pull/411))
+
+
+## Under the hood
+
+
+- Allow user to provide any case type when defining the `exclude` argument in `dbt_utils.star()` ([#403](https://github.com/dbt-labs/dbt-utils/pull/403))
+- Log whole row instead of just column name in 'accepted_range' schema test to allow better visibility into failures ([#413](https://github.com/dbt-labs/dbt-utils/pull/413))
+- Use column name to group in 'get_column_values ' to allow better cross db functionality ([#407](https://github.com/dbt-labs/dbt-utils/pull/407))
+
 # dbt-utils v0.7.1
 
 ## Under the hood
 
 - Declare compatibility with dbt v0.21.0, which has no breaking changes for this package ([#398](https://github.com/fishtown-analytics/dbt-utils/pull/398))
 
-## Features
-
-- Allow user to provide any case type when defining the `exclude` argument in `dbt_utils.star()` ([#403](https://github.com/dbt-labs/dbt-utils/pull/403))
 
 
 # dbt-utils v0.7.0

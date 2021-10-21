@@ -1,3 +1,6 @@
+# dbt-utils Next
+- Url link fixes within the README for `not_constant`, `dateadd`, `datediff` and updated the header `Logger` to `Jinja Helpers`.
+
 # dbt-utils v0.7.3
 
 ## Under the hood
@@ -14,8 +17,6 @@
 
 
 ## Under the hood
-
-
 - Allow user to provide any case type when defining the `exclude` argument in `dbt_utils.star()` ([#403](https://github.com/dbt-labs/dbt-utils/pull/403))
 - Log whole row instead of just column name in 'accepted_range' schema test to allow better visibility into failures ([#413](https://github.com/dbt-labs/dbt-utils/pull/413))
 - Use column name to group in 'get_column_values ' to allow better cross db functionality ([#407](https://github.com/dbt-labs/dbt-utils/pull/407))
@@ -25,7 +26,6 @@
 ## Under the hood
 
 - Declare compatibility with dbt v0.21.0, which has no breaking changes for this package ([#398](https://github.com/fishtown-analytics/dbt-utils/pull/398))
-
 
 
 # dbt-utils v0.7.0

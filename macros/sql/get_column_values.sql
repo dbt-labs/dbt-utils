@@ -32,7 +32,7 @@
                 {{ column }} as value
 
             from {{ target_relation }}
-            group by 1
+            group by {{ column }}
             order by {{ order_by }}
 
             {% if max_records is not none %}

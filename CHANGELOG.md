@@ -1,6 +1,33 @@
 # dbt-utils Next
 - Url link fixes within the README for `not_constant`, `dateadd`, `datediff` and updated the header `Logger` to `Jinja Helpers`.
 
+# dbt-utils v0.7.3
+
+## Under the hood
+
+- Fix bug introduced in 0.7.2 in dbt_utils.star which could cause the except argument to drop columns that were not explicitly specified ([#418](https://github.com/dbt-labs/dbt-utils/pull/418))
+- Remove deprecated argument from not_null_proportion ([#416](https://github.com/dbt-labs/dbt-utils/pull/416))
+- Change final select statement in not_null_proportion to avoid false positive failures ([#416](https://github.com/dbt-labs/dbt-utils/pull/416))
+
+# dbt-utils v0.7.2
+
+## Features
+
+- Add `not_null_proportion` schema test that allows the user to specify the minimum (`at_least`) tolerated proportion (e.g., `0.95`) of non-null values ([#411](https://github.com/dbt-labs/dbt-utils/pull/411))
+
+
+## Under the hood
+- Allow user to provide any case type when defining the `exclude` argument in `dbt_utils.star()` ([#403](https://github.com/dbt-labs/dbt-utils/pull/403))
+- Log whole row instead of just column name in 'accepted_range' schema test to allow better visibility into failures ([#413](https://github.com/dbt-labs/dbt-utils/pull/413))
+- Use column name to group in 'get_column_values ' to allow better cross db functionality ([#407](https://github.com/dbt-labs/dbt-utils/pull/407))
+
+# dbt-utils v0.7.1
+
+## Under the hood
+
+- Declare compatibility with dbt v0.21.0, which has no breaking changes for this package ([#398](https://github.com/fishtown-analytics/dbt-utils/pull/398))
+
+
 # dbt-utils v0.7.0
 ## Breaking changes
 
@@ -48,6 +75,7 @@ If you were relying on the position to match up your optional arguments, this ma
 ## Features
 * Add new argument, `order_by`, to `get_column_values` (code originally in [#289](https://github.com/fishtown-analytics/dbt-utils/pull/289/) from [@clausherther](https://github.com/clausherther), merged via [#349](https://github.com/fishtown-analytics/dbt-utils/pull/349/))
 * Add `slugify` macro, and use it in the pivot macro. :rotating_light: This macro uses the `re` module, which is only available in dbt v0.19.0+. As a result, this feature introduces a breaking change. ([#314](https://github.com/fishtown-analytics/dbt-utils/pull/314))
+* Add `not_null_proportion` schema test that allows the user to specify the minimum (`at_least`) tolerated proportion (e.g., `0.95`) of non-null values
 
 ## Under the hood
 * Update the default implementation of concat macro to use `||` operator ([#373](https://github.com/fishtown-analytics/dbt-utils/pull/314) from [@ChristopheDuong](https://github.com/ChristopheDuong)). Note this may be a breaking change for adapters that support `concat()` but not `||`, such as Apache Spark.

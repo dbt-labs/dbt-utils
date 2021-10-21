@@ -5,7 +5,7 @@
 {% macro default__test_accepted_range(model, column_name, min_value=none, max_value=none, inclusive=true) %}
 
 with meet_condition as(
-  select {{ column_name }}
+  select *
   from {{ model }}
 ),
 

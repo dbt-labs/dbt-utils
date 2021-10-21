@@ -1,5 +1,5 @@
 # dbt-utils Next
-
+- Url link fixes within the README for `not_constant`, `dateadd`, `datediff` and updated the header `Logger` to `Jinja Helpers`.
 
 # dbt-utils v0.7.0
 ## Breaking changes

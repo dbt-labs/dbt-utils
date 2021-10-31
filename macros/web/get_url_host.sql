@@ -7,7 +7,7 @@
 {%- set parsed =
     dbt_utils.split_part(
         dbt_utils.split_part(
-            regexp_replace(field, '^[-A-Za-z]+:\/\/', "''"
+            'regexp_replace'(field, '^[-A-Za-z]+:\/\/', "''"
             ), "'/'", 1
         ), "'?'", 1
     )

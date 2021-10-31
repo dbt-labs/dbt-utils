@@ -12,7 +12,7 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [expression_is_true](#expression_is_true-source)
   - [recency](#recency-source)
   - [at_least_one](#at_least_one-source)
-  - [not_constant](#not_constant)
+  - [not_constant](#not_constant-source)
   - [cardinality_equality](#cardinality_equality-source)
   - [unique_where](#unique_where-source)
   - [not_null_where](#not_null_where-source)
@@ -48,13 +48,13 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
 
 - [Cross-database macros](#cross-database-macros):
     - [current_timestamp](#current_timestamp-source)
-    - [dateadd](#date_add-source)
-    - [datediff](#datadiff-source)
+    - [dateadd](#dateadd-source)
+    - [datediff](#datediff-source)
     - [split_part](#split_part-source)
     - [last_day](#last_day-source)
     - [width_bucket](#width_bucket-source)
 
-- [Logger](#logger)
+- [Jinja Helpers](#jinja-helpers)
     - [pretty_time](#pretty_time-source)
     - [pretty_log_format](#pretty_log_format-source)
     - [log_info](#log_info-source)

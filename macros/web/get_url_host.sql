@@ -24,5 +24,4 @@
         dbt_utils.type_string()
         )}}
 
-
 {%- endmacro %}

@@ -4,13 +4,13 @@
 
 {% macro default__get_url_host(field) -%}
 
-{% set replace_schema = regexp_replace(field, '^[-A-Za-z]+:\/\/', "''") %}
+{% set replace_schema = regexp_replace(field, '^[-A-Za-z]+:\/\/', "''") | safe %}
 
 {%- set parsed =
     dbt_utils.split_part(
         dbt_utils.split_part(
             replace_schema, "'/'", 1
-          ), "'?'", 1
+            ), "'?'", 1
         )
 -%}
 

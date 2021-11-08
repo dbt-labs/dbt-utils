@@ -14,7 +14,9 @@ Describe your changes, and why you're making them.
     - [ ] Postgres
     - [ ] Redshift
     - [ ] Snowflake
-- [ ] I have "dispatched" any new macro(s) so non-core adapters can also use them (e.g. [the `star()` source](https://github.com/fishtown-analytics/dbt-utils/blob/master/macros/sql/star.sql))
+- [ ] I followed guidelines to ensure that my changes will work on "non-core" adapters by:
+    - [ ] dispatching any new macro(s) so non-core adapters can also use them (e.g. [the `star()` source](https://github.com/fishtown-analytics/dbt-utils/blob/master/macros/sql/star.sql))
+    - [ ] I use the `limit_zero()` macro in place of the literal string: `limit 0`
 - [ ] I have updated the README.md (if applicable)
 - [ ] I have added tests & descriptions to my models (and macros if applicable)
 - [ ] I have added an entry to CHANGELOG.md

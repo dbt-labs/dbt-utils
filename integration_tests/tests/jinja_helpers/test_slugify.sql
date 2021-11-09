@@ -3,5 +3,5 @@
     select 1 as col_name {{ limit_zero() }}
 {% else %}
     {# Return >0 rows for the test to fail #}
-    select 1
+    select 1 as col_name
 {% endif %}

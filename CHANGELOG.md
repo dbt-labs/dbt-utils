@@ -2,7 +2,7 @@
 🚨 This is a compatibility release in preparation for `dbt-core` v1.0.0 (🎉). Projects using dbt-utils 0.7.4 with dbt-core v1.0.0 can expect to see a deprecation warning. This will be resolved in dbt_utils v0.8.0.
 
 ## Fixes
-- `get_column_values()` now works correctly with mixed-quoting styles on Snowflake ([#424](https://github.com/dbt-labs/dbt-utils/issues/424), [PR tk])
+- `get_column_values()` now works correctly with mixed-quoting styles on Snowflake ([#424](https://github.com/dbt-labs/dbt-utils/issues/424), [#440](https://github.com/dbt-labs/dbt-utils/pull/440))
 
 # dbt-utils v0.7.4b1
 This is a compatibility release in preparation for `dbt-core` v1.0.0 (🎉). When dbt-core 1.0.0 hits release candidate status, we will release the final version of 0.7.4

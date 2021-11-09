@@ -9,10 +9,12 @@ This is a compatibility release in preparation for `dbt-core` v1.0.0 (🎉). Whe
 - Bump `require-dbt-version` to have an upper bound of `'<=1.0.0'`.
 - Url link fixes within the README for `not_constant`, `dateadd`, `datediff` and updated the header `Logger` to `Jinja Helpers`. ([#431](https://github.com/dbt-labs/dbt-utils/pull/431))
 - Fully qualified a `cte_name.*` in the `equality` test to avoid an Exasol error ([#420](https://github.com/dbt-labs/dbt-utils/pull/420))
+- Remove extra semicolon in `insert_by_period` materialization that was causing errors ([#439](https://github.com/dbt-labs/dbt-utils/pull/439))
 
 ## Contributors:
 - [joemarkiewicz](https://github.com/fivetran-joemarkiewicz)
 - [TimoKruth](https://github.com/TimoKruth)
+- [sean-rose](https://github.com/sean-rose)
 
 # dbt-utils v0.7.3
 

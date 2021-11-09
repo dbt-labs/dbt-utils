@@ -1,3 +1,10 @@
+# dbt-utils v0.8.0
+## 🚨 Breaking changes
+- The partition column in the `mutually_exclusive_ranges` test is now always called `partition_by_col`. This enables compatibility with `--store-failures` when multiple columns are concatenated together. If you have models built on top of the failures table, update them to reflect the new column name. ([#423](https://github.com/dbt-labs/dbt-utils/issues/423), [#430](https://github.com/dbt-labs/dbt-utils/pull/430))
+
+## Contributors:
+- [codigo-ergo-sum](https://github.com/codigo-ergo-sum) (#430)
+
 # dbt-utils v0.7.4b1
 This is a compatibility release in preparation for `dbt-core` v1.0.0 (🎉). When dbt-core 1.0.0 hits release candidate status, we will release the final version of 0.7.4
 

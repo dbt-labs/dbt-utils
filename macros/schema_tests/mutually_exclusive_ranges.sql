@@ -35,7 +35,7 @@ with window_functions as (
 
     select
         {% if partition_by %}
-        {{ partition_by }},
+        {{ partition_by }} as partition_by_col,
         {% endif %}
         {{ lower_bound_column }} as lower_bound,
         {{ upper_bound_column }} as upper_bound,

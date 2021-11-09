@@ -1,3 +1,5 @@
+# dbt-utils v0.8.0
+
 # dbt-utils v0.7.4b1
 This is a compatibility release in preparation for `dbt-core` v1.0.0 (🎉). When dbt-core 1.0.0 hits release candidate status, we will release the final version of 0.7.4
 

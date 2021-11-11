@@ -5,11 +5,20 @@
 ## Contributors:
 - [codigo-ergo-sum](https://github.com/codigo-ergo-sum) (#430)
 
+# dbt-utils v0.7.4
+🚨 This is a compatibility release in preparation for `dbt-core` v1.0.0 (🎉). Projects using dbt-utils 0.7.4 with dbt-core v1.0.0 can expect to see a deprecation warning. This will be resolved in dbt_utils v0.8.0.
+
+## Fixes
+- `get_column_values()` now works correctly with mixed-quoting styles on Snowflake ([#424](https://github.com/dbt-labs/dbt-utils/issues/424), [#440](https://github.com/dbt-labs/dbt-utils/pull/440))
+- Remove extra semicolon in `insert_by_period` materialization that was causing errors ([#439](https://github.com/dbt-labs/dbt-utils/pull/439))
+- Swap `limit 0` out for `{{ limit_zero() }}` on the `slugify()` tests to allow for compatibility with [tsql-utils](https://github.com/dbt-msft/tsql-utils) ([#437](https://github.com/dbt-labs/dbt-utils/pull/437))
+
+## Contributors:
+- [sean-rose](https://github.com/sean-rose)
+- [@swanderz](https://github.com/swanderz)
+
+
 # dbt-utils v0.7.4b1
-This is a compatibility release in preparation for `dbt-core` v1.0.0 (🎉). When dbt-core 1.0.0 hits release candidate status, we will release the final version of 0.7.4
-
-🚨 Projects using utils 0.7.4 with Core 1.0.0 can expect to see a deprecation warning. This will be resolved in 0.8.0 of dbt_utils alongside the final version of 1.0.0.
-
 :rotating_light:🚨 We have renamed the `master` branch to `main`. If you have a local version of `dbt-utils`, you will need to update to the new branch. See the [GitHub docs](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-branches-in-your-repository/renaming-a-branch#updating-a-local-clone-after-a-branch-name-changes) for more details.
 
 ## Under the hood

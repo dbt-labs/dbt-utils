@@ -20,6 +20,7 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [relationships_where](#relationships_where-source)
   - [mutually_exclusive_ranges](#mutually_exclusive_ranges-source)
   - [unique_combination_of_columns](#unique_combination_of_columns-source)
+  - [accepted_range](#accepted_range-source)
 
 **[Macros](#macros)**
 

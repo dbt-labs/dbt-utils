@@ -11,9 +11,9 @@
         {{ return(default) }}
     {% endif %}
 
-    {%- set target_relation = adapter.get_relation(database=table.database,
-                                          schema=table.schema,
-                                         identifier=table.identifier) -%}
+    {# Not all relations are tables. Renaming for internal clarity without breaking functionality for anyone using named arguments #}
+    {# TODO: Change the method signature in a future 0.x.0 release #}
+    {%- set target_relation = table -%}
 
     {%- call statement('get_column_values', fetch_result=true) %}
 

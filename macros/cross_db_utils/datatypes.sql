@@ -93,3 +93,18 @@
 {% macro bigquery__type_int() %}
     int64
 {% endmacro %}
+
+
+{# object  -------------------------------------------------     #}
+
+{%- macro type_object() -%}
+  {{ return(adapter.dispatch('type_object', 'dbt_utils')()) }}
+{%- endmacro -%}
+
+{% macro default__type_object() %}
+    object
+{% endmacro %}
+
+{% macro postgres__type_object() %}
+    bjson
+{% endmacro %}

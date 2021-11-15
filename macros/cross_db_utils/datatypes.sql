@@ -106,5 +106,5 @@
 {% endmacro %}
 
 {% macro postgres__type_object() %}
-    bjson
+    jsonb
 {% endmacro %}

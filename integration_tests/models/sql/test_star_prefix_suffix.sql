@@ -1,5 +1,5 @@
-{% set prefix_with = 'prefix_' %}
-{% set suffix_with = '_suffix' %}
+{% set prefix_with = 'prefix_' if target.type != 'snowflake' else 'PREFIX_' %}
+{% set suffix_with = '_suffix' if target.type != 'snowflake' else '_SUFFIX' %}
 
 with data as (
 

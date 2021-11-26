@@ -37,7 +37,7 @@ deprecated in a future release of dbt-utils. The {}.{} model triggered this warn
 {%- for field in field_list_xf -%}
 
     {%- set _ = fields.append(
-        "coalesce(cast(" ~ field ~ " as " ~ dbt_utils.type_string() ~ "), '')"
+        "coalesce(cast(`" ~ field ~ "` as " ~ dbt_utils.type_string() ~ "), '')"
     ) -%}
 
     {%- if not loop.last %}

@@ -54,6 +54,10 @@ seeds:
     sql:
       data_events_20180103:
         +schema: events
+      
+      data_get_column_values_dropped:
+        +post-hook: "{% do adapter.drop_relation(this) %}"
+
 
     schema_tests:
       data_test_sequential_timestamps:

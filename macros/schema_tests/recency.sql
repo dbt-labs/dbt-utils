@@ -1,5 +1,5 @@
-{% test recency(model, field, datepart, interval) %}
-  {{ return(adapter.dispatch('test_recency', 'dbt_utils')(model, field, datepart, interval)) }}
+{% test recency(model, field, datepart, interval, group_vars) %}
+  {{ return(adapter.dispatch('test_recency', 'dbt_utils')(model, field, datepart, interval, group_vars)) }}
 {% endtest %}
 
 {% macro default__test_recency(model, field, datepart, interval, group_vars) %}

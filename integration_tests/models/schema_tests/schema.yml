@@ -38,6 +38,14 @@ models:
           field: today
           interval: 1
 
+  - name: test_recency_group
+    tests:
+    - dbt_utils.recency:
+        datepart: day
+        field: today
+        interval: 1
+        group_vars: ['var1', 'var2']
+
   - name: test_equal_rowcount
     tests:
       - dbt_utils.equal_rowcount:

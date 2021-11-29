@@ -6,7 +6,7 @@ select
     'c' as var2,
     {{ dbt_utils.date_trunc('day', dbt_utils.current_timestamp()) }} as today
 
-union 
+union all
 
 select
     'b' as var1,
@@ -20,7 +20,7 @@ select
     'c' as var2,
     cast({{ dbt_utils.date_trunc('day', dbt_utils.current_timestamp()) }} as datetime) as today
 
-union
+union all
 
 select
     'b' as var1,

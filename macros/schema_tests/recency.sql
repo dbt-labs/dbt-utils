@@ -20,7 +20,7 @@ with recency as (
     from {{ model }}
 
     {% if group_vars|length > 0 %}
-    {{ dbt_utils.group_by(n= group_vars|length) }}
+    {{ dbt_utils.group_by(n = group_vars|length) }}
     {% endif %}
 
 )

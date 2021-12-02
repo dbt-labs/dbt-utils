@@ -5,7 +5,7 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
 
 ---- 
 ## Contents 
-
+ 
 **[Schema tests](#schema-tests)**
   - [equal_rowcount](#equal_rowcount-source)
   - [equality](#equality-source)

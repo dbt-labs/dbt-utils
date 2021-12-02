@@ -13,15 +13,18 @@
     {# TODO: Change the method signature in a future 0.x.0 release #}
     {%- set target_relation = table -%}
 
+    {# adapter.load_relation is a convenience wrapper to avoid building a Relation when we already have one #}
+    {% set relation_exists = (load_relation(target_relation)) is not none %}
+
     {%- call statement('get_column_values', fetch_result=true) %}
 
-        {%- if not target_relation and default is none -%}
+        {%- if not relation_exists and default is none -%}
 
-          {{ exceptions.raise_compiler_error("In get_column_values(): relation " ~ table ~ " does not exist and no default value was provided.") }}
+          {{ exceptions.raise_compiler_error("In get_column_values(): relation " ~ target_relation ~ " does not exist and no default value was provided.") }}
 
-        {%- elif not target_relation and default is not none -%}
+        {%- elif not relation_exists and default is not none -%}
 
-          {{ log("Relation " ~ table ~ " does not exist. Returning the default value: " ~ default) }}
+          {{ log("Relation " ~ target_relation ~ " does not exist. Returning the default value: " ~ default) }}
 
           {{ return(default) }}
 

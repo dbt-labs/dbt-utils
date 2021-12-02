@@ -9,7 +9,7 @@ with expected as (
 actual as (
     select 
         {% for val in column_values %}
-            {{ dbt_utils.safe_cast(val, dbt_utils.type_string()) }} as actual
+            {{ dbt_utils.safe_cast("'" ~ val ~ "'", dbt_utils.type_string()) }} as actual
             {% if not loop.last %}
                 union all
             {% endif %}

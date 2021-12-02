@@ -1,6 +1,16 @@
-# dbt-utils v0.7.4
+# dbt-utils 0.7.5
 🚨 This is a compatibility release in preparation for `dbt-core` v1.0.0 (🎉). Projects using dbt-utils 0.7.4 with dbt-core v1.0.0 can expect to see a deprecation warning. This will be resolved in dbt_utils v0.8.0.
 
+## Fixes
+- Regression in `get_column_values()` where the default would not be respected if the model didn't exist. ([#444](https://github.com/dbt-labs/dbt-utils/issues/444), [#448](https://github.com/dbt-labs/dbt-utils/pull/448))
+
+## Under the hood
+- get_url_host() macro now correctly handles URLs beginning with android-app:// (#426)
+
+## Contributors:
+- [foundinblank](https://github.com/foundinblank)
+
+# dbt-utils v0.7.4
 ## Fixes
 - `get_column_values()` now works correctly with mixed-quoting styles on Snowflake ([#424](https://github.com/dbt-labs/dbt-utils/issues/424), [#440](https://github.com/dbt-labs/dbt-utils/pull/440))
 - Remove extra semicolon in `insert_by_period` materialization that was causing errors ([#439](https://github.com/dbt-labs/dbt-utils/pull/439))

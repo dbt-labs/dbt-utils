@@ -5,7 +5,7 @@ jobs:
   
   integration-postgres:
     docker:
-      - image: circleci/python:3.6.13-stretch
+      - image: cimg/python:3.9.9
       - image: circleci/postgres:9.6.5-alpine-ram
 
     steps:
@@ -24,7 +24,7 @@ jobs:
 
   integration-redshift:
     docker:
-      - image: circleci/python:3.6.3-stretch
+      - image: cimg/python:3.9.9
     steps:
       - checkout
       - run:
@@ -35,7 +35,7 @@ jobs:
 
   integration-snowflake:
     docker:
-      - image: circleci/python:3.6.3-stretch
+      - image: cimg/python:3.9.9
     steps:
       - checkout
       - run:
@@ -48,7 +48,7 @@ jobs:
     environment:
       BIGQUERY_SERVICE_KEY_PATH: "/home/circleci/bigquery-service-key.json"
     docker:
-      - image: circleci/python:3.6.3-stretch
+      - image: cimg/python:3.9.9
     steps:
       - checkout
       - run:

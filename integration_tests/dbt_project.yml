@@ -8,16 +8,17 @@ profile: 'integration_tests'
 
 config-version: 2
 
-source-paths: ["models"]
+model-paths: ["models"]
 analysis-paths: ["analysis"]
 test-paths: ["tests"]
-data-paths: ["data"]
+seed-paths: ["data"]
 macro-paths: ["macros"]
 
 target-path: "target"  # directory which will store compiled SQL files
 clean-targets:         # directories to be removed by `dbt clean`
     - "target"
     - "dbt_modules"
+    - "dbt_packages"
 
 dispatch:
   - macro_namespace: 'dbt_utils'
@@ -56,9 +57,8 @@ seeds:
         +schema: events
       
       data_get_column_values_dropped:
-        # TODO: Ideally this would use the adapter, but it gives a "Tried to drop relation, but its type is null" error.
-        #+post-hook: "{% do adapter.drop_relation(this) %}"
-        +post-hook: "drop table {{ this }}"
+        # this.incorporate() to hardcode the node's type as otherwise dbt doesn't know it yet
+        +post-hook: "{% do adapter.drop_relation(this.incorporate(type='table')) %}"
 
 
     schema_tests:

@@ -3,10 +3,12 @@
 {% endmacro %}
 
 {% macro default__get_column_values(table, column, order_by='count(*) desc', max_records=none, default=none) -%}
-
+{% if default is none %}
+    {% set default = [] %}
+{% endif %}
     {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
     {%- if not execute -%}
-        {{ return('') }}
+        {{ return(default) }}
     {% endif %}
 
     {# Not all relations are tables. Renaming for internal clarity without breaking functionality for anyone using named arguments #}

@@ -56,7 +56,9 @@ seeds:
         +schema: events
       
       data_get_column_values_dropped:
-        +post-hook: "{% do adapter.drop_relation(this) %}"
+        # TODO: Ideally this would use the adapter, but it gives a "Tried to drop relation, but its type is null" error.
+        #+post-hook: "{% do adapter.drop_relation(this) %}"
+        +post-hook: "drop table {{ this }}"
 
 
     schema_tests:

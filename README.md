@@ -1160,7 +1160,7 @@ dbt_utils.default__datediff
 - [What is dbt](https://docs.getdbt.com/docs/introduction)?
 - Read the [dbt viewpoint](https://docs.getdbt.com/docs/about/viewpoint)
 - [Installation](https://docs.getdbt.com/dbt-cli/installation)
-- Join the [chat][https://www.getdbt.com/community/] on Slack for live questions and support.
+- Join the [chat](https://www.getdbt.com/community/) on Slack for live questions and support.
 
 
 ## Code of Conduct

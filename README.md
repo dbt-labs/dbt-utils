@@ -3,6 +3,9 @@ This [dbt](https://github.com/dbt-labs/dbt) package contains macros that can be 
 ## Installation Instructions
 Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the latest installation instructions, or [read the docs](https://docs.getdbt.com/docs/package-management) for more information on installing packages.
 
+## Compatibility matrix
+For compatibility details between versions of dbt-core and dbt-utils, [see this spreadsheet](https://docs.google.com/spreadsheets/d/1RoDdC69auAtrwiqmkRsgcFdZ3MdNpeKcJrWkmEpXVIs/edit#gid=0).
+
 ----
 ## Contents
 

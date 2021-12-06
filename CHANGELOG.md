@@ -1,3 +1,6 @@
+# dbt-utils (next version)
+## Fixes
+- `type_timestamp` macro now explicitly casts postgres and redshift warehouse timestamp data types as `timestamp without timezone`. 
 # dbt-utils v0.8.0
 ## 🚨 Breaking changes
 - dbt ONE POINT OH is here! This version of dbt-utils requires _any_ version (minor and patch) of v1, which means far less need for compatibility releases in the future. 

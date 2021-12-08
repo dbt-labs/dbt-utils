@@ -36,9 +36,14 @@ This macro gets back a dictionary like:
     {% if not result.error and result.skipped == False %}
 
         {% set model_result={} %}
+        -- Get the materelizaed type of our model, View, Incremental etc.
+        {% set materialization=config.get("materialized")%}
 
         {% do model_result.update({'name': result.node.name}) %}
         {% do model_result.update({'package': result.node.package_name}) %}
+        -- Schema the model belongs to
+        {% do model_result.update({'schema': result.node.schema}) %}
+        {% do model_result.update({'materialized': materialization}) %}
 
         {% for timing in result.timing %}
             {% if timing['name'] == 'execute' %}

@@ -1,5 +1,6 @@
 # dbt-utils v0.8.1
 
+## Under the hood
 - also ignore `dbt_packages/` directory [#463](https://github.com/dbt-labs/dbt-utils/pull/463)
 
 # dbt-utils v0.8.0

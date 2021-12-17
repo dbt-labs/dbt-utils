@@ -1,3 +1,7 @@
+# dbt-utils v0.8.1
+
+- also ignore `dbt_packages/` directory [#463](https://github.com/dbt-labs/dbt-utils/pull/463)
+
 # dbt-utils v0.8.0
 ## 🚨 Breaking changes
 - dbt ONE POINT OH is here! This version of dbt-utils requires _any_ version (minor and patch) of v1, which means far less need for compatibility releases in the future. 

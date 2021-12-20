@@ -24,7 +24,7 @@
 
     {%- for col in include_cols %}
 
-        {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}{{ adapter.quote(col)|trim }} as {{ adapter.quote(prefix ~ col ~ suffix)|trim }}
+        {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}{{ adapter.quote(col)|trim }} {%- if prefix!='' or suffix!='' -%} as {{ adapter.quote(prefix ~ col ~ suffix)|trim }} {%- endif -%}
         {%- if not loop.last %},{{ '\n  ' }}{% endif %}
 
     {%- endfor -%}

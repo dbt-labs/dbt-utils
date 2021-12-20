@@ -519,7 +519,7 @@ models:
           - dbt_utils.accepted_range:
               min_value: 0
               inclusive: false
-              where: "num_orders > 0"
+              where_clause: "num_orders > 0"
 ```
 
 ----

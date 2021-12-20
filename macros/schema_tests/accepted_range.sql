@@ -1,13 +1,15 @@
-{% test accepted_range(model, column_name, min_value=none, max_value=none, inclusive=true, where="true") %}
-  {{ return(adapter.dispatch('test_accepted_range', 'dbt_utils')(model, column_name, min_value, max_value, inclusive, where)) }}
+{% test accepted_range(model, column_name, min_value=none, max_value=none, inclusive=true, where_clause=none) %}
+  {{ return(adapter.dispatch('test_accepted_range', 'dbt_utils')(model, column_name, min_value, max_value, inclusive, where_clause)) }}
 {% endtest %}
 
-{% macro default__test_accepted_range(model, column_name, min_value=none, max_value=none, inclusive=true, where="true") %}
+{% macro default__test_accepted_range(model, column_name, min_value=none, max_value=none, inclusive=true, where_clause=none) %}
 
 with meet_condition as(
   select *
   from {{ model }}
-  where {{ where }}
+  {%- if where_clause is not none %}
+    where {{ where_clause }}
+  {%- endif %}
 ),
 
 validation_errors as (

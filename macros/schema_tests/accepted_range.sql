@@ -7,6 +7,7 @@
 with meet_condition as(
   select *
   from {{ model }}
+  
   {%- if where_clause is not none %}
     where {{ where_clause }}
   {%- endif %}

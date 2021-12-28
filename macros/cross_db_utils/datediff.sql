@@ -1,5 +1,5 @@
 {% macro datediff(first_date, second_date, datepart) %}
-  {{ return(adapter.dispatch('datediff', 'dbt_utils')(first_date, second_date, datepart)) }}
+  {{ return(adapter.dispatch('datediff', 'cc_dbt_utils')(first_date, second_date, datepart)) }}
 {% endmacro %}
 
 

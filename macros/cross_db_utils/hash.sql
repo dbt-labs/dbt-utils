@@ -1,5 +1,5 @@
 {% macro hash(field) -%}
-  {{ return(adapter.dispatch('hash', 'dbt_utils') (field)) }}
+  {{ return(adapter.dispatch('hash', 'cc_dbt_utils') (field)) }}
 {%- endmacro %}
 
 

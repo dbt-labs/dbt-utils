@@ -1,5 +1,5 @@
 {% macro cast_bool_to_text(field) %}
-  {{ adapter.dispatch('cast_bool_to_text', 'dbt_utils') (field) }}
+  {{ adapter.dispatch('cast_bool_to_text', 'cc_dbt_utils') (field) }}
 {% endmacro %}
 
 

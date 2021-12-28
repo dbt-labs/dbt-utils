@@ -1,5 +1,5 @@
 {% test equality(model, compare_model, compare_columns=None) %}
-  {{ return(adapter.dispatch('test_equality', 'dbt_utils')(model, compare_model, compare_columns)) }}
+  {{ return(adapter.dispatch('test_equality', 'cc_dbt_utils')(model, compare_model, compare_columns)) }}
 {% endtest %}
 
 {% macro default__test_equality(model, compare_model, compare_columns=None) %}

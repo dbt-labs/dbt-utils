@@ -1,5 +1,5 @@
 {% macro pretty_time(format='%H:%M:%S') %}
-    {{ return(adapter.dispatch('pretty_time', 'dbt_utils')(format)) }}
+    {{ return(adapter.dispatch('pretty_time', 'cc_dbt_utils')(format)) }}
 {% endmacro %}
 
 {% macro default__pretty_time(format='%H:%M:%S') %}

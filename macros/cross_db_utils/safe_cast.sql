@@ -1,5 +1,5 @@
 {% macro safe_cast(field, type) %}
-  {{ return(adapter.dispatch('safe_cast', 'dbt_utils') (field, type)) }}
+  {{ return(adapter.dispatch('safe_cast', 'cc_dbt_utils') (field, type)) }}
 {% endmacro %}
 
 

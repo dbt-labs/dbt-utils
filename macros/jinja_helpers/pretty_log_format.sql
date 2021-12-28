@@ -1,5 +1,5 @@
 {% macro pretty_log_format(message) %}
-    {{ return(adapter.dispatch('pretty_log_format', 'dbt_utils')(message)) }}
+    {{ return(adapter.dispatch('pretty_log_format', 'cc_dbt_utils')(message)) }}
 {% endmacro %}
 
 {% macro default__pretty_log_format(message) %}

@@ -1,5 +1,5 @@
 {%- macro union_relations(relations, column_override=none, include=[], exclude=[], source_column_name='_dbt_source_relation') -%}
-    {{ return(adapter.dispatch('union_relations', 'dbt_utils')(relations, column_override, include, exclude, source_column_name)) }}
+    {{ return(adapter.dispatch('union_relations', 'cc_dbt_utils')(relations, column_override, include, exclude, source_column_name)) }}
 {% endmacro %}
 
 {%- macro default__union_relations(relations, column_override=none, include=[], exclude=[], source_column_name='_dbt_source_relation') -%}

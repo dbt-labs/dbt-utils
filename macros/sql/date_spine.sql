@@ -1,5 +1,5 @@
 {% macro get_intervals_between(start_date, end_date, datepart) -%}
-    {{ return(adapter.dispatch('get_intervals_between', 'dbt_utils')(start_date, end_date, datepart)) }}
+    {{ return(adapter.dispatch('get_intervals_between', 'cc_dbt_utils')(start_date, end_date, datepart)) }}
 {%- endmacro %}
 
 {% macro default__get_intervals_between(start_date, end_date, datepart) -%}
@@ -24,7 +24,7 @@
 
 
 {% macro date_spine(datepart, start_date, end_date) %}
-    {{ return(adapter.dispatch('date_spine', 'dbt_utils')(datepart, start_date, end_date)) }}
+    {{ return(adapter.dispatch('date_spine', 'cc_dbt_utils')(datepart, start_date, end_date)) }}
 {%- endmacro %}
 
 {% macro default__date_spine(datepart, start_date, end_date) %}

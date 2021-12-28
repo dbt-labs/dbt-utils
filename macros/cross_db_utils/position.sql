@@ -1,5 +1,5 @@
 {% macro position(substring_text, string_text) -%}
-    {{ return(adapter.dispatch('position', 'dbt_utils') (substring_text, string_text)) }}
+    {{ return(adapter.dispatch('position', 'cc_dbt_utils') (substring_text, string_text)) }}
 {% endmacro %}
 
 

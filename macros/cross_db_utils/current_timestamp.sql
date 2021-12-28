@@ -1,5 +1,5 @@
 {% macro current_timestamp() -%}
-  {{ return(adapter.dispatch('current_timestamp', 'dbt_utils')()) }}
+  {{ return(adapter.dispatch('current_timestamp', 'cc_dbt_utils')()) }}
 {%- endmacro %}
 
 {% macro default__current_timestamp() %}
@@ -17,7 +17,7 @@
 
 
 {% macro current_timestamp_in_utc() -%}
-  {{ return(adapter.dispatch('current_timestamp_in_utc', 'dbt_utils')()) }}
+  {{ return(adapter.dispatch('current_timestamp_in_utc', 'cc_dbt_utils')()) }}
 {%- endmacro %}
 
 {% macro default__current_timestamp_in_utc() %}

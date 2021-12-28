@@ -1,3 +1,18 @@
+{#- 
+     {{ star(
+      from=ref('transform_policy_endorsement_coverages'),
+      except=['Total_Premium']
+      relation_alias= 'prem',
+      contains_item = 'Premium', --OPTIONAL
+      include_or_exclude_contains_item = 'include'  --OPTIONAL
+      ) }}
+    
+    This example would retrive all premium values like (bi_premium, pd_premium) while excluding 'total_premium'.
+    
+    *column_contains makes it so we only retrieve columns that contain the value being passed*
+    
+    -#}
+
 {% macro star(from, relation_alias=False, except=[], contains_item = none, include_or_exclude_contains_item = none, separator = ',', column_prefix = none) -%}
     {{ return(adapter.dispatch('star', 'cc_dbt_utils')(from, relation_alias, except, contains_item, include_or_exclude_contains_item, separator, column_prefix)) }}
 {% endmacro %}

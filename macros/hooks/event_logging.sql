@@ -1,5 +1,5 @@
 {% macro get_audit_schema() %}
-    {{{{ return(adapter.dispatch('get_audit_schema', 'cc_dbt_utilis')()) }}}}
+    {{ return(adapter.dispatch('get_audit_schema', 'cc_dbt_utils')()) }}
 {% endmacro %}
 
 {% macro default__get_audit_schema() %}
@@ -13,7 +13,7 @@
 {% endmacro %}
 
 {% macro get_audit_relation() %}
-    {{{{ return(adapter.dispatch('get_audit_relation', 'cc_dbt_utilis')()) }}}}
+    {{ return(adapter.dispatch('get_audit_relation', 'cc_dbt_utils')()) }}
 {% endmacro %}
 
 {% macro default__get_audit_relation() %}
@@ -34,7 +34,7 @@
 
 
 {% macro log_audit_event(event_data, created_at) %}
-    {{{{ return(adapter.dispatch('log_audit_event', 'cc_dbt_utilis')(event_data, created_at)) }}}}
+    {{ return(adapter.dispatch('log_audit_event', 'cc_dbt_utils')(event_data, created_at)) }}
 {% endmacro %}
 
 {% macro default__log_audit_event(event_data, created_at) %}
@@ -57,7 +57,7 @@
 
 
 {% macro create_audit_schema() %}
-    {{{{ return(adapter.dispatch('create_audit_schema', 'cc_dbt_utilis')()) }}}}
+    {{ return(adapter.dispatch('create_audit_schema', 'cc_dbt_utils')()) }}
 {% endmacro %}
 
 {% macro default__create_audit_schema() %}
@@ -66,7 +66,7 @@
 
 
 {% macro create_audit_log_table() %}
-    {{{{ return(adapter.dispatch('create_audit_log_table', 'cc_dbt_utilis')()) }}}}
+    {{ return(adapter.dispatch('create_audit_log_table', 'cc_dbt_utils')()) }}
 {% endmacro %}
 
 {% macro default__create_audit_log_table() %}
@@ -120,10 +120,10 @@
 
 
 {% macro log_run_end_event(results, flags, target) %}
-    {{{{ return(adapter.dispatch('log_run_end_event', 'cc_dbt_utilis')(results, flags, target)) }}}}
+    {{ return(adapter.dispatch('log_run_end_event', 'cc_dbt_utils')(results, flags, target)) }}
 {% endmacro %}
 
-{% macro default_log_run_end_event(results, flags, target) %}
+{% macro default__log_run_end_event(results, flags, target) %}
     {% set run_audit=cc_dbt_utils.get_run_audit(results, flags, target) %}
     
     {{ cc_dbt_utils.log_audit_event(run_audit) }}

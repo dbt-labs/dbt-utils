@@ -1,5 +1,5 @@
 {% macro get_run_audit(results, flags, target) %}
-    {{{{ return(adapter.dispatch('get_run_audit', 'cc_dbt_utilis')(results, flags, target)) }}}}
+    {{ return(adapter.dispatch('get_run_audit', 'cc_dbt_utils')(results, flags, target)) }}
 {% endmacro %}
 
 {% macro default__get_run_audit(results, flags, target) %}
@@ -90,10 +90,10 @@ select 1;
 {% endmacro %}
 
 {% macro get_target_keys() %}
-    {{{{ return(adapter.dispatch('get_target_keys', 'cc_dbt_utilis')()) }}}}
+    {{ return(adapter.dispatch('get_target_keys', 'cc_dbt_utils')()) }}
 {% endmacro %}
 
-{% macro get_target_keys() %}
+{% macro default__get_target_keys() %}
 {# Abstracting this into a macro so people can override it in their own projects #}
     {{ return([
         'name',

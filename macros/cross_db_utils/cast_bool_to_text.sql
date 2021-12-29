@@ -4,7 +4,7 @@
 
 
 {% macro default__cast_bool_to_text(field) %}
-    cast({{ field }} as {{ dbt_utils.type_string() }})
+    cast({{ field }} as {{ cc_dbt_utils.type_string() }})
 {% endmacro %}
 
 {% macro redshift__cast_bool_to_text(field) %}

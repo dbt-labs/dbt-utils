@@ -44,8 +44,8 @@ Arguments:
 
   {%- do table_columns.update({relation: []}) %}
 
-  {%- do dbt_utils._is_relation(relation, 'unpivot') -%}
-  {%- do dbt_utils._is_ephemeral(relation, 'unpivot') -%}
+  {%- do cc_dbt_utils._is_relation(relation, 'unpivot') -%}
+  {%- do cc_dbt_utils._is_ephemeral(relation, 'unpivot') -%}
   {%- set cols = adapter.get_columns_in_relation(relation) %}
 
   {%- for col in cols -%}
@@ -61,9 +61,9 @@ Arguments:
         {{ exclude_col }},
       {%- endfor %}
 
-      cast('{{ col.column }}' as {{ dbt_utils.type_string() }}) as {{ field_name }},
+      cast('{{ col.column }}' as {{ cc_dbt_utils.type_string() }}) as {{ field_name }},
       cast(  {% if col.data_type == 'boolean' %}
-           {{ dbt_utils.cast_bool_to_text(col.column) }}
+           {{ cc_dbt_utils.cast_bool_to_text(col.column) }}
              {% else %}
            {{ col.column }}
              {% endif %}

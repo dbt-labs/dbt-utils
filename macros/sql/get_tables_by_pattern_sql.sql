@@ -25,7 +25,7 @@
 {% macro bigquery__get_tables_by_pattern_sql(schema_pattern, table_pattern, exclude='', database=target.database) %}
 
     {% if '%' in schema_pattern %}
-        {% set schemata=dbt_utils._bigquery__get_matching_schemata(schema_pattern, database) %}
+        {% set schemata=cc_dbt_utils._bigquery__get_matching_schemata(schema_pattern, database) %}
     {% else %}
         {% set schemata=[schema_pattern] %}
     {% endif %}

@@ -13,8 +13,8 @@
         case
             when
                 mod(
-                    {{ dbt_utils.safe_cast(expr, dbt_utils.type_numeric() ) }},
-                    {{ dbt_utils.safe_cast(bin_size, dbt_utils.type_numeric() ) }}
+                    {{ cc_dbt_utils.safe_cast(expr, cc_dbt_utils.type_numeric() ) }},
+                    {{ cc_dbt_utils.safe_cast(bin_size, cc_dbt_utils.type_numeric() ) }}
                 ) = 0
             then 1
             else 0
@@ -38,8 +38,8 @@
         -- to break ties when the amount is exactly at the bucket edge
         case
             when
-                {{ dbt_utils.safe_cast(expr, dbt_utils.type_numeric() ) }} %
-                {{ dbt_utils.safe_cast(bin_size, dbt_utils.type_numeric() ) }}
+                {{ cc_dbt_utils.safe_cast(expr, cc_dbt_utils.type_numeric() ) }} %
+                {{ cc_dbt_utils.safe_cast(bin_size, cc_dbt_utils.type_numeric() ) }}
                  = 0
             then 1
             else 0

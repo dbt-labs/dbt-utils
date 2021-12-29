@@ -9,10 +9,10 @@
       select
           coalesce(max("{{timestamp_field}}"), '{{start_date}}')::timestamp as start_timestamp,
           coalesce(
-            {{dbt_utils.dateadd('millisecond',
+            {{cc_dbt_utils.dateadd('millisecond',
                                 -1,
                                 "nullif('" ~ stop_date ~ "','')::timestamp")}},
-            {{dbt_utils.current_timestamp()}}
+            {{cc_dbt_utils.current_timestamp()}}
           ) as stop_timestamp
       from "{{target_schema}}"."{{target_table}}"
     )
@@ -20,7 +20,7 @@
     select
       start_timestamp,
       stop_timestamp,
-      {{dbt_utils.datediff('start_timestamp',
+      {{cc_dbt_utils.datediff('start_timestamp',
                            'stop_timestamp',
                            period)}}  + 1 as num_periods
     from data
@@ -106,7 +106,7 @@
     {%- endcall %}
   {%- endif %}
 
-  {% set _ = dbt_utils.get_period_boundaries(schema,
+  {% set _ = cc_dbt_utils.get_period_boundaries(schema,
                                               identifier,
                                               timestamp_field,
                                               start_date,
@@ -123,13 +123,13 @@
   -- commit each period as a separate transaction
   {% for i in range(num_periods) -%}
     {%- set msg = "Running for " ~ period ~ " " ~ (i + 1) ~ " of " ~ (num_periods) -%}
-    {{ dbt_utils.log_info(msg) }}
+    {{ cc_dbt_utils.log_info(msg) }}
 
     {%- set tmp_identifier = model['name'] ~ '__dbt_incremental_period' ~ i ~ '_tmp' -%}
     {%- set tmp_relation = api.Relation.create(identifier=tmp_identifier,
                                                schema=schema, type='table') -%}
     {% call statement() -%}
-      {% set tmp_table_sql = dbt_utils.get_period_sql(target_cols_csv,
+      {% set tmp_table_sql = cc_dbt_utils.get_period_sql(target_cols_csv,
                                                        sql,
                                                        timestamp_field,
                                                        period,
@@ -161,7 +161,7 @@
     {%- if loop_vars.update({'sum_rows_inserted': sum_rows_inserted}) %} {% endif -%}
 
     {%- set msg = "Ran for " ~ period ~ " " ~ (i + 1) ~ " of " ~ (num_periods) ~ "; " ~ rows_inserted ~ " records inserted" -%}
-    {{ dbt_utils.log_info(msg) }}
+    {{ cc_dbt_utils.log_info(msg) }}
 
   {%- endfor %}
 

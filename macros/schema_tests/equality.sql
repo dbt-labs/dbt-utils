@@ -20,7 +20,7 @@
 {% endif %}
 
 -- setup
-{%- do dbt_utils._is_relation(model, 'test_equality') -%}
+{%- do cc_dbt_utils._is_relation(model, 'test_equality') -%}
 
 {#-
 If the compare_cols arg is provided, we can run this test without querying the
@@ -28,7 +28,7 @@ information schema — this allows the model to be an ephemeral model
 -#}
 
 {%- if not compare_columns -%}
-    {%- do dbt_utils._is_ephemeral(model, 'test_equality') -%}
+    {%- do cc_dbt_utils._is_ephemeral(model, 'test_equality') -%}
     {%- set compare_columns = adapter.get_columns_in_relation(model) | map(attribute='quoted') -%}
 {%- endif -%}
 
@@ -49,7 +49,7 @@ b as (
 a_minus_b as (
 
     select {{compare_cols_csv}} from a
-    {{ dbt_utils.except() }}
+    {{ cc_dbt_utils.except() }}
     select {{compare_cols_csv}} from b
 
 ),
@@ -57,7 +57,7 @@ a_minus_b as (
 b_minus_a as (
 
     select {{compare_cols_csv}} from b
-    {{ dbt_utils.except() }}
+    {{ cc_dbt_utils.except() }}
     select {{compare_cols_csv}} from a
 
 ),

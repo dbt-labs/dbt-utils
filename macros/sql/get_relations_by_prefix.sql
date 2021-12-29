@@ -6,7 +6,7 @@
 
     {%- call statement('get_tables', fetch_result=True) %}
 
-      {{ dbt_utils.get_tables_by_prefix_sql(schema, prefix, exclude, database) }}
+      {{ cc_dbt_utils.get_tables_by_prefix_sql(schema, prefix, exclude, database) }}
 
     {%- endcall -%}
 

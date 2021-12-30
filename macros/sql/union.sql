@@ -61,6 +61,10 @@
 
     {%- set ordered_column_names = column_superset.keys() -%}
 
+    {%- if not column_superset.keys() -%}
+        {{ exceptions.raise_compiler_error("No columns to union.") }}
+    {%- endif -%}
+
     {%- for relation in relations %}
 
         (

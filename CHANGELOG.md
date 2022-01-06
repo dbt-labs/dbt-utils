@@ -10,7 +10,8 @@
 ## 🚨 Breaking changes
 - dbt ONE POINT OH is here! This version of dbt-utils requires _any_ version (minor and patch) of v1, which means far less need for compatibility releases in the future. 
 - The partition column in the `mutually_exclusive_ranges` test is now always called `partition_by_col`. This enables compatibility with `--store-failures` when multiple columns are concatenated together. If you have models built on top of the failures table, update them to reflect the new column name. ([#423](https://github.com/dbt-labs/dbt-utils/issues/423), [#430](https://github.com/dbt-labs/dbt-utils/pull/430))
-
+## Under the hood
+- make date_spine macro compatible with the Athena connector (#462)
 ## Contributors:
 - [codigo-ergo-sum](https://github.com/codigo-ergo-sum) (#430)
 

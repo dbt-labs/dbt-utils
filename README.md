@@ -667,7 +667,7 @@ This macro returns a dictionary from a sql query, so that you don't need to inte
 select
 
     {% for city in places['CITY'] | unique -%}
-      sum(case when city = '{{ city }}' then 1 else 0 end) as users_in_{{ city | replace(' ', '_') }},
+      sum(case when city = '{{ city }}' then 1 else 0 end) as users_in_{{ dbt_utils.slugify(city) }},
     {% endfor %}
 
     {% for state in places['STATE'] | unique -%}

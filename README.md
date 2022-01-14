@@ -658,17 +658,25 @@ This macro returns a dictionary from a sql query, so that you don't need to inte
 
 **Usage:**
 ```
--- Returns a dictionary of the users table where the state is California
-{% set california_cities = dbt_utils.get_query_results_as_dict("select * from" ~ ref('cities') ~ "where state = 'CA' and city is not null ") %}
-select
-  city,
-{% for city in california_cities %}
-  sum(case when city = {{ city }} then 1 else 0 end) as users_in_{{ city }},
-{% endfor %}
-  count(*) as total
-from {{ ref('users') }}
+{% set sql_statement %}
+    select city, state from {{ ref('users) }}
+{% endset %}
 
-group by 1
+{%- set places = dbt_utils.get_query_results_as_dict(sql_statement) -%}
+
+select
+
+    {% for city in places['CITY'] | unique -%}
+      sum(case when city = '{{ city }}' then 1 else 0 end) as users_in_{{ dbt_utils.slugify(city) }},
+    {% endfor %}
+
+    {% for state in places['STATE'] | unique -%}
+      sum(case when state = '{{ state }}' then 1 else 0 end) as users_in_{{ state }},
+    {% endfor %}
+
+    count(*) as total_total
+
+from {{ ref('users') }}
 ```
 
 ### SQL generators
@@ -1043,7 +1051,7 @@ select
 order_id,
 {%- for payment_method in payment_methods %}
 sum(case when payment_method = '{{ payment_method }}' then amount end)
-  as {{ slugify(payment_method) }}_amount,
+  as {{ dbt_utils.slugify(payment_method) }}_amount,
 
 {% endfor %}
 ...

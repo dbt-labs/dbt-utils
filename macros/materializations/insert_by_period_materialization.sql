@@ -144,7 +144,7 @@
                                          to_relation=target_relation)}}
     {%- set name = 'main-' ~ i -%}
     {% call statement(name, fetch_result=True) -%}
-      {%- if old_relation is not none and unique_key is not none %}
+      {%- if unique_key is not none %}
       delete from {{ target_relation }}
       where ({{ unique_key }}) in (
         select ({{ unique_key }})

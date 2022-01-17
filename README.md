@@ -1078,7 +1078,8 @@ Progress is logged in the command line for easy monitoring.
     period = "day",
     timestamp_field = "created_at",
     start_date = "2018-01-01",
-    stop_date = "2018-06-01")
+    stop_date = "2018-06-01",
+    unique_key = "id")
 }}
 
 with events as (
@@ -1098,11 +1099,11 @@ with events as (
 * `timestamp_field`: the column name of the timestamp field that will be used to break the model into smaller queries
 * `start_date`: literal date or timestamp - generally choose a date that is earlier than the start of your data
 * `stop_date`: literal date or timestamp (default=current_timestamp)
+* `unique_key`: optional key to use to deduplicate records, this is the same as `unique_key` in [incremental models](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/configuring-incremental-models#defining-a-uniqueness-constraint-optional)
 
 **Caveats:**
 * This materialization is compatible with dbt 0.10.1.
 * This materialization has been written for Redshift.
-* This materialization can only be used for a model where records are not expected to change after they are created.
 * Any model post-hooks that use `{{ this }}` will fail using this materialization. For example:
 ```yaml
 models:

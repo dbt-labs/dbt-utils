@@ -1,3 +1,7 @@
+# dbt-utils v0.9.0
+## Features
+- Add `unique_key` configuration option to `insert_by_period` materialization ([#478](https://github.com/dbt-labs/dbt-utils/pull/478))
+
 # dbt-utils v0.8.0
 ## 🚨 Breaking changes
 - dbt ONE POINT OH is here! This version of dbt-utils requires _any_ version (minor and patch) of v1, which means far less need for compatibility releases in the future. 

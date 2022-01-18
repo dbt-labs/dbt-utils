@@ -229,6 +229,8 @@ models:
 #### unique_where ([source](macros/schema_tests/test_unique_where.sql))
 This test validates that there are no duplicate values present in a field for a subset of rows by specifying a `where` clause.
 
+*Warning*: This test is no longer supported. Starting in dbt v0.20.0, the built-in `unique` test supports a `where` config. [See the dbt docs for more details](https://docs.getdbt.com/reference/resource-configs/where).
+
 **Usage:**
 ```yaml
 version: 2
@@ -245,7 +247,7 @@ models:
 #### not_null_where ([source](macros/schema_tests/test_not_null_where.sql))
 This test validates that there are no null values present in a column for a subset of rows by specifying a `where` clause.
 
-*Warning*: This test is no longer supported as starting in dbt v0.20.0, the built-in `not_null` test supports a `where` config. [See the dbt docs for more details](https://docs.getdbt.com/reference/resource-configs/where).
+*Warning*: This test is no longer supported. Starting in dbt v0.20.0, the built-in `not_null` test supports a `where` config. [See the dbt docs for more details](https://docs.getdbt.com/reference/resource-configs/where).
 
 **Usage:**
 ```yaml

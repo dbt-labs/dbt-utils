@@ -12,7 +12,7 @@ with windowed as (
         {{ column_name }},
         lag({{ column_name }}) over (
             order by {{ column_name }}
-        ) as previous_{{ column_name }}
+        ) as _previous
     from {{ model }}
 ),
 
@@ -21,9 +21,9 @@ validation_errors as (
         *
     from windowed
     {% if datepart %}
-    where not(cast({{ column_name }} as {{ dbt_utils.type_timestamp() }})= cast({{ dbt_utils.dateadd(datepart, interval, 'previous_' + column_name) }} as {{ dbt_utils.type_timestamp() }}))
+    where not(cast({{ column_name }} as {{ dbt_utils.type_timestamp() }})= cast({{ dbt_utils.dateadd(datepart, interval, '_previous') }} as {{ dbt_utils.type_timestamp() }}))
     {% else %}
-    where not({{ column_name }} = previous_{{ column_name }} + {{ interval }})
+    where not({{ column_name }} = _previous + {{ interval }})
     {% endif %}
 )
 

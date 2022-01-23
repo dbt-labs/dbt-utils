@@ -1,10 +1,6 @@
-{%- macro union_relations(relations, column_override=none, include=[], exclude=[], source_column_name='_dbt_source_relation') -%}
-    {{ return(adapter.dispatch('union_relations', 'dbt_utils')(relations, column_override, include, exclude, source_column_name)) }}
-{% endmacro %}
+{%- macro union_relations_ex(relations, column_override=none, include=[], exclude=[], source_column_name='_dbt_source_relation', rename_columns=none) -%}
 
-{%- macro default__union_relations(relations, column_override=none, include=[], exclude=[], source_column_name='_dbt_source_relation') -%}
-
-    {%- if exclude and include -%}
+{%- if exclude and include -%}
         {{ exceptions.raise_compiler_error("Both an exclude and include list were provided to the `union` macro. Only one is allowed") }}
     {%- endif -%}
 
@@ -14,13 +10,14 @@
     {% endif -%}
 
     {%- set column_override = column_override if column_override is not none else {} -%}
+    {%- set rename_columns = rename_columns if rename_columns is not none else {} -%}
 
     {%- set relation_columns = {} -%}
     {%- set column_superset = {} -%}
 
     {%- for relation in relations -%}
 
-        {%- do relation_columns.update({relation: []}) -%}
+        {%- do relation_columns.update({relation: {}}) -%}
 
         {%- do dbt_utils._is_relation(relation, 'union_relations') -%}
         {%- do dbt_utils._is_ephemeral(relation, 'union_relations') -%}
@@ -37,20 +34,22 @@
         {%- else -%}
 
             {#- update the list of columns in this relation -#}
-            {%- do relation_columns[relation].append(col.column) -%}
+            {%- set rename_col = rename_columns[col.column]|default(col.column) -%}
+            
+            {%- do relation_columns[relation].update({rename_col: col}) -%}
 
-            {%- if col.column in column_superset -%}
+            {%- if rename_col in column_superset -%}
 
-                {%- set stored = column_superset[col.column] -%}
+                {%- set stored = column_superset[rename_col] -%}
                 {%- if col.is_string() and stored.is_string() and col.string_size() > stored.string_size() -%}
 
-                    {%- do column_superset.update({col.column: col}) -%}
+                    {%- do column_superset.update({rename_col: col}) -%}
 
                 {%- endif %}
 
             {%- else -%}
 
-                {%- do column_superset.update({col.column: col}) -%}
+                {%- do column_superset.update({rename_col: col}) -%}
 
             {%- endif -%}
 
@@ -68,11 +67,11 @@
 
                 cast({{ dbt_utils.string_literal(relation) }} as {{ dbt_utils.type_string() }}) as {{ source_column_name }},
                 {% for col_name in ordered_column_names -%}
-
                     {%- set col = column_superset[col_name] %}
                     {%- set col_type = column_override.get(col.column, col.data_type) %}
-                    {%- set col_name = adapter.quote(col_name) if col_name in relation_columns[relation] else 'null' %}
-                    cast({{ col_name }} as {{ col_type }}) as {{ col.quoted }} {% if not loop.last %},{% endif -%}
+                    {%- set col_name_quote = adapter.quote(col_name) %}
+                    {%- set orig_col_name = adapter.quote(relation_columns[relation][col_name].column) if col_name in relation_columns[relation] else 'null' %}
+                    cast({{ orig_col_name }} as {{ col_type }}) as {{ col_name_quote }} {% if not loop.last %},{% endif -%}
 
                 {%- endfor %}
 

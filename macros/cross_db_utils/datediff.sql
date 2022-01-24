@@ -61,6 +61,10 @@
 {# redshift should use default instead of postgres #}
 {% macro redshift__datediff(first_date, second_date, datepart) %}
 
-    {{ return(dbt_utils.default__datediff(first_date, second_date, datepart)) }}
+    datediff(
+        {{ datepart }},
+        {{ first_date }}::{{ dbt_utils.type_timestamp()}},
+        {{ second_date }}::{{ dbt_utils.type_timestamp()}}
+        )
 
 {% endmacro %}

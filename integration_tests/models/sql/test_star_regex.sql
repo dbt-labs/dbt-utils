@@ -1,13 +1,18 @@
 {% set regex = '.+[^3]$' %}
 
 
-with data as (
+WITH data AS (
 
-    select
-        {{ dbt_utils.star(from=ref('data_star'), regex=regex) }}
+    SELECT
+        {{ dbt_utils.star(FROM=ref('data_star'), regex=regex) }}
 
-    from {{ ref('data_star') }}
+    FROM {{ ref('data_star') }}
 
 )
 
-select * from data
+SELECT
+
+  *
+
+FROM data
+

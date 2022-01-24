@@ -4,7 +4,11 @@
 - also ignore `dbt_packages/` directory [#463](https://github.com/dbt-labs/dbt-utils/pull/463)
 
 ## Fixes
-- `type_timestamp` macro now explicitly casts postgres and redshift warehouse timestamp data types as `timestamp without time zone`, to be consistent with Snowflake behaviour (`timestamp_ntz`). 
+- `type_timestamp` macro now explicitly casts postgres and redshift warehouse timestamp data types as `timestamp without time zone`, to be consistent with Snowflake behaviour (`timestamp_ntz`).
+- `union_relations` macro will now raise an exception if the use of `include` or `exclude` results in no columns ([#473](https://github.com/dbt-labs/dbt-utils/pull/473), [#266](https://github.com/dbt-labs/dbt-utils/issues/266)).
+
+## Contributors:
+- [grahamwetzler](https://github.com/grahamwetzler) (#473)
 
 # dbt-utils v0.8.0
 ## 🚨 Breaking changes

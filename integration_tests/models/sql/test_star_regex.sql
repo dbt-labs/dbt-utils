@@ -10,9 +10,5 @@ WITH data AS (
 
 )
 
-SELECT
-
-  *
-
-FROM data
+SELECT * FROM data
 

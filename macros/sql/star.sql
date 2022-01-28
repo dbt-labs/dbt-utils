@@ -35,14 +35,14 @@
     {% else %}
 
         {%- for col in include_cols %}
-
             {%- set col = col.column | string -%}
+
             {%- if modules.re.match(regex, current_column, modules.re.IGNORECASE) -%}
                 {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}{{ adapter.quote(col)|trim }} as {{ adapter.quote(prefix ~ col ~ suffix)|trim }}
                 {%- if not loop.last %},{{ '\n  ' }}{% endif %}
 
+            {%- endif -%}
         {%- endfor -%}
-
     {%- endif -%}
 
 {%- endmacro %}

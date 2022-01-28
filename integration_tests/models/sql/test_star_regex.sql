@@ -1,4 +1,4 @@
-{% set regex = '.+[^3]$' %}
+{% set regex = ".+[^3]$" | string %}
 
 
 with data as (

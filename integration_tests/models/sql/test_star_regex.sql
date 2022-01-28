@@ -3,8 +3,7 @@
 
 WITH data AS (
 
-    SELECT
-        {{ dbt_utils.star(FROM=ref('data_star'), regex=regex) }}
+    SELECT {{ dbt_utils.star(ref('data_star'), regex=regex) }}
 
     FROM {{ ref('data_star') }}
 

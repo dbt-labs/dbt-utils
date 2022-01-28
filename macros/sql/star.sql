@@ -1,8 +1,8 @@
-{% macro star(from, relation_alias=False, except=[], regex=False, prefix='', suffix='') -%}
+{% macro star(from, relation_alias=False, except=[], regex='', prefix='', suffix='') -%}
     {{ return(adapter.dispatch('star', 'dbt_utils')(from, relation_alias, except, regex, prefix, suffix)) }}
 {% endmacro %}
 
-{% macro default__star(from, relation_alias=False, except=[], regex=False, prefix='', suffix='') -%}
+{% macro default__star(from, relation_alias=False, except=[], regex='', prefix='', suffix='') -%}
     {%- do dbt_utils._is_relation(from, 'star') -%}
     {%- do dbt_utils._is_ephemeral(from, 'star') -%}
 
@@ -23,16 +23,7 @@
     {%- endfor %}
 
 
-    {%- if not regex %}
-
-        {%- for col in include_cols %}
-
-            {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}{{ adapter.quote(col)|trim }} as {{ adapter.quote(prefix ~ col ~ suffix)|trim }}
-            {%- if not loop.last %},{{ '\n  ' }}{% endif %}
-
-        {%- endfor -%}
-
-    {% else %}
+    {%- if regex | length %}
 
         {%- for col in include_cols %}
             {%- set col = col.column | string -%}
@@ -42,6 +33,15 @@
                 {%- if not loop.last %},{{ '\n  ' }}{% endif %}
 
             {%- endif -%}
+        {%- endfor -%}
+
+    {% else %}
+
+        {%- for col in include_cols %}
+
+            {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}{{ adapter.quote(col)|trim }} as {{ adapter.quote(prefix ~ col ~ suffix)|trim }}
+            {%- if not loop.last %},{{ '\n  ' }}{% endif %}
+
         {%- endfor -%}
     {%- endif -%}
 

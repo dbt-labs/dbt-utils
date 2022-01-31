@@ -78,7 +78,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 
 ---
 ## Schema Tests
-#### equal_rowcount ([source](macros/schema_tests/equal_rowcount.sql))
+### equal_rowcount ([source](macros/schema_tests/equal_rowcount.sql))
 This schema test asserts the that two relations have the same number of rows.
 
 **Usage:**
@@ -93,7 +93,7 @@ models:
 
 ```
 
-#### fewer_rows_than ([source](macros/schema_tests/fewer_rows_than.sql))
+### fewer_rows_than ([source](macros/schema_tests/fewer_rows_than.sql))
 This schema test asserts that this model has fewer rows than the referenced model.
 
 Usage:
@@ -107,7 +107,7 @@ models:
           compare_model: ref('other_table_name')
 ```
 
-#### equality ([source](macros/schema_tests/equality.sql))
+### equality ([source](macros/schema_tests/equality.sql))
 This schema test asserts the equality of two relations. Optionally specify a subset of columns to compare.
 
 **Usage:**
@@ -124,7 +124,7 @@ models:
             - second_column
 ```
 
-#### expression_is_true ([source](macros/schema_tests/expression_is_true.sql))
+### expression_is_true ([source](macros/schema_tests/expression_is_true.sql))
 This schema test asserts that a valid sql expression is true for all records. This is useful when checking integrity across columns, for example, that a total is equal to the sum of its parts, or that at least one column is true.
 
 **Usage:**
@@ -172,7 +172,7 @@ models:
                 condition: col_a = 1
 ```
 
-#### recency ([source](macros/schema_tests/recency.sql))
+### recency ([source](macros/schema_tests/recency.sql))
 This schema test asserts that there is data in the referenced model at least as recent as the defined interval prior to the current timestamp.
 
 **Usage:**
@@ -188,7 +188,7 @@ models:
           interval: 1
 ```
 
-#### at_least_one ([source](macros/schema_tests/at_least_one.sql))
+### at_least_one ([source](macros/schema_tests/at_least_one.sql))
 This schema test asserts if column has at least one value.
 
 **Usage:**
@@ -203,7 +203,7 @@ models:
           - dbt_utils.at_least_one
 ```
 
-#### not_constant ([source](macros/schema_tests/not_constant.sql))
+### not_constant ([source](macros/schema_tests/not_constant.sql))
 This schema test asserts if column does not have same value in all rows.
 
 **Usage:**
@@ -218,7 +218,7 @@ models:
           - dbt_utils.not_constant
 ```
 
-#### cardinality_equality ([source](macros/schema_tests/cardinality_equality.sql))
+### cardinality_equality ([source](macros/schema_tests/cardinality_equality.sql))
 This schema test asserts if values in a given column have exactly the same cardinality as values from a different column in a different model.
 
 **Usage:**
@@ -235,7 +235,7 @@ models:
               to: ref('other_model_name')
 ```
 
-#### unique_where ([source](macros/schema_tests/test_unique_where.sql))
+### unique_where ([source](macros/schema_tests/test_unique_where.sql))
 This test validates that there are no duplicate values present in a field for a subset of rows by specifying a `where` clause.
 
 *Warning*: This test is no longer supported. Starting in dbt v0.20.0, the built-in `unique` test supports a `where` config. [See the dbt docs for more details](https://docs.getdbt.com/reference/resource-configs/where).
@@ -253,7 +253,7 @@ models:
               where: "_deleted = false"
 ```
 
-#### not_null_where ([source](macros/schema_tests/test_not_null_where.sql))
+### not_null_where ([source](macros/schema_tests/test_not_null_where.sql))
 This test validates that there are no null values present in a column for a subset of rows by specifying a `where` clause.
 
 *Warning*: This test is no longer supported. Starting in dbt v0.20.0, the built-in `not_null` test supports a `where` config. [See the dbt docs for more details](https://docs.getdbt.com/reference/resource-configs/where).
@@ -271,7 +271,7 @@ models:
               where: "_deleted = false"
 ```
 
-#### not_null_proportion ([source](macros/schema_tests/not_null_proportion.sql))
+### not_null_proportion ([source](macros/schema_tests/not_null_proportion.sql))
 This test validates that the proportion of non-null values present in a column is between a specified range [`at_least`, `at_most`] where `at_most` is an optional argument (default: `1.0`).
 
 **Usage:**
@@ -287,7 +287,7 @@ models:
               at_least: 0.95
 ```
 
-#### not_accepted_values ([source](macros/schema_tests/not_accepted_values.sql))
+### not_accepted_values ([source](macros/schema_tests/not_accepted_values.sql))
 This test validates that there are no rows that match the given values.
 
 Usage:
@@ -303,7 +303,7 @@ models:
               values: ['Barcelona', 'New York']
 ```
 
-#### relationships_where ([source](macros/schema_tests/relationships_where.sql))
+### relationships_where ([source](macros/schema_tests/relationships_where.sql))
 This test validates the referential integrity between two relations (same as the core relationships schema test) with an added predicate to filter out some rows from the test. This is useful to exclude records such as test entities, rows created in the last X minutes/hours to account for temporary gaps due to ETL limitations, etc.
 
 **Usage:**
@@ -321,7 +321,7 @@ models:
               from_condition: id <> '4ca448b8-24bf-4b88-96c6-b1609499c38b'
 ```
 
-#### mutually_exclusive_ranges ([source](macros/schema_tests/mutually_exclusive_ranges.sql))
+### mutually_exclusive_ranges ([source](macros/schema_tests/mutually_exclusive_ranges.sql))
 This test confirms that for a given lower_bound_column and upper_bound_column,
 the ranges of between the lower and upper bounds do not overlap with the ranges
 of another row.
@@ -434,7 +434,7 @@ Here are a number of examples for each allowed `zero_length_range_allowed` argum
 | 2           | 2           |
 | 3           | 4           |
 
-#### sequential_values ([source](macros/schema_tests/sequential_values.sql))
+### sequential_values ([source](macros/schema_tests/sequential_values.sql))
 This test confirms that a column contains sequential values. It can be used
 for both numeric values, and datetime values, as follows:
 ```yml
@@ -498,7 +498,7 @@ An optional `quote_columns` argument (`default=false`) can also be used if a col
 
 ```
 
-#### accepted_range ([source](macros/schema_tests/accepted_range.sql))
+### accepted_range ([source](macros/schema_tests/accepted_range.sql))
 This test checks that a column's values fall inside an expected range. Any combination of `min_value` and `max_value` is allowed, and the range can be inclusive or exclusive. Provide a `where` argument to filter to specific records only.
 
 In addition to comparisons to a scalar value, you can also compare to another column's values. Any data type that supports the `>` or `<` operators can be compared, so you could also run tests like checking that all order dates are in the past.

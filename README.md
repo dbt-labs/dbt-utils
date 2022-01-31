@@ -9,11 +9,10 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 ----
 ## Contents
 <!--ts-->
-<!--This table of contents is automatically generated. Any manual changes will be overridden!-->
    * [Installation Instructions](#installation-instructions)
    * [Compatibility matrix](#compatibility-matrix)
    * [Contents](#contents)
-      * [Schema Tests](#schema-tests)
+   * [Schema Tests](#schema-tests)
          * [equal_rowcount (<a href="macros/schema_tests/equal_rowcount.sql">source</a>)](#equal_rowcount-source)
          * [fewer_rows_than (<a href="macros/schema_tests/fewer_rows_than.sql">source</a>)](#fewer_rows_than-source)
          * [equality (<a href="macros/schema_tests/equality.sql">source</a>)](#equality-source)
@@ -72,7 +71,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
       * [Getting started with dbt](#getting-started-with-dbt)
    * [Code of Conduct](#code-of-conduct)
 
-<!-- Added by: runner, at: Mon Jan 31 07:18:53 UTC 2022 -->
+<!-- Added by: runner, at: Mon Jan 31 07:28:22 UTC 2022 -->
 
 <!--te-->
 

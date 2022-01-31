@@ -10,6 +10,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 <!--ts-->
    * [Installation Instructions](#installation-instructions)
    * [Compatibility matrix](#compatibility-matrix)
+   * [Contents](#contents)
    * [Schema Tests](#schema-tests)
       * [equal_rowcount (<a href="macros/schema_tests/equal_rowcount.sql">source</a>)](#equal_rowcount-source)
       * [fewer_rows_than (<a href="macros/schema_tests/fewer_rows_than.sql">source</a>)](#fewer_rows_than-source)
@@ -26,7 +27,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
       * [relationships_where (<a href="macros/schema_tests/relationships_where.sql">source</a>)](#relationships_where-source)
       * [mutually_exclusive_ranges (<a href="macros/schema_tests/mutually_exclusive_ranges.sql">source</a>)](#mutually_exclusive_ranges-source)
       * [sequential_values (<a href="macros/schema_tests/sequential_values.sql">source</a>)](#sequential_values-source)
-      * [unique_combination_of_columns (<a href="macros/schema_tests/unique_combination_of_columns.sql">source</a>)](#unique_combination_of_columns-source)
+         * [unique_combination_of_columns (<a href="macros/schema_tests/unique_combination_of_columns.sql">source</a>)](#unique_combination_of_columns-source)
       * [accepted_range (<a href="macros/schema_tests/accepted_range.sql">source</a>)](#accepted_range-source)
    * [Macros](#macros)
       * [Introspective macros](#introspective-macros)
@@ -69,7 +70,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
       * [Getting started with dbt](#getting-started-with-dbt)
    * [Code of Conduct](#code-of-conduct)
 
-<!-- Added by: runner, at: Mon Jan 31 07:32:55 UTC 2022 -->
+<!-- Added by: runner, at: Mon Jan 31 07:31:18 UTC 2022 -->
 
 <!--te-->
 
@@ -931,87 +932,6 @@ This macro extracts a page path from a column containing a url.
 ```
 {{ dbt_utils.get_url_path(field='page_url') }}
 ```
-----
-### Cross-database macros
-These macros make it easier for package authors (especially those writing modeling packages) to implement cross-database
-compatibility. In general, you should not use these macros in your own dbt project (unless it is a package)
-
-#### current_timestamp ([source](macros/cross_db_utils/current_timestamp.sql))
-This macro returns the current timestamp.
-
-**Usage:**
-```
-{{ dbt_utils.current_timestamp() }}
-```
-
-#### dateadd ([source](macros/cross_db_utils/dateadd.sql))
-This macro adds a time/day interval to the supplied date/timestamp. Note: The `datepart` argument is database-specific.
-
-**Usage:**
-```
-{{ dbt_utils.dateadd(datepart='day', interval=1, from_date_or_timestamp="'2017-01-01'") }}
-```
-
-#### datediff ([source](macros/cross_db_utils/datediff.sql))
-This macro calculates the difference between two dates.
-
-**Usage:**
-```
-{{ dbt_utils.datediff("'2018-01-01'", "'2018-01-20'", 'day') }}
-```
-
-#### split_part ([source](macros/cross_db_utils/split_part.sql))
-This macro splits a string of text using the supplied delimiter and returns the supplied part number (1-indexed).
-
-**Usage:**
-```
-{{ dbt_utils.split_part(string_text='1,2,3', delimiter_text=',', part_number=1) }}
-```
-
-#### date_trunc ([source](macros/cross_db_utils/date_trunc.sql))
-Truncates a date or timestamp to the specified datepart. Note: The `datepart` argument is database-specific.
-
-**Usage:**
-```
-{{ dbt_utils.date_trunc(datepart, date) }}
-```
-
-#### last_day ([source](macros/cross_db_utils/last_day.sql))
-Gets the last day for a given date and datepart. Notes:
-
-- The `datepart` argument is database-specific.
-- This macro currently only supports dateparts of `month` and `quarter`.
-
-**Usage:**
-```
-{{ dbt_utils.last_day(date, datepart) }}
-```
-
-#### width_bucket ([source](macros/cross_db_utils/width_bucket.sql))
-This macro is modeled after the `width_bucket` function natively available in Snowflake.
-
-From the original Snowflake [documentation](https://docs.snowflake.net/manuals/sql-reference/functions/width_bucket.html):
-
-Constructs equi-width histograms, in which the histogram range is divided into intervals of identical size, and returns the bucket number into which the value of an expression falls, after it has been evaluated. The function returns an integer value or null (if any input is null).
-Notes:
-
-**Args:**
-- `expr`: The expression for which the histogram is created. This expression must evaluate to a numeric value or to a value that can be implicitly converted to a numeric value.
-
-- `min_value` and `max_value`: The low and high end points of the acceptable range for the expression. The end points must also evaluate to numeric values and not be equal.
-
-- `num_buckets`:  The desired number of buckets; must be a positive integer value. A value from the expression is assigned to each bucket, and the function then returns the corresponding bucket number.
-
-When an expression falls outside the range, the function returns:
-- `0` if the expression is less than min_value.
-- `num_buckets + 1` if the expression is greater than or equal to max_value.
-
-
-**Usage:**
-```
-{{ dbt_utils.width_bucket(expr, min_value, max_value, num_buckets) }}
-```
-
 
 ---
 ### Jinja Helpers
@@ -1079,8 +999,89 @@ sum(case when payment_method = 'ca$h money' then amount end)
 ...
 ```
 
-### Materializations
-#### insert_by_period ([source](macros/materializations/insert_by_period_materialization.sql))
+----
+## Cross-database macros
+These macros make it easier for package authors (especially those writing modeling packages) to implement cross-database
+compatibility. In general, you should not use these macros in your own dbt project (unless it is a package)
+
+### current_timestamp ([source](macros/cross_db_utils/current_timestamp.sql))
+This macro returns the current timestamp.
+
+**Usage:**
+```
+{{ dbt_utils.current_timestamp() }}
+```
+
+### dateadd ([source](macros/cross_db_utils/dateadd.sql))
+This macro adds a time/day interval to the supplied date/timestamp. Note: The `datepart` argument is database-specific.
+
+**Usage:**
+```
+{{ dbt_utils.dateadd(datepart='day', interval=1, from_date_or_timestamp="'2017-01-01'") }}
+```
+
+### datediff ([source](macros/cross_db_utils/datediff.sql))
+This macro calculates the difference between two dates.
+
+**Usage:**
+```
+{{ dbt_utils.datediff("'2018-01-01'", "'2018-01-20'", 'day') }}
+```
+
+### split_part ([source](macros/cross_db_utils/split_part.sql))
+This macro splits a string of text using the supplied delimiter and returns the supplied part number (1-indexed).
+
+**Usage:**
+```
+{{ dbt_utils.split_part(string_text='1,2,3', delimiter_text=',', part_number=1) }}
+```
+
+### date_trunc ([source](macros/cross_db_utils/date_trunc.sql))
+Truncates a date or timestamp to the specified datepart. Note: The `datepart` argument is database-specific.
+
+**Usage:**
+```
+{{ dbt_utils.date_trunc(datepart, date) }}
+```
+
+### last_day ([source](macros/cross_db_utils/last_day.sql))
+Gets the last day for a given date and datepart. Notes:
+
+- The `datepart` argument is database-specific.
+- This macro currently only supports dateparts of `month` and `quarter`.
+
+**Usage:**
+```
+{{ dbt_utils.last_day(date, datepart) }}
+```
+
+### width_bucket ([source](macros/cross_db_utils/width_bucket.sql))
+This macro is modeled after the `width_bucket` function natively available in Snowflake.
+
+From the original Snowflake [documentation](https://docs.snowflake.net/manuals/sql-reference/functions/width_bucket.html):
+
+Constructs equi-width histograms, in which the histogram range is divided into intervals of identical size, and returns the bucket number into which the value of an expression falls, after it has been evaluated. The function returns an integer value or null (if any input is null).
+Notes:
+
+**Args:**
+- `expr`: The expression for which the histogram is created. This expression must evaluate to a numeric value or to a value that can be implicitly converted to a numeric value.
+
+- `min_value` and `max_value`: The low and high end points of the acceptable range for the expression. The end points must also evaluate to numeric values and not be equal.
+
+- `num_buckets`:  The desired number of buckets; must be a positive integer value. A value from the expression is assigned to each bucket, and the function then returns the corresponding bucket number.
+
+When an expression falls outside the range, the function returns:
+- `0` if the expression is less than min_value.
+- `num_buckets + 1` if the expression is greater than or equal to max_value.
+
+
+**Usage:**
+```
+{{ dbt_utils.width_bucket(expr, min_value, max_value, num_buckets) }}
+```
+
+## Materializations
+### insert_by_period ([source](macros/materializations/insert_by_period_materialization.sql))
 `insert_by_period` allows dbt to insert records into a table one period (i.e. day, week) at a time.
 
 This materialization is appropriate for event data that can be processed in discrete periods. It is similar in concept to the built-in incremental materialization, but has the added benefit of building the model in chunks even during a full-refresh so is particularly useful for models where the initial run can be problematic.
@@ -1135,13 +1136,13 @@ A useful workaround is to change the above post-hook to:
 
 ----
 
-### Contributing
+## Contributing
 
 We welcome contributions to this repo! To contribute a new feature or a fix, please open a Pull Request with 1) your changes, 2) updated documentation for the `README.md` file, and 3) a working integration test. See [this page](integration_tests/README.md) for more information.
 
 ----
 
-### Dispatch macros
+## Dispatch macros
 
 **Note:** This is primarily relevant to:
 - Users and maintainers of community-supported [adapter plugins](https://docs.getdbt.com/docs/available-adapters)
@@ -1177,7 +1178,7 @@ dbt_utils.default__datediff
 
 ----
 
-### Getting started with dbt
+## Getting started with dbt
 
 - [What is dbt](https://docs.getdbt.com/docs/introduction)?
 - Read the [dbt viewpoint](https://docs.getdbt.com/docs/about/viewpoint)

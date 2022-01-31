@@ -11,7 +11,6 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 
 **[Schema tests](#schema-tests)**
   - [equal_rowcount](#equal_rowcount-source)
-  - [fewer_rows_than](#fewer_rows_than-source)
   - [equality](#equality-source)
   - [expression_is_true](#expression_is_true-source)
   - [recency](#recency-source)

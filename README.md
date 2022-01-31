@@ -1,4 +1,4 @@
-This [dbt](https://github.com/dbt-labs/dbt) package contains macros that can be (re)used across dbt projects.
+This [dbt](https://github.com/dbt-labs/dbt-core) package contains macros that can be (re)used across dbt projects.
 
 ## Installation Instructions
 Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the latest installation instructions, or [read the docs](https://docs.getdbt.com/docs/package-management) for more information on installing packages.
@@ -9,6 +9,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 ----
 ## Contents
 <!--ts-->
+<!--This table of contents is automatically generated. Any manual changes will be overridden!-->
    * [Installation Instructions](#installation-instructions)
    * [Compatibility matrix](#compatibility-matrix)
    * [Contents](#contents)
@@ -76,7 +77,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 <!--te-->
 
 ---
-### Schema Tests
+## Schema Tests
 #### equal_rowcount ([source](macros/schema_tests/equal_rowcount.sql))
 This schema test asserts the that two relations have the same number of rows.
 

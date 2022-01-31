@@ -10,7 +10,6 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 <!--ts-->
    * [Installation Instructions](#installation-instructions)
    * [Compatibility matrix](#compatibility-matrix)
-   * [Contents](#contents)
    * [Schema Tests](#schema-tests)
       * [equal_rowcount (<a href="macros/schema_tests/equal_rowcount.sql">source</a>)](#equal_rowcount-source)
       * [fewer_rows_than (<a href="macros/schema_tests/fewer_rows_than.sql">source</a>)](#fewer_rows_than-source)
@@ -27,7 +26,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
       * [relationships_where (<a href="macros/schema_tests/relationships_where.sql">source</a>)](#relationships_where-source)
       * [mutually_exclusive_ranges (<a href="macros/schema_tests/mutually_exclusive_ranges.sql">source</a>)](#mutually_exclusive_ranges-source)
       * [sequential_values (<a href="macros/schema_tests/sequential_values.sql">source</a>)](#sequential_values-source)
-         * [unique_combination_of_columns (<a href="macros/schema_tests/unique_combination_of_columns.sql">source</a>)](#unique_combination_of_columns-source)
+      * [unique_combination_of_columns (<a href="macros/schema_tests/unique_combination_of_columns.sql">source</a>)](#unique_combination_of_columns-source)
       * [accepted_range (<a href="macros/schema_tests/accepted_range.sql">source</a>)](#accepted_range-source)
    * [Macros](#macros)
       * [Introspective macros](#introspective-macros)
@@ -70,7 +69,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
       * [Getting started with dbt](#getting-started-with-dbt)
    * [Code of Conduct](#code-of-conduct)
 
-<!-- Added by: runner, at: Mon Jan 31 07:31:18 UTC 2022 -->
+<!-- Added by: runner, at: Mon Jan 31 07:32:55 UTC 2022 -->
 
 <!--te-->
 

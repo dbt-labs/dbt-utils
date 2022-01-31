@@ -29,16 +29,15 @@
 
 {% macro default__date_spine(datepart, start_date, end_date) %}
 
-/*
-call as follows:
+
+{# call as follows:
 
 date_spine(
     "day",
     "to_date('01/01/2016', 'mm/dd/yyyy')",
     "dateadd(week, 1, current_date)"
-)
+) #}
 
-*/
 
 with rawdata as (
 

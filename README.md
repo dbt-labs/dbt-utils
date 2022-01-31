@@ -7,7 +7,6 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
 For compatibility details between versions of dbt-core and dbt-utils, [see this spreadsheet](https://docs.google.com/spreadsheets/d/1RoDdC69auAtrwiqmkRsgcFdZ3MdNpeKcJrWkmEpXVIs/edit#gid=0).
 
 ----
-## Contents
 <!--ts-->
    * [Installation Instructions](#installation-instructions)
    * [Compatibility matrix](#compatibility-matrix)
@@ -461,7 +460,7 @@ seeds:
 * `interval` (default=1): The gap between two sequential values
 * `datepart` (default=None): Used when the gaps are a unit of time. If omitted, the test will check for a numeric gap.
 
-#### unique_combination_of_columns ([source](macros/schema_tests/unique_combination_of_columns.sql))
+### unique_combination_of_columns ([source](macros/schema_tests/unique_combination_of_columns.sql))
 This test confirms that the combination of columns is unique. For example, the
 combination of month and product is unique, however neither column is unique
 in isolation.

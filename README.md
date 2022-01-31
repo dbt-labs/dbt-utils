@@ -8,64 +8,8 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 
 ----
 ## Contents
-
-**[Schema tests](#schema-tests)**
-  - [equal_rowcount](#equal_rowcount-source)
-  - [fewer_rows_than](#fewer_rows_than-source)
-  - [equality](#equality-source)
-  - [expression_is_true](#expression_is_true-source)
-  - [recency](#recency-source)
-  - [at_least_one](#at_least_one-source)
-  - [not_constant](#not_constant-source)
-  - [cardinality_equality](#cardinality_equality-source)
-  - [unique_where](#unique_where-source)
-  - [not_null_where](#not_null_where-source)
-  - [not_null_proportion](#not_null_proportion-source)
-  - [relationships_where](#relationships_where-source)
-  - [mutually_exclusive_ranges](#mutually_exclusive_ranges-source)
-  - [unique_combination_of_columns](#unique_combination_of_columns-source)
-  - [accepted_range](#accepted_range-source)
-
-**[Macros](#macros)**
-
-- [Introspective macros](#introspective-macros):
-    - [get_column_values](#get_column_values-source)
-    - [get_relations_by_pattern](#get_relations_by_pattern-source)
-    - [get_relations_by_prefix](#get_relations_by_prefix-source)
-    - [get_query_results_as_dict](#get_query_results_as_dict-source)
-
-- [SQL generators](#sql-generators)
-    - [date_spine](#date_spine-source)
-    - [haversine_distance](#haversine_distance-source)
-    - [group_by](#group_by-source)
-    - [star](#star-source)
-    - [union_relations](#union_relations-source)
-    - [generate_series](#generate_series-source)
-    - [surrogate_key](#surrogate_key-source)
-    - [safe_add](#safe_add-source)
-    - [pivot](#pivot-source)
-    - [unpivot](#unpivot-source)
-
-- [Web macros](#web-macros)
-    - [get_url_parameter](#get_url_parameter-source)
-    - [get_url_host](#get_url_host-source)
-    - [get_url_path](#get_url_path-source)
-
-- [Cross-database macros](#cross-database-macros):
-    - [current_timestamp](#current_timestamp-source)
-    - [dateadd](#dateadd-source)
-    - [datediff](#datediff-source)
-    - [split_part](#split_part-source)
-    - [last_day](#last_day-source)
-    - [width_bucket](#width_bucket-source)
-
-- [Jinja Helpers](#jinja-helpers)
-    - [pretty_time](#pretty_time-source)
-    - [pretty_log_format](#pretty_log_format-source)
-    - [log_info](#log_info-source)
-
-[Materializations](#materializations):
-- [insert_by_period](#insert_by_period-source)
+<!--ts-->
+<!--te-->
 
 ---
 ### Schema Tests

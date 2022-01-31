@@ -1073,7 +1073,7 @@ Notes:
 When an expression falls outside the range, the function returns:
 - `0` if the expression is less than min_value.
 - `num_buckets + 1` if the expression is greater than or equal to max_value.
-
+ 
 
 **Usage:**
 ```

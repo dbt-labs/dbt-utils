@@ -69,7 +69,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
    * [Getting started with dbt](#getting-started-with-dbt)
    * [Code of Conduct](#code-of-conduct)
 
-<!-- Added by: runner, at: Mon Jan 31 07:37:47 UTC 2022 -->
+<!-- Added by: runner, at: Mon Jan 31 07:45:57 UTC 2022 -->
 
 <!--te-->
 

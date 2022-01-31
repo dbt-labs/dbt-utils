@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Update table of contents
 
 # Controls when the workflow will run
 on:
@@ -20,4 +20,4 @@ jobs:
           ./gh-md-toc --insert --no-backup README.md
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: Auto update markdown TOC
+          commit_message: Auto update table of contents

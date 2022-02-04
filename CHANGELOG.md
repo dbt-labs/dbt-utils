@@ -1,3 +1,8 @@
+# dbt-utils v0.8.1
+## Fixes
+- `get_relations_by_pattern()` now allows you to specify table quoting if needed ([#489](https://github.com/dbt-labs/dbt-utils/issues/489))
+## Contributors:
+- [aescay](https://github.com/aescay)
 # dbt-utils v0.8.0
 ## 🚨 Breaking changes
 - dbt ONE POINT OH is here! This version of dbt-utils requires _any_ version (minor and patch) of v1, which means far less need for compatibility releases in the future. 

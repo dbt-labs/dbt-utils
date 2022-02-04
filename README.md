@@ -607,6 +607,7 @@ This macro is particularly handy when paired with `union_relations`.
 * `exclude` (optional): Exclude any relations that match this table pattern.
 * `database` (optional, default = `target.database`): The database to inspect
 for relations.
+* `quote_table` (optional): Wrap the table name in quotes.
 
 **Examples:**
 Generate drop statements for all Relations that match a naming pattern:

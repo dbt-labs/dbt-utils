@@ -59,6 +59,9 @@ seeds:
       data_get_column_values_dropped:
         # this.incorporate() to hardcode the node's type as otherwise dbt doesn't know it yet
         +post-hook: "{% do adapter.drop_relation(this.incorporate(type='table')) %}"
+      
+      data_pivot_expected:
+        quote_columns: true
 
 
     schema_tests:

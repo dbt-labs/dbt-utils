@@ -69,7 +69,7 @@ Arguments:
     {{ agg }}(
       {% if distinct %} distinct {% endif %}
       case
-      when {{ column }} {{ cmp }} '{{ v }}'
+      when {{ column }} {{ cmp }} '{{ v | replace("'","''") }}' {# escape quote in value (in postgresql) #}
         then {{ then_value }}
       else {{ else_value }}
       end

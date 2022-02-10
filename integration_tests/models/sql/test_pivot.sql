@@ -2,10 +2,10 @@
 -- TODO: How do we make this work nicely on Snowflake too?
 
 {% if target.type == 'snowflake' %}
-    {% set column_values = ['RED', 'BLUE'] %}
+    {% set column_values = ['RED', 'BLUE', "BLUE'S"] %}
     {% set cmp = 'ilike' %}
 {% else %}
-    {% set column_values = ['red', 'blue'] %}
+    {% set column_values = ['red', 'blue', "blue's"] %}
     {% set cmp = '=' %}
 {% endif %}
 

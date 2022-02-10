@@ -65,7 +65,7 @@ Arguments:
       cast(  {% if col.data_type == 'boolean' %}
            {{ dbt_utils.cast_bool_to_text(col.column) }}
              {% else %}
-           {{ col.column }}
+           '{{ col.column }}'
              {% endif %}
            as {{ cast_to }}) as {{ value_name }}
 

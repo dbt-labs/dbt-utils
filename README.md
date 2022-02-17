@@ -663,7 +663,7 @@ This macro returns a dictionary from a sql query, so that you don't need to inte
 **Usage:**
 ```
 {% set sql_statement %}
-    select city, state from {{ ref('users) }}
+    select city, state from {{ ref('users') }}
 {% endset %}
 
 {%- set places = dbt_utils.get_query_results_as_dict(sql_statement) -%}

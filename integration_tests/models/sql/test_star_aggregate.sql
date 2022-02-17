@@ -8,7 +8,7 @@ with data as (
         {{ selected_columns }},
         sum(value_field) as value_field_sum
 
-    from {{ ref('data_star') }}
+    from {{ ref('data_star_aggregate') }}
     group by {{ selected_columns }}
 
 )

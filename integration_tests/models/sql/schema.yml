@@ -111,6 +111,11 @@ models:
       - dbt_utils.equality:
           compare_model: ref('data_star_prefix_suffix_expected')
 
+  - name: test_star_aggregate
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_star_aggregate_expected')
+
   - name: test_surrogate_key
     tests:
       - assert_equal:

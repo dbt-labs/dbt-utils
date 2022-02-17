@@ -729,7 +729,9 @@ group by 1,2,3
 ```
 
 #### star ([source](macros/sql/star.sql))
-This macro generates a list of all fields that exist in the `from` relation, excluding any fields listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with the star macro. This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias (`relation_alias`.`field_name`). The macro also has optional `prefix` and `suffix` arguments, which will be appropriately concatenated to each field name in the output (`prefix` ~ `field_name` ~ `suffix`).
+This macro generates a comma-separated list of all fields that exist in the `from` relation, excluding any fields listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with the star macro. This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias (`relation_alias`.`field_name`). 
+
+The macro also has optional `prefix` and `suffix` arguments. When one or both are provided, they will be concatenated onto each field's alias in the output (`prefix` ~ `field_name` ~ `suffix`). NB: This prevents the output from being used in any context other than a select statement.
 
 **Usage:**
 ```sql

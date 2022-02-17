@@ -1,10 +1,29 @@
+# dbt-utils v0.8.1
+
+## Under the hood
+- also ignore `dbt_packages/` directory [#463](https://github.com/dbt-labs/dbt-utils/pull/463)
+
+## Fixes
+- `type_timestamp` macro now explicitly casts postgres and redshift warehouse timestamp data types as `timestamp without time zone`, to be consistent with Snowflake behaviour (`timestamp_ntz`).
+- `union_relations` macro will now raise an exception if the use of `include` or `exclude` results in no columns ([#473](https://github.com/dbt-labs/dbt-utils/pull/473), [#266](https://github.com/dbt-labs/dbt-utils/issues/266)).
+
+## Contributors:
+- [grahamwetzler](https://github.com/grahamwetzler) (#473)
+
 # dbt-utils v0.8.0
 ## 🚨 Breaking changes
 - dbt ONE POINT OH is here! This version of dbt-utils requires _any_ version (minor and patch) of v1, which means far less need for compatibility releases in the future. 
 - The partition column in the `mutually_exclusive_ranges` test is now always called `partition_by_col`. This enables compatibility with `--store-failures` when multiple columns are concatenated together. If you have models built on top of the failures table, update them to reflect the new column name. ([#423](https://github.com/dbt-labs/dbt-utils/issues/423), [#430](https://github.com/dbt-labs/dbt-utils/pull/430))
 
+## Fixes
+- `get_relations_by_pattern()` now uses additional sub macros `get_table_types_sql()` to determine table types for different database engines. ([#357](https://github.com/dbt-labs/dbt-utils/issues/357), [#476](https://github.com/dbt-labs/dbt-utils/pull/476))
+
+## Under the hood
+- make date_spine macro compatible with the Athena connector (#462)
+
 ## Contributors:
 - [codigo-ergo-sum](https://github.com/codigo-ergo-sum) (#430)
+- [Aesthet](https://github.com/Aesthet) (#476)
 
 # dbt-utils 0.7.5
 🚨 This is a compatibility release in preparation for `dbt-core` v1.0.0 (🎉). Projects using dbt-utils 0.7.4 with dbt-core v1.0.0 can expect to see a deprecation warning. This will be resolved in dbt_utils v0.8.0.

@@ -1,5 +1,8 @@
 # dbt-utils v0.8.1
 
+## New features
+- A cross-database implementation of `any_value()` ([#497](https://github.com/dbt-labs/dbt-utils/issues/497), [#501](https://github.com/dbt-labs/dbt-utils/pull/501))
+
 ## Under the hood
 - also ignore `dbt_packages/` directory [#463](https://github.com/dbt-labs/dbt-utils/pull/463)
 

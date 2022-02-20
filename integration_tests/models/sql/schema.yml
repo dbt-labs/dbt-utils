@@ -84,12 +84,12 @@ models:
   - name: test_pivot
     tests:
       - dbt_utils.equality:
-          compare_model: ref('data_pivot_expected_snowflake')
-          compare_columns: [SIZE,RED,BLUE,"\"BLUE'S\""]
-          enabled: "{{ target.type == 'snowflake' }}"
-      - dbt_utils.equality:
           compare_model: ref('data_pivot_expected')
-          enabled: "{{ target.type != 'snowflake' }}"
+  
+  - name: test_pivot_apostrophe
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_pivot_expected_apostrophe')
 
   - name: test_unpivot_original_api
     tests:

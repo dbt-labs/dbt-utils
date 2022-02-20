@@ -4,6 +4,6 @@
 
 {% macro default__escape_single_quotes(expression) %}{{ expression | replace("'","''") }}{% endmacro %}
 
-{% macro snowflake__escape_single_quotes(expression) %}{{ expression | replace("'", "\'") }}{% endmacro %}
+{% macro snowflake__escape_single_quotes(expression) %}{{ expression | replace("'", "\\'") }}{% endmacro %}
 
-{% macro bigquery__escape_single_quotes(expression) %}{{ expression | replace("'", "\'") }}{% endmacro %}
+{% macro bigquery__escape_single_quotes(expression) %}{{ expression | replace("'", "\\'") }}{% endmacro %}

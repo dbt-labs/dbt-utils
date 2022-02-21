@@ -53,7 +53,7 @@
 {% materialization insert_by_period, default -%}
   {%- set timestamp_field = config.require('timestamp_field') -%}
   {%- set start_date = config.require('start_date') -%}
-  {%- set stop_date = config.get('stop_date') or '' -%}}
+  {%- set stop_date = config.get('stop_date') or '' -%}
   {%- set period = config.get('period') or 'week' -%}
 
   {%- if sql.find('__PERIOD_FILTER__') == -1 -%}

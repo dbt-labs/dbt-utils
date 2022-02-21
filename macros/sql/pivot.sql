@@ -69,7 +69,7 @@ Arguments:
     {{ agg }}(
       {% if distinct %} distinct {% endif %}
       case
-      when {{ column }} {{ cmp }} '{{ dbt_utils.escape_single_quotes(v) }}' {# escape else ex. syntax error near : when color = 'blue's' #}
+      when {{ column }} {{ cmp }} '{{ dbt_utils.escape_single_quotes(v) }}'
         then {{ then_value }}
       else {{ else_value }}
       end

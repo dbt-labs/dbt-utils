@@ -1,3 +1,31 @@
+# dbt-utils v0.8.1
+
+## New features
+- A cross-database implementation of `any_value()` ([#497](https://github.com/dbt-labs/dbt-utils/issues/497), [#501](https://github.com/dbt-labs/dbt-utils/pull/501))
+- A cross-database implementation of `bool_or()` ([#504](https://github.com/dbt-labs/dbt-utils/pull/504))
+
+## Under the hood
+- also ignore `dbt_packages/` directory [#463](https://github.com/dbt-labs/dbt-utils/pull/463)
+- Remove block comments to make date_spine macro compatible with the Athena connector ([#462](https://github.com/dbt-labs/dbt-utils/pull/462))
+
+## Fixes
+- `type_timestamp` macro now explicitly casts postgres and redshift warehouse timestamp data types as `timestamp without time zone`, to be consistent with Snowflake behaviour (`timestamp_ntz`).
+- `union_relations` macro will now raise an exception if the use of `include` or `exclude` results in no columns ([#473](https://github.com/dbt-labs/dbt-utils/pull/473), [#266](https://github.com/dbt-labs/dbt-utils/issues/266)).
+- `get_relations_by_pattern()` works with foreign data wrappers on Postgres again. ([#357](https://github.com/dbt-labs/dbt-utils/issues/357), [#476](https://github.com/dbt-labs/dbt-utils/pull/476))
+- `star()` will only alias columns if a prefix/suffix is provided, to allow the unmodified output to still be used in `group by` clauses etc. [#468](https://github.com/dbt-labs/dbt-utils/pull/468)
+- The `sequential_values` test is now compatible with quoted columns [#479](https://github.com/dbt-labs/dbt-utils/pull/479)
+- `pivot()` escapes values containing apostrophes [#503](https://github.com/dbt-labs/dbt-utils/pull/503)
+
+## Contributors:
+- [grahamwetzler](https://github.com/grahamwetzler) (#473)
+- [Aesthet](https://github.com/Aesthet) (#476)
+- [Kamitenshi](https://github.com/Kamitenshi) (#462)
+- [nickperrott](https://github.com/nickperrott) (#468)
+- [jelstongreen](https://github.com/jelstongreen) (#468)
+- [armandduijn](https://github.com/armandduijn) (#479)
+- [mdutoo](https://github.com/mdutoo) (#503)
+
+
 # dbt-utils v0.8.0
 ## 🚨 Breaking changes
 - dbt ONE POINT OH is here! This version of dbt-utils requires _any_ version (minor and patch) of v1, which means far less need for compatibility releases in the future. 

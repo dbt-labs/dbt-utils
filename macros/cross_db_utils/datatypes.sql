@@ -32,6 +32,10 @@
     timestamp
 {% endmacro %}
 
+{% macro postgres__type_timestamp() %}
+    timestamp without time zone
+{% endmacro %}
+
 {% macro snowflake__type_timestamp() %}
     timestamp_ntz
 {% endmacro %}

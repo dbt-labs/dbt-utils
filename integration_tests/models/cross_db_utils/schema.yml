@@ -1,6 +1,16 @@
 version: 2
 
 models:
+  - name: test_any_value
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_any_value_expected')
+
+  - name: test_bool_or
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_bool_or_expected')
+
   - name: test_concat
     tests:
       - assert_equal:

@@ -67,7 +67,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 [Materializations](#materializations):
 - [insert_by_period](#insert_by_period-source)
 
----
+----
 ### Schema Tests
 #### equal_rowcount ([source](macros/schema_tests/equal_rowcount.sql))
 This schema test asserts the that two relations have the same number of rows.

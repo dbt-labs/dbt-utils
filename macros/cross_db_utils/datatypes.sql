@@ -97,3 +97,17 @@
 {% macro bigquery__type_int() %}
     int64
 {% endmacro %}
+
+{# boolean  -------------------------------------------------     #}
+
+{%- macro type_boolean() -%}
+    {{ return(adapter.dispatch('type_boolean', 'dbt_utils')()) }}
+{%- endmacro -%}
+
+{% macro default__type_boolean() %}
+    boolean
+{% endmacro %}
+
+{% macro bigquery__type_boolean() %}
+    BOOL
+{% endmacro %}

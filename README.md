@@ -36,6 +36,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 
 - [SQL generators](#sql-generators)
     - [date_spine](#date_spine-source)
+    - [dedupe](#dedupe-source)
     - [haversine_distance](#haversine_distance-source)
     - [group_by](#group_by-source)
     - [star](#star-source)
@@ -705,6 +706,20 @@ This macro returns the sql required to build a date spine. The spine will includ
 }}
 ```
 
+#### dedupe ([source](macros/sql/dedupe.sql))
+This macro returns the sql required to remove deduplicate rows from a model or source.
+
+**Usage:**
+
+```
+{{ dbt_utils.dedupe(
+    source('my_source', 'my_table'),
+    "user_id, cast(timestamp as day)",
+    order_by="timestamp desc"
+   )
+}}
+```
+
 #### haversine_distance ([source](macros/sql/haversine_distance.sql))
 This macro calculates the [haversine distance](http://daynebatten.com/2015/09/latitude-longitude-distance-sql/) between a pair of x/y coordinates.
 
@@ -747,7 +762,7 @@ group by 1,2,3
 ```
 
 #### star ([source](macros/sql/star.sql))
-This macro generates a comma-separated list of all fields that exist in the `from` relation, excluding any fields listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with the star macro. This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias (`relation_alias`.`field_name`). 
+This macro generates a comma-separated list of all fields that exist in the `from` relation, excluding any fields listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with the star macro. This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias (`relation_alias`.`field_name`).
 
 The macro also has optional `prefix` and `suffix` arguments. When one or both are provided, they will be concatenated onto each field's alias in the output (`prefix` ~ `field_name` ~ `suffix`). NB: This prevents the output from being used in any context other than a select statement.
 

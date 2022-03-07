@@ -706,15 +706,15 @@ This macro returns the sql required to build a date spine. The spine will includ
 }}
 ```
 
-#### dedupe ([source](macros/sql/dedupe.sql))
-This macro returns the sql required to remove deduplicate rows from a model or source.
+#### deduplicate ([source](macros/sql/deduplicate.sql))
+This macro returns the sql required to remove duplicate rows from a model or source.
 
 **Usage:**
 
 ```
-{{ dbt_utils.dedupe(
-    source('my_source', 'my_table'),
-    "user_id, cast(timestamp as day)",
+{{ dbt_utils.deduplicate(
+    relation=source('my_source', 'my_table'),
+    group_by="user_id, cast(timestamp as day)",
     order_by="timestamp desc"
    )
 }}

@@ -310,6 +310,7 @@ models:
               to: ref('other_model_name')
               field: client_id
               from_condition: id <> '4ca448b8-24bf-4b88-96c6-b1609499c38b'
+              to_condition: created_date >= '2020-01-01'
 ```
 
 #### mutually_exclusive_ranges ([source](macros/schema_tests/mutually_exclusive_ranges.sql))

@@ -30,6 +30,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 
 - [Introspective macros](#introspective-macros):
     - [get_column_values](#get_column_values-source)
+    - [get_columns](#get_columns-source)
     - [get_relations_by_pattern](#get_relations_by_pattern-source)
     - [get_relations_by_prefix](#get_relations_by_prefix-source)
     - [get_query_results_as_dict](#get_query_results_as_dict-source)
@@ -544,7 +545,7 @@ These macros run a query and return the results of the query as objects. They ar
 #### get_column_values ([source](macros/sql/get_column_values.sql))
 This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation) as an array.
 
-Arguments:
+**Args:**
 - `table` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
 - `column` (required): The name of the column you wish to find the column values of
 - `order_by` (optional, default=`'count(*) desc'`): How the results should be ordered. The default is to order by `count(*) desc`, i.e. decreasing frequency. Setting this as `'my_column'` will sort alphabetically, while `'min(created_at)'` will sort by when thevalue was first observed.
@@ -582,6 +583,30 @@ Arguments:
         max_records=50,
         default=['bank_transfer', 'coupon', 'credit_card']
 %}
+...
+```
+
+#### get_columns ([source](macros/sql/get_columns.sql))
+This macro returns the unique columns for a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation) as a comma-separated list.
+
+**Args:**
+- `from` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
+- `except` (optional, default=`[]`): The name of the columns you wish to exclude
+
+{% set column_names = get_columns(from=ref('fct_rate_rapid_onboarding'), except=["rate_rapid_onboarding__survey_question_response_id", "rate_rapid_onboarding__survey_response_id"]) %}
+
+{% for column_name in column_names %}
+    max({{ column_name }}) ... as '{{ column_name }}'_test,
+{% endfor %}
+
+**Usage:**
+```sql
+-- Returns a list of the columns from a relation, then iterate in a for loop
+{% set column_names = get_columns(from=ref('your_model'), except=["field_1", "field_2"]) %}
+...
+{% for column_name in column_names %}
+    max({{ column_name }}) ... as max_'{{ column_name }}',
+{% endfor %}
 ...
 ```
 

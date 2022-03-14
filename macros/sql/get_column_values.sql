@@ -11,6 +11,8 @@
         {{ return(default) }}
     {% endif %}
 
+    {%- do dbt_utils._is_ephemeral(table, 'get_column_values') -%}
+
     {# Not all relations are tables. Renaming for internal clarity without breaking functionality for anyone using named arguments #}
     {# TODO: Change the method signature in a future 0.x.0 release #}
     {%- set target_relation = table -%}

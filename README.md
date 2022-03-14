@@ -67,7 +67,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 [Materializations](#materializations):
 - [insert_by_period](#insert_by_period-source)
 
----
+----
 ### Schema Tests
 #### equal_rowcount ([source](macros/schema_tests/equal_rowcount.sql))
 This schema test asserts the that two relations have the same number of rows.
@@ -310,6 +310,7 @@ models:
               to: ref('other_model_name')
               field: client_id
               from_condition: id <> '4ca448b8-24bf-4b88-96c6-b1609499c38b'
+              to_condition: created_date >= '2020-01-01'
 ```
 
 #### mutually_exclusive_ranges ([source](macros/schema_tests/mutually_exclusive_ranges.sql))
@@ -377,53 +378,58 @@ models:
         partition_by: customer_id
         gaps: allowed
 ```
+<details>
+<summary>Additional `gaps` and `zero_length_range_allowed` examples</summary>
 
-**Understanding the `gaps` argument:**
-Here are a number of examples for each allowed `gaps` argument.
-* `gaps: not_allowed`: The upper bound of one record must be the lower bound of
-the next record.
+  **Understanding the `gaps` argument:**
 
-| lower_bound | upper_bound |
-|-------------|-------------|
-| 0           | 1           |
-| 1           | 2           |
-| 2           | 3           |
+  Here are a number of examples for each allowed `gaps` argument.
+  * `gaps: not_allowed`: The upper bound of one record must be the lower bound of
+  the next record.
 
-* `gaps: allowed` (default): There may be a gap between the upper bound of one
-record and the lower bound of the next record.
+  | lower_bound | upper_bound |
+  |-------------|-------------|
+  | 0           | 1           |
+  | 1           | 2           |
+  | 2           | 3           |
 
-| lower_bound | upper_bound |
-|-------------|-------------|
-| 0           | 1           |
-| 2           | 3           |
-| 3           | 4           |
+  * `gaps: allowed` (default): There may be a gap between the upper bound of one
+  record and the lower bound of the next record.
 
-* `gaps: required`: There must be a gap between the upper bound of one record and
-the lower bound of the next record (common for date ranges).
+  | lower_bound | upper_bound |
+  |-------------|-------------|
+  | 0           | 1           |
+  | 2           | 3           |
+  | 3           | 4           |
 
-| lower_bound | upper_bound |
-|-------------|-------------|
-| 0           | 1           |
-| 2           | 3           |
-| 4           | 5           |
+  * `gaps: required`: There must be a gap between the upper bound of one record and
+  the lower bound of the next record (common for date ranges).
 
-**Understanding the `zero_length_range_allowed` argument:**
-Here are a number of examples for each allowed `zero_length_range_allowed` argument.
-* `zero_length_range_allowed: false`: (default) The upper bound of each record must be greater than its lower bound.
+  | lower_bound | upper_bound |
+  |-------------|-------------|
+  | 0           | 1           |
+  | 2           | 3           |
+  | 4           | 5           |
 
-| lower_bound | upper_bound |
-|-------------|-------------|
-| 0           | 1           |
-| 1           | 2           |
-| 2           | 3           |
+  **Understanding the `zero_length_range_allowed` argument:**
+  Here are a number of examples for each allowed `zero_length_range_allowed` argument.
+  * `zero_length_range_allowed: false`: (default) The upper bound of each record must be greater than its lower bound.
 
-* `zero_length_range_allowed: true`: The upper bound of each record can be greater than or equal to its lower bound.
+  | lower_bound | upper_bound |
+  |-------------|-------------|
+  | 0           | 1           |
+  | 1           | 2           |
+  | 2           | 3           |
 
-| lower_bound | upper_bound |
-|-------------|-------------|
-| 0           | 1           |
-| 2           | 2           |
-| 3           | 4           |
+  * `zero_length_range_allowed: true`: The upper bound of each record can be greater than or equal to its lower bound.
+
+  | lower_bound | upper_bound |
+  |-------------|-------------|
+  | 0           | 1           |
+  | 2           | 2           |
+  | 3           | 4           |
+
+</details>
 
 #### sequential_values ([source](macros/schema_tests/sequential_values.sql))
 This test confirms that a column contains sequential values. It can be used

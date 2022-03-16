@@ -1,6 +1,9 @@
 # dbt-utils v0.8.2
-## Fixes
+## Fixes  
 - Fix union_relations error from [#473](https://github.com/dbt-labs/dbt-utils/pull/473) when no include/exclude parameters are provided ([#505](https://github.com/dbt-labs/dbt-utils/issues/505), [#509](https://github.com/dbt-labs/dbt-utils/pull/509))
+
+## Quality of life
+- Updated references to 'schema test' in project file structure and documentation referred to in [#485](https://github.com/dbt-labs/dbt-utils/issues/485)
 
 # dbt-utils v0.8.1
 

@@ -19,7 +19,7 @@
                 database=database,
                 schema=row.table_schema,
                 identifier=row.table_name,
-                type = row.table_type if row.table_type != ‘materialized view’  else ‘view’
+                type = row.table_type if row.table_type != 'materialized view'  else 'materializedview'
             ) -%}
             {%- do tbl_relations.append(tbl_relation) -%}
         {%- endfor -%}

@@ -1,3 +1,8 @@
+# dbt-utils v0.8.3
+
+## New features
+- A cross-database implementation of `order_by()` ([#524](https://github.com/dbt-labs/dbt-utils/pull/524))
+
 # dbt-utils v0.8.2
 ## Fixes
 - Fix union_relations error from [#473](https://github.com/dbt-labs/dbt-utils/pull/473) when no include/exclude parameters are provided ([#505](https://github.com/dbt-labs/dbt-utils/issues/505), [#509](https://github.com/dbt-labs/dbt-utils/pull/509))

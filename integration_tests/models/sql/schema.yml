@@ -142,3 +142,11 @@ models:
     tests:
       - dbt_utils.equality:
           compare_model: ref('data_union_events_expected')
+
+  - name: test_orderby
+    columns:
+      - name: column
+        tests:
+          - accepted_values:
+              values:
+                - 'a'

@@ -38,6 +38,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
     - [date_spine](#date_spine-source)
     - [haversine_distance](#haversine_distance-source)
     - [group_by](#group_by-source)
+    - [order_by](#order_by-source)
     - [star](#star-source)
     - [union_relations](#union_relations-source)
     - [generate_series](#generate_series-source)
@@ -745,6 +746,21 @@ Would compile to:
 
 ```sql
 group by 1,2,3
+```
+
+#### order_by ([source](macros/sql/orderby.sql))
+This macro build an order by statement for fields 1...N
+
+**Usage:**
+
+```
+{{ dbt_utils.order_by(n=3) }}
+```
+
+Would compile to:
+
+```sql
+order by 1,2,3
 ```
 
 #### star ([source](macros/sql/star.sql))

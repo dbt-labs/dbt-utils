@@ -587,21 +587,15 @@ This macro returns the unique values for a column in a given [relation](https://
 ```
 
 #### get_columns ([source](macros/sql/get_columns.sql))
-This macro returns the unique columns for a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation) as a comma-separated list.
+This macro returns an iterable Jinja list of columns for a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation)
 
 **Args:**
 - `from` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
 - `except` (optional, default=`[]`): The name of the columns you wish to exclude
 
-{% set column_names = get_columns(from=ref('fct_rate_rapid_onboarding'), except=["rate_rapid_onboarding__survey_question_response_id", "rate_rapid_onboarding__survey_response_id"]) %}
-
-{% for column_name in column_names %}
-    max({{ column_name }}) ... as '{{ column_name }}'_test,
-{% endfor %}
-
 **Usage:**
 ```sql
--- Returns a list of the columns from a relation, then iterate in a for loop
+-- Returns a list of the columns from a relation, so you can then iterate in a for loop
 {% set column_names = get_columns(from=ref('your_model'), except=["field_1", "field_2"]) %}
 ...
 {% for column_name in column_names %}

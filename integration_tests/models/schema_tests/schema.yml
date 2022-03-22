@@ -31,6 +31,21 @@ models:
               expression: = 0.5
               condition: col_a = 0.5
 
+  - name: data_test_expression_is_true_window_functions
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: count(*) over (partition by col_a) = 2
+      - dbt_utils.expression_is_true:
+          expression: max(col_c) over (partition by col_a) = min(col_c) over (partition by col_a)
+      - dbt_utils.expression_is_true:
+          expression: sum(col_b) over (partition by col_a) = 15
+          condition: col_a = 1
+    columns:
+      - name: col_c
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: = sum(col_b) over (partition by col_a)
+
   - name: test_recency
     tests:
       - dbt_utils.recency:

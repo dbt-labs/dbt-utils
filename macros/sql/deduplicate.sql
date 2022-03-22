@@ -1,8 +1,8 @@
-{%- macro deduplicate(relation, group_by, order_by=none) -%}
-    {{ return(adapter.dispatch('deduplicate', 'dbt_utils')(relation, group_by, order_by=order_by)) }}
+{%- macro deduplicate(relation, group_by, order_by=none, alias=none) -%}
+    {{ return(adapter.dispatch('deduplicate', 'dbt_utils')(relation, group_by, order_by=order_by, alias=alias)) }}
 {% endmacro %}
 
-{%- macro default__deduplicate(relation, group_by, order_by=none) -%}
+{%- macro default__deduplicate(relation, group_by, order_by=none, alias=none) -%}
 
     select
         {{ dbt_utils.star(relation, relation_alias='deduped') | indent }}
@@ -15,7 +15,7 @@
                 order by {{ order_by }}
                 {%- endif %}
             ) as rn
-        from {{ relation }} as _inner
+        from {{ relation if alias is none else alias }} as _inner
     ) as deduped
     where deduped.rn = 1
 
@@ -26,7 +26,7 @@
 --  clause in BigQuery:
 --  https://github.com/dbt-labs/dbt-utils/issues/335#issuecomment-788157572
 #}
-{%- macro bigquery__deduplicate(relation, group_by, order_by=none) -%}
+{%- macro bigquery__deduplicate(relation, group_by, order_by=none, alias=none) -%}
 
     select
         {{ dbt_utils.star(relation, relation_alias='deduped') | indent }}
@@ -39,7 +39,7 @@
                 {%- endif %}
                 limit 1
             )[offset(0)] as deduped
-        from {{ relation }} as original
+        from {{ relation if alias is none else alias }} as original
         group by {{ group_by }}
     )
 

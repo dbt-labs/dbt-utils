@@ -11,7 +11,7 @@
         {{ return('') }}
     {% endif %}
 
-    {%- for col in adapter.get_columns(from, except) %}
+    {%- for col in dbt_utils.get_columns(from, except) %}
 
         {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}{{ adapter.quote(col)|trim }} {%- if prefix!='' or suffix!='' -%} as {{ adapter.quote(prefix ~ col ~ suffix)|trim }} {%- endif -%}
         {%- if not loop.last %},{{ '\n  ' }}{% endif %}

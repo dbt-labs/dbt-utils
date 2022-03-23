@@ -383,7 +383,6 @@ models:
 <summary>Additional `gaps` and `zero_length_range_allowed` examples</summary>
 
   **Understanding the `gaps` argument:**
-
   Here are a number of examples for each allowed `gaps` argument.
   * `gaps: not_allowed`: The upper bound of one record must be the lower bound of
   the next record.
@@ -787,7 +786,7 @@ from {{ ref('my_model') }}
 This macro unions together an array of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation),
 even when columns have differing orders in each Relation, and/or some columns are
 missing from some relations. Any columns exclusive to a subset of these
-relations will be filled with `null` where not present. An new column
+relations will be filled with `null` where not present. A new column
 (`_dbt_source_relation`) is also added to indicate the source for each record.
 
 **Usage:**

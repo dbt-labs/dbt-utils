@@ -25,6 +25,9 @@
         {%- do dbt_utils._is_relation(relation, 'union_relations') -%}
         {%- do dbt_utils._is_ephemeral(relation, 'union_relations') -%}
         {%- set cols = adapter.get_columns_in_relation(relation) -%}
+        {%- if not cols %}
+            {{ exceptions.raise_compiler_error("Error: no columns found in relation " ~ relation ~ " - check for case-sensitive naming") }}
+        {% endif -%}
         {%- for col in cols -%}
 
         {#- If an exclude list was provided and the column is in the list, do nothing -#}

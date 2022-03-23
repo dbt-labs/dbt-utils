@@ -13,6 +13,9 @@
 
     {%- set include_cols = [] %}
     {%- set cols = adapter.get_columns_in_relation(from) -%}
+    {%- if not cols %}
+        {{ exceptions.raise_compiler_error("Error: no columns found in relation " ~ relation ~ " - check for case-sensitive naming") }}
+    {% endif -%}
     {%- set except = except | map("lower") | list %}
     {%- for col in cols -%}
 

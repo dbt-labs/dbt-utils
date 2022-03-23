@@ -47,6 +47,9 @@ Arguments:
   {%- do dbt_utils._is_relation(relation, 'unpivot') -%}
   {%- do dbt_utils._is_ephemeral(relation, 'unpivot') -%}
   {%- set cols = adapter.get_columns_in_relation(relation) %}
+  {%- if not cols %}
+      {{ exceptions.raise_compiler_error("Error: no columns found in relation " ~ relation ~ " - check for case-sensitive naming") }}
+  {% endif -%}
 
   {%- for col in cols -%}
     {%- if col.column.lower() not in remove|map('lower') and col.column.lower() not in exclude|map('lower') -%}

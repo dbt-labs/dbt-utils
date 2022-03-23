@@ -13,7 +13,7 @@ deduped as (
             ref('data_deduplicate'),
             group_by='user_id',
             order_by='version desc',
-            alias="source"
+            relation_alias="source"
         ) | indent
     }}
 

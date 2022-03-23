@@ -717,7 +717,7 @@ This macro returns the sql required to remove duplicate rows from a model or sou
     relation=source('my_source', 'my_table'),
     group_by="user_id, cast(timestamp as day)",
     order_by="timestamp desc",
-    alias="my_cte"
+    relation_alias="my_cte"
    )
 }}
 ```

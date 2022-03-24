@@ -1,8 +1,8 @@
 {% macro get_filtered_columns_in_relation(from, except=[], output_lower=False) -%}
-    {{ return(adapter.dispatch('get_filtered_columns_in_relation', 'dbt_utils')(from, except)) }}
+    {{ return(adapter.dispatch('get_filtered_columns_in_relation', 'dbt_utils')(from, except, output_lower)) }}
 {% endmacro %}
 
-{% macro default__get_filtered_columns_in_relation(from, except=[]) -%}
+{% macro default__get_filtered_columns_in_relation(from, except=[], output_lower=False) -%}
     {%- do dbt_utils._is_relation(from, 'get_filtered_columns_in_relation') -%}
     {%- do dbt_utils._is_ephemeral(from, 'get_filtered_columns_in_relation') -%}
 

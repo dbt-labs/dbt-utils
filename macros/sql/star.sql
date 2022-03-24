@@ -1,5 +1,5 @@
 {% macro star(from, relation_alias=False, except=[], prefix='', suffix='', output_lower=False) -%}
-    {{ return(adapter.dispatch('star', 'dbt_utils')(from, relation_alias, except, prefix, suffix)) }}
+    {{ return(adapter.dispatch('star', 'dbt_utils')(from, relation_alias, except, prefix, suffix, output_lower)) }}
 {% endmacro %}
 
 {% macro default__star(from, relation_alias=False, except=[], prefix='', suffix='', output_lower=False) -%}

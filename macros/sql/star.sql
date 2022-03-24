@@ -1,8 +1,8 @@
-{% macro star(from, relation_alias=False, except=[], prefix='', suffix='') -%}
+{% macro star(from, relation_alias=False, except=[], prefix='', suffix='', output_lower=False) -%}
     {{ return(adapter.dispatch('star', 'dbt_utils')(from, relation_alias, except, prefix, suffix)) }}
 {% endmacro %}
 
-{% macro default__star(from, relation_alias=False, except=[], prefix='', suffix='') -%}
+{% macro default__star(from, relation_alias=False, except=[], prefix='', suffix='', output_lower=False) -%}
     {%- do dbt_utils._is_relation(from, 'star') -%}
     {%- do dbt_utils._is_ephemeral(from, 'star') -%}
 
@@ -11,7 +11,7 @@
         {{ return('') }}
     {% endif %}
 
-    {%- for col in dbt_utils.get_columns(from, except) %}
+    {%- for col in dbt_utils.get_columns(from, except, output_lower) %}
 
         {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}{{ adapter.quote(col)|trim }} {%- if prefix!='' or suffix!='' -%} as {{ adapter.quote(prefix ~ col ~ suffix)|trim }} {%- endif -%}
         {%- if not loop.last %},{{ '\n  ' }}{% endif %}

@@ -1,4 +1,4 @@
-{% macro get_columns(from, except=[]) -%}
+{% macro get_columns(from, except=[], output_lower=False) -%}
     {{ return(adapter.dispatch('get_columns', 'dbt_utils')(from, except)) }}
 {% endmacro %}
 
@@ -16,7 +16,11 @@
     {%- set except = except | map("lower") | list %}
     {%- for col in cols -%}
         {%- if col.column|lower not in except -%}
-            {% do include_cols.append(col.column) %}
+            {%- if not output_lower %}
+                {% do include_cols.append(col.column) %}
+            {% else %}
+                {% do include_cols.append(col.column|lower) %}
+            {%- endif -%}
         {%- endif %}
     {%- endfor %}
 

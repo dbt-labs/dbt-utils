@@ -587,11 +587,17 @@ This macro returns the unique values for a column in a given [relation](https://
 ```
 
 #### get_columns ([source](macros/sql/get_columns.sql))
-This macro returns an iterable Jinja list of columns for a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation)
+This macro returns an iterable Jinja list of columns for a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation), (i.e. not from a CTE)
+- optionally exclude columns
+- the input values are not case-sensitive (input uppercase or lowercase and it will work!)
+- declare whether you want lowercase output values with `output_lower=TRUE` (as Snowflake by default will output values in UPPERCASE)
+> Note: The native [`adapter.get_columns_in_relation` macro](https://docs.getdbt.com/reference/dbt-jinja-functions/adapter#get_columns_in_relation) allows you 
+to pull column names in a non-filtered fashion, also bringing along with it other (potentially unwanted) information, such as dtype, char_size, numeric_precision, etc.
 
 **Args:**
 - `from` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
-- `except` (optional, default=`[]`): The name of the columns you wish to exclude
+- `except` (optional, default=`[]`): The name of the columns you wish to exclude. (case-insensitive)
+- `output_lower` (optional, default=`False`): True if you want lowercase outputs. False if you want outputs to be database default (which may be upper or lower depending on database)
 
 **Usage:**
 ```sql
@@ -767,9 +773,21 @@ group by 1,2,3
 ```
 
 #### star ([source](macros/sql/star.sql))
-This macro generates a comma-separated list of all fields that exist in the `from` relation, excluding any fields listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with the star macro. This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias (`relation_alias`.`field_name`). 
+This macro generates a comma-separated list of all fields that exist in the `from` relation, excluding any fields 
+listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with 
+the star macro. 
+This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias (`relation_alias`.`field_name`). 
+The macro also has optional `prefix` and `suffix` arguments. When one or both are provided, they will be concatenated onto each field's alias 
+in the output (`prefix` ~ `field_name` ~ `suffix`). NB: This prevents the output from being used in any context other than a select statement.
 
-The macro also has optional `prefix` and `suffix` arguments. When one or both are provided, they will be concatenated onto each field's alias in the output (`prefix` ~ `field_name` ~ `suffix`). NB: This prevents the output from being used in any context other than a select statement.
+**Args:**
+- `from` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
+- `except` (optional, default=`[]`): The name of the columns you wish to exclude. (case-insensitive)
+- `relation_alias` (optional, default=`''`): will prefix all generated fields with an alias (`relation_alias`.`field_name`). 
+- `prefix` (optional, default=`''`): will prefix the output `field_name` (`field_name as prefix_field_name`). 
+- `suffix` (optional, default=`''`): will suffix the output `field_name` (`field_name as field_name_suffix`). 
+- `output_lower` (optional, default=`False`): True if you want lowercase outputs. False if you want outputs to be database default (which may be upper or lower depending on database)
+
 
 **Usage:**
 ```sql
@@ -782,6 +800,13 @@ from {{ ref('my_model') }}
 ```sql
 select
 {{ dbt_utils.star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"]) }}
+from {{ ref('my_model') }}
+
+```
+
+```sql
+select
+{{ dbt_utils.star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"], prefix="max_", output_lower=True) }}
 from {{ ref('my_model') }}
 
 ```

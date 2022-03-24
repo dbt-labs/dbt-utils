@@ -30,7 +30,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 
 - [Introspective macros](#introspective-macros):
     - [get_column_values](#get_column_values-source)
-    - [get_columns](#get_columns-source)
+    - [get_filtered_columns_in_relation](#get_filtered_columns_in_relation-source)
     - [get_relations_by_pattern](#get_relations_by_pattern-source)
     - [get_relations_by_prefix](#get_relations_by_prefix-source)
     - [get_query_results_as_dict](#get_query_results_as_dict-source)
@@ -586,7 +586,7 @@ This macro returns the unique values for a column in a given [relation](https://
 ...
 ```
 
-#### get_columns ([source](macros/sql/get_columns.sql))
+#### get_filtered_columns_in_relation ([source](macros/sql/get_filtered_columns_in_relation.sql))
 This macro returns an iterable Jinja list of columns for a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation), (i.e. not from a CTE)
 - optionally exclude columns
 - the input values are not case-sensitive (input uppercase or lowercase and it will work!)
@@ -602,7 +602,7 @@ to pull column names in a non-filtered fashion, also bringing along with it othe
 **Usage:**
 ```sql
 -- Returns a list of the columns from a relation, so you can then iterate in a for loop
-{% set column_names = get_columns(from=ref('your_model'), except=["field_1", "field_2"]) %}
+{% set column_names = dbt_utils.get_filtered_columns_in_relation(from=ref('your_model'), except=["field_1", "field_2"]) %}
 ...
 {% for column_name in column_names %}
     max({{ column_name }}) ... as max_'{{ column_name }}',

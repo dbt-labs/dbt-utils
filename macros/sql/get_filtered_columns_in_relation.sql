@@ -1,10 +1,10 @@
-{% macro get_columns(from, except=[], output_lower=False) -%}
-    {{ return(adapter.dispatch('get_columns', 'dbt_utils')(from, except)) }}
+{% macro get_filtered_columns_in_relation(from, except=[], output_lower=False) -%}
+    {{ return(adapter.dispatch('get_filtered_columns_in_relation', 'dbt_utils')(from, except)) }}
 {% endmacro %}
 
-{% macro default__get_columns(from, except=[]) -%}
-    {%- do dbt_utils._is_relation(from, 'get_columns') -%}
-    {%- do dbt_utils._is_ephemeral(from, 'get_columns') -%}
+{% macro default__get_filtered_columns_in_relation(from, except=[]) -%}
+    {%- do dbt_utils._is_relation(from, 'get_filtered_columns_in_relation') -%}
+    {%- do dbt_utils._is_ephemeral(from, 'get_filtered_columns_in_relation') -%}
 
     {# -- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
     {%- if not execute -%}

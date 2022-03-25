@@ -965,8 +965,6 @@ This macro calculates the difference between two dates.
 #### split_part ([source](macros/cross_db_utils/split_part.sql))
 This macro splits a string of text using the supplied delimiter and returns the supplied part number (1-indexed).
 
-_part(string_text, delimiter_text, part_number, quote_string_text=False, quote_delimiter_text=False) %}
-
 **Args**:
 - `string_text` (required): Text to be split into parts. 
 - `delimiter_text` (required): Text representing the delimiter to split by.

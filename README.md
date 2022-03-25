@@ -185,7 +185,7 @@ models:
 ```
 
 #### at_least_one ([source](macros/generic_tests/at_least_one.sql))
-Asserts if a column has at least one value.
+Asserts that a column has at least one value.
 
 **Usage:**
 ```yaml
@@ -200,7 +200,7 @@ models:
 ```
 
 #### not_constant ([source](macros/generic_tests/not_constant.sql))
-Asserts if a column does not have the same value in all rows.
+Asserts that a column does not have the same value in all rows.
 
 **Usage:**
 ```yaml
@@ -215,7 +215,7 @@ models:
 ```
 
 #### cardinality_equality ([source](macros/generic_tests/cardinality_equality.sql))
-Asserts if values in a given column have exactly the same cardinality as values from a different column in a different model.
+Asserts that values in a given column have exactly the same cardinality as values from a different column in a different model.
 
 **Usage:**
 ```yaml

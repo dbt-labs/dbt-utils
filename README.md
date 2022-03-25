@@ -36,7 +36,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 
 - [SQL generators](#sql-generators)
     - [date_spine](#date_spine-source)
-    - [dedupe](#dedupe-source)
+    - [deduplicate](#deduplicate)
     - [haversine_distance](#haversine_distance-source)
     - [group_by](#group_by-source)
     - [star](#star-source)
@@ -715,7 +715,8 @@ This macro returns the sql required to remove duplicate rows from a model or sou
 {{ dbt_utils.deduplicate(
     relation=source('my_source', 'my_table'),
     group_by="user_id, cast(timestamp as day)",
-    order_by="timestamp desc"
+    order_by="timestamp desc",
+    relation_alias="my_cte"
    )
 }}
 ```

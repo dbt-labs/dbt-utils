@@ -976,8 +976,9 @@ the delimiter text is more of a pain - i wouldn't be averse to that being quoted
 
 **Usage:**
 ```
-{{ dbt_utils.split_part(string_text=some_column, delimiter_text="','", part_number=1) }}
-{{ dbt_utils.split_part(string_text=some_column, delimiter_text=',', part_number=1, quote_delimiter_text=True) }}
+{{ dbt_utils.split_part(string_text='some_column', delimiter_text="','", part_number=1) }}
+{{ dbt_utils.split_part(string_text='some_column', delimiter_text=',', part_number=1, quote_delimiter_text=True) }}
+{{ dbt_utils.split_part(string_text=some_column, delimiter_text=',', part_number=1, quote_string_text=True, quote_delimiter_text=True) }}
 {{ dbt_utils.split_part(string_text='1,2,3', delimiter_text=',', part_number=1, quote_string_text=True, quote_delimiter_text=True) }}
 ```
 

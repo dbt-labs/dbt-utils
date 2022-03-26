@@ -969,17 +969,11 @@ This macro splits a string of text using the supplied delimiter and returns the 
 - `string_text` (required): Text to be split into parts. 
 - `delimiter_text` (required): Text representing the delimiter to split by.
 - `part_number` (required): Requested part of the split (1-based). If the value is negative, the parts are counted backward from the end of the string.
-- `quote_string_text` (optional, default=`False`): Normally `string_text` does not need extra quotes, because it is expected to be a column reference and those shouldn't get quotes wrapped around them inside the macro definition.
-- `quote_delimiter_text` (optional, default=`False`): If you are quoting from a column, then no quotes needed, but if you input `','` set this to `quote_delimiter_text=True`, to avoid having to input `"','"`
-
-the delimiter text is more of a pain - i wouldn't be averse to that being quoted inside of the macro so that you only had to single quote it going in. With that said, it could again be that you're trying to split based on a column's value in which case you dont want extra quotes showing up
 
 **Usage:**
 ```
 {{ dbt_utils.split_part(string_text='some_column', delimiter_text="','", part_number=1) }}
-{{ dbt_utils.split_part(string_text='some_column', delimiter_text=',', part_number=1, quote_delimiter_text=True) }}
-{{ dbt_utils.split_part(string_text=some_column, delimiter_text=',', part_number=1, quote_string_text=True, quote_delimiter_text=True) }}
-{{ dbt_utils.split_part(string_text='1,2,3', delimiter_text=',', part_number=1, quote_string_text=True, quote_delimiter_text=True) }}
+{{ dbt_utils.split_part(string_text='1,2,3', delimiter_text="'|'", part_number=1) }}
 ```
 
 #### date_trunc ([source](macros/cross_db_utils/date_trunc.sql))

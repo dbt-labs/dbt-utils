@@ -26,7 +26,7 @@
 
 {% else %}
 
-    select 'ok' limit 0
+    select 'ok' {{ limit_zero() }}
 
 {% endif %}
 {% endmacro %}

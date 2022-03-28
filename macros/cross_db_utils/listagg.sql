@@ -12,7 +12,6 @@
         ) within group ( {{ order_by_clause }}
         {% endif %}
         )
-        {% endif %}
 
 {% endmacro %}
 

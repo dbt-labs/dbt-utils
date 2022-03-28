@@ -1073,7 +1073,7 @@ This macro returns the concatenated input values from a group of rows separated 
 
 **Usage:**
 ```
-{{ dbt_utils.listagg(measure='column_to_agg', delimiter_text="','", order_by_clause='order by order_by_column', limit_clause='limit 10') }}
+{{ dbt_utils.listagg(measure='column_to_agg', delimiter_text="','", order_by_clause="order by order_by_column", limit_clause="limit 10") }}
 ```
 
 ---

@@ -1,5 +1,5 @@
-{% macro listagg(measure, delimiter_text, order_by_clause) %}
-  {{ return(adapter.dispatch('listagg', 'dbt_utils') (measure, delimiter_text, order_by_clause='', limit_clause='')) }}
+{% macro listagg(measure, delimiter_text, order_by_clause='', limit_clause='') %}
+  {{ return(adapter.dispatch('listagg', 'dbt_utils') (measure, delimiter_text, order_by_clause, limit_clause)) }}
 {% endmacro %}
 
 

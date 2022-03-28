@@ -71,7 +71,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 ----
 ### Generic Tests
 #### equal_rowcount ([source](macros/generic_tests/equal_rowcount.sql))
-Asserts the that two relations have the same number of rows.
+Asserts that two relations have the same number of rows.
 
 **Usage:**
 ```yaml

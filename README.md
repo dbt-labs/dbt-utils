@@ -972,7 +972,8 @@ This macro splits a string of text using the supplied delimiter and returns the 
 
 **Usage:**
 ```
-{{ dbt_utils.split_part(string_text='some_column', delimiter_text="','", part_number=1) }}
+When referencing a column, use one pair of quotes. When referencing a string, use single quotes enclosed in double quotes.
+{{ dbt_utils.split_part(string_text='column_to_split', delimiter_text='delimiter_column', part_number=1) }}
 {{ dbt_utils.split_part(string_text="'1|2|3'", delimiter_text="'|'", part_number=1) }}
 ```
 

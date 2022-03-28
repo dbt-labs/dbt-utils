@@ -4,16 +4,16 @@ with data as (
 
 ),
 
-output as (
+data_output as (
 
     select * from {{ ref('data_listagg_output') }}
 
-)
+),
 
-aggregate as (
+calculate as (
 
     select
-        group,
+        group_col,
         {{ dbt_utils.listagg('string_text', "','", 'order by order_col') }} as actual
     from data
     group by 1
@@ -21,8 +21,8 @@ aggregate as (
 )
 
 select 
-    aggregate.actual
-    output.output
-from aggregate
-left join output
-on aggregate.group = output.group
+    calculate.actual,
+    data_output.expected
+from calculate
+left join data_output
+on calculate.group_col = data_output.group_col

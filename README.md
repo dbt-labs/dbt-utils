@@ -59,6 +59,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
     - [split_part](#split_part-source)
     - [last_day](#last_day-source)
     - [width_bucket](#width_bucket-source)
+    - [listagg](#listagg)
 
 - [Jinja Helpers](#jinja-helpers)
     - [pretty_time](#pretty_time-source)
@@ -1061,6 +1062,19 @@ When an expression falls outside the range, the function returns:
 {{ dbt_utils.width_bucket(expr, min_value, max_value, num_buckets) }}
 ```
 
+#### listagg ([source](macros/cross_db_utils/listagg.sql))
+This macro returns the concatenated input values from a group of rows separated by a specified deliminator. 
+
+**Args**:
+- `measure` (required): The expression (typically a column name) that determines the values to be concatenated.
+- `delimiter_text` (required): Text representing the delimiter to separate concatenated values by.
+- `order_by_clause` (optional): An expression (typically a column name) that determines the order of the concatenated values.
+- `limit_clause` (optional): Only for bigquery. Specifies the maximum number of values to be concatenated.
+
+**Usage:**
+```
+{{ dbt_utils.listagg(measure='column_to_agg', delimiter_text="','", order_by_clause='order by order_by_column', limit_clause='limit 10') }}
+```
 
 ---
 ### Jinja Helpers

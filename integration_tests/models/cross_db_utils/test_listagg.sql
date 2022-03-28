@@ -16,7 +16,7 @@ calculate as (
         group_col,
         {{ dbt_utils.listagg('string_text', "','", 'order by order_col') }} as actual
     from data
-    group by 1
+    group by group_col
 
 )
 

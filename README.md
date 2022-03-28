@@ -973,7 +973,7 @@ This macro splits a string of text using the supplied delimiter and returns the 
 **Usage:**
 ```
 {{ dbt_utils.split_part(string_text='some_column', delimiter_text="','", part_number=1) }}
-{{ dbt_utils.split_part(string_text='1,2,3', delimiter_text="'|'", part_number=1) }}
+{{ dbt_utils.split_part(string_text="'1|2|3'", delimiter_text="'|'", part_number=1) }}
 ```
 
 #### date_trunc ([source](macros/cross_db_utils/date_trunc.sql))

@@ -15,18 +15,6 @@
 
 {%- endmacro %}
 
-{% macro postgres__listagg(measure, delimiter_text, order_by_clause, limit_clause) -%}
-
-    string_agg(
-        {{ measure }},
-        {{ delimiter_text }}
-        {% if order_by_clause -%}
-        {{ order_by_clause }}
-        {%- endif %}
-        )
-
-{%- endmacro %}
-
 {% macro bigquery__listagg(measure, delimiter_text, order_by_clause, limit_clause) -%}
 
     string_agg(
@@ -39,5 +27,24 @@
         {{ limit_clause }}
         {%- endif %}
         )
+
+{%- endmacro %}
+
+{% macro postgres__listagg(measure, delimiter_text, order_by_clause, limit_clause) -%}
+
+    string_agg(
+        {{ measure }},
+        {{ delimiter_text }}
+        {% if order_by_clause -%}
+        {{ order_by_clause }}
+        {%- endif %}
+        )
+
+{%- endmacro %}
+
+{# redshift should use default instead of postgres #}
+{% macro redshift__listagg(measure, delimiter_text, order_by_clause, limit_clause) -%}
+
+    {{ return(dbt_utils.default__listagg(measure, delimiter_text, order_by_clause, limit_clause)) }}
 
 {%- endmacro %}

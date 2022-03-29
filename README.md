@@ -69,6 +69,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 - [insert_by_period](#insert_by_period-source)
 
 ----
+=======
 ### Generic Tests
 #### equal_rowcount ([source](macros/generic_tests/equal_rowcount.sql))
 Asserts that two relations have the same number of rows.

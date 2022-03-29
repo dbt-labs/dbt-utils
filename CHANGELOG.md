@@ -25,6 +25,7 @@
 - `star()` will only alias columns if a prefix/suffix is provided, to allow the unmodified output to still be used in `group by` clauses etc. [#468](https://github.com/dbt-labs/dbt-utils/pull/468)
 - The `sequential_values` test is now compatible with quoted columns [#479](https://github.com/dbt-labs/dbt-utils/pull/479)
 - `pivot()` escapes values containing apostrophes [#503](https://github.com/dbt-labs/dbt-utils/pull/503)
+- `date_trunc` and `datediff` default macros now have whitespace control to assist with linting and readability [#529](https://github.com/dbt-labs/dbt-utils/pull/529)
 
 ## Contributors:
 - [grahamwetzler](https://github.com/grahamwetzler) (#473)
@@ -34,6 +35,7 @@
 - [jelstongreen](https://github.com/jelstongreen) (#468)
 - [armandduijn](https://github.com/armandduijn) (#479)
 - [mdutoo](https://github.com/mdutoo) (#503)
+- [sunriselong](https://github.com/sunriselong) (#529)
 
 
 # dbt-utils v0.8.0

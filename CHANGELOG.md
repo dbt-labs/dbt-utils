@@ -1,9 +1,15 @@
+# dbt-utils v0.8.3
+## New features
+- A macro for deduplicating data ([#335](https://github.com/dbt-labs/dbt-utils/issues/335), [#512](https://github.com/dbt-labs/dbt-utils/pull/512))
+
+## Quality of life
+- Updated references to 'schema test' in project file structure and documentation referred to in [#485](https://github.com/dbt-labs/dbt-utils/issues/485)
+
 # dbt-utils v0.8.2
 ## Fixes
 - Fix union_relations error from [#473](https://github.com/dbt-labs/dbt-utils/pull/473) when no include/exclude parameters are provided ([#505](https://github.com/dbt-labs/dbt-utils/issues/505), [#509](https://github.com/dbt-labs/dbt-utils/pull/509))
 
 # dbt-utils v0.8.1
-
 ## New features
 - A cross-database implementation of `any_value()` ([#497](https://github.com/dbt-labs/dbt-utils/issues/497), [#501](https://github.com/dbt-labs/dbt-utils/pull/501))
 - A cross-database implementation of `bool_or()` ([#504](https://github.com/dbt-labs/dbt-utils/pull/504))
@@ -34,7 +40,7 @@
 
 # dbt-utils v0.8.0
 ## 🚨 Breaking changes
-- dbt ONE POINT OH is here! This version of dbt-utils requires _any_ version (minor and patch) of v1, which means far less need for compatibility releases in the future. 
+- dbt ONE POINT OH is here! This version of dbt-utils requires _any_ version (minor and patch) of v1, which means far less need for compatibility releases in the future.
 - The partition column in the `mutually_exclusive_ranges` test is now always called `partition_by_col`. This enables compatibility with `--store-failures` when multiple columns are concatenated together. If you have models built on top of the failures table, update them to reflect the new column name. ([#423](https://github.com/dbt-labs/dbt-utils/issues/423), [#430](https://github.com/dbt-labs/dbt-utils/pull/430))
 
 ## Contributors:
@@ -89,12 +95,12 @@
 
 ## Features
 
-- Add `not_null_proportion` schema test that allows the user to specify the minimum (`at_least`) tolerated proportion (e.g., `0.95`) of non-null values ([#411](https://github.com/dbt-labs/dbt-utils/pull/411))
+- Add `not_null_proportion` generic test that allows the user to specify the minimum (`at_least`) tolerated proportion (e.g., `0.95`) of non-null values ([#411](https://github.com/dbt-labs/dbt-utils/pull/411))
 
 
 ## Under the hood
 - Allow user to provide any case type when defining the `exclude` argument in `dbt_utils.star()` ([#403](https://github.com/dbt-labs/dbt-utils/pull/403))
-- Log whole row instead of just column name in 'accepted_range' schema test to allow better visibility into failures ([#413](https://github.com/dbt-labs/dbt-utils/pull/413))
+- Log whole row instead of just column name in 'accepted_range' generic test to allow better visibility into failures ([#413](https://github.com/dbt-labs/dbt-utils/pull/413))
 - Use column name to group in 'get_column_values ' to allow better cross db functionality ([#407](https://github.com/dbt-labs/dbt-utils/pull/407))
 
 # dbt-utils v0.7.1
@@ -151,7 +157,7 @@ If you were relying on the position to match up your optional arguments, this ma
 ## Features
 * Add new argument, `order_by`, to `get_column_values` (code originally in [#289](https://github.com/fishtown-analytics/dbt-utils/pull/289/) from [@clausherther](https://github.com/clausherther), merged via [#349](https://github.com/fishtown-analytics/dbt-utils/pull/349/))
 * Add `slugify` macro, and use it in the pivot macro. :rotating_light: This macro uses the `re` module, which is only available in dbt v0.19.0+. As a result, this feature introduces a breaking change. ([#314](https://github.com/fishtown-analytics/dbt-utils/pull/314))
-* Add `not_null_proportion` schema test that allows the user to specify the minimum (`at_least`) tolerated proportion (e.g., `0.95`) of non-null values
+* Add `not_null_proportion` generic test that allows the user to specify the minimum (`at_least`) tolerated proportion (e.g., `0.95`) of non-null values
 
 ## Under the hood
 * Update the default implementation of concat macro to use `||` operator ([#373](https://github.com/fishtown-analytics/dbt-utils/pull/314) from [@ChristopheDuong](https://github.com/ChristopheDuong)). Note this may be a breaking change for adapters that support `concat()` but not `||`, such as Apache Spark.
@@ -162,18 +168,18 @@ If you were relying on the position to match up your optional arguments, this ma
 
 ## Fixes
 
-- make `sequential_values` schema test use `dbt_utils.type_timestamp()` to allow for compatibility with db's without timestamp data type. [#376](https://github.com/fishtown-analytics/dbt-utils/pull/376) from [@swanderz](https://github.com/swanderz)
+- make `sequential_values` generic test use `dbt_utils.type_timestamp()` to allow for compatibility with db's without timestamp data type. [#376](https://github.com/fishtown-analytics/dbt-utils/pull/376) from [@swanderz](https://github.com/swanderz)
 
 # dbt-utils v0.6.5
 ## Features
 * Add new `accepted_range` test ([#276](https://github.com/fishtown-analytics/dbt-utils/pull/276) [@joellabes](https://github.com/joellabes))
 * Make `expression_is_true` work as a column test (code originally in [#226](https://github.com/fishtown-analytics/dbt-utils/pull/226/) from [@elliottohara](https://github.com/elliottohara), merged via [#313](https://github.com/fishtown-analytics/dbt-utils/pull/313/))
-* Add new schema test, `not_accepted_values` ([#284](https://github.com/fishtown-analytics/dbt-utils/pull/284) [@JavierMonton](https://github.com/JavierMonton))
+* Add new generic test, `not_accepted_values` ([#284](https://github.com/fishtown-analytics/dbt-utils/pull/284) [@JavierMonton](https://github.com/JavierMonton))
 * Support a new argument, `zero_length_range_allowed` in the `mutually_exclusive_ranges` test ([#307](https://github.com/fishtown-analytics/dbt-utils/pull/307) [@zemekeneng](https://github.com/zemekeneng))
-* Add new schema test, `sequential_values` ([#318](https://github.com/fishtown-analytics/dbt-utils/pull/318), inspired by [@hundredwatt](https://github.com/hundredwatt))
+* Add new generic test, `sequential_values` ([#318](https://github.com/fishtown-analytics/dbt-utils/pull/318), inspired by [@hundredwatt](https://github.com/hundredwatt))
 * Support `quarter` in the `postgres__last_day` macro ([#333](https://github.com/fishtown-analytics/dbt-utils/pull/333/files) [@seunghanhong](https://github.com/seunghanhong))
 * Add new argument, `unit`, to `haversine_distance` ([#340](https://github.com/fishtown-analytics/dbt-utils/pull/340) [@bastienboutonnet](https://github.com/bastienboutonnet))
-* Add new schema test, `fewer_rows_than` (code originally in [#221](https://github.com/fishtown-analytics/dbt-utils/pull/230/) from [@dmarts](https://github.com/dmarts), merged via [#343](https://github.com/fishtown-analytics/dbt-utils/pull/343/))
+* Add new generic test, `fewer_rows_than` (code originally in [#221](https://github.com/fishtown-analytics/dbt-utils/pull/230/) from [@dmarts](https://github.com/dmarts), merged via [#343](https://github.com/fishtown-analytics/dbt-utils/pull/343/))
 
 ## Fixes
 * Handle booleans gracefully in the unpivot macro ([#305](https://github.com/fishtown-analytics/dbt-utils/pull/305) [@avishalom](https://github.com/avishalom))
@@ -247,7 +253,7 @@ enabling users of community-supported database plugins to add or override macro 
 specific to their database ([#267](https://github.com/fishtown-analytics/dbt-utils/pull/267))
 * Use `add_ephemeral_prefix` instead of hard-coding a string literal, to support
 database adapters that use different prefixes ([#267](https://github.com/fishtown-analytics/dbt-utils/pull/267))
-* Implement a quote_columns argument in the unique_combination_of_columns schema test ([#270](https://github.com/fishtown-analytics/dbt-utils/pull/270) [@JoshuaHuntley](https://github.com/JoshuaHuntley))
+* Implement a quote_columns argument in the unique_combination_of_columns generic test ([#270](https://github.com/fishtown-analytics/dbt-utils/pull/270) [@JoshuaHuntley](https://github.com/JoshuaHuntley))
 
 ## Quality of life
 * Remove deprecated macros `get_tables_by_prefix` and `union_tables` ([#268](https://github.com/fishtown-analytics/dbt-utils/pull/268))

@@ -72,8 +72,8 @@
 {% macro snowflake__listagg(measure, delimiter_text, order_by_clause, limit_num) -%}
 
     {% if limit_num -%}
-    {% set delimiter_text = delimiter_text|replace("'","") %}
-    {% set regex %}'([^{{ delimiter_text }}]+{{ delimiter_text }}){1,{{ limit_num - 1}}}[^{{ delimiter_text }}]+'{% endset %}
+    {% set delimiter_text_strip = delimiter_text|replace("'","") %}
+    {% set regex %}'([^{{ delimiter_text_strip }}]+{{ delimiter_text_strip }}){1,{{ limit_num - 1}}}[^{{ delimiter_text_strip }}]+'{% endset %}
     regexp_replace(
         listagg(
             {{ measure }},

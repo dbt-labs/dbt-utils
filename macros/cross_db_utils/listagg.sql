@@ -1,9 +1,11 @@
 {% macro listagg(measure, delimiter_text=none, order_by_clause=none, limit_num=none, group_by_col=none) -%}
-  {{ return(adapter.dispatch('listagg', 'dbt_utils') (measure, delimiter_text, order_by_clause, limit_num, group_by_col)) }}
+  {% if delimiter_text -%}  
+    {{ return(adapter.dispatch('listagg', 'dbt_utils') (measure, delimiter_text, order_by_clause, limit_num)) }}
+  {% else %}
+    {{ return(adapter.dispatch('listagg', 'dbt_utils') (measure, delimiter_text=",", order_by_clause, limit_num)) }}
 {%- endmacro %}
 
-
-{% macro default__listagg(measure, delimiter_text, order_by_clause, limit_num, group_by_col) -%}
+{% macro default__listagg(measure, delimiter_text, order_by_clause, limit_num) -%}
 
     {% if limit_num -%}
     array_to_string(
@@ -15,19 +17,13 @@
             {%- endif %}
             ,0
             ,{{ limit_num }}
-        )
-        {% if delimiter_text -%}
-        ,{{ delimiter_text }}
-        {%- else %}
-        ,''
-        {%- endif %}
+        ),
+        {{ delimiter_text }}
         )
     {%- else %}
     listagg(
-        {{ measure }}
-        {% if delimiter_text -%}
-        ,{{ delimiter_text }}
-        {%- endif %}
+        {{ measure }},
+        {{ delimiter_text }}
         )
         {% if order_by_clause -%}
         within group ({{ order_by_clause }})
@@ -36,13 +32,11 @@
 
 {%- endmacro %}
 
-{% macro bigquery__listagg(measure, delimiter_text, order_by_clause, limit_num, group_by_col) -%}
+{% macro bigquery__listagg(measure, delimiter_text, order_by_clause, limit_num) -%}
 
     string_agg(
-        {{ measure }}
-        {% if delimiter_text -%}
-        ,{{ delimiter_text }}
-        {%- endif %}
+        {{ measure }},
+        {{ delimiter_text }}
         {% if order_by_clause -%}
         {{ order_by_clause }}
         {%- endif %}
@@ -53,8 +47,7 @@
 
 {%- endmacro %}
 
-{# in postgres if you must supply a delimiter_text #}
-{% macro postgres__listagg(measure, delimiter_text, order_by_clause, limit_num, group_by_col) -%}
+{% macro postgres__listagg(measure, delimiter_text, order_by_clause, limit_num) -%}
     
     {% if limit_num -%}
     array_to_string(
@@ -78,27 +71,35 @@
 
 {%- endmacro %}
 
-{# in redshift if you supply a limit_num you must also supply a group_by_col #}
-{% macro redshift__listagg(measure, delimiter_text, order_by_clause, limit_num, group_by_col) -%}
+{% macro redshift__listagg(measure, delimiter_text, order_by_clause, limit_num) -%}
 
-    {% if limit_num and group_by_col -%}
-    listagg( -- what about distinct?
-        (
-            case when row_number() over (partition by {{ group_by_col }} {% if order_by_clause %} {{ order_by_clause }} {% endif %}) <= {{ limit_num }} then {{ measure }} end
+    {% if limit_num -%}
+    replace(
+        rtrim(']',
+            ltrim('[',
+                json_serialize(
+                    subarray(
+                        split_to_array(
+                            listagg(
+                                {{ measure }},
+                                {{ delimiter_text }}
+                                )
+                                {% if order_by_clause -%}
+                                within group ({{ order_by_clause }})
+                                {%- endif %}
+                            ,{{ delimiter_text }}
+                        ),
+                        0,
+                        {{ limit_num }}
+                    )
+                )
+            )
+        ),',',''
         )
-        {% if delimiter_text -%}
-        ,{{ delimiter_text }}
-        {%- endif %}
-        )
-        {% if order_by_clause -%}
-        within group ({{ order_by_clause }})
-        {%- endif %}
     {%- else %}
     listagg(
-        {{ measure }}
-        {% if delimiter_text -%}
-        ,{{ delimiter_text }}
-        {%- endif %}
+        {{ measure }},
+        {{ delimiter_text }}
         )
         {% if order_by_clause -%}
         within group ({{ order_by_clause }})

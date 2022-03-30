@@ -73,8 +73,8 @@
 
     {% if limit_num -%}
     replace(
-        rtrim(']',
-            ltrim('[',
+        rtrim('"]',
+            ltrim('"[',
                 json_serialize(
                     subarray(
                         split_to_array(
@@ -92,7 +92,7 @@
                     )
                 )
             )
-        ),',',{{ delimiter_text }}
+        ),'","',{{ delimiter_text }}
         )
     {%- else %}
     listagg(

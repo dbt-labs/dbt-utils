@@ -72,9 +72,9 @@
 {% macro redshift__listagg(measure, delimiter_text, order_by_clause, limit_num) -%}
 
     {% if limit_num -%}
-    replace(
-        rtrim(']',
-            ltrim('[',
+    regexp_replace(
+        regexp_replace(
+            regexp_replace(
                 json_serialize(
                     subarray(
                         split_to_array(
@@ -90,9 +90,15 @@
                         0,
                         {{ limit_num }}
                     )
-                )
-            )
-        ),',',{{ delimiter_text }}
+                ),
+                '^\\[\"?',
+                ''
+            ),
+            '"?"\\]$'.
+            ''
+        ),
+        '"?,{1}"?',
+        {{ delimiter_text }}
         )
     {%- else %}
     listagg(

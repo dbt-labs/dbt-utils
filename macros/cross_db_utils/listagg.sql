@@ -53,17 +53,17 @@
 
 {%- endmacro %}
 
-{# in redshift if you must supply a delimiter_text #}
+{# in postgres if you must supply a delimiter_text #}
 {% macro postgres__listagg(measure, delimiter_text, order_by_clause, limit_num, group_by_col) -%}
     
     {% if limit_num -%}
     array_to_string(
-        array_agg(
+        (array_agg(
             {{ measure }}
             {% if order_by_clause -%}
             {{ order_by_clause }}
             {%- endif %}
-        )[1:{{ limit_num }}],
+        ))[1:{{ limit_num }}],
         {{ delimiter_text }}
         )
     {%- else %}

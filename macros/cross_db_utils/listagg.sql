@@ -69,7 +69,7 @@
 {%- endmacro %}
 
 {# if there are instances of ',' within your measure, you cannot include a limit_num #}
-{% macro snowflake__listagg(measure, delimiter_text, order_by_clause, limit_num) -%}
+{% macro redshift__listagg(measure, delimiter_text, order_by_clause, limit_num) -%}
 
     {% if limit_num -%}
     {% set delimiter_text_strip = delimiter_text|replace("'","") %}

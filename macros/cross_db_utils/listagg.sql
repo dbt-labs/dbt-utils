@@ -68,6 +68,7 @@
 
 {%- endmacro %}
 
+{# if there are instances of delimiter_text within your measure, you cannot include a limit_num #}
 {% macro redshift__listagg(measure, delimiter_text, order_by_clause, limit_num) -%}
 
     {% if limit_num -%}
@@ -91,7 +92,7 @@
                     )
                 )
             )
-        ),',',''
+        ),',',{{ delimiter_text }}
         )
     {%- else %}
     listagg(

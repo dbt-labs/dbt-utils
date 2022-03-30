@@ -23,9 +23,19 @@ calculate as (
 
     select
         group_col,
-        {{ dbt_utils.listagg('string_text', "','", "order by order_col", 2, 'group_col') }} as actual,
+        {{ dbt_utils.listagg('string_text', "','", "order by order_col", 2) }} as actual,
         2 as version
     from data
+    group by group_col
+
+    union all
+
+    select
+        group_col,
+        {{ dbt_utils.listagg('string_text', "','") }} as actual,
+        3 as version
+    from data
+    where group_col = 3
     group by group_col
 
 )

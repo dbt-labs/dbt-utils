@@ -68,37 +68,21 @@
 
 {%- endmacro %}
 
-{# if there are instances of delimiter_text within your measure, you cannot include a limit_num #}
-{% macro redshift__listagg(measure, delimiter_text, order_by_clause, limit_num) -%}
+{# if there are instances of ',' within your measure, you cannot include a limit_num #}
+{% macro snowflake__listagg(measure, delimiter_text, order_by_clause, limit_num) -%}
 
     {% if limit_num -%}
+    {% set delimiter_text = delimiter_text|replace("'","") %}
+    {% set regex %}'([^{{ delimiter_text }}]+{{ delimiter_text }}){1,{{ limit_num - 1}}}[^{{ delimiter_text }}]+'{% endset %}
     regexp_replace(
-        regexp_replace(
-            regexp_replace(
-                json_serialize(
-                    subarray(
-                        split_to_array(
-                            listagg(
-                                {{ measure }},
-                                {{ delimiter_text }}
-                                )
-                                {% if order_by_clause -%}
-                                within group ({{ order_by_clause }})
-                                {%- endif %}
-                            ,{{ delimiter_text }}
-                        ),
-                        0,
-                        {{ limit_num }}
-                    )
-                ),
-                '^\\[\"?',
-                ''
-            ),
-            '"?"\\]$',
-            ''
-        ),
-        '"?,{1}"?',
-        {{ delimiter_text }}
+        listagg(
+            {{ measure }},
+            {{ delimiter_text }}
+            )
+            {% if order_by_clause -%}
+            within group ({{ order_by_clause }})
+            {%- endif %}
+        ,{{ regex }}
         )
     {%- else %}
     listagg(

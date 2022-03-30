@@ -6,3 +6,5 @@ group_col,expected,version
 2,"1,a",2
 3,"g,g",2
 3,"g,g,g",3
+3,"g",4
+3,"g,g,g",5

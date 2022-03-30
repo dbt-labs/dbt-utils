@@ -38,6 +38,26 @@ calculate as (
     where group_col = 3
     group by group_col
 
+    union all
+
+    select
+        group_col,
+        {{ dbt_utils.listagg('DISTINCT string_text', "','") }} as actual,
+        4 as version
+    from data
+    where group_col = 3
+    group by group_col
+
+    union all
+
+    select
+        group_col,
+        {{ dbt_utils.listagg('string_text') }} as actual,
+        5 as version
+    from data
+    where group_col = 3
+    group by group_col
+
 )
 
 select 

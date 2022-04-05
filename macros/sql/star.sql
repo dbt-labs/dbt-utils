@@ -8,7 +8,6 @@
 
     {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
     {%- if not execute -%}
-        {{ return('') }}
         {{ return('*') }}
     {% endif %}
 

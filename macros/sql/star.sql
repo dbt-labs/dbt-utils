@@ -8,7 +8,7 @@
 
     {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
     {%- if not execute -%}
-        {{ return('') }}
+        {{ return('*') }}
     {% endif %}
 
     {%- for col in dbt_utils.get_filtered_columns_in_relation(from, except) %}

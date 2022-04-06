@@ -11,20 +11,9 @@
         {{ return('') }}
     {% endif %}
 
-    {%- set include_cols = [] %}
-    {%- set cols = adapter.get_columns_in_relation(from) -%}
-    {%- set except = except | map("lower") | list %}
-    {%- for col in cols -%}
+    {%- for col in dbt_utils.get_filtered_columns_in_relation(from, except) %}
 
-        {%- if col.column|lower not in except -%}
-            {% do include_cols.append(col.column) %}
-
-        {%- endif %}
-    {%- endfor %}
-
-    {%- for col in include_cols %}
-
-        {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}{{ adapter.quote(col)|trim }} {%- if prefix!='' or suffix!='' -%} as {{ adapter.quote(prefix ~ col ~ suffix)|trim }} {%- endif -%}
+        {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}{{ adapter.quote(col)|trim }} {%- if prefix!='' or suffix!='' %} as {{ adapter.quote(prefix ~ col ~ suffix)|trim }} {%- endif -%}
         {%- if not loop.last %},{{ '\n  ' }}{% endif %}
 
     {%- endfor -%}

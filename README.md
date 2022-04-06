@@ -30,6 +30,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 
 - [Introspective macros](#introspective-macros):
     - [get_column_values](#get_column_values-source)
+    - [get_filtered_columns_in_relation](#get_filtered_columns_in_relation-source)
     - [get_relations_by_pattern](#get_relations_by_pattern-source)
     - [get_relations_by_prefix](#get_relations_by_prefix-source)
     - [get_query_results_as_dict](#get_query_results_as_dict-source)
@@ -59,6 +60,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
     - [split_part](#split_part-source)
     - [last_day](#last_day-source)
     - [width_bucket](#width_bucket-source)
+    - [listagg](#listagg)
 
 - [Jinja Helpers](#jinja-helpers)
     - [pretty_time](#pretty_time-source)
@@ -69,10 +71,10 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 - [insert_by_period](#insert_by_period-source)
 
 ----
-=======
 ### Generic Tests
 #### equal_rowcount ([source](macros/generic_tests/equal_rowcount.sql))
 Asserts that two relations have the same number of rows.
+
 
 **Usage:**
 ```yaml
@@ -387,7 +389,6 @@ models:
 ```
 <details>
 <summary>Additional `gaps` and `zero_length_range_allowed` examples</summary>
-
   **Understanding the `gaps` argument:**
   
   Here are a number of examples for each allowed `gaps` argument.
@@ -435,7 +436,6 @@ models:
   | 0           | 1           |
   | 2           | 2           |
   | 3           | 4           |
-
 </details>
 
 #### sequential_values ([source](macros/generic_tests/sequential_values.sql))
@@ -551,7 +551,7 @@ These macros run a query and return the results of the query as objects. They ar
 #### get_column_values ([source](macros/sql/get_column_values.sql))
 This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation) as an array.
 
-Arguments:
+**Args:**
 - `table` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
 - `column` (required): The name of the column you wish to find the column values of
 - `order_by` (optional, default=`'count(*) desc'`): How the results should be ordered. The default is to order by `count(*) desc`, i.e. decreasing frequency. Setting this as `'my_column'` will sort alphabetically, while `'min(created_at)'` will sort by when thevalue was first observed.
@@ -589,6 +589,28 @@ Arguments:
         max_records=50,
         default=['bank_transfer', 'coupon', 'credit_card']
 %}
+...
+```
+
+#### get_filtered_columns_in_relation ([source](macros/sql/get_filtered_columns_in_relation.sql))
+This macro returns an iterable Jinja list of columns for a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation), (i.e. not from a CTE)
+- optionally exclude columns
+- the input values are not case-sensitive (input uppercase or lowercase and it will work!)
+> Note: The native [`adapter.get_columns_in_relation` macro](https://docs.getdbt.com/reference/dbt-jinja-functions/adapter#get_columns_in_relation) allows you 
+to pull column names in a non-filtered fashion, also bringing along with it other (potentially unwanted) information, such as dtype, char_size, numeric_precision, etc.
+
+**Args:**
+- `from` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
+- `except` (optional, default=`[]`): The name of the columns you wish to exclude. (case-insensitive)
+
+**Usage:**
+```sql
+-- Returns a list of the columns from a relation, so you can then iterate in a for loop
+{% set column_names = dbt_utils.get_filtered_columns_in_relation(from=ref('your_model'), except=["field_1", "field_2"]) %}
+...
+{% for column_name in column_names %}
+    max({{ column_name }}) ... as max_'{{ column_name }}',
+{% endfor %}
 ...
 ```
 
@@ -770,9 +792,20 @@ group by 1,2,3
 ```
 
 #### star ([source](macros/sql/star.sql))
-This macro generates a comma-separated list of all fields that exist in the `from` relation, excluding any fields listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with the star macro. This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias (`relation_alias`.`field_name`).
+This macro generates a comma-separated list of all fields that exist in the `from` relation, excluding any fields 
+listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with 
+the star macro. 
+This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias (`relation_alias`.`field_name`). 
+The macro also has optional `prefix` and `suffix` arguments. When one or both are provided, they will be concatenated onto each field's alias 
+in the output (`prefix` ~ `field_name` ~ `suffix`). NB: This prevents the output from being used in any context other than a select statement.
 
-The macro also has optional `prefix` and `suffix` arguments. When one or both are provided, they will be concatenated onto each field's alias in the output (`prefix` ~ `field_name` ~ `suffix`). NB: This prevents the output from being used in any context other than a select statement.
+
+**Args:**
+- `from` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
+- `except` (optional, default=`[]`): The name of the columns you wish to exclude. (case-insensitive)
+- `relation_alias` (optional, default=`''`): will prefix all generated fields with an alias (`relation_alias`.`field_name`). 
+- `prefix` (optional, default=`''`): will prefix the output `field_name` (`field_name as prefix_field_name`). 
+- `suffix` (optional, default=`''`): will suffix the output `field_name` (`field_name as field_name_suffix`). 
 
 **Usage:**
 ```sql
@@ -785,6 +818,13 @@ from {{ ref('my_model') }}
 ```sql
 select
 {{ dbt_utils.star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"]) }}
+from {{ ref('my_model') }}
+
+```
+
+```sql
+select
+{{ dbt_utils.star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"], prefix="max_") }}
 from {{ ref('my_model') }}
 
 ```
@@ -987,9 +1027,16 @@ This macro calculates the difference between two dates.
 #### split_part ([source](macros/cross_db_utils/split_part.sql))
 This macro splits a string of text using the supplied delimiter and returns the supplied part number (1-indexed).
 
+**Args**:
+- `string_text` (required): Text to be split into parts. 
+- `delimiter_text` (required): Text representing the delimiter to split by.
+- `part_number` (required): Requested part of the split (1-based). If the value is negative, the parts are counted backward from the end of the string.
+
 **Usage:**
+When referencing a column, use one pair of quotes. When referencing a string, use single quotes enclosed in double quotes.
 ```
-{{ dbt_utils.split_part(string_text='1,2,3', delimiter_text=',', part_number=1) }}
+{{ dbt_utils.split_part(string_text='column_to_split', delimiter_text='delimiter_column', part_number=1) }}
+{{ dbt_utils.split_part(string_text="'1|2|3'", delimiter_text="'|'", part_number=1) }}
 ```
 
 #### date_trunc ([source](macros/cross_db_utils/date_trunc.sql))

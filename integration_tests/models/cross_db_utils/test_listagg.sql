@@ -23,8 +23,8 @@ calculate as (
 
     select
         group_col,
-        {{ dbt_utils.listagg('string_text', "','", "order by order_col", 2) }} as actual,
-        'comma_ordered_limited' as version
+        {{ dbt_utils.listagg('string_text', "'_|_'", "order by order_col", 2) }} as actual,
+        'bottom_ordered_limited' as version
     from data
     group by group_col
 

@@ -3,7 +3,7 @@
 {% endmacro %}
 
 
-{% macro default__datediff(first_date, second_date, datepart) %}
+{% macro default__datediff(first_date, second_date, datepart) -%}
 
     datediff(
         {{ datepart }},
@@ -11,10 +11,10 @@
         {{ second_date }}
         )
 
-{% endmacro %}
+{%- endmacro %}
 
 
-{% macro bigquery__datediff(first_date, second_date, datepart) %}
+{% macro bigquery__datediff(first_date, second_date, datepart) -%}
 
     datetime_diff(
         cast({{second_date}} as datetime),
@@ -22,9 +22,9 @@
         {{datepart}}
     )
 
-{% endmacro %}
+{%- endmacro %}
 
-{% macro postgres__datediff(first_date, second_date, datepart) %}
+{% macro postgres__datediff(first_date, second_date, datepart) -%}
 
     {% if datepart == 'year' %}
         (date_part('year', ({{second_date}})::date) - date_part('year', ({{first_date}})::date))
@@ -55,12 +55,12 @@
         {{ exceptions.raise_compiler_error("Unsupported datepart for macro datediff in postgres: {!r}".format(datepart)) }}
     {% endif %}
 
-{% endmacro %}
+{%- endmacro %}
 
 
 {# redshift should use default instead of postgres #}
-{% macro redshift__datediff(first_date, second_date, datepart) %}
+{% macro redshift__datediff(first_date, second_date, datepart) -%}
 
     {{ return(dbt_utils.default__datediff(first_date, second_date, datepart)) }}
 
-{% endmacro %}
+{%- endmacro %}

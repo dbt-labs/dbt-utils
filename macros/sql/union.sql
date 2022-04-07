@@ -61,7 +61,7 @@
 
     {%- set ordered_column_names = column_superset.keys() -%}
 
-    {%- if not column_superset.keys() -%}
+    {% if (include | length > 0 or exclude | length > 0) and not column_superset.keys() %}
         {%- set relations_string -%}
             {%- for relation in relations -%}
                 {{ relation.name }}

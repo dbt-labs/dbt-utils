@@ -9,7 +9,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 ----
 ## Contents
 
-**[Schema tests](#schema-tests)**
+**[Generic tests](#generic-tests)**
   - [equal_rowcount](#equal_rowcount-source)
   - [fewer_rows_than](#fewer_rows_than-source)
   - [equality](#equality-source)
@@ -30,12 +30,14 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 
 - [Introspective macros](#introspective-macros):
     - [get_column_values](#get_column_values-source)
+    - [get_filtered_columns_in_relation](#get_filtered_columns_in_relation-source)
     - [get_relations_by_pattern](#get_relations_by_pattern-source)
     - [get_relations_by_prefix](#get_relations_by_prefix-source)
     - [get_query_results_as_dict](#get_query_results_as_dict-source)
 
 - [SQL generators](#sql-generators)
     - [date_spine](#date_spine-source)
+    - [deduplicate](#deduplicate)
     - [haversine_distance](#haversine_distance-source)
     - [group_by](#group_by-source)
     - [star](#star-source)
@@ -58,6 +60,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
     - [split_part](#split_part-source)
     - [last_day](#last_day-source)
     - [width_bucket](#width_bucket-source)
+    - [listagg](#listagg)
 
 - [Jinja Helpers](#jinja-helpers)
     - [pretty_time](#pretty_time-source)
@@ -68,9 +71,9 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 - [insert_by_period](#insert_by_period-source)
 
 ----
-### Schema Tests
-#### equal_rowcount ([source](macros/schema_tests/equal_rowcount.sql))
-This schema test asserts the that two relations have the same number of rows.
+### Generic Tests
+#### equal_rowcount ([source](macros/generic_tests/equal_rowcount.sql))
+Asserts that two relations have the same number of rows.
 
 **Usage:**
 ```yaml
@@ -84,8 +87,8 @@ models:
 
 ```
 
-#### fewer_rows_than ([source](macros/schema_tests/fewer_rows_than.sql))
-This schema test asserts that this model has fewer rows than the referenced model.
+#### fewer_rows_than ([source](macros/generic_tests/fewer_rows_than.sql))
+Asserts that the respective model has fewer rows than the model being compared.
 
 Usage:
 ```yaml
@@ -98,8 +101,8 @@ models:
           compare_model: ref('other_table_name')
 ```
 
-#### equality ([source](macros/schema_tests/equality.sql))
-This schema test asserts the equality of two relations. Optionally specify a subset of columns to compare.
+#### equality ([source](macros/generic_tests/equality.sql))
+Asserts the equality of two relations. Optionally specify a subset of columns to compare.
 
 **Usage:**
 ```yaml
@@ -115,8 +118,13 @@ models:
             - second_column
 ```
 
-#### expression_is_true ([source](macros/schema_tests/expression_is_true.sql))
-This schema test asserts that a valid sql expression is true for all records. This is useful when checking integrity across columns, for example, that a total is equal to the sum of its parts, or that at least one column is true.
+#### expression_is_true ([source](macros/generic_tests/expression_is_true.sql))
+Asserts that a valid SQL expression is true for all records. This is useful when checking integrity across columns.
+Examples:
+
+- Verify an outcome based on the application of basic alegbraic operations between columns.
+- Verify the length of a column.
+- Verify the truth value of a column.
 
 **Usage:**
 ```yaml
@@ -163,8 +171,8 @@ models:
                 condition: col_a = 1
 ```
 
-#### recency ([source](macros/schema_tests/recency.sql))
-This schema test asserts that there is data in the referenced model at least as recent as the defined interval prior to the current timestamp.
+#### recency ([source](macros/generic_tests/recency.sql))
+Asserts that a timestamp column in the reference model contains data that is at least as recent as the defined date interval.
 
 **Usage:**
 ```yaml
@@ -179,8 +187,8 @@ models:
           interval: 1
 ```
 
-#### at_least_one ([source](macros/schema_tests/at_least_one.sql))
-This schema test asserts if column has at least one value.
+#### at_least_one ([source](macros/generic_tests/at_least_one.sql))
+Asserts that a column has at least one value.
 
 **Usage:**
 ```yaml
@@ -194,8 +202,8 @@ models:
           - dbt_utils.at_least_one
 ```
 
-#### not_constant ([source](macros/schema_tests/not_constant.sql))
-This schema test asserts if column does not have same value in all rows.
+#### not_constant ([source](macros/generic_tests/not_constant.sql))
+Asserts that a column does not have the same value in all rows.
 
 **Usage:**
 ```yaml
@@ -209,8 +217,8 @@ models:
           - dbt_utils.not_constant
 ```
 
-#### cardinality_equality ([source](macros/schema_tests/cardinality_equality.sql))
-This schema test asserts if values in a given column have exactly the same cardinality as values from a different column in a different model.
+#### cardinality_equality ([source](macros/generic_tests/cardinality_equality.sql))
+Asserts that values in a given column have exactly the same cardinality as values from a different column in a different model.
 
 **Usage:**
 ```yaml
@@ -226,8 +234,8 @@ models:
               to: ref('other_model_name')
 ```
 
-#### unique_where ([source](macros/schema_tests/test_unique_where.sql))
-This test validates that there are no duplicate values present in a field for a subset of rows by specifying a `where` clause.
+#### unique_where ([source](macros/generic_tests/test_unique_where.sql))
+Asserts that there are no duplicate values present in a field for a subset of rows by specifying a `where` clause.
 
 *Warning*: This test is no longer supported. Starting in dbt v0.20.0, the built-in `unique` test supports a `where` config. [See the dbt docs for more details](https://docs.getdbt.com/reference/resource-configs/where).
 
@@ -244,8 +252,8 @@ models:
               where: "_deleted = false"
 ```
 
-#### not_null_where ([source](macros/schema_tests/test_not_null_where.sql))
-This test validates that there are no null values present in a column for a subset of rows by specifying a `where` clause.
+#### not_null_where ([source](macros/generic_tests/test_not_null_where.sql))
+Asserts that there are no null values present in a column for a subset of rows by specifying a `where` clause.
 
 *Warning*: This test is no longer supported. Starting in dbt v0.20.0, the built-in `not_null` test supports a `where` config. [See the dbt docs for more details](https://docs.getdbt.com/reference/resource-configs/where).
 
@@ -262,8 +270,8 @@ models:
               where: "_deleted = false"
 ```
 
-#### not_null_proportion ([source](macros/schema_tests/not_null_proportion.sql))
-This test validates that the proportion of non-null values present in a column is between a specified range [`at_least`, `at_most`] where `at_most` is an optional argument (default: `1.0`).
+#### not_null_proportion ([source](macros/generic_tests/not_null_proportion.sql))
+Asserts that the proportion of non-null values present in a column is between a specified range [`at_least`, `at_most`] where `at_most` is an optional argument (default: `1.0`).
 
 **Usage:**
 ```yaml
@@ -278,8 +286,8 @@ models:
               at_least: 0.95
 ```
 
-#### not_accepted_values ([source](macros/schema_tests/not_accepted_values.sql))
-This test validates that there are no rows that match the given values.
+#### not_accepted_values ([source](macros/generic_tests/not_accepted_values.sql))
+Asserts that there are no rows that match the given values.
 
 Usage:
 ```yaml
@@ -294,8 +302,8 @@ models:
               values: ['Barcelona', 'New York']
 ```
 
-#### relationships_where ([source](macros/schema_tests/relationships_where.sql))
-This test validates the referential integrity between two relations (same as the core relationships schema test) with an added predicate to filter out some rows from the test. This is useful to exclude records such as test entities, rows created in the last X minutes/hours to account for temporary gaps due to ETL limitations, etc.
+#### relationships_where ([source](macros/generic_tests/relationships_where.sql))
+Asserts the referential integrity between two relations (same as the core relationships assertions) with an added predicate to filter out some rows from the test. This is useful to exclude records such as test entities, rows created in the last X minutes/hours to account for temporary gaps due to ETL limitations, etc.
 
 **Usage:**
 ```yaml
@@ -310,11 +318,12 @@ models:
               to: ref('other_model_name')
               field: client_id
               from_condition: id <> '4ca448b8-24bf-4b88-96c6-b1609499c38b'
+              to_condition: created_date >= '2020-01-01'
 ```
 
-#### mutually_exclusive_ranges ([source](macros/schema_tests/mutually_exclusive_ranges.sql))
-This test confirms that for a given lower_bound_column and upper_bound_column,
-the ranges of between the lower and upper bounds do not overlap with the ranges
+#### mutually_exclusive_ranges ([source](macros/generic_tests/mutually_exclusive_ranges.sql))
+Asserts that for a given lower_bound_column and upper_bound_column,
+the ranges between the lower and upper bounds do not overlap with the ranges
 of another row.
 
 **Usage:**
@@ -377,55 +386,58 @@ models:
         partition_by: customer_id
         gaps: allowed
 ```
+<details>
+<summary>Additional `gaps` and `zero_length_range_allowed` examples</summary>
+  **Understanding the `gaps` argument:**
 
-**Understanding the `gaps` argument:**
-Here are a number of examples for each allowed `gaps` argument.
-* `gaps: not_allowed`: The upper bound of one record must be the lower bound of
-the next record.
+  Here are a number of examples for each allowed `gaps` argument.
+  * `gaps: not_allowed`: The upper bound of one record must be the lower bound of
+  the next record.
 
-| lower_bound | upper_bound |
-|-------------|-------------|
-| 0           | 1           |
-| 1           | 2           |
-| 2           | 3           |
+  | lower_bound | upper_bound |
+  |-------------|-------------|
+  | 0           | 1           |
+  | 1           | 2           |
+  | 2           | 3           |
 
-* `gaps: allowed` (default): There may be a gap between the upper bound of one
-record and the lower bound of the next record.
+  * `gaps: allowed` (default): There may be a gap between the upper bound of one
+  record and the lower bound of the next record.
 
-| lower_bound | upper_bound |
-|-------------|-------------|
-| 0           | 1           |
-| 2           | 3           |
-| 3           | 4           |
+  | lower_bound | upper_bound |
+  |-------------|-------------|
+  | 0           | 1           |
+  | 2           | 3           |
+  | 3           | 4           |
 
-* `gaps: required`: There must be a gap between the upper bound of one record and
-the lower bound of the next record (common for date ranges).
+  * `gaps: required`: There must be a gap between the upper bound of one record and
+  the lower bound of the next record (common for date ranges).
 
-| lower_bound | upper_bound |
-|-------------|-------------|
-| 0           | 1           |
-| 2           | 3           |
-| 4           | 5           |
+  | lower_bound | upper_bound |
+  |-------------|-------------|
+  | 0           | 1           |
+  | 2           | 3           |
+  | 4           | 5           |
 
-**Understanding the `zero_length_range_allowed` argument:**
-Here are a number of examples for each allowed `zero_length_range_allowed` argument.
-* `zero_length_range_allowed: false`: (default) The upper bound of each record must be greater than its lower bound.
+  **Understanding the `zero_length_range_allowed` argument:**
+  Here are a number of examples for each allowed `zero_length_range_allowed` argument.
+  * `zero_length_range_allowed: false`: (default) The upper bound of each record must be greater than its lower bound.
 
-| lower_bound | upper_bound |
-|-------------|-------------|
-| 0           | 1           |
-| 1           | 2           |
-| 2           | 3           |
+  | lower_bound | upper_bound |
+  |-------------|-------------|
+  | 0           | 1           |
+  | 1           | 2           |
+  | 2           | 3           |
 
-* `zero_length_range_allowed: true`: The upper bound of each record can be greater than or equal to its lower bound.
+  * `zero_length_range_allowed: true`: The upper bound of each record can be greater than or equal to its lower bound.
 
-| lower_bound | upper_bound |
-|-------------|-------------|
-| 0           | 1           |
-| 2           | 2           |
-| 3           | 4           |
+  | lower_bound | upper_bound |
+  |-------------|-------------|
+  | 0           | 1           |
+  | 2           | 2           |
+  | 3           | 4           |
+</details>
 
-#### sequential_values ([source](macros/schema_tests/sequential_values.sql))
+#### sequential_values ([source](macros/generic_tests/sequential_values.sql))
 This test confirms that a column contains sequential values. It can be used
 for both numeric values, and datetime values, as follows:
 ```yml
@@ -453,8 +465,8 @@ seeds:
 * `interval` (default=1): The gap between two sequential values
 * `datepart` (default=None): Used when the gaps are a unit of time. If omitted, the test will check for a numeric gap.
 
-#### unique_combination_of_columns ([source](macros/schema_tests/unique_combination_of_columns.sql))
-This test confirms that the combination of columns is unique. For example, the
+#### unique_combination_of_columns ([source](macros/generic_tests/unique_combination_of_columns.sql))
+Asserts that the combination of columns is unique. For example, the
 combination of month and product is unique, however neither column is unique
 in isolation.
 
@@ -489,8 +501,8 @@ An optional `quote_columns` argument (`default=false`) can also be used if a col
 
 ```
 
-#### accepted_range ([source](macros/schema_tests/accepted_range.sql))
-This test checks that a column's values fall inside an expected range. Any combination of `min_value` and `max_value` is allowed, and the range can be inclusive or exclusive. Provide a `where` argument to filter to specific records only.
+#### accepted_range ([source](macros/generic_tests/accepted_range.sql))
+Asserts that a column's values fall inside an expected range. Any combination of `min_value` and `max_value` is allowed, and the range can be inclusive or exclusive. Provide a `where` argument to filter to specific records only.
 
 In addition to comparisons to a scalar value, you can also compare to another column's values. Any data type that supports the `>` or `<` operators can be compared, so you could also run tests like checking that all order dates are in the past.
 
@@ -538,7 +550,7 @@ These macros run a query and return the results of the query as objects. They ar
 #### get_column_values ([source](macros/sql/get_column_values.sql))
 This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation) as an array.
 
-Arguments:
+**Args:**
 - `table` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
 - `column` (required): The name of the column you wish to find the column values of
 - `order_by` (optional, default=`'count(*) desc'`): How the results should be ordered. The default is to order by `count(*) desc`, i.e. decreasing frequency. Setting this as `'my_column'` will sort alphabetically, while `'min(created_at)'` will sort by when thevalue was first observed.
@@ -576,6 +588,28 @@ Arguments:
         max_records=50,
         default=['bank_transfer', 'coupon', 'credit_card']
 %}
+...
+```
+
+#### get_filtered_columns_in_relation ([source](macros/sql/get_filtered_columns_in_relation.sql))
+This macro returns an iterable Jinja list of columns for a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation), (i.e. not from a CTE)
+- optionally exclude columns
+- the input values are not case-sensitive (input uppercase or lowercase and it will work!)
+> Note: The native [`adapter.get_columns_in_relation` macro](https://docs.getdbt.com/reference/dbt-jinja-functions/adapter#get_columns_in_relation) allows you 
+to pull column names in a non-filtered fashion, also bringing along with it other (potentially unwanted) information, such as dtype, char_size, numeric_precision, etc.
+
+**Args:**
+- `from` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
+- `except` (optional, default=`[]`): The name of the columns you wish to exclude. (case-insensitive)
+
+**Usage:**
+```sql
+-- Returns a list of the columns from a relation, so you can then iterate in a for loop
+{% set column_names = dbt_utils.get_filtered_columns_in_relation(from=ref('your_model'), except=["field_1", "field_2"]) %}
+...
+{% for column_name in column_names %}
+    max({{ column_name }}) ... as max_'{{ column_name }}',
+{% endfor %}
 ...
 ```
 
@@ -700,6 +734,21 @@ This macro returns the sql required to build a date spine. The spine will includ
 }}
 ```
 
+#### deduplicate ([source](macros/sql/deduplicate.sql))
+This macro returns the sql required to remove duplicate rows from a model or source.
+
+**Usage:**
+
+```
+{{ dbt_utils.deduplicate(
+    relation=source('my_source', 'my_table'),
+    group_by="user_id, cast(timestamp as day)",
+    order_by="timestamp desc",
+    relation_alias="my_cte"
+   )
+}}
+```
+
 #### haversine_distance ([source](macros/sql/haversine_distance.sql))
 This macro calculates the [haversine distance](http://daynebatten.com/2015/09/latitude-longitude-distance-sql/) between a pair of x/y coordinates.
 
@@ -742,9 +791,19 @@ group by 1,2,3
 ```
 
 #### star ([source](macros/sql/star.sql))
-This macro generates a comma-separated list of all fields that exist in the `from` relation, excluding any fields listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with the star macro. This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias (`relation_alias`.`field_name`). 
+This macro generates a comma-separated list of all fields that exist in the `from` relation, excluding any fields 
+listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with 
+the star macro. 
+This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias (`relation_alias`.`field_name`). 
+The macro also has optional `prefix` and `suffix` arguments. When one or both are provided, they will be concatenated onto each field's alias 
+in the output (`prefix` ~ `field_name` ~ `suffix`). NB: This prevents the output from being used in any context other than a select statement.
 
-The macro also has optional `prefix` and `suffix` arguments. When one or both are provided, they will be concatenated onto each field's alias in the output (`prefix` ~ `field_name` ~ `suffix`). NB: This prevents the output from being used in any context other than a select statement.
+**Args:**
+- `from` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
+- `except` (optional, default=`[]`): The name of the columns you wish to exclude. (case-insensitive)
+- `relation_alias` (optional, default=`''`): will prefix all generated fields with an alias (`relation_alias`.`field_name`). 
+- `prefix` (optional, default=`''`): will prefix the output `field_name` (`field_name as prefix_field_name`). 
+- `suffix` (optional, default=`''`): will suffix the output `field_name` (`field_name as field_name_suffix`). 
 
 **Usage:**
 ```sql
@@ -761,12 +820,19 @@ from {{ ref('my_model') }}
 
 ```
 
+```sql
+select
+{{ dbt_utils.star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"], prefix="max_") }}
+from {{ ref('my_model') }}
+
+```
+
 #### union_relations ([source](macros/sql/union.sql))
 
 This macro unions together an array of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation),
 even when columns have differing orders in each Relation, and/or some columns are
 missing from some relations. Any columns exclusive to a subset of these
-relations will be filled with `null` where not present. An new column
+relations will be filled with `null` where not present. A new column
 (`_dbt_source_relation`) is also added to indicate the source for each record.
 
 **Usage:**
@@ -959,9 +1025,16 @@ This macro calculates the difference between two dates.
 #### split_part ([source](macros/cross_db_utils/split_part.sql))
 This macro splits a string of text using the supplied delimiter and returns the supplied part number (1-indexed).
 
+**Args**:
+- `string_text` (required): Text to be split into parts. 
+- `delimiter_text` (required): Text representing the delimiter to split by.
+- `part_number` (required): Requested part of the split (1-based). If the value is negative, the parts are counted backward from the end of the string.
+
 **Usage:**
+When referencing a column, use one pair of quotes. When referencing a string, use single quotes enclosed in double quotes.
 ```
-{{ dbt_utils.split_part(string_text='1,2,3', delimiter_text=',', part_number=1) }}
+{{ dbt_utils.split_part(string_text='column_to_split', delimiter_text='delimiter_column', part_number=1) }}
+{{ dbt_utils.split_part(string_text="'1|2|3'", delimiter_text="'|'", part_number=1) }}
 ```
 
 #### date_trunc ([source](macros/cross_db_utils/date_trunc.sql))

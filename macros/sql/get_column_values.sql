@@ -3,13 +3,13 @@
 {% endmacro %}
 
 {% macro default__get_column_values(table, column, order_by='count(*) desc', max_records=none, default=none) -%}
-{% if default is none %}
-    {% set default = [] %}
-{% endif %}
     {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
     {%- if not execute -%}
+        {% set default = [] if not default %}
         {{ return(default) }}
     {% endif %}
+
+    {%- do dbt_utils._is_ephemeral(table, 'get_column_values') -%}
 
     {# Not all relations are tables. Renaming for internal clarity without breaking functionality for anyone using named arguments #}
     {# TODO: Change the method signature in a future 0.x.0 release #}

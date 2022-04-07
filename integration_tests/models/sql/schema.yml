@@ -50,6 +50,11 @@ models:
               values:
                 - '5'
 
+  - name: test_get_filtered_columns_in_relation
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_filtered_columns_in_relation_expected')
+
   - name: test_get_relations_by_prefix_and_union
     columns:
       - name: event
@@ -85,7 +90,7 @@ models:
     tests:
       - dbt_utils.equality:
           compare_model: ref('data_pivot_expected')
-  
+
   - name: test_pivot_apostrophe
     tests:
       - dbt_utils.equality:
@@ -121,6 +126,11 @@ models:
       - dbt_utils.equality:
           compare_model: ref('data_star_aggregate_expected')
 
+  - name: test_star_uppercase
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_star_expected')
+
   - name: test_surrogate_key
     tests:
       - assert_equal:
@@ -137,8 +147,13 @@ models:
     tests:
       - dbt_utils.equality:
           compare_model: ref('data_union_expected')
-          
+
   - name: test_get_relations_by_pattern
     tests:
       - dbt_utils.equality:
           compare_model: ref('data_union_events_expected')
+
+  - name: test_dedupe
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_deduplicate_expected')

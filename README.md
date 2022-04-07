@@ -75,7 +75,6 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 #### equal_rowcount ([source](macros/generic_tests/equal_rowcount.sql))
 Asserts that two relations have the same number of rows.
 
-
 **Usage:**
 ```yaml
 version: 2
@@ -390,7 +389,7 @@ models:
 <details>
 <summary>Additional `gaps` and `zero_length_range_allowed` examples</summary>
   **Understanding the `gaps` argument:**
-  
+
   Here are a number of examples for each allowed `gaps` argument.
   * `gaps: not_allowed`: The upper bound of one record must be the lower bound of
   the next record.
@@ -798,7 +797,6 @@ the star macro.
 This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias (`relation_alias`.`field_name`). 
 The macro also has optional `prefix` and `suffix` arguments. When one or both are provided, they will be concatenated onto each field's alias 
 in the output (`prefix` ~ `field_name` ~ `suffix`). NB: This prevents the output from being used in any context other than a select statement.
-
 
 **Args:**
 - `from` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from

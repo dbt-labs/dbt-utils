@@ -1,4 +1,3 @@
-
 # dbt-utils v0.8.3
 ## New features
 - A macro for deduplicating data, `deduplicate()` ([#335](https://github.com/dbt-labs/dbt-utils/issues/335), [#512](https://github.com/dbt-labs/dbt-utils/pull/512))

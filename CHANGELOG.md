@@ -1,10 +1,30 @@
 
 # dbt-utils v0.8.3
 ## New features
-- A macro for deduplicating data ([#335](https://github.com/dbt-labs/dbt-utils/issues/335), [#512](https://github.com/dbt-labs/dbt-utils/pull/512))
+- A macro for deduplicating data, `deduplicate()` ([#335](https://github.com/dbt-labs/dbt-utils/issues/335), [#512](https://github.com/dbt-labs/dbt-utils/pull/512))
+- A cross-database implementation of `listagg()` ([#530](https://github.com/dbt-labs/dbt-utils/pull/530))
+- A new macro to get the columns in a relation as a list, `get_filtered_columns_in_relation()`. This is similar to the `star()` macro, but creates a Jinja list instead of a comma-separated string. ([#516](https://github.com/dbt-labs/dbt-utils/pull/516))
+
+## Fixes
+- `get_column_values()` once more raises an error when the model doesn't exist and there is no default provided ([#531](https://github.com/dbt-labs/dbt-utils/issues/531), [#533](https://github.com/dbt-labs/dbt-utils/pull/533))
+- `get_column_values()` raises an error when used with an ephemeral model, instead of getting stuck in a compilation loop ([#358](https://github.com/dbt-labs/dbt-utils/issues/358), [#518](https://github.com/dbt-labs/dbt-utils/pull/518)) 
+- BigQuery materialized views work correctly with `get_relations_by_pattern()` ([#525](https://github.com/dbt-labs/dbt-utils/pull/525))
 
 ## Quality of life
-- Updated references to 'schema test' in project file structure and documentation referred to in [#485](https://github.com/dbt-labs/dbt-utils/issues/485)
+- Updated references to 'schema test' in project file structure and documentation ([#485](https://github.com/dbt-labs/dbt-utils/issues/485), [#521](https://github.com/dbt-labs/dbt-utils/pull/521))
+- `date_trunc()` and `datediff()` default macros now have whitespace control to assist with linting and readability [#529](https://github.com/dbt-labs/dbt-utils/pull/529)
+- `star()` no longer raises an error during SQLFluff linting ([#506](https://github.com/dbt-labs/dbt-utils/issues/506), [#532](https://github.com/dbt-labs/dbt-utils/pull/532))
+
+## Contributors:
+- [@judahrand](https://github.com/judahrand) (#512)
+- [@b-moynihan](https://github.com/b-moynihan) (#521)
+- [@sunriselong](https://github.com/sunriselong) (#529)
+- [@jpmmcneill](https://github.com/jpmmcneill) (#533)
+- [@KamranAMalik](https://github.com/KamranAMalik) (#532)
+- [@graciegoheen](https://github.com/graciegoheen) (#530)
+- [@luisleon90](https://github.com/luisleon90) (#525)
+- [@epapineau](https://github.com/epapineau) (#518)
+- [@patkearns10](https://github.com/patkearns10) (#516)
 
 # dbt-utils v0.8.2
 ## Fixes
@@ -26,7 +46,6 @@
 - `star()` will only alias columns if a prefix/suffix is provided, to allow the unmodified output to still be used in `group by` clauses etc. [#468](https://github.com/dbt-labs/dbt-utils/pull/468)
 - The `sequential_values` test is now compatible with quoted columns [#479](https://github.com/dbt-labs/dbt-utils/pull/479)
 - `pivot()` escapes values containing apostrophes [#503](https://github.com/dbt-labs/dbt-utils/pull/503)
-- `date_trunc` and `datediff` default macros now have whitespace control to assist with linting and readability [#529](https://github.com/dbt-labs/dbt-utils/pull/529)
 
 ## Contributors:
 - [grahamwetzler](https://github.com/grahamwetzler) (#473)
@@ -36,8 +55,6 @@
 - [jelstongreen](https://github.com/jelstongreen) (#468)
 - [armandduijn](https://github.com/armandduijn) (#479)
 - [mdutoo](https://github.com/mdutoo) (#503)
-- [sunriselong](https://github.com/sunriselong) (#529)
-
 
 # dbt-utils v0.8.0
 ## 🚨 Breaking changes

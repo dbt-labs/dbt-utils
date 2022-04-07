@@ -8,7 +8,7 @@
                 when 'EXTERNAL TABLE' then 'external'
                 when 'MATERIALIZED VIEW' then 'materializedview'
                 else lower(table_type)
-            end as table_type
+            end as "table_type"
 {% endmacro %}
 
 

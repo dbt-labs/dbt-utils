@@ -35,6 +35,24 @@
 {%- endmacro -%}
 
 {#
+-- Snowflake has the `QUALIFY` syntax:
+-- https://docs.snowflake.com/en/sql-reference/constructs/qualify.html
+#}
+{%- macro snowflake__deduplicate(relation, group_by, order_by=none, relation_alias=none) -%}
+
+    select *
+    from {{ relation if relation_alias is none else relation_alias }}
+    qualify
+        row_number() over (
+            partition by {{ group_by }}
+            {% if order_by is not none -%}
+            order by {{ order_by }}
+            {%- endif %}
+        ) = 1
+
+{%- endmacro -%}
+
+{#
 --  It is more performant to deduplicate using `array_agg` with a limit
 --  clause in BigQuery:
 --  https://github.com/dbt-labs/dbt-utils/issues/335#issuecomment-788157572

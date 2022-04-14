@@ -60,18 +60,14 @@
 {%- macro bigquery__deduplicate(relation, group_by, order_by=none, relation_alias=none) -%}
 
     select
-        {{ dbt_utils.star(relation, relation_alias='deduped') | indent }}
-    from (
-        select
-            array_agg (
-                original
-                {% if order_by is not none -%}
-                order by {{ order_by }}
-                {%- endif %}
-                limit 1
-            )[offset(0)] as deduped
-        from {{ relation if relation_alias is none else relation_alias }} as original
-        group by {{ group_by }}
-    )
+        array_agg (
+            original
+            {% if order_by is not none -%}
+            order by {{ order_by }}
+            {%- endif %}
+            limit 1
+        )[offset(0)].*
+    from {{ relation if relation_alias is none else relation_alias }} as original
+    group by {{ group_by }}
 
 {%- endmacro -%}

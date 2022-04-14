@@ -1,3 +1,12 @@
+# dbt-utils v0.8.5
+
+## New features
+- Add Postgres specific implementation of `deduplicate()` ([#549](https://github.com/dbt-labs/dbt-utils/pull/549))
+- Add Snowflake specific implementation of `deduplicate()` ([#543](https://github.com/dbt-labs/dbt-utils/pull/543), [#549](https://github.com/dbt-labs/dbt-utils/pull/549))
+
+## Quality of life
+- Added better documentation for `deduplicate()` ([#542](https://github.com/dbt-labs/dbt-utils/pull/542), [#549](https://github.com/dbt-labs/dbt-utils/pull/549))
+
 # dbt-utils v0.8.3
 ## New features
 - A macro for deduplicating data, `deduplicate()` ([#335](https://github.com/dbt-labs/dbt-utils/issues/335), [#512](https://github.com/dbt-labs/dbt-utils/pull/512))
@@ -6,7 +15,7 @@
 
 ## Fixes
 - `get_column_values()` once more raises an error when the model doesn't exist and there is no default provided ([#531](https://github.com/dbt-labs/dbt-utils/issues/531), [#533](https://github.com/dbt-labs/dbt-utils/pull/533))
-- `get_column_values()` raises an error when used with an ephemeral model, instead of getting stuck in a compilation loop ([#358](https://github.com/dbt-labs/dbt-utils/issues/358), [#518](https://github.com/dbt-labs/dbt-utils/pull/518)) 
+- `get_column_values()` raises an error when used with an ephemeral model, instead of getting stuck in a compilation loop ([#358](https://github.com/dbt-labs/dbt-utils/issues/358), [#518](https://github.com/dbt-labs/dbt-utils/pull/518))
 - BigQuery materialized views work correctly with `get_relations_by_pattern()` ([#525](https://github.com/dbt-labs/dbt-utils/pull/525))
 
 ## Quality of life

@@ -740,7 +740,7 @@ This macro returns the sql required to remove duplicate rows from a model, sourc
 
 **Args:**
  - `relation` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) or string which identifies the model to deduplicate.
- - `group_by` (required): column names (or expressions) to use to identify a set/window of rows out of which to select one as the deduplicated row.
+ - `partition_by` (required): column names (or expressions) to use to identify a set/window of rows out of which to select one as the deduplicated row.
  - `order_by` (required): column names (or expressions) that determine the priority order of which row should be chosen if there are duplicates (comma-separated string).
 
 **Usage:**

@@ -11,7 +11,7 @@ deduped as (
     {{
         dbt_utils.deduplicate(
             'source',
-            group_by='user_id',
+            partition_by='user_id',
             order_by='version desc',
         ) | indent
     }}

@@ -33,6 +33,13 @@
 
 {%- endmacro -%}
 
+{# Redshift should use default instead of Postgres #}
+{% macro redshift__deduplicate(relation, group_by, order_by=none, relation_alias=none) -%}
+
+    {{ return(dbt_utils.default__deduplicate(relation, group_by, order_by=order_by, relation_alias=relation_alias)) }}
+
+{% endmacro %}
+
 {#
 -- Postgres has the `DISTINCT ON` syntax:
 -- https://www.postgresql.org/docs/current/sql-select.html#SQL-DISTINCT

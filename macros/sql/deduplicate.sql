@@ -1,19 +1,17 @@
-{%- macro deduplicate(relation, group_by, order_by=none, relation_alias=none) -%}
-    {{ return(adapter.dispatch('deduplicate', 'dbt_utils')(relation, group_by, order_by=order_by, relation_alias=relation_alias)) }}
+{%- macro deduplicate(relation, group_by, order_by) -%}
+    {{ return(adapter.dispatch('deduplicate', 'dbt_utils')(relation, group_by, order_by=order_by)) }}
 {% endmacro %}
 
-{%- macro default__deduplicate(relation, group_by, order_by=none, relation_alias=none) -%}
+{%- macro default__deduplicate(relation, group_by, order_by) -%}
 
     with row_numbered as (
         select
             _inner.*,
             row_number() over (
                 partition by {{ group_by }}
-                {% if order_by is not none -%}
                 order by {{ order_by }}
-                {%- endif %}
             ) as rn
-        from {{ relation if relation_alias is none else relation_alias }} as _inner
+        from {{ relation }} as _inner
     )
 
     select
@@ -32,9 +30,9 @@
 {%- endmacro -%}
 
 {# Redshift should use default instead of Postgres #}
-{% macro redshift__deduplicate(relation, group_by, order_by=none, relation_alias=none) -%}
+{% macro redshift__deduplicate(relation, group_by, order_by) -%}
 
-    {{ return(dbt_utils.default__deduplicate(relation, group_by, order_by=order_by, relation_alias=relation_alias)) }}
+    {{ return(dbt_utils.default__deduplicate(relation, group_by, order_by=order_by)) }}
 
 {% endmacro %}
 
@@ -42,12 +40,12 @@
 -- Postgres has the `DISTINCT ON` syntax:
 -- https://www.postgresql.org/docs/current/sql-select.html#SQL-DISTINCT
 #}
-{%- macro postgres__deduplicate(relation, group_by, order_by=none, relation_alias=none) -%}
+{%- macro postgres__deduplicate(relation, group_by, order_by) -%}
 
     select
         distinct on ({{ group_by }}) *
-    from {{ relation if relation_alias is none else relation_alias }}
-    order by {{ group_by }}{{ ',' ~ order_by if order_by is not none else '' }}
+    from {{ relation }}
+    order by {{ group_by }}{{ ',' ~ order_by }}
 
 {%- endmacro -%}
 
@@ -55,16 +53,14 @@
 -- Snowflake has the `QUALIFY` syntax:
 -- https://docs.snowflake.com/en/sql-reference/constructs/qualify.html
 #}
-{%- macro snowflake__deduplicate(relation, group_by, order_by=none, relation_alias=none) -%}
+{%- macro snowflake__deduplicate(relation, group_by, order_by) -%}
 
     select *
-    from {{ relation if relation_alias is none else relation_alias }}
+    from {{ relation }}
     qualify
         row_number() over (
             partition by {{ group_by }}
-            {% if order_by is not none -%}
             order by {{ order_by }}
-            {%- endif %}
         ) = 1
 
 {%- endmacro -%}
@@ -74,17 +70,15 @@
 --  clause in BigQuery:
 --  https://github.com/dbt-labs/dbt-utils/issues/335#issuecomment-788157572
 #}
-{%- macro bigquery__deduplicate(relation, group_by, order_by=none, relation_alias=none) -%}
+{%- macro bigquery__deduplicate(relation, group_by, order_by) -%}
 
     select
         array_agg (
             original
-            {% if order_by is not none -%}
             order by {{ order_by }}
-            {%- endif %}
             limit 1
         )[offset(0)].*
-    from {{ relation if relation_alias is none else relation_alias }} as original
+    from {{ relation }} as original
     group by {{ group_by }}
 
 {%- endmacro -%}

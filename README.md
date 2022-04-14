@@ -736,13 +736,12 @@ This macro returns the sql required to build a date spine. The spine will includ
 ```
 
 #### deduplicate ([source](macros/sql/deduplicate.sql))
-This macro returns the sql required to remove duplicate rows from a model or source.
+This macro returns the sql required to remove duplicate rows from a model, source, or CTE.
 
 **Args:**
  - `relation` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) or string which identifies the model to deduplicate.
  - `group_by` (required): column names (or expressions) to use to identify a set/window of rows out of which to select one as the deduplicated row.
- - `order_by` (optional, default=none): column names (or expressions) that determine the priority order of which row should be chosen if there are duplicates (comma-separated string).
- - `relation_alias` (optional, default=none): DEPRECATED - string to select from which references a `ref`, `source` or CTE which contains the same columns as `relation`.
+ - `order_by` (required): column names (or expressions) that determine the priority order of which row should be chosen if there are duplicates (comma-separated string).
 
 **Usage:**
 
@@ -751,7 +750,6 @@ This macro returns the sql required to remove duplicate rows from a model or sou
     relation=source('my_source', 'my_table'),
     group_by="user_id, cast(timestamp as day)",
     order_by="timestamp desc",
-    relation_alias="my_cte"
    )
 }}
 ```

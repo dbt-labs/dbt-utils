@@ -27,6 +27,7 @@ After:
 - Add `where` parameter to `union_relations` macro ([#554](https://github.com/dbt-labs/dbt-utils/pull/554))
 - Add Postgres specific implementation of `deduplicate()` ([#548](https://github.com/dbt-labs/dbt-utils/pull/548))
 - Add Snowflake specific implementation of `deduplicate()` ([#543](https://github.com/dbt-labs/dbt-utils/issues/543), [#548](https://github.com/dbt-labs/dbt-utils/pull/548))
+ - Add Trino specific implementation of `deduplicate()` ([#551](https://github.com/dbt-labs/dbt-utils/pull/551))
 
 ## Fixes
 - Enable a negative part_number for `split_part()` ([#557](https://github.com/dbt-labs/dbt-utils/issues/557), [#559](https://github.com/dbt-labs/dbt-utils/pull/559))

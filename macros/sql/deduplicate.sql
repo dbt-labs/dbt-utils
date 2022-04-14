@@ -101,6 +101,21 @@ The {{ model.package_name }}.{{ model.name }} model triggered this warning.
 {%- endmacro -%}
 
 {#
+-- This is the ANSI SQL Standard way of doing this operation, however, it is so poorly
+-- supported accross other SQL engines that it cannot realistically be the default!
+#}
+{%- macro _ansi__deduplicate(relation, partition_by, order_by) -%}
+
+    select *
+    from {{ relation }}
+    order by row_number() over (
+        partition by {{ partition_by }}
+        order by {{ order_by }}
+    ) fetch first row with ties
+
+{%- endmacro -%}
+
+{#
 --  It is more performant to deduplicate using `array_agg` with a limit
 --  clause in BigQuery:
 --  https://github.com/dbt-labs/dbt-utils/issues/335#issuecomment-788157572
@@ -118,5 +133,12 @@ The {{ model.package_name }}.{{ model.name }} model triggered this warning.
         from {{ relation }} original
         group by {{ partition_by }}
     )
+
+{%- endmacro -%}
+
+{# Trino correctly supports the ANSI SQL Standard so we can use the ANSI implementation #}
+{%- macro trino__deduplicate(relation, partition_by, order_by) -%}
+
+    {{ return(dbt_utils._ansi__deduplicate(relation, partition_by, order_by )) }}
 
 {%- endmacro -%}

@@ -4,9 +4,7 @@
 
 {%- macro default__deduplicate(relation, group_by, order_by=none, relation_alias=none) -%}
 
-    select
-        {{ dbt_utils.star(relation, relation_alias='deduped') | indent }}
-    from (
+    with row_numbered as (
         select
             _inner.*,
             row_number() over (
@@ -16,8 +14,22 @@
                 {%- endif %}
             ) as rn
         from {{ relation if relation_alias is none else relation_alias }} as _inner
-    ) as deduped
-    where deduped.rn = 1
+    )
+
+    select
+        data.*
+    from {{ relation }} as data
+    join row_numbered using (
+        {{ group_by }}
+        {% for expression in order_by.split(',') %}
+        {% if expression.lower().endswith(' asc') or expression.lower().endswith(' desc') %}
+            {{ ',' ~ expression.rsplit(' ', 1)[0] }}
+        {% else %}
+            {{ ',' ~ expression }}
+        {% endif %}
+        {% endfor %}
+    )
+    where row_numbered.rn = 1
 
 {%- endmacro -%}
 

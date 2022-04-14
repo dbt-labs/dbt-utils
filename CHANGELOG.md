@@ -1,3 +1,11 @@
+# dbt-utils v0.8.next
+
+## Fixes
+- `get_tables_by_pattern_sql()` support of Athena / Presto adapters ([#546](https://github.com/dbt-labs/dbt-utils/issues/546))
+
+## Contributors:
+- [@SOVALINUX](https://github.com/SOVALINUX) (#546)
+
 # dbt-utils v0.8.3
 ## New features
 - A macro for deduplicating data, `deduplicate()` ([#335](https://github.com/dbt-labs/dbt-utils/issues/335), [#512](https://github.com/dbt-labs/dbt-utils/pull/512))

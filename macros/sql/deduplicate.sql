@@ -22,6 +22,19 @@
 {%- endmacro -%}
 
 {#
+-- Postgres has the `DISTINCT ON` syntax:
+-- https://www.postgresql.org/docs/current/sql-select.html#SQL-DISTINCT
+#}
+{%- macro postgres__deduplicate(relation, group_by, order_by=none, relation_alias=none) -%}
+
+    select
+        distinct on ({{ group_by }}) *
+    from {{ relation if relation_alias is none else relation_alias }}
+    order by {{ group_by }}{{ ',' ~ order_by if order_by is not none else '' }}
+
+{%- endmacro -%}
+
+{#
 --  It is more performant to deduplicate using `array_agg` with a limit
 --  clause in BigQuery:
 --  https://github.com/dbt-labs/dbt-utils/issues/335#issuecomment-788157572

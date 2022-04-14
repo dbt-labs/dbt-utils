@@ -1,7 +1,32 @@
 # Unreleased
+
+## 🚨 deduplicate ([#542](https://github.com/dbt-labs/dbt-utils/pull/542), [#548](https://github.com/dbt-labs/dbt-utils/pull/548))
+
+The call signature of `deduplicate` has changed. The previous call signature is marked as deprecated and will be removed in the next minor version.
+
+- The `group_by` argument is now deprecated and replaced by `partition_by`.
+- The `order_by` argument is now required.
+- The `relation_alias` argument has been removed as the macro now supports `relation` as a string directly. If you were using `relation_alias` to point to a CTE previously then you can now pass the alias directly to `relation`.
+
+Before:
+```jinja
+{% macro deduplicate(relation, group_by, order_by=none, relation_alias=none) -%}
+...
+{% endmacro %}
+```
+
+After:
+```jinja
+{% macro deduplicate(relation, partition_by, order_by) -%}
+...
+{% endmacro %}
+```
+
 ## New features
-- Add an optional `where` clause parameter to `get_column_values()` to filter values returned ([#511](https://github.com/dbt-labs/dbt-utils/issues/511), [#583](https://github.com/dbt-labs/dbt-utils/pull/583)) 
+- Add an optional `where` clause parameter to `get_column_values()` to filter values returned ([#511](https://github.com/dbt-labs/dbt-utils/issues/511), [#583](https://github.com/dbt-labs/dbt-utils/pull/583))
 - Add `where` parameter to `union_relations` macro ([#554](https://github.com/dbt-labs/dbt-utils/pull/554))
+- Add Postgres specific implementation of `deduplicate()` ([#548](https://github.com/dbt-labs/dbt-utils/pull/548))
+- Add Snowflake specific implementation of `deduplicate()` ([#543](https://github.com/dbt-labs/dbt-utils/issues/543), [#548](https://github.com/dbt-labs/dbt-utils/pull/548))
 
 ## Fixes
 - Enable a negative part_number for `split_part()` ([#557](https://github.com/dbt-labs/dbt-utils/issues/557), [#559](https://github.com/dbt-labs/dbt-utils/pull/559))
@@ -10,6 +35,7 @@
 - Documentation about listagg macro ([#544](https://github.com/dbt-labs/dbt-utils/issues/544), [#560](https://github.com/dbt-labs/dbt-utils/pull/560))
 - Fix links to macro section in table of contents ([#555](https://github.com/dbt-labs/dbt-utils/pull/555))
 - Contributing guide ([#574](https://github.com/dbt-labs/dbt-utils/pull/574))
+- Add better documentation for `deduplicate()` ([#542](https://github.com/dbt-labs/dbt-utils/pull/542), [#548](https://github.com/dbt-labs/dbt-utils/pull/548))
 
 ## Under the hood
 - Fail integration tests appropriately ([#540](https://github.com/dbt-labs/dbt-utils/issues/540), [#545](https://github.com/dbt-labs/dbt-utils/pull/545))
@@ -34,7 +60,7 @@
 
 ## Fixes
 - `get_column_values()` once more raises an error when the model doesn't exist and there is no default provided ([#531](https://github.com/dbt-labs/dbt-utils/issues/531), [#533](https://github.com/dbt-labs/dbt-utils/pull/533))
-- `get_column_values()` raises an error when used with an ephemeral model, instead of getting stuck in a compilation loop ([#358](https://github.com/dbt-labs/dbt-utils/issues/358), [#518](https://github.com/dbt-labs/dbt-utils/pull/518)) 
+- `get_column_values()` raises an error when used with an ephemeral model, instead of getting stuck in a compilation loop ([#358](https://github.com/dbt-labs/dbt-utils/issues/358), [#518](https://github.com/dbt-labs/dbt-utils/pull/518))
 - BigQuery materialized views work correctly with `get_relations_by_pattern()` ([#525](https://github.com/dbt-labs/dbt-utils/pull/525))
 
 ## Quality of life

@@ -120,3 +120,19 @@ The {{ model.package_name }}.{{ model.name }} model triggered this warning.
     )
 
 {%- endmacro -%}
+
+{#
+-- This seems to be the best way to do the deduplication in TSQL without introducing
+-- a new column for the row number.
+#}
+{%- macro sqlserver__deduplicate(relation, partition_by, order_by) -%}
+
+    select top 1 with ties
+        *
+    from {{ relation }}
+    order by row_number() over (
+        partition by {{ partition_by }}
+        order by {{ order_by }}
+    )
+
+{%- endmacro -%}

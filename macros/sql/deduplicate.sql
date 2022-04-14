@@ -17,18 +17,16 @@
     )
 
     select
-        data.*
+        distinct data.*
     from {{ relation }} as data
-    join row_numbered using (
-        {{ group_by }}
-        {% for expression in order_by.split(',') %}
-        {% if expression.lower().endswith(' asc') or expression.lower().endswith(' desc') %}
-            {{ ',' ~ expression.rsplit(' ', 1)[0] }}
-        {% else %}
-            {{ ',' ~ expression }}
-        {% endif %}
-        {% endfor %}
-    )
+    {#
+    -- Not all DBs will support natural joins but the ones that do include:
+    -- Oracle, MySQL, SQLite, Redshift, Teradata, Materialize, Databricks
+    -- Apache Spark, SingleStore, Vertica
+    -- Those that do not appear to support natural joins include:
+    -- SQLServer, Trino, Presto, Rockset, Athena
+    #}
+    natural join row_numbered
     where row_numbered.rn = 1
 
 {%- endmacro -%}

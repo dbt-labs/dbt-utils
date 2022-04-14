@@ -748,8 +748,17 @@ This macro returns the sql required to remove duplicate rows from a model, sourc
 ```
 {{ dbt_utils.deduplicate(
     relation=source('my_source', 'my_table'),
-    group_by="user_id, cast(timestamp as day)",
+    partition_by='user_id, cast(timestamp as day)',
     order_by="timestamp desc",
+   )
+}}
+```
+
+```
+{{ dbt_utils.deduplicate(
+    relation=ref('my_model'),
+    partition_by='user_id',
+    order_by='effective_date desc, effective_sequence desc',
    )
 }}
 ```
@@ -763,8 +772,8 @@ with my_cte as (
 
 {{ dbt_utils.deduplicate(
     relation='my_cte',
-    group_by="user_id, cast(timestamp as day)",
-    order_by="timestamp desc",
+    partition_by='user_id, cast(timestamp as day)',
+    order_by='timestamp desc',
    )
 }}
 ```

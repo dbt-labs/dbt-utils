@@ -595,7 +595,7 @@ This macro returns the unique values for a column in a given [relation](https://
 This macro returns an iterable Jinja list of columns for a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation), (i.e. not from a CTE)
 - optionally exclude columns
 - the input values are not case-sensitive (input uppercase or lowercase and it will work!)
-> Note: The native [`adapter.get_columns_in_relation` macro](https://docs.getdbt.com/reference/dbt-jinja-functions/adapter#get_columns_in_relation) allows you 
+> Note: The native [`adapter.get_columns_in_relation` macro](https://docs.getdbt.com/reference/dbt-jinja-functions/adapter#get_columns_in_relation) allows you
 to pull column names in a non-filtered fashion, also bringing along with it other (potentially unwanted) information, such as dtype, char_size, numeric_precision, etc.
 
 **Args:**
@@ -737,6 +737,12 @@ This macro returns the sql required to build a date spine. The spine will includ
 #### deduplicate ([source](macros/sql/deduplicate.sql))
 This macro returns the sql required to remove duplicate rows from a model or source.
 
+**Args:**
+ - `relation` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) or string which identifies the model to deduplicate.
+ - `group_by` (required): column names (or expressions) to use to identify a set/window of rows out of which to select one as the deduplicated row.
+ - `order_by` (optional, default=none): column names (or expressions) that determine the priority order of which row should be chosen if there are duplicates (comma-separated string).
+ - `relation_alias` (optional, default=none): DEPRECATED - string to select from which references a `ref`, `source` or CTE which contains the same columns as `relation`.
+
 **Usage:**
 
 ```
@@ -745,6 +751,21 @@ This macro returns the sql required to remove duplicate rows from a model or sou
     group_by="user_id, cast(timestamp as day)",
     order_by="timestamp desc",
     relation_alias="my_cte"
+   )
+}}
+```
+
+```
+with my_cte as (
+    select *
+    from {{ source('my_source', 'my_table') }}
+    where user_id = 1
+)
+
+{{ dbt_utils.deduplicate(
+    relation='my_cte',
+    group_by="user_id, cast(timestamp as day)",
+    order_by="timestamp desc",
    )
 }}
 ```
@@ -791,19 +812,19 @@ group by 1,2,3
 ```
 
 #### star ([source](macros/sql/star.sql))
-This macro generates a comma-separated list of all fields that exist in the `from` relation, excluding any fields 
-listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with 
-the star macro. 
-This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias (`relation_alias`.`field_name`). 
-The macro also has optional `prefix` and `suffix` arguments. When one or both are provided, they will be concatenated onto each field's alias 
+This macro generates a comma-separated list of all fields that exist in the `from` relation, excluding any fields
+listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with
+the star macro.
+This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias (`relation_alias`.`field_name`).
+The macro also has optional `prefix` and `suffix` arguments. When one or both are provided, they will be concatenated onto each field's alias
 in the output (`prefix` ~ `field_name` ~ `suffix`). NB: This prevents the output from being used in any context other than a select statement.
 
 **Args:**
 - `from` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
 - `except` (optional, default=`[]`): The name of the columns you wish to exclude. (case-insensitive)
-- `relation_alias` (optional, default=`''`): will prefix all generated fields with an alias (`relation_alias`.`field_name`). 
-- `prefix` (optional, default=`''`): will prefix the output `field_name` (`field_name as prefix_field_name`). 
-- `suffix` (optional, default=`''`): will suffix the output `field_name` (`field_name as field_name_suffix`). 
+- `relation_alias` (optional, default=`''`): will prefix all generated fields with an alias (`relation_alias`.`field_name`).
+- `prefix` (optional, default=`''`): will prefix the output `field_name` (`field_name as prefix_field_name`).
+- `suffix` (optional, default=`''`): will suffix the output `field_name` (`field_name as field_name_suffix`).
 
 **Usage:**
 ```sql
@@ -1026,7 +1047,7 @@ This macro calculates the difference between two dates.
 This macro splits a string of text using the supplied delimiter and returns the supplied part number (1-indexed).
 
 **Args**:
-- `string_text` (required): Text to be split into parts. 
+- `string_text` (required): Text to be split into parts.
 - `delimiter_text` (required): Text representing the delimiter to split by.
 - `part_number` (required): Requested part of the split (1-based). If the value is negative, the parts are counted backward from the end of the string.
 

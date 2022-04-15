@@ -14,6 +14,14 @@
     current_timestamp
 {% endmacro %}
 
+{% macro athena__current_timestamp() %}
+    now()
+{% endmacro %}
+
+{% macro presto__current_timestamp() %}
+    now()
+{% endmacro %}
+
 
 
 {% macro current_timestamp_in_utc() -%}

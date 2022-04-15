@@ -2,9 +2,11 @@
 
 ## Fixes
 - `get_tables_by_pattern_sql()` support of Athena / Presto adapters ([#546](https://github.com/dbt-labs/dbt-utils/issues/546))
+- `not_null_proportion` and `datatype numeric` support of Athena / Presto adapters ([#553] ( https://github.com/dbt-labs/dbt-utils/issues/553))
 
 ## Contributors:
-- [@SOVALINUX](https://github.com/SOVALINUX) (#546)
+- [@SOVALINUX](https://github.com/SOVALINUX) (#546, #553)
+
 
 # dbt-utils v0.8.3
 ## New features

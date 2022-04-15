@@ -69,6 +69,14 @@
     numeric
 {% endmacro %}
 
+{% macro athena__type_numeric() %}
+    double
+{% endmacro %}
+
+{% macro presto__type_numeric() %}
+    double
+{% endmacro %}
+
 
 {# bigint  -------------------------------------------------     #}
 

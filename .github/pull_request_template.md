@@ -1,7 +1,7 @@
 This is a:
-- [ ] bug fix PR with no breaking changes — please ensure the base branch is `main`
-- [ ] new functionality — please ensure the base branch is the latest `dev/` branch
-- [ ] a breaking change — please ensure the base branch is the latest `dev/` branch
+- [ ] bug fix with no breaking changes — please ensure the base branch is `next/patch`
+- [ ] new functionality — please ensure the base branch is `next/minor`
+- [ ] a breaking change — please ensure the base branch is `next/major`
 
 ## Description & motivation
 <!---

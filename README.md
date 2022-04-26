@@ -1081,6 +1081,21 @@ When an expression falls outside the range, the function returns:
 {{ dbt_utils.width_bucket(expr, min_value, max_value, num_buckets) }}
 ```
 
+#### listagg ([source](macros/cross_db_utils/listagg.sql))
+This macro returns the concatenated input values from a group of rows separated by a specified deliminator. 
+
+**Args**:
+- `measure` (required): The expression (typically a column name) that determines the values to be concatenated. To only include distinct values add keyword DISTINCT to beginning of expression (example: 'DISTINCT column_to_agg').
+- `delimiter_text` (required): Text representing the delimiter to separate concatenated values by.
+- `order_by_clause` (optional): An expression (typically a column name) that determines the order of the concatenated values.
+- `limit_num` (optional): Specifies the maximum number of values to be concatenated.
+
+Note: If there are instances of `delimiter_text` within your `measure`, you cannot include a `limit_num`.
+
+**Usage:**
+```
+{{ dbt_utils.listagg(measure='column_to_agg', delimiter_text="','", order_by_clause="order by order_by_column", limit_num=10) }}
+```
 
 ---
 ### Jinja Helpers

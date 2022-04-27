@@ -834,6 +834,7 @@ from {{ ref('my_model') }}
 select
 {{ dbt_utils.star(from=ref('my_model'), regex='^(foo|bar)') }}
 from {{ ref('my_model') }}
+
 ```
 
 #### union_relations ([source](macros/sql/union.sql))

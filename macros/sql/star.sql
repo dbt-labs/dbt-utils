@@ -18,9 +18,11 @@
         {%- set regex = '.' %}
     {% endif %}
 
+    {{ log(regex, info=True) }}
+
     {%- for col in dbt_utils.get_filtered_columns_in_relation(from, except) %}
 
-        {%- if col | modules.re.match(regex, col) -%}
+        {%- if col | modules.re.match(regex, col | string, modules.re.IGNORECASE) -%}
             {% do include_cols.append(col) %}
         {%- endif %}
 

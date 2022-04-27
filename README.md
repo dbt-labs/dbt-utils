@@ -37,7 +37,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
 
 - [SQL generators](#sql-generators)
     - [date_spine](#date_spine-source)
-    - [deduplicate](#deduplicate)
+    - [deduplicate](#deduplicate-source)
     - [haversine_distance](#haversine_distance-source)
     - [group_by](#group_by-source)
     - [star](#star-source)
@@ -60,7 +60,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
     - [split_part](#split_part-source)
     - [last_day](#last_day-source)
     - [width_bucket](#width_bucket-source)
-    - [listagg](#listagg)
+    - [listagg](#listagg-source)
 
 - [Jinja Helpers](#jinja-helpers)
     - [pretty_time](#pretty_time-source)

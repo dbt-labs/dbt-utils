@@ -797,6 +797,7 @@ the star macro.
 This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias (`relation_alias`.`field_name`). 
 The macro also has optional `prefix` and `suffix` arguments. When one or both are provided, they will be concatenated onto each field's alias 
 in the output (`prefix` ~ `field_name` ~ `suffix`). NB: This prevents the output from being used in any context other than a select statement.
+The parameter `regex` will only return the field(s) which have a match to the expression. By default all columns are captured if the regex parameter is not set.
 
 **Args:**
 - `from` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
@@ -804,6 +805,8 @@ in the output (`prefix` ~ `field_name` ~ `suffix`). NB: This prevents the output
 - `relation_alias` (optional, default=`''`): will prefix all generated fields with an alias (`relation_alias`.`field_name`). 
 - `prefix` (optional, default=`''`): will prefix the output `field_name` (`field_name as prefix_field_name`). 
 - `suffix` (optional, default=`''`): will suffix the output `field_name` (`field_name as field_name_suffix`). 
+- `regex` (optional, default=`''`): will return column names matching the regex. 
+
 
 **Usage:**
 ```sql
@@ -821,10 +824,17 @@ from {{ ref('my_model') }}
 ```
 
 ```sql
+<<<<<<< .merge_file_Ve2ktx
 select
 {{ dbt_utils.star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"], prefix="max_") }}
 from {{ ref('my_model') }}
 
+```
+
+```sql
+select
+{{ dbt_utils.star(from=ref('my_model'), regex='^(foo|bar)') }}
+from {{ ref('my_model') }}
 ```
 
 #### union_relations ([source](macros/sql/union.sql))

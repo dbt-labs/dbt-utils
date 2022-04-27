@@ -824,7 +824,6 @@ from {{ ref('my_model') }}
 ```
 
 ```sql
-<<<<<<< .merge_file_Ve2ktx
 select
 {{ dbt_utils.star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"], prefix="max_") }}
 from {{ ref('my_model') }}

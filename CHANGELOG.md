@@ -1,9 +1,20 @@
 # Unreleased
-- No unreleased changes
+
+## Quality of life
+- Documentation about listagg macro ([#544](https://github.com/dbt-labs/dbt-utils/issues/544), [#560](https://github.com/dbt-labs/dbt-utils/pull/560))
+- Fix links to macro section in table of contents ([#555](https://github.com/dbt-labs/dbt-utils/pull/555))
+
+## Under the hood
+- Fail integration tests appropriately ([#540](https://github.com/dbt-labs/dbt-utils/issues/540), [#545](https://github.com/dbt-labs/dbt-utils/pull/545))
+
+## Contributors:
+- [@graciegoheen](https://github.com/graciegoheen) (#545)
+- [@judahrand](https://github.com/judahrand) (#552)
+- [@clausherther](https://github.com/clausherther) (#555)
 
 # dbt-utils v0.8.4
 ## Fixes
-- Change from quotes to backticks for BQ ([#531](https://github.com/dbt-labs/dbt-utils/issues/531), [#533](https://github.com/dbt-labs/dbt-utils/pull/533))
+- Change from quotes to backticks for BQ ([#536](https://github.com/dbt-labs/dbt-utils/issues/536), [#537](https://github.com/dbt-labs/dbt-utils/pull/537))
 
 # dbt-utils v0.8.3
 ## New features

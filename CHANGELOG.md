@@ -3,6 +3,7 @@
 ## Quality of life
 - Documentation about listagg macro ([#544](https://github.com/dbt-labs/dbt-utils/issues/544), [#560](https://github.com/dbt-labs/dbt-utils/pull/560))
 - Fix links to macro section in table of contents ([#555](https://github.com/dbt-labs/dbt-utils/pull/555))
+- Contributing guide ([#574](https://github.com/dbt-labs/dbt-utils/pull/574))
 
 ## Under the hood
 - Fail integration tests appropriately ([#540](https://github.com/dbt-labs/dbt-utils/issues/540), [#545](https://github.com/dbt-labs/dbt-utils/pull/545))

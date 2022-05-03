@@ -1219,9 +1219,11 @@ A useful workaround is to change the above post-hook to:
 
 ----
 
-### Contributing
+### Reporting bugs and contributing code
 
-We welcome contributions to this repo! To contribute a new feature or a fix, please open a Pull Request with 1) your changes, 2) updated documentation for the `README.md` file, and 3) a working integration test. See [this page](integration_tests/README.md) for more information.
+- Want to report a bug or request a feature? Let us know on [Slack](http://community.getdbt.com/), or open [an issue](https://github.com/dbt-labs/dbt-utils/issues/new)
+- Want to help us build dbt-utils? Check out the [Contributing Guide](https://github.com/dbt-utils/dbt-core/blob/HEAD/CONTRIBUTING.md)
+    - **TL;DR** Open a Pull Request with 1) your changes, 2) updated documentation for the `README.md` file, and 3) a working integration test.
 
 ----
 

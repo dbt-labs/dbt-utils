@@ -1,3 +1,10 @@
+# Unreleased
+- No unreleased changes
+
+# dbt-utils v0.8.4
+## Fixes
+- Change from quotes to backticks for BQ ([#531](https://github.com/dbt-labs/dbt-utils/issues/531), [#533](https://github.com/dbt-labs/dbt-utils/pull/533))
+
 # dbt-utils v0.8.3
 ## New features
 - A macro for deduplicating data, `deduplicate()` ([#335](https://github.com/dbt-labs/dbt-utils/issues/335), [#512](https://github.com/dbt-labs/dbt-utils/pull/512))

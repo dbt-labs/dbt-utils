@@ -1221,7 +1221,7 @@ A useful workaround is to change the above post-hook to:
 
 ### Reporting bugs and contributing code
 
-- Want to report a bug or request a feature? Let us know on [Slack](http://community.getdbt.com/), or open [an issue](https://github.com/dbt-labs/dbt-utils/issues/new)
+- Want to report a bug or request a feature? Let us know in the `#package-ecosystem` channel on [Slack](http://community.getdbt.com/), or open [an issue](https://github.com/dbt-labs/dbt-utils/issues/new)
 - Want to help us build dbt-utils? Check out the [Contributing Guide](https://github.com/dbt-utils/dbt-core/blob/HEAD/CONTRIBUTING.md)
     - **TL;DR** Open a Pull Request with 1) your changes, 2) updated documentation for the `README.md` file, and 3) a working integration test.
 

@@ -595,7 +595,7 @@ This macro returns the unique values for a column in a given [relation](https://
 This macro returns an iterable Jinja list of columns for a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation), (i.e. not from a CTE)
 - optionally exclude columns
 - the input values are not case-sensitive (input uppercase or lowercase and it will work!)
-> Note: The native [`adapter.get_columns_in_relation` macro](https://docs.getdbt.com/reference/dbt-jinja-functions/adapter#get_columns_in_relation) allows you 
+> Note: The native [`adapter.get_columns_in_relation` macro](https://docs.getdbt.com/reference/dbt-jinja-functions/adapter#get_columns_in_relation) allows you
 to pull column names in a non-filtered fashion, also bringing along with it other (potentially unwanted) information, such as dtype, char_size, numeric_precision, etc.
 
 **Args:**
@@ -791,19 +791,19 @@ group by 1,2,3
 ```
 
 #### star ([source](macros/sql/star.sql))
-This macro generates a comma-separated list of all fields that exist in the `from` relation, excluding any fields 
-listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with 
-the star macro. 
-This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias (`relation_alias`.`field_name`). 
-The macro also has optional `prefix` and `suffix` arguments. When one or both are provided, they will be concatenated onto each field's alias 
+This macro generates a comma-separated list of all fields that exist in the `from` relation, excluding any fields
+listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with
+the star macro.
+This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias (`relation_alias`.`field_name`).
+The macro also has optional `prefix` and `suffix` arguments. When one or both are provided, they will be concatenated onto each field's alias
 in the output (`prefix` ~ `field_name` ~ `suffix`). NB: This prevents the output from being used in any context other than a select statement.
 
 **Args:**
 - `from` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
 - `except` (optional, default=`[]`): The name of the columns you wish to exclude. (case-insensitive)
-- `relation_alias` (optional, default=`''`): will prefix all generated fields with an alias (`relation_alias`.`field_name`). 
-- `prefix` (optional, default=`''`): will prefix the output `field_name` (`field_name as prefix_field_name`). 
-- `suffix` (optional, default=`''`): will suffix the output `field_name` (`field_name as field_name_suffix`). 
+- `relation_alias` (optional, default=`''`): will prefix all generated fields with an alias (`relation_alias`.`field_name`).
+- `prefix` (optional, default=`''`): will prefix the output `field_name` (`field_name as prefix_field_name`).
+- `suffix` (optional, default=`''`): will suffix the output `field_name` (`field_name as field_name_suffix`).
 
 **Usage:**
 ```sql
@@ -1026,7 +1026,7 @@ This macro calculates the difference between two dates.
 This macro splits a string of text using the supplied delimiter and returns the supplied part number (1-indexed).
 
 **Args**:
-- `string_text` (required): Text to be split into parts. 
+- `string_text` (required): Text to be split into parts.
 - `delimiter_text` (required): Text representing the delimiter to split by.
 - `part_number` (required): Requested part of the split (1-based). If the value is negative, the parts are counted backward from the end of the string.
 
@@ -1082,7 +1082,7 @@ When an expression falls outside the range, the function returns:
 ```
 
 #### listagg ([source](macros/cross_db_utils/listagg.sql))
-This macro returns the concatenated input values from a group of rows separated by a specified deliminator. 
+This macro returns the concatenated input values from a group of rows separated by a specified deliminator.
 
 **Args**:
 - `measure` (required): The expression (typically a column name) that determines the values to be concatenated. To only include distinct values add keyword DISTINCT to beginning of expression (example: 'DISTINCT column_to_agg').

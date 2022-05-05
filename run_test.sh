@@ -22,10 +22,10 @@ _seeds="--full-refresh"
 if [[ ! -z $2 ]]; then _models="--models $2"; fi
 if [[ ! -z $3 ]]; then _seeds="--select $3 --full-refresh"; fi
 
-dbt deps --target $1
-dbt seed --target $1 $_seeds
+dbt deps --target $1 || exit 1
+dbt seed --target $1 $_seeds || exit 1
 if [ $1 == 'redshift' ]; then
-    dbt run -x -m test_insert_by_period --full-refresh --target redshift
+    dbt run -x -m test_insert_by_period --full-refresh --target redshift || exit 1
 fi
-dbt run -x --target $1 $_models
-dbt test -x --target $1 $_models
+dbt run -x --target $1 $_models || exit 1
+dbt test -x --target $1 $_models || exit 1

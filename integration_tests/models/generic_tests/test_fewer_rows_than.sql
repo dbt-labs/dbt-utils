@@ -1,9 +1,4 @@
-with data as (
+with data as (select * from {{ ref("data_test_fewer_rows_than_table_1") }})
 
-    select * from {{ ref('data_test_fewer_rows_than_table_1') }}
-
-)
-
-select
-    field
+select field
 from data

@@ -1,28 +1,39 @@
-{% macro get_tables_by_pattern_sql(schema_pattern, table_pattern, exclude='', database=target.database) %}
-    {{ return(adapter.dispatch('get_tables_by_pattern_sql', 'dbt_utils')
-        (schema_pattern, table_pattern, exclude, database)) }}
+{% macro get_tables_by_pattern_sql(
+    schema_pattern, table_pattern, exclude="", database=target.database
+) %}
+{{
+    return adapter.dispatch("get_tables_by_pattern_sql", "dbt_utils")(
+        schema_pattern, table_pattern, exclude, database
+    )
+}}
 {% endmacro %}
 
-{% macro default__get_tables_by_pattern_sql(schema_pattern, table_pattern, exclude='', database=target.database) %}
+{% macro default__get_tables_by_pattern_sql(
+    schema_pattern, table_pattern, exclude="", database=target.database
+) %}
 
-        select distinct
-            table_schema as "table_schema",
-            table_name as "table_name",
-            {{ dbt_utils.get_table_types_sql() }}
-        from {{ database }}.information_schema.tables
-        where table_schema ilike '{{ schema_pattern }}'
-        and table_name ilike '{{ table_pattern }}'
-        and table_name not ilike '{{ exclude }}'
+select distinct
+    table_schema as "table_schema",
+    table_name as "table_name",
+    {{ dbt_utils.get_table_types_sql() }}
+from {{ database }}.information_schema.tables
+where
+    table_schema ilike '{{ schema_pattern }}'
+    and table_name ilike '{{ table_pattern }}'
+    and table_name not ilike '{{ exclude }}'
 
 {% endmacro %}
 
 
-{% macro bigquery__get_tables_by_pattern_sql(schema_pattern, table_pattern, exclude='', database=target.database) %}
+    {% macro bigquery__get_tables_by_pattern_sql(
+    schema_pattern, table_pattern, exclude="", database=target.database
+) %}
 
-    {% if '%' in schema_pattern %}
-        {% set schemata=dbt_utils._bigquery__get_matching_schemata(schema_pattern, database) %}
-    {% else %}
-        {% set schemata=[schema_pattern] %}
+    {% if "%" in schema_pattern %}
+    {% set schemata = dbt_utils._bigquery__get_matching_schemata(
+    schema_pattern, database
+) %}
+    {% else %} {% set schemata = [schema_pattern] %}
     {% endif %}
 
     {% set sql %}
@@ -41,12 +52,12 @@
         {% endfor %}
     {% endset %}
 
-    {{ return(sql) }}
+    {{ return sql }}
 
-{% endmacro %}
+    {% endmacro %}
 
 
-{% macro _bigquery__get_matching_schemata(schema_pattern, database) %}
+    {% macro _bigquery__get_matching_schemata(schema_pattern, database) %}
     {% if execute %}
 
         {% set sql %}
@@ -54,17 +65,15 @@
         where lower(schema_name) like lower('{{ schema_pattern }}')
         {% endset %}
 
-        {% set results=run_query(sql) %}
+    {% set results = run_query(sql) %}
 
-        {% set schemata=results.columns['schema_name'].values() %}
+    {% set schemata = results.columns["schema_name"].values() %}
 
-        {{ return(schemata) }}
+    {{ return schemata }}
 
-    {% else %}
-
-        {{ return([]) }}
+    {% else %} {{ return [] }}
 
     {% endif %}
 
 
-{% endmacro %}
+    {% endmacro %}

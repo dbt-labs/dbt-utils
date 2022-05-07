@@ -36,6 +36,7 @@ class BaseCrossDbMacro:
         run_dbt(['build'])    # seed, model, test -- all handled by dbt
 
 
+@pytest.mark.skip_profile("bigquery", reason="TODO - need to figure out timestamp vs. datetime behavior!")
 class BaseDateAdd(BaseCrossDbMacro):
     @pytest.fixture(scope="class")
     def seeds(self):
@@ -55,7 +56,7 @@ class TestDateAdd(BaseDateAdd):
     pass
 
 
-class BaseDateDiff:
+class BaseDateDiff(BaseCrossDbMacro):
     @pytest.fixture(scope="class")
     def seeds(self):
         return {"data_datediff.csv": seeds__data_datediff_csv}
@@ -68,5 +69,5 @@ class BaseDateDiff:
         }
 
 
-class TestDateDiff(BaseDateAdd):
+class TestDateDiff(BaseDateDiff):
     pass

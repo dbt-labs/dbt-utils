@@ -1,10 +1,11 @@
 
-
 # right
 
-# TODO - implement expected results here
-seeds__data_right_csv = """todo,result
-TODO,1
+seeds__data_right_csv = """string_text,length_expression,output
+abcdef,3,def
+fishtown,4,town
+december,5,ember
+december,0,
 """
 
 
@@ -15,11 +16,10 @@ with data as (
 
 )
 
-# TODO - implement actual logic here
 select
 
-    1 actual,
-    result as expected
+    {{ dbt_utils.right('string_text', 'length_expression') }} as actual,
+    coalesce(output, '') as expected
 
 from data
 """

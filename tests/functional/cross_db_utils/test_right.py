@@ -20,6 +20,5 @@ class BaseRight(BaseCrossDbMacro):
         }
 
 
-@pytest.mark.skip(reason="TODO - implement this test")
 class TestRight(BaseRight):
     pass

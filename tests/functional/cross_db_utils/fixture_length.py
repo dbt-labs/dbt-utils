@@ -1,10 +1,11 @@
 
-
 # length
 
-# TODO - implement expected results here
-seeds__data_length_csv = """todo,result
-TODO,1
+seeds__data_length_csv = """expression,output
+abcdef,6
+fishtown,8
+december,8
+www.google.com/path,19
 """
 
 
@@ -15,11 +16,10 @@ with data as (
 
 )
 
-# TODO - implement actual logic here
 select
 
-    1 actual,
-    result as expected
+    {{ dbt_utils.length('expression') }} as actual,
+    output as expected
 
 from data
 """

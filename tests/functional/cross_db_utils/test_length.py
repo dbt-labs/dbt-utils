@@ -20,6 +20,5 @@ class BaseLength(BaseCrossDbMacro):
         }
 
 
-@pytest.mark.skip(reason="TODO - implement this test")
 class TestLength(BaseLength):
     pass

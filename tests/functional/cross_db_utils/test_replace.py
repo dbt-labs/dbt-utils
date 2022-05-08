@@ -20,6 +20,5 @@ class BaseReplace(BaseCrossDbMacro):
         }
 
 
-@pytest.mark.skip(reason="TODO - implement this test")
 class TestReplace(BaseReplace):
     pass

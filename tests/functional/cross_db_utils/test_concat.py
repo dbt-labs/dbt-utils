@@ -20,6 +20,5 @@ class BaseConcat(BaseCrossDbMacro):
         }
 
 
-@pytest.mark.skip(reason="TODO - implement this test")
 class TestConcat(BaseConcat):
     pass

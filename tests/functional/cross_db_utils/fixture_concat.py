@@ -2,9 +2,11 @@
 
 # concat
 
-# TODO - implement expected results here
-seeds__data_concat_csv = """todo,result
-TODO,1
+seeds__data_concat_csv = """input_1,input_2,output
+a,b,ab
+a,,a
+,b,b
+,,
 """
 
 
@@ -15,11 +17,9 @@ with data as (
 
 )
 
-# TODO - implement actual logic here
 select
-
-    1 actual,
-    result as expected
+    {{ dbt_utils.concat(['input_1', 'input_2']) }} as actual,
+    output as expected
 
 from data
 """

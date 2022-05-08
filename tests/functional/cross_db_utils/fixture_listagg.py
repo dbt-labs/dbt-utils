@@ -96,7 +96,8 @@ select
 from calculate
 left join data_output
 on calculate.group_col = data_output.group_col
-and calculate.version = data_output.version"""
+and calculate.version = data_output.version
+"""
 
 
 models__test_listagg_yml = """

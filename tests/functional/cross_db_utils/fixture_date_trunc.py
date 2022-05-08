@@ -1,10 +1,9 @@
 
-
 # date_trunc
 
-# TODO - implement expected results here
-seeds__data_date_trunc_csv = """todo,result
-TODO,1
+seeds__data_date_trunc_csv = """updated_at,day,month
+2018-01-05 12:00:00,2018-01-05,2018-01-01
+,,
 """
 
 
@@ -15,11 +14,17 @@ with data as (
 
 )
 
-# TODO - implement actual logic here
 select
+    cast({{dbt_utils.date_trunc('day', 'updated_at') }} as date) as actual,
+    day as expected
 
-    1 actual,
-    result as expected
+from data
+
+union all
+
+select
+    cast({{ dbt_utils.date_trunc('month', 'updated_at') }} as date) as actual,
+    month as expected
 
 from data
 """

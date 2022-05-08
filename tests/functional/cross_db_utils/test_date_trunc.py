@@ -20,6 +20,5 @@ class BaseDateTrunc(BaseCrossDbMacro):
         }
 
 
-@pytest.mark.skip(reason="TODO - implement this test")
 class TestDateTrunc(BaseDateTrunc):
     pass

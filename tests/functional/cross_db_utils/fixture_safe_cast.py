@@ -1,10 +1,10 @@
 
-
 # safe_cast
 
-# TODO - implement expected results here
-seeds__data_safe_cast_csv = """todo,result
-TODO,1
+seeds__data_safe_cast_csv = """field,output
+abc,abc
+123,123
+,
 """
 
 
@@ -15,11 +15,9 @@ with data as (
 
 )
 
-# TODO - implement actual logic here
 select
-
-    1 actual,
-    result as expected
+    {{ dbt_utils.safe_cast('field', dbt_utils.type_string()) }} as actual,
+    output as expected
 
 from data
 """

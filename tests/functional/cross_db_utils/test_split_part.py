@@ -20,6 +20,5 @@ class BaseSplitPart(BaseCrossDbMacro):
         }
 
 
-@pytest.mark.skip(reason="TODO - implement this test")
 class TestSplitPart(BaseSplitPart):
     pass

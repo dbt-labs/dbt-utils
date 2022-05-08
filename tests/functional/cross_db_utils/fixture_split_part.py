@@ -1,10 +1,10 @@
 
-
 # split_part
 
-# TODO - implement expected results here
-seeds__data_split_part_csv = """todo,result
-TODO,1
+seeds__data_split_part_csv = """parts,split_on,result_1,result_2,result_3
+a|b|c,|,a,b,c
+1|2|3,|,1,2,3
+,|,,,
 """
 
 
@@ -15,11 +15,25 @@ with data as (
 
 )
 
-# TODO - implement actual logic here
 select
+    {{ dbt_utils.split_part('parts', 'split_on', 1) }} as actual,
+    result_1 as expected
 
-    1 actual,
-    result as expected
+from data
+
+union all
+
+select
+    {{ dbt_utils.split_part('parts', 'split_on', 2) }} as actual,
+    result_2 as expected
+
+from data
+
+union all
+
+select
+    {{ dbt_utils.split_part('parts', 'split_on', 3) }} as actual,
+    result_3 as expected
 
 from data
 """

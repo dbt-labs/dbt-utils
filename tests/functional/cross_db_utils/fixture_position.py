@@ -1,10 +1,11 @@
 
-
 # position
 
-# TODO - implement expected results here
-seeds__data_position_csv = """todo,result
-TODO,1
+seeds__data_position_csv = """substring_text,string_text,result
+def,abcdef,4
+land,earth,0
+town,fishtown,5
+ember,december,4
 """
 
 
@@ -15,10 +16,9 @@ with data as (
 
 )
 
-# TODO - implement actual logic here
 select
 
-    1 actual,
+    {{ dbt_utils.position('substring_text', 'string_text') }} as actual,
     result as expected
 
 from data

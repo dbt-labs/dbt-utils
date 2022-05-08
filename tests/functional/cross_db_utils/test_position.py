@@ -20,6 +20,5 @@ class BasePosition(BaseCrossDbMacro):
         }
 
 
-@pytest.mark.skip(reason="TODO - implement this test")
 class TestPosition(BasePosition):
     pass

@@ -2,7 +2,6 @@
 
 # any_value
 
-# TODO - implement expected results here
 seeds__data_any_value_csv = """key_name,static_col,num_rows
 abc,dbt,2
 jkl,dbt,3

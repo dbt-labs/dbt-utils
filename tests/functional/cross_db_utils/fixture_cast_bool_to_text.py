@@ -1,25 +1,21 @@
 
-
 # cast_bool_to_text
-
-# TODO - implement expected results here
-seeds__data_cast_bool_to_text_csv = """todo,result
-TODO,1
-"""
-
 
 models__test_cast_bool_to_text_sql = """
 with data as (
 
-    select * from {{ ref('data_cast_bool_to_text') }}
+    select 0=1 as input, 'false' as expected union all
+    select 1=1 as input, 'true' as expected union all
+    select 0 as input, 'false' as expected union all
+    select 1 as input, 'true' as expected union all
+    select null as input, null as expected
 
 )
 
-# TODO - implement actual logic here
 select
 
-    1 actual,
-    result as expected
+    {{ dbt_utils.cast_bool_to_text("input") }} as actual,
+    expected
 
 from data
 """

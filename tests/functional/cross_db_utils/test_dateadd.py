@@ -7,7 +7,6 @@ from tests.functional.cross_db_utils.fixture_dateadd import (
 )
 
 
-@pytest.mark.skip_profile("bigquery", reason="TODO - need to figure out timestamp vs. datetime behavior!")
 class BaseDateAdd(BaseCrossDbMacro):
     @pytest.fixture(scope="class")
     def seeds(self):
@@ -21,6 +20,7 @@ class BaseDateAdd(BaseCrossDbMacro):
         }
 
 
+@pytest.mark.skip_profile("bigquery", reason="TODO - need to figure out timestamp vs. datetime behavior!")
 class TestDateAdd(BaseDateAdd):
     # we do this in case an adapter will need to override the base class
     # in the simplest case, it's just:

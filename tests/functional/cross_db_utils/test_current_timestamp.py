@@ -7,7 +7,6 @@ from tests.functional.cross_db_utils.fixture_current_timestamp import (
 
 
 class BaseCurrentTimestamp(BaseCrossDbMacro):
-
     @pytest.fixture(scope="class")
     def models(self):
         return {

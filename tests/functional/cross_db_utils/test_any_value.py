@@ -20,6 +20,5 @@ class BaseAnyValue(BaseCrossDbMacro):
         }
 
 
-@pytest.mark.skip(reason="TODO - implement this test")
 class TestAnyValue(BaseAnyValue):
     pass

@@ -1,10 +1,11 @@
 
-
 # last_day
 
-# TODO - implement expected results here
-seeds__data_last_day_csv = """todo,result
-TODO,1
+seeds__data_last_day_csv = """date_day,date_part,result
+2018-01-02,month,2018-01-31
+2018-01-02,quarter,2018-03-31
+2018-01-02,year,2018-12-31
+,month,
 """
 
 
@@ -15,10 +16,13 @@ with data as (
 
 )
 
-# TODO - implement actual logic here
 select
-
-    1 actual,
+    case
+        when date_part = 'month' then {{ dbt_utils.last_day('date_day', 'month') }}
+        when date_part = 'quarter' then {{ dbt_utils.last_day('date_day', 'quarter') }}
+        when date_part = 'year' then {{ dbt_utils.last_day('date_day', 'year') }}
+        else null
+    end as actual,
     result as expected
 
 from data

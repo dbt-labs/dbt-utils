@@ -20,6 +20,5 @@ class BaseLastDay(BaseCrossDbMacro):
         }
 
 
-@pytest.mark.skip(reason="TODO - implement this test")
 class TestLastDay(BaseLastDay):
     pass

@@ -20,6 +20,5 @@ class BaseHash(BaseCrossDbMacro):
         }
 
 
-@pytest.mark.skip(reason="TODO - implement this test")
 class TestHash(BaseHash):
     pass

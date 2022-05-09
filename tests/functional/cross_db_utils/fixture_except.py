@@ -1,36 +1,65 @@
 
-
 # except
 
-# TODO - implement expected results here
-seeds__data_except_csv = """todo,result
-TODO,1
+seeds__data_except_a_csv = """id
+1
+2
+3
 """
 
-
-models__test_except_sql = """
-with data as (
-
-    select * from {{ ref('data_except') }}
-
-)
-
-# TODO - implement actual logic here
-select
-
-    1 actual,
-    result as expected
-
-from data
+seeds__data_except_b_csv = """id
+3
+4
+5
 """
 
+seeds__data_except_a_minus_b_csv = """id
+1
+2
+"""
 
-models__test_except_yml = """
-version: 2
-models:
-  - name: test_except
-    tests:
-      - assert_equal:
-          actual: actual
-          expected: expected
+seeds__data_except_b_minus_a_csv = """id
+4
+5
+"""
+
+models__data_except_empty_sql = """
+select * from {{ ref('data_except_a') }}
+where 0=1
+"""
+
+models__test_except_a_minus_b_sql = """
+select * from {{ ref('data_except_a') }}
+{{ dbt_utils.except() }}
+select * from {{ ref('data_except_b') }}
+"""
+
+models__test_except_b_minus_a_sql = """
+select * from {{ ref('data_except_b') }}
+{{ dbt_utils.except() }}
+select * from {{ ref('data_except_a') }}
+"""
+
+models__test_except_a_minus_a_sql = """
+select * from {{ ref('data_except_a') }}
+{{ dbt_utils.except() }}
+select * from {{ ref('data_except_a') }}
+"""
+
+models__test_except_a_minus_empty_sql = """
+select * from {{ ref('data_except_a') }}
+{{ dbt_utils.except() }}
+select * from {{ ref('data_except_empty') }}
+"""
+
+models__test_except_empty_minus_a_sql = """
+select * from {{ ref('data_except_empty') }}
+{{ dbt_utils.except() }}
+select * from {{ ref('data_except_a') }}
+"""
+
+models__test_except_empty_minus_empty_sql = """
+select * from {{ ref('data_except_empty') }}
+{{ dbt_utils.except() }}
+select * from {{ ref('data_except_empty') }}
 """

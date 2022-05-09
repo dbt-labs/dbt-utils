@@ -15,11 +15,11 @@ with data as (
 
 )
 
-# TODO - implement actual logic here
+-- TODO - implement actual logic here
 select
 
-    1 actual,
-    result as expected
+    1 as actual,
+    1 as expected
 
 from data
 """

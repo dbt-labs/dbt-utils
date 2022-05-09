@@ -1,27 +1,17 @@
 
-
 # escape_single_quotes
 
-# TODO - implement expected results here
-seeds__data_escape_single_quotes_csv = """todo,result
-TODO,1
+# Postgres and Redshift
+models__test_escape_single_quotes_sql = """
+select '{{ dbt_utils.escape_single_quotes("they're") }}' as actual, 'they''re' as expected union all
+select '{{ dbt_utils.escape_single_quotes("they are") }}' as actual, 'they are' as expected
 """
 
-
-models__test_escape_single_quotes_sql = """
-with data as (
-
-    select * from {{ ref('data_escape_single_quotes') }}
-
-)
-
-# TODO - implement actual logic here
-select
-
-    1 actual,
-    result as expected
-
-from data
+# Snowflake and BigQuery
+# The expected literal is actually 'they\'re', but we need to escape the backslash
+models__test_escape_single_quotes_sql_snowflake_bigquery = """
+select '{{ dbt_utils.escape_single_quotes("they're") }}' as actual, 'they\\'re' as expected union all
+select '{{ dbt_utils.escape_single_quotes("they are") }}' as actual, 'they are not' as expected
 """
 
 

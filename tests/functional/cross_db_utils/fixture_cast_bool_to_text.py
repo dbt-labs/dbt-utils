@@ -6,8 +6,6 @@ with data as (
 
     select 0=1 as input, 'false' as expected union all
     select 1=1 as input, 'true' as expected union all
-    select 0 as input, 'false' as expected union all
-    select 1 as input, 'true' as expected union all
     select null as input, null as expected
 
 )

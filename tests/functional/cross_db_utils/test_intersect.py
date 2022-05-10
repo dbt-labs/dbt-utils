@@ -36,8 +36,6 @@ class BaseIntersect(BaseCrossDbMacro):
             "test_intersect_empty_overlap_empty.sql": models__test_intersect_empty_overlap_empty_sql,
         }
 
-
-class TestIntersect(BaseIntersect):
     def test_build_assert_equal(self, project):
         run_dbt(['deps'])
         run_dbt(['build'])
@@ -66,3 +64,7 @@ class TestIntersect(BaseIntersect):
             project.adapter,
             ["test_intersect_empty_overlap_empty", "data_intersect_empty"],
         )
+
+
+class TestIntersect(BaseIntersect):
+    pass

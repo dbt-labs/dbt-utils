@@ -38,8 +38,6 @@ class BaseExcept(BaseCrossDbMacro):
             "test_except_empty_minus_empty.sql": models__test_except_empty_minus_empty_sql,
         }
 
-
-class TestExcept(BaseExcept):
     def test_build_assert_equal(self, project):
         run_dbt(['deps'])
         run_dbt(['build'])
@@ -68,3 +66,7 @@ class TestExcept(BaseExcept):
             project.adapter,
             ["test_except_empty_minus_empty", "data_except_empty"],
         )
+
+
+class TestExcept(BaseExcept):
+    pass

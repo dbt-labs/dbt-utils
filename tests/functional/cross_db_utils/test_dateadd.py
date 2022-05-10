@@ -9,6 +9,22 @@ from tests.functional.cross_db_utils.fixture_dateadd import (
 
 class BaseDateAdd(BaseCrossDbMacro):
     @pytest.fixture(scope="class")
+    def project_config_update(self):
+        return {
+            "name": "test",
+            "seeds": {
+                "test": {
+                    "data_dateadd": {
+                        "+column_types": {
+                            "from_time": "timestamp",
+                            "result": "timestamp",
+                        },
+                    },
+                },
+            },
+        }
+
+    @pytest.fixture(scope="class")
     def seeds(self):
         return {"data_dateadd.csv": seeds__data_dateadd_csv}
 
@@ -20,8 +36,5 @@ class BaseDateAdd(BaseCrossDbMacro):
         }
 
 
-@pytest.mark.skip_profile("bigquery", reason="TODO - need to figure out timestamp vs. datetime behavior!")
 class TestDateAdd(BaseDateAdd):
-    # we do this in case an adapter will need to override the base class
-    # in the simplest case, it's just:
     pass

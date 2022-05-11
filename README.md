@@ -553,6 +553,7 @@ This macro returns the unique values for a column in a given [relation](https://
 **Args:**
 - `table` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
 - `column` (required): The name of the column you wish to find the column values of
+- `where` (optiona, default=`none`): A where clause to filter the column values by. 
 - `order_by` (optional, default=`'count(*) desc'`): How the results should be ordered. The default is to order by `count(*) desc`, i.e. decreasing frequency. Setting this as `'my_column'` will sort alphabetically, while `'min(created_at)'` will sort by when thevalue was first observed.
 - `max_records` (optional, default=`none`): The maximum number of column values you want to return
 - `default` (optional, default=`[]`): The results this macro should return if the relation has not yet been created (and therefore has no column values).

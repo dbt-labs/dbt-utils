@@ -153,7 +153,7 @@ models:
       - dbt_utils.equality:
           compare_model: ref('data_union_events_expected')
 
-  - name: test_dedupe
+  - name: test_deduplicate
     tests:
       - dbt_utils.equality:
           compare_model: ref('data_deduplicate_expected')

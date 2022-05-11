@@ -23,7 +23,7 @@
 - A macro for deduplicating data, `deduplicate()` ([#335](https://github.com/dbt-labs/dbt-utils/issues/335), [#512](https://github.com/dbt-labs/dbt-utils/pull/512))
 - A cross-database implementation of `listagg()` ([#530](https://github.com/dbt-labs/dbt-utils/pull/530))
 - A new macro to get the columns in a relation as a list, `get_filtered_columns_in_relation()`. This is similar to the `star()` macro, but creates a Jinja list instead of a comma-separated string. ([#516](https://github.com/dbt-labs/dbt-utils/pull/516))
-- Add an optional `where` clause parameter to `get_column_values()` to filter vaklues returned ([#511](https://github.com/dbt-labs/dbt-utils/issues/511), [#583](https://github.com/dbt-labs/dbt-utils/pull/583)) 
+- Add an optional `where` clause parameter to `get_column_values()` to filter values returned ([#511](https://github.com/dbt-labs/dbt-utils/issues/511), [#583](https://github.com/dbt-labs/dbt-utils/pull/583)) 
 
 ## Fixes
 - `get_column_values()` once more raises an error when the model doesn't exist and there is no default provided ([#531](https://github.com/dbt-labs/dbt-utils/issues/531), [#533](https://github.com/dbt-labs/dbt-utils/pull/533))

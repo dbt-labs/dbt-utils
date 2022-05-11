@@ -3,7 +3,7 @@
     column_override=none,
     include=[],
     exclude=[],
-    source_column_name="_dbt_source_relation",
+    source_column_name="_dbt_source_relation"
 ) -%}
 {{
     return adapter.dispatch("union_relations", "dbt_utils")(
@@ -17,7 +17,7 @@
     column_override=none,
     include=[],
     exclude=[],
-    source_column_name="_dbt_source_relation",
+    source_column_name="_dbt_source_relation"
 ) -%}
 
 {%- if exclude and include -%}

@@ -18,7 +18,7 @@ Arguments:
     remove=none,
     field_name="field_name",
     value_name="value",
-    table=none,
+    table=none
 ) -%}
 {{
     return adapter.dispatch("unpivot", "dbt_utils")(
@@ -34,7 +34,7 @@ Arguments:
     remove=none,
     field_name="field_name",
     value_name="value",
-    table=none,
+    table=none
 ) -%}
 
 {% if table %}

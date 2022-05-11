@@ -4,7 +4,7 @@
     timestamp_field,
     start_date,
     stop_date,
-    period,
+    period
 ) -%}
 {{
     return adapter.dispatch("get_period_boundaries", "dbt_utils")(
@@ -19,7 +19,7 @@
     timestamp_field,
     start_date,
     stop_date,
-    period,
+    period
 ) -%}
 
 {% call statement('period_boundaries', fetch_result=True) -%}
@@ -30,11 +30,9 @@ with
                 max("{{timestamp_field}}"), '{{start_date}}'
             )::timestamp as start_timestamp,
             coalesce(
-                {{
-                    dbt_utils.dateadd('millisecond',
-                                                    -1,
-                                                    "nullif('" ~ stop_date ~ "','')::timestamp")
-                }},
+                {{dbt_utils.dateadd('millisecond',
+                                -1,
+                                "nullif('" ~ stop_date ~ "','')::timestamp")}},
                 {{ dbt_utils.current_timestamp() }}
             ) as stop_timestamp
         from "{{target_schema}}"."{{target_table}}"
@@ -57,7 +55,7 @@ from data {%- endcall %}
     period,
     start_timestamp,
     stop_timestamp,
-    offset,
+    offset
 ) -%}
     {{
         return adapter.dispatch("get_period_sql", "dbt_utils")(
@@ -79,7 +77,7 @@ from data {%- endcall %}
     period,
     start_timestamp,
     stop_timestamp,
-    offset,
+    offset
 ) -%}
 
   {%- set period_filter -%}

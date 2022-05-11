@@ -4,7 +4,7 @@
     upper_bound_column,
     partition_by=None,
     gaps="allowed",
-    zero_length_range_allowed=False,
+    zero_length_range_allowed=False
 ) %}
 {{
     return adapter.dispatch("test_mutually_exclusive_ranges", "dbt_utils")(
@@ -24,7 +24,7 @@
     upper_bound_column,
     partition_by=None,
     gaps="allowed",
-    zero_length_range_allowed=False,
+    zero_length_range_allowed=False
 ) %}
 {% if gaps == "not_allowed" %}
 {% set allow_gaps_operator = "=" %} {% set allow_gaps_operator_in_words = "equal_to" %}
@@ -34,11 +34,9 @@
 {% elif gaps == "required" %}
 {% set allow_gaps_operator = "<" %} {% set allow_gaps_operator_in_words = "less_than" %}
 {% else %}
-{{
-    exceptions.raise_compiler_error(
-            "`gaps` argument for mutually_exclusive_ranges test must be one of ['not_allowed', 'allowed', 'required'] Got: '" ~ gaps ~"'.'"
-        )
-}}
+{{ exceptions.raise_compiler_error(
+        "`gaps` argument for mutually_exclusive_ranges test must be one of ['not_allowed', 'allowed', 'required'] Got: '" ~ gaps ~"'.'"
+    ) }}
 {% endif %}
 {% if not zero_length_range_allowed %}
 {% set allow_zero_length_operator = "<" %}
@@ -47,11 +45,9 @@
 {% set allow_zero_length_operator = "<=" %}
 {% set allow_zero_length_operator_in_words = "less_than_or_equal_to" %}
 {% else %}
-{{
-    exceptions.raise_compiler_error(
-            "`zero_length_range_allowed` argument for mutually_exclusive_ranges test must be one of [true, false] Got: '" ~ zero_length_range_allowed ~"'.'"
-        )
-}}
+{{ exceptions.raise_compiler_error(
+        "`zero_length_range_allowed` argument for mutually_exclusive_ranges test must be one of [true, false] Got: '" ~ zero_length_range_allowed ~"'.'"
+    ) }}
 {% endif %}
 
 {% set partition_clause="partition by " ~ partition_by if partition_by else '' %}

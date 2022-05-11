@@ -50,7 +50,7 @@ Arguments:
     then_value=1,
     else_value=0,
     quote_identifiers=True,
-    distinct=False,
+    distinct=False
 ) %}
 {{
     return adapter.dispatch("pivot", "dbt_utils")(
@@ -80,7 +80,7 @@ Arguments:
     then_value=1,
     else_value=0,
     quote_identifiers=True,
-    distinct=False,
+    distinct=False
 ) %}
 {% for value in values %}
 {{ agg }} (

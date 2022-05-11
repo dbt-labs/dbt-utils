@@ -50,6 +50,33 @@ models:
               values:
                 - '5'
 
+  - name: test_get_column_values_where
+    columns:
+      - name: count_a
+        tests:
+          - accepted_values:
+              values:
+                - '1'
+
+      - name: count_c
+        tests:
+          - accepted_values:
+              values:
+                - '1'
+
+      - name: count_e
+        tests:
+          - accepted_values:
+              values:
+                - '1'
+
+      - name: count_g
+        tests:
+          - accepted_values:
+              values:
+                - '3'
+      # I'd like to add a column test here also? (https://github.com/calogica/dbt-expectations#expect_table_columns_to_not_contain_set)
+
   - name: test_get_filtered_columns_in_relation
     tests:
       - dbt_utils.equality:

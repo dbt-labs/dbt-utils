@@ -1,16 +1,8 @@
 {% macro except() %}
-  {{ return(adapter.dispatch('except', 'dbt_utils')()) }}
+{{ return adapter.dispatch("except", "dbt_utils")() }}
 {% endmacro %}
 
 
-{% macro default__except() %}
+{% macro default__except() %} except {% endmacro %}
 
-    except
-
-{% endmacro %}
-    
-{% macro bigquery__except() %}
-
-    except distinct
-
-{% endmacro %}
+{% macro bigquery__except() %} except distinct {% endmacro %}

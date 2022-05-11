@@ -1,6 +1,6 @@
 version: 2
 
-models:
+seeds:
   - name: data_test_not_constant
     columns:
       - name: field
@@ -30,27 +30,6 @@ models:
           - dbt_utils.expression_is_true:
               expression: = 0.5
               condition: col_a = 0.5
-
-  - name: test_recency
-    tests:
-      - dbt_utils.recency:
-          datepart: day
-          field: today
-          interval: 1
-
-  - name: test_equal_rowcount
-    tests:
-      - dbt_utils.equal_rowcount:
-          compare_model: ref('test_equal_rowcount')
-
-  - name: test_equal_column_subset
-    tests:
-      - dbt_utils.equality:
-          compare_model: ref('data_people')
-          compare_columns:
-            - first_name
-            - last_name
-            - email
 
   - name: data_people
     columns:
@@ -136,7 +115,6 @@ models:
           - dbt_utils.cardinality_equality:
               to: ref('data_cardinality_equality_b')
               field: different_name
-          
 
   - name: data_test_accepted_range
     columns:
@@ -168,3 +146,25 @@ models:
         tests:
           - dbt_utils.not_null_proportion:
               at_least: 0.9
+
+models:
+  - name: test_recency
+    tests:
+      - dbt_utils.recency:
+          datepart: day
+          field: today
+          interval: 1
+
+  - name: test_equal_rowcount
+    tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('test_equal_rowcount')
+
+  - name: test_equal_column_subset
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_people')
+          compare_columns:
+            - first_name
+            - last_name
+            - email

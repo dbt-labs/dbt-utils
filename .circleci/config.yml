@@ -6,7 +6,7 @@ jobs:
   integration-postgres:
     docker:
       - image: cimg/python:3.9.9
-      - image: circleci/postgres:9.6.5-alpine-ram
+      - image: cimg/postgres:9.6
 
     steps:
       - checkout

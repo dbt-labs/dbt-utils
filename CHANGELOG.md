@@ -7,6 +7,7 @@
 
 ## Under the hood
 - Fail integration tests appropriately ([#540](https://github.com/dbt-labs/dbt-utils/issues/540), [#545](https://github.com/dbt-labs/dbt-utils/pull/545))
+- Upgrade CircleCI postgres convenience image ([#584](https://github.com/dbt-labs/dbt-utils/issues/584), [#585](https://github.com/dbt-labs/dbt-utils/pull/585))
 
 ## Contributors:
 - [@graciegoheen](https://github.com/graciegoheen) (#545)

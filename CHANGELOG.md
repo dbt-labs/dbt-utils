@@ -1,4 +1,6 @@
 # Unreleased
+## New features
+- Add an optional `where` clause parameter to `get_column_values()` to filter values returned ([#511](https://github.com/dbt-labs/dbt-utils/issues/511), [#583](https://github.com/dbt-labs/dbt-utils/pull/583)) 
 
 ## Quality of life
 - Documentation about listagg macro ([#544](https://github.com/dbt-labs/dbt-utils/issues/544), [#560](https://github.com/dbt-labs/dbt-utils/pull/560))
@@ -12,6 +14,7 @@
 - [@graciegoheen](https://github.com/graciegoheen) (#545)
 - [@judahrand](https://github.com/judahrand) (#552)
 - [@clausherther](https://github.com/clausherther) (#555)
+- [@epapineau](https://github.com/epapineau) (#583)
 
 # dbt-utils v0.8.4
 ## Fixes

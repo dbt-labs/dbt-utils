@@ -1,8 +1,8 @@
-{% macro get_column_values(table, column, order_by='count(*) desc', max_records=none, default=none) -%}
-    {{ return(adapter.dispatch('get_column_values', 'dbt_utils')(table, column, order_by, max_records, default)) }}
+{% macro get_column_values(table, column, order_by='count(*) desc', max_records=none, default=none, where=none) -%}
+    {{ return(adapter.dispatch('get_column_values', 'dbt_utils')(table, column, order_by, max_records, default, where)) }}
 {% endmacro %}
 
-{% macro default__get_column_values(table, column, order_by='count(*) desc', max_records=none, default=none) -%}
+{% macro default__get_column_values(table, column, order_by='count(*) desc', max_records=none, default=none, where=none) -%}
     {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
     {%- if not execute -%}
         {% set default = [] if not default %}
@@ -37,6 +37,11 @@
                 {{ column }} as value
 
             from {{ target_relation }}
+
+            {% if where is not none %}
+            where {{ where }}
+            {% endif %}
+
             group by {{ column }}
             order by {{ order_by }}
 

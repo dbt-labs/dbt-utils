@@ -1,9 +1,11 @@
 # Unreleased
 ## New features
 - Add an optional `where` clause parameter to `get_column_values()` to filter values returned ([#511](https://github.com/dbt-labs/dbt-utils/issues/511), [#583](https://github.com/dbt-labs/dbt-utils/pull/583)) 
-
-## New features
 - Add `where` parameter to `union_relations` macro ([#554](https://github.com/dbt-labs/dbt-utils/pull/554))
+
+## Fixes
+- Enable a negative part_number for `split_part()` ([#557](https://github.com/dbt-labs/dbt-utils/issues/557), [#559](https://github.com/dbt-labs/dbt-utils/pull/559))
+
 ## Quality of life
 - Documentation about listagg macro ([#544](https://github.com/dbt-labs/dbt-utils/issues/544), [#560](https://github.com/dbt-labs/dbt-utils/pull/560))
 - Fix links to macro section in table of contents ([#555](https://github.com/dbt-labs/dbt-utils/pull/555))
@@ -18,6 +20,7 @@
 - [@judahrand](https://github.com/judahrand) (#552)
 - [@clausherther](https://github.com/clausherther) (#555)
 - [@epapineau](https://github.com/epapineau) (#583)
+- [@b-per](https://github.com/b-per) (#559)
 
 # dbt-utils v0.8.4
 ## Fixes

@@ -9,7 +9,7 @@ jobs:
       - image: cimg/postgres:9.6
         environment:
           POSTGRES_USER: root
-          POSTGRES_PASSWORD: ''
+          POSTGRES_PASSWORD: cipass
     steps:
       - checkout
       - run:
@@ -17,7 +17,7 @@ jobs:
           environment:
             POSTGRES_TEST_HOST: localhost
             POSTGRES_TEST_USER: root
-            POSTGRES_TEST_PASS: ''
+            POSTGRES_TEST_PASS: cipass
             POSTGRES_TEST_PORT: 5432
             POSTGRES_TEST_DBNAME: circle_test
           command: ./run_test.sh postgres

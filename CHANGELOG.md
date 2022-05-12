@@ -1,5 +1,7 @@
 # Unreleased
 
+## New features
+- Add `where` parameter to `union_relations` macro ([#554](https://github.com/dbt-labs/dbt-utils/pull/554))
 ## Quality of life
 - Documentation about listagg macro ([#544](https://github.com/dbt-labs/dbt-utils/issues/544), [#560](https://github.com/dbt-labs/dbt-utils/pull/560))
 - Fix links to macro section in table of contents ([#555](https://github.com/dbt-labs/dbt-utils/pull/555))

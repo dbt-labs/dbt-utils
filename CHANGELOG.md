@@ -12,7 +12,7 @@
 - [@graciegoheen](https://github.com/graciegoheen) (#545)
 - [@judahrand](https://github.com/judahrand) (#552)
 - [@clausherther](https://github.com/clausherther) (#555)
-- [@epapineau](https://github.com/epapineau) (#582)
+- [@epapineau](https://github.com/epapineau) (#583)
 
 # dbt-utils v0.8.4
 ## Fixes

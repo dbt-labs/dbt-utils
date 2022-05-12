@@ -15,6 +15,10 @@ def pytest_configure(config):
         "markers",
         "skip_profile(profile): skip test for the given profile",
     )
+    config.addinivalue_line(
+        "markers",
+        "only_profile(profile): only test the given profile",
+    )
 
 
 @pytest.fixture(scope="session")
@@ -82,4 +86,13 @@ def skip_by_profile_type(request):
     if request.node.get_closest_marker("skip_profile"):
         for skip_profile_type in request.node.get_closest_marker("skip_profile").args:
             if skip_profile_type == profile_type:
+                pytest.skip("skipped on '{profile_type}' profile")
+
+
+@pytest.fixture(autouse=True)
+def only_profile_type(request):
+    profile_type = request.config.getoption("--profile")
+    if request.node.get_closest_marker("only_profile"):
+        for only_profile_type in request.node.get_closest_marker("only_profile").args:
+            if only_profile_type != profile_type:
                 pytest.skip("skipped on '{profile_type}' profile")

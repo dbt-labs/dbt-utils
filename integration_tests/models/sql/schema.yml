@@ -153,6 +153,16 @@ models:
       - dbt_utils.equality:
           compare_model: ref('data_union_expected')
 
+  - name: test_union_where
+    columns:
+      - name: id
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "= 1"
+      - name: favorite_number
+        tests:
+          - dbt_utils.not_constant
+
   - name: test_get_relations_by_pattern
     tests:
       - dbt_utils.equality:

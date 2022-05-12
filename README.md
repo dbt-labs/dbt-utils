@@ -854,6 +854,7 @@ final query. Note the `include` and `exclude` arguments are mutually exclusive.
 e.g. `{"some_field": "varchar(100)"}`.``
 * `source_column_name` (optional, `default="_dbt_source_relation"`): The name of
 the column that records the source of this row.
+* `where` (optional): Filter conditions to include in the `where` clause.
 
 #### generate_series ([source](macros/sql/generate_series.sql))
 This macro implements a cross-database mechanism to generate an arbitrarily long list of numbers. Specify the maximum number you'd like in your list and it will create a 1-indexed SQL result set.

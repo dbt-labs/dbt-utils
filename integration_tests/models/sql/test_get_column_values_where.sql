@@ -1,31 +1,6 @@
+{% set column_values = dbt_utils.get_column_values(ref('data_get_column_values_where'), 'field', where="condition = 'left'") %}
 
-{% set column_values = dbt_utils.get_column_values(ref('data_get_column_values_where'), 'field', default=[], order_by="field", where="condition='left'") %}
-
-
-{% if target.type == 'snowflake' %}
-
-select
-    {% for val in column_values -%}
-
-        sum(case when field = '{{ val }}' then 1 else 0 end) as count_{{ val }}
-        {%- if not loop.last %},{% endif -%}
-
-    {%- endfor %}
-
-from {{ ref('data_get_column_values_where') }}
-where condition = 'left'
-
-{% else %}
-
-select
-    {% for val in column_values -%}
-
-        {{dbt_utils.safe_cast("sum(case when field = '" ~ val ~ "' then 1 else 0 end)", dbt_utils.type_string()) }} as count_{{ val }}
-        {%- if not loop.last %},{% endif -%}
-
-    {%- endfor %}
-
-from {{ ref('data_get_column_values_where') }}
-where condition = 'left'
-
-{% endif %}
+-- Create a relation using the values
+{% for val in column_values -%}
+select {{ dbt_utils.string_literal(val) }} as field {% if not loop.last %}union all{% endif %} 
+{% endfor %}

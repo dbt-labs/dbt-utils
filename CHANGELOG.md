@@ -1,3 +1,31 @@
+# Unreleased
+## New features
+- Add an optional `where` clause parameter to `get_column_values()` to filter values returned ([#511](https://github.com/dbt-labs/dbt-utils/issues/511), [#583](https://github.com/dbt-labs/dbt-utils/pull/583)) 
+- Add `where` parameter to `union_relations` macro ([#554](https://github.com/dbt-labs/dbt-utils/pull/554))
+
+## Fixes
+- Enable a negative part_number for `split_part()` ([#557](https://github.com/dbt-labs/dbt-utils/issues/557), [#559](https://github.com/dbt-labs/dbt-utils/pull/559))
+
+## Quality of life
+- Documentation about listagg macro ([#544](https://github.com/dbt-labs/dbt-utils/issues/544), [#560](https://github.com/dbt-labs/dbt-utils/pull/560))
+- Fix links to macro section in table of contents ([#555](https://github.com/dbt-labs/dbt-utils/pull/555))
+- Contributing guide ([#574](https://github.com/dbt-labs/dbt-utils/pull/574))
+
+## Under the hood
+- Fail integration tests appropriately ([#540](https://github.com/dbt-labs/dbt-utils/issues/540), [#545](https://github.com/dbt-labs/dbt-utils/pull/545))
+- Upgrade CircleCI postgres convenience image ([#584](https://github.com/dbt-labs/dbt-utils/issues/584), [#585](https://github.com/dbt-labs/dbt-utils/pull/585))
+
+## Contributors:
+- [@graciegoheen](https://github.com/graciegoheen) (#545)
+- [@judahrand](https://github.com/judahrand) (#552)
+- [@clausherther](https://github.com/clausherther) (#555)
+- [@epapineau](https://github.com/epapineau) (#583)
+- [@b-per](https://github.com/b-per) (#559)
+
+# dbt-utils v0.8.4
+## Fixes
+- Change from quotes to backticks for BQ ([#536](https://github.com/dbt-labs/dbt-utils/issues/536), [#537](https://github.com/dbt-labs/dbt-utils/pull/537))
+
 # dbt-utils v0.8.3
 ## New features
 - A macro for deduplicating data, `deduplicate()` ([#335](https://github.com/dbt-labs/dbt-utils/issues/335), [#512](https://github.com/dbt-labs/dbt-utils/pull/512))

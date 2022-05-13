@@ -1,7 +1,10 @@
 This is a:
-- [ ] bug fix PR with no breaking changes — please ensure the base branch is `main`
-- [ ] new functionality — please ensure the base branch is the latest `dev/` branch
-- [ ] a breaking change — please ensure the base branch is the latest `dev/` branch
+- [ ] documentation update
+- [ ] bug fix with no breaking changes
+- [ ] new functionality
+- [ ] a breaking change
+
+All pull requests from community contributors should target the `main` branch (default).
 
 ## Description & motivation
 <!---

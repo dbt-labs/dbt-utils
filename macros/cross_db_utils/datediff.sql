@@ -1,5 +1,9 @@
 {% macro datediff(first_date, second_date, datepart) %}
-{{ return adapter.dispatch("datediff", "dbt_utils")(first_date, second_date, datepart) }}
+{{
+    return(
+        adapter.dispatch("datediff", "dbt_utils")(first_date, second_date, datepart)
+    )
+}}
 {% endmacro %}
 
 
@@ -96,6 +100,6 @@ datetime_diff(
 {# redshift should use default instead of postgres #}
 {% macro redshift__datediff(first_date, second_date, datepart) -%}
 
-{{ return dbt_utils.default__datediff(first_date, second_date, datepart) }}
+{{ return(dbt_utils.default__datediff(first_date, second_date, datepart)) }}
 
 {%- endmacro %}

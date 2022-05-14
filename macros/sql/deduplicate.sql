@@ -1,7 +1,9 @@
 {%- macro deduplicate(relation, group_by, order_by=none, relation_alias=none) -%}
 {{
-    return adapter.dispatch("deduplicate", "dbt_utils")(
-        relation, group_by, order_by=order_by, relation_alias=relation_alias
+    return(
+        adapter.dispatch("deduplicate", "dbt_utils")(
+            relation, group_by, order_by=order_by, relation_alias=relation_alias
+        )
     )
 }}
 {% endmacro %}

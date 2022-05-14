@@ -3,7 +3,7 @@ This function has been tested with dateparts of month and quarters. Further
 testing is required to validate that it will work on other dateparts.
 */
 {% macro last_day(date, datepart) %}
-{{ return adapter.dispatch("last_day", "dbt_utils")(date, datepart) }}
+{{ return(adapter.dispatch("last_day", "dbt_utils")(date, datepart)) }}
 {% endmacro %}
 
 
@@ -46,6 +46,6 @@ cast(
 {# redshift should use default instead of postgres #}
 {% macro redshift__last_day(date, datepart) %}
 
-{{ return dbt_utils.default__last_day(date, datepart) }}
+{{ return(dbt_utils.default__last_day(date, datepart)) }}
 
 {% endmacro %}

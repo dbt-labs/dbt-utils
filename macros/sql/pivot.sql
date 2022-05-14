@@ -53,18 +53,20 @@ Arguments:
     distinct=False
 ) %}
 {{
-    return adapter.dispatch("pivot", "dbt_utils")(
-        column,
-        values,
-        alias,
-        agg,
-        cmp,
-        prefix,
-        suffix,
-        then_value,
-        else_value,
-        quote_identifiers,
-        distinct,
+    return(
+        adapter.dispatch("pivot", "dbt_utils")(
+            column,
+            values,
+            alias,
+            agg,
+            cmp,
+            prefix,
+            suffix,
+            then_value,
+            else_value,
+            quote_identifiers,
+            distinct,
+        )
     )
 }}
 {% endmacro %}

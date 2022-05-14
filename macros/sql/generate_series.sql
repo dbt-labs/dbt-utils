@@ -1,5 +1,5 @@
 {% macro get_powers_of_two(upper_bound) %}
-{{ return adapter.dispatch("get_powers_of_two", "dbt_utils")(upper_bound) }}
+{{ return(adapter.dispatch("get_powers_of_two", "dbt_utils")(upper_bound)) }}
 {% endmacro %}
 
 {% macro default__get_powers_of_two(upper_bound) %}
@@ -9,14 +9,14 @@
 {% endif %}
 
 {% for _ in range(1, 100) %}
-{% if upper_bound <= 2**loop.index %} {{ return loop.index }}{% endif %}
+{% if upper_bound <= 2**loop.index %} {{ return(loop.index) }}{% endif %}
 {% endfor %}
 
 {% endmacro %}
 
 
 {% macro generate_series(upper_bound) %}
-{{ return adapter.dispatch("generate_series", "dbt_utils")(upper_bound) }}
+{{ return(adapter.dispatch("generate_series", "dbt_utils")(upper_bound)) }}
 {% endmacro %}
 
 {% macro default__generate_series(upper_bound) %}

@@ -22,17 +22,14 @@
 For reasons that remain unclear, Jinja won't return True for actual_dictionary == expected_dictionary.
 Instead, we'll manually check that the values of these dictionaries are equivalent.
 -#}
-{% set ns = namespace(
-    pass=True,
-    err_msg = ""
-) %}
+{% set ns = namespace(pass=True, err_msg="") %}
 {% if execute %}
 {#- Check that the dictionaries have the same keys -#}
 {% set expected_keys = expected_dictionary.keys() | list | sort %}
 {% set actual_keys = actual_dictionary.keys() | list | sort %}
 
 {% if expected_keys != actual_keys %}
-{% set ns.pass=False %}
+{% set ns.pass = False %}
     {% set ns.err_msg %}
     The two dictionaries have different keys:
       expected_dictionary has keys: {{ expected_keys }}
@@ -46,7 +43,7 @@ Instead, we'll manually check that the values of these dictionaries are equivale
 {% set actual_length = actual_dictionary[key] | length %}
 
 {% if expected_length != actual_length %}
-{% set ns.pass=False %}
+{% set ns.pass = False %}
         {% set ns.err_msg %}
     The {{ key }} column has different lengths:
       expected_dictionary[{{ key }}] has length {{ expected_length }}
@@ -59,7 +56,7 @@ Instead, we'll manually check that the values of these dictionaries are equivale
 {% set expected_value = expected_dictionary[key][i] %}
 {% set actual_value = actual_dictionary[key][i] %}
 {% if expected_value != actual_value %}
-{% set ns.pass=False %}
+{% set ns.pass = False %}
                 {% set ns.err_msg %}
     The {{ key }} column has differing values:
       expected_dictionary[{{ key }}][{{ i }}] == {{ expected_value }}

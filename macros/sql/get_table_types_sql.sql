@@ -1,5 +1,5 @@
 {%- macro get_table_types_sql() -%}
-{{ return adapter.dispatch("get_table_types_sql", "dbt_utils")() }}
+{{ return(adapter.dispatch("get_table_types_sql", "dbt_utils")()) }}
 {%- endmacro -%}
 
 {% macro default__get_table_types_sql() %}

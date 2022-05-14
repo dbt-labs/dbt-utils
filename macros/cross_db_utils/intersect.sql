@@ -1,5 +1,5 @@
 {% macro intersect() %}
-{{ return adapter.dispatch("intersect", "dbt_utils")() }}
+{{ return(adapter.dispatch("intersect", "dbt_utils")()) }}
 {% endmacro %}
 
 

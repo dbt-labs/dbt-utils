@@ -1,7 +1,9 @@
 {% test not_accepted_values(model, column_name, values, quote=True) %}
 {{
-    return adapter.dispatch("test_not_accepted_values", "dbt_utils")(
-        model, column_name, values, quote
+    return(
+        adapter.dispatch("test_not_accepted_values", "dbt_utils")(
+            model, column_name, values, quote
+        )
     )
 }}
 {% endtest %}

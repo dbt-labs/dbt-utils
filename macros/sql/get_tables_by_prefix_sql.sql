@@ -2,8 +2,10 @@
     schema, prefix, exclude="", database=target.database
 ) %}
 {{
-    return adapter.dispatch("get_tables_by_prefix_sql", "dbt_utils")(
-        schema, prefix, exclude, database
+    return(
+        adapter.dispatch("get_tables_by_prefix_sql", "dbt_utils")(
+            schema, prefix, exclude, database
+        )
     )
 }}
 {% endmacro %}

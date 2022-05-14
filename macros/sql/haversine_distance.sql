@@ -9,8 +9,10 @@ The arguments should be float type.
 
 {% macro haversine_distance(lat1, lon1, lat2, lon2, unit="mi") -%}
 {{
-    return adapter.dispatch("haversine_distance", "dbt_utils")(
-        lat1, lon1, lat2, lon2, unit
+    return(
+        adapter.dispatch("haversine_distance", "dbt_utils")(
+            lat1, lon1, lat2, lon2, unit
+        )
     )
 }}
 {% endmacro %}

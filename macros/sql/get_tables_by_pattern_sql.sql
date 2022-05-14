@@ -2,8 +2,10 @@
     schema_pattern, table_pattern, exclude="", database=target.database
 ) %}
 {{
-    return adapter.dispatch("get_tables_by_pattern_sql", "dbt_utils")(
-        schema_pattern, table_pattern, exclude, database
+    return(
+        adapter.dispatch("get_tables_by_pattern_sql", "dbt_utils")(
+            schema_pattern, table_pattern, exclude, database
+        )
     )
 }}
 {% endmacro %}
@@ -52,7 +54,7 @@ where
         {% endfor %}
     {% endset %}
 
-    {{ return sql }}
+    {{ return(sql) }}
 
     {% endmacro %}
 
@@ -69,9 +71,9 @@ where
 
     {% set schemata = results.columns["schema_name"].values() %}
 
-    {{ return schemata }}
+    {{ return(schemata) }}
 
-    {% else %} {{ return [] }}
+    {% else %} {{ return([]) }}
 
     {% endif %}
 

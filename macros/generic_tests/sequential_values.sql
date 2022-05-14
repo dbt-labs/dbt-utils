@@ -1,8 +1,10 @@
 {% test sequential_values(model, column_name, interval=1, datepart=None) %}
 
 {{
-    return adapter.dispatch("test_sequential_values", "dbt_utils")(
-        model, column_name, interval, datepart
+    return(
+        adapter.dispatch("test_sequential_values", "dbt_utils")(
+            model, column_name, interval, datepart
+        )
     )
 }}
 

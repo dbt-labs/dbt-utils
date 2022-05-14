@@ -1,5 +1,5 @@
 {% test at_least_one(model, column_name) %}
-{{ return adapter.dispatch("test_at_least_one", "dbt_utils")(model, column_name) }}
+{{ return(adapter.dispatch("test_at_least_one", "dbt_utils")(model, column_name)) }}
 {% endtest %}
 
 {% macro default__test_at_least_one(model, column_name) %}

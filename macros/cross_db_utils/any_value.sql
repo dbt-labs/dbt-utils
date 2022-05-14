@@ -1,5 +1,5 @@
 {% macro any_value(expression) -%}
-{{ return adapter.dispatch("any_value", "dbt_utils")(expression) }}
+{{ return(adapter.dispatch("any_value", "dbt_utils")(expression)) }}
 {% endmacro %}
 
 

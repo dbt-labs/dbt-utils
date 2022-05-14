@@ -7,13 +7,15 @@
     zero_length_range_allowed=False
 ) %}
 {{
-    return adapter.dispatch("test_mutually_exclusive_ranges", "dbt_utils")(
-        model,
-        lower_bound_column,
-        upper_bound_column,
-        partition_by,
-        gaps,
-        zero_length_range_allowed,
+    return(
+        adapter.dispatch("test_mutually_exclusive_ranges", "dbt_utils")(
+            model,
+            lower_bound_column,
+            upper_bound_column,
+            partition_by,
+            gaps,
+            zero_length_range_allowed,
+        )
     )
 }}
 {% endtest %}

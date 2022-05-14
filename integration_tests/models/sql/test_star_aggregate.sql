@@ -1,5 +1,7 @@
 /* This test checks that column aliases aren't applied unless there's a prefix/suffix necessary, to ensure that GROUP BYs keep working*/
-{% set selected_columns = dbt_utils.star(from=ref('data_star_aggregate'), except=['value_field']) %}
+{% set selected_columns = dbt_utils.star(
+    from=ref("data_star_aggregate"), except=["value_field"]
+) %}
 
 with
     data as (

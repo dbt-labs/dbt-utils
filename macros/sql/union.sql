@@ -6,8 +6,10 @@
     source_column_name="_dbt_source_relation"
 ) -%}
 {{
-    return adapter.dispatch("union_relations", "dbt_utils")(
-        relations, column_override, include, exclude, source_column_name
+    return(
+        adapter.dispatch("union_relations", "dbt_utils")(
+            relations, column_override, include, exclude, source_column_name
+        )
     )
 }}
 {% endmacro %}
@@ -29,7 +31,7 @@
 {%- endif -%}
 
 {#- - Prevent querying of db in parsing mode. This works because this macro does not create any new refs. -#}
-{%- if not execute %} {{ return "" }} {% endif -%}
+{%- if not execute %} {{ return("") }} {% endif -%}
 
 {%- set column_override = column_override if column_override is not none else {} -%}
 

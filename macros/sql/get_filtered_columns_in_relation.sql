@@ -7,7 +7,7 @@
 {%- do dbt_utils._is_ephemeral(from, 'get_filtered_columns_in_relation') -%}
 
 {# -- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
-{%- if not execute -%} {{ return "" }} {% endif %}
+{%- if not execute -%} {{ return("") }} {% endif %}
 
 {%- set include_cols = [] %}
 {%- set cols = adapter.get_columns_in_relation(from) -%}
@@ -18,6 +18,6 @@
 {%- endif %}
 {%- endfor %}
 
-{{ return include_cols }}
+{{ return(include_cols) }}
 
 {%- endmacro %}

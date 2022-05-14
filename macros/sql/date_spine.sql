@@ -1,7 +1,9 @@
 {% macro get_intervals_between(start_date, end_date, datepart) -%}
 {{
-    return adapter.dispatch("get_intervals_between", "dbt_utils")(
-        start_date, end_date, datepart
+    return(
+        adapter.dispatch("get_intervals_between", "dbt_utils")(
+            start_date, end_date, datepart
+        )
     )
 }}
 {%- endmacro %}
@@ -18,8 +20,8 @@ select
 
     {%- if value_list and value_list["data"] -%}
     {%- set values = value_list["data"] | map(attribute=0) | list %}
-    {{ return values[0] }}
-    {%- else -%} {{ return 1 }}
+    {{ return(values[0]) }}
+    {%- else -%} {{ return(1) }}
     {%- endif -%}
 
 {%- endmacro %}
@@ -29,8 +31,8 @@ select
 
     {% macro date_spine(datepart, start_date, end_date) %}
     {{
-        return adapter.dispatch("date_spine", "dbt_utils")(
-            datepart, start_date, end_date
+        return(
+            adapter.dispatch("date_spine", "dbt_utils")(datepart, start_date, end_date)
         )
     }}
     {%- endmacro %}

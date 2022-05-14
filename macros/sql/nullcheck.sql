@@ -1,5 +1,5 @@
 {% macro nullcheck(cols) %}
-{{ return adapter.dispatch("nullcheck", "dbt_utils")(cols) }}
+{{ return(adapter.dispatch("nullcheck", "dbt_utils")(cols)) }}
 {% endmacro %}
 
 {% macro default__nullcheck(cols) %}

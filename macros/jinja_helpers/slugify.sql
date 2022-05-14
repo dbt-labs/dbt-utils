@@ -7,6 +7,6 @@
 {#- Only take letters, numbers, and underscores -#}
 {% set string = modules.re.sub("[^a-z0-9_]+", "", string) %}
 
-{{ return string }}
+{{ return(string) }}
 
 {% endmacro %}

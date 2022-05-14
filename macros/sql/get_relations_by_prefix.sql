@@ -2,8 +2,10 @@
     schema, prefix, exclude="", database=target.database
 ) %}
 {{
-    return adapter.dispatch("get_relations_by_prefix", "dbt_utils")(
-        schema, prefix, exclude, database
+    return(
+        adapter.dispatch("get_relations_by_prefix", "dbt_utils")(
+            schema, prefix, exclude, database
+        )
     )
 }}
 {% endmacro %}
@@ -31,8 +33,8 @@
 ) -%} {%- do tbl_relations.append(tbl_relation) -%}
 {%- endfor -%}
 
-{{ return tbl_relations }}
-{%- else -%} {{ return [] }}
+{{ return(tbl_relations) }}
+{%- else -%} {{ return([]) }}
 {%- endif -%}
 
 {% endmacro %}

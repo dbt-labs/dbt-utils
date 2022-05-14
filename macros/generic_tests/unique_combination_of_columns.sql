@@ -2,8 +2,10 @@
     model, combination_of_columns, quote_columns=false
 ) %}
 {{
-    return adapter.dispatch("test_unique_combination_of_columns", "dbt_utils")(
-        model, combination_of_columns, quote_columns
+    return(
+        adapter.dispatch("test_unique_combination_of_columns", "dbt_utils")(
+            model, combination_of_columns, quote_columns
+        )
     )
 }}
 {% endtest %}

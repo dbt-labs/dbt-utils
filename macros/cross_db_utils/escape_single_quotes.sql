@@ -1,5 +1,5 @@
 {% macro escape_single_quotes(expression) %}
-{{ return adapter.dispatch("escape_single_quotes", "dbt_utils")(expression) }}
+{{ return(adapter.dispatch("escape_single_quotes", "dbt_utils")(expression)) }}
 {% endmacro %}
 
 {# /*Default to replacing a single apostrophe with two apostrophes: they're -> they''re*/ #}

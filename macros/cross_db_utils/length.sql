@@ -1,5 +1,5 @@
 {% macro length(expression) -%}
-{{ return adapter.dispatch("length", "dbt_utils")(expression) }}
+{{ return(adapter.dispatch("length", "dbt_utils")(expression)) }}
 {% endmacro %}
 
 

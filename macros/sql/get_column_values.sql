@@ -2,8 +2,10 @@
     table, column, order_by="count(*) desc", max_records=none, default=none
 ) -%}
 {{
-    return adapter.dispatch("get_column_values", "dbt_utils")(
-        table, column, order_by, max_records, default
+    return(
+        adapter.dispatch("get_column_values", "dbt_utils")(
+            table, column, order_by, max_records, default
+        )
     )
 }}
 {% endmacro %}
@@ -13,7 +15,7 @@
 ) -%}
 {#- - Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
 {%- if not execute -%}
-{% set default = [] if not default %} {{ return default }}
+{% set default = [] if not default %} {{ return(default) }}
 {% endif %}
 
 {%- do dbt_utils._is_ephemeral(table, "get_column_values") -%}
@@ -35,7 +37,7 @@
 
 {{ log("Relation " ~ target_relation ~ " does not exist. Returning the default value: " ~ default) }}
 
-{{ return default }}
+{{ return(default) }}
 
 {%- else -%}
 
@@ -56,8 +58,9 @@ order by {{ order_by }}
     {%- set value_list = load_result("get_column_values") -%}
 
     {%- if value_list and value_list["data"] -%}
-    {%- set values = value_list["data"] | map(attribute=0) | list %} {{ return values }}
-    {%- else -%} {{ return default }}
+    {%- set values = value_list["data"] | map(attribute=0) | list %}
+    {{ return(values) }}
+    {%- else -%} {{ return(default) }}
     {%- endif -%}
 
 {%- endmacro %}

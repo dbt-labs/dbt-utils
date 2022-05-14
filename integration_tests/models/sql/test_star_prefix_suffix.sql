@@ -5,7 +5,11 @@ with
     data as (
 
         select
-            {{ dbt_utils.star(from=ref('data_star'), prefix=prefix_with, suffix=suffix_with) }}
+            {{
+                dbt_utils.star(
+                    from=ref("data_star"), prefix=prefix_with, suffix=suffix_with
+                )
+            }}
 
         from {{ ref("data_star") }}
 

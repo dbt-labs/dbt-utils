@@ -7,8 +7,10 @@
     period
 ) -%}
 {{
-    return adapter.dispatch("get_period_boundaries", "dbt_utils")(
-        target_schema, target_table, timestamp_field, start_date, stop_date, period
+    return(
+        adapter.dispatch("get_period_boundaries", "dbt_utils")(
+            target_schema, target_table, timestamp_field, start_date, stop_date, period
+        )
     )
 }}
 {% endmacro %}
@@ -58,14 +60,16 @@ from data {%- endcall %}
     offset
 ) -%}
     {{
-        return adapter.dispatch("get_period_sql", "dbt_utils")(
-            target_cols_csv,
-            sql,
-            timestamp_field,
-            period,
-            start_timestamp,
-            stop_timestamp,
-            offset,
+        return(
+            adapter.dispatch("get_period_sql", "dbt_utils")(
+                target_cols_csv,
+                sql,
+                timestamp_field,
+                period,
+                start_timestamp,
+                stop_timestamp,
+                offset,
+            )
         )
     }}
     {% endmacro %}
@@ -239,6 +243,6 @@ commit
 {%- endcall %}
 
 -- Return the relations created in this materialization
-{{ return {"relations": [target_relation]} }}
+{{ return({"relations": [target_relation]}) }}
 
 {%- endmaterialization %}

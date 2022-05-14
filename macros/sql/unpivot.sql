@@ -21,8 +21,10 @@ Arguments:
     table=none
 ) -%}
 {{
-    return adapter.dispatch("unpivot", "dbt_utils")(
-        relation, cast_to, exclude, remove, field_name, value_name, table
+    return(
+        adapter.dispatch("unpivot", "dbt_utils")(
+            relation, cast_to, exclude, remove, field_name, value_name, table
+        )
     )
 }}
 {% endmacro %}

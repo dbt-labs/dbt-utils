@@ -1,7 +1,9 @@
 {% test equality(model, compare_model, compare_columns=None) %}
 {{
-    return adapter.dispatch("test_equality", "dbt_utils")(
-        model, compare_model, compare_columns
+    return(
+        adapter.dispatch("test_equality", "dbt_utils")(
+            model, compare_model, compare_columns
+        )
     )
 }}
 {% endtest %}
@@ -19,7 +21,7 @@
 {{ config(fail_calc=set_diff) }}
 
 {#- - Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
-{%- if not execute -%} {{ return "" }} {% endif %}
+{%- if not execute -%} {{ return("") }} {% endif %}
 
 -- setup
 {%- do dbt_utils._is_relation(model, "test_equality") -%}

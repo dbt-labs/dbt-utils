@@ -1,5 +1,5 @@
 {% macro get_query_results_as_dict(query) %}
-{{ return adapter.dispatch("get_query_results_as_dict", "dbt_utils")(query) }}
+{{ return(adapter.dispatch("get_query_results_as_dict", "dbt_utils")(query)) }}
 {% endmacro %}
 
 {% macro default__get_query_results_as_dict(query) %}
@@ -20,6 +20,6 @@
 {% endfor %}
 {%- endif -%}
 
-{{ return sql_results }}
+{{ return(sql_results) }}
 
 {% endmacro %}

@@ -39,48 +39,65 @@ Arguments:
     quote_identifiers: Whether to surround column aliases with double quotes, default is true
     distinct: Whether to use distinct in the aggregation, default is False
 #}
-
-{% macro pivot(column,
-               values,
-               alias=True,
-               agg='sum',
-               cmp='=',
-               prefix='',
-               suffix='',
-               then_value=1,
-               else_value=0,
-               quote_identifiers=True,
-               distinct=False) %}
-    {{ return(adapter.dispatch('pivot', 'dbt_utils')(column, values, alias, agg, cmp, prefix, suffix, then_value, else_value, quote_identifiers, distinct)) }}
+{% macro pivot(
+    column,
+    values,
+    alias=True,
+    agg="sum",
+    cmp="=",
+    prefix="",
+    suffix="",
+    then_value=1,
+    else_value=0,
+    quote_identifiers=True,
+    distinct=False
+) %}
+{{
+    return(
+        adapter.dispatch("pivot", "dbt_utils")(
+            column,
+            values,
+            alias,
+            agg,
+            cmp,
+            prefix,
+            suffix,
+            then_value,
+            else_value,
+            quote_identifiers,
+            distinct,
+        )
+    )
+}}
 {% endmacro %}
 
-{% macro default__pivot(column,
-               values,
-               alias=True,
-               agg='sum',
-               cmp='=',
-               prefix='',
-               suffix='',
-               then_value=1,
-               else_value=0,
-               quote_identifiers=True,
-               distinct=False) %}
-  {% for value in values %}
-    {{ agg }}(
-      {% if distinct %} distinct {% endif %}
-      case
-      when {{ column }} {{ cmp }} '{{ dbt_utils.escape_single_quotes(value) }}'
+{% macro default__pivot(
+    column,
+    values,
+    alias=True,
+    agg="sum",
+    cmp="=",
+    prefix="",
+    suffix="",
+    then_value=1,
+    else_value=0,
+    quote_identifiers=True,
+    distinct=False
+) %}
+{% for value in values %}
+{{ agg }} (
+    {% if distinct %}distinct {% endif %}
+    case
+        when {{ column }} {{ cmp }} '{{ dbt_utils.escape_single_quotes(value) }}'
         then {{ then_value }}
-      else {{ else_value }}
-      end
-    )
-    {% if alias %}
-      {% if quote_identifiers %}
-            as {{ adapter.quote(prefix ~ value ~ suffix) }}
-      {% else %}
-        as {{ dbt_utils.slugify(prefix ~ value ~ suffix) }}
-      {% endif %}
-    {% endif %}
-    {% if not loop.last %},{% endif %}
-  {% endfor %}
+        else {{ else_value }}
+    end
+)
+{% if alias %}
+{% if quote_identifiers %} as {{ adapter.quote(prefix ~ value ~ suffix) }}
+{% else %} as {{ dbt_utils.slugify(prefix ~ value ~ suffix) }}
+{% endif %}
+{% endif %}
+{% if not loop.last %},{% endif %}
+{% endfor %}
 {% endmacro %}

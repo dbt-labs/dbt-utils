@@ -1,8 +1,7 @@
 {% macro assert_equal_values(actual_object, expected_object) %}
 {% if not execute %}
 
-    {# pass #}
-
+{# pass #}
 {% elif actual_object != expected_object %}
 
     {% set msg %}
@@ -20,13 +19,11 @@
 
     {% endset %}
 
-    {{ log(msg, info=True) }}
+{{ log(msg, info=True) }}
 
-    select 'fail'
+select 'fail'
 
-{% else %}
-
-    select 'ok' {{ limit_zero() }}
+{% else %} select 'ok' {{ limit_zero() }}
 
 {% endif %}
 {% endmacro %}

@@ -5,7 +5,7 @@ test: export TARGET = $(target)
 test: export MODELS = $(models)
 test: export SEEDS = $(seeds)
 test:
-	docker-compose -f ../docker-compose.yml up dbt
+	docker-compose -f docker-compose.yml up dbt
 
 $(TARGETS):
 	$(MAKE) test target=$@

@@ -1,21 +1,17 @@
 #!/bin/bash
-VENV="venv/bin/activate"
 
-if [[ ! -f $VENV ]]; then
-    python3 -m venv venv
-    . $VENV
+# Show location of local install of dbt
+echo $(which dbt)
 
-    pip install --upgrade pip setuptools
-    pip install --pre "dbt-$1"
-fi
+# Show version and installed adapters
+dbt --version
 
-. $VENV
 cd integration_tests
+cp ci/sample.profiles.yml profiles.yml
+export DBT_PROFILES_DIR=.
 
-if [[ ! -e ~/.dbt/profiles.yml ]]; then
-    mkdir -p ~/.dbt
-    cp ci/sample.profiles.yml ~/.dbt/profiles.yml
-fi
+# Show location of profiles directory and test a connection
+dbt debug
 
 _models=""
 _seeds="--full-refresh"

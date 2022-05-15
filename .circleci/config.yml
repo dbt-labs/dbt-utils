@@ -18,6 +18,7 @@ jobs:
 
     steps:
       - checkout
+      - run: pip install --pre dbt-postgres -r dev-requirements.txt
       - run:
           name: "Run Functional Tests - Postgres"
           command: ./run_functional_test.sh postgres
@@ -32,6 +33,7 @@ jobs:
       - image: cimg/python:3.9.9
     steps:
       - checkout
+      - run: pip install --pre dbt-redshift -r dev-requirements.txt
       - run:
           name: "Run Functional Tests - Redshift"
           command: ./run_functional_test.sh redshift
@@ -46,6 +48,7 @@ jobs:
       - image: cimg/python:3.9.9
     steps:
       - checkout
+      - run: pip install --pre dbt-snowflake -r dev-requirements.txt
       - run:
           name: "Run Functional Tests - Snowflake"
           command: ./run_functional_test.sh snowflake
@@ -62,6 +65,7 @@ jobs:
       - image: cimg/python:3.9.9
     steps:
       - checkout
+      - run: pip install --pre dbt-bigquery -r dev-requirements.txt
       - run:
           name: "Set up credentials"
           command: echo $BIGQUERY_SERVICE_ACCOUNT_JSON > ${HOME}/bigquery-service-key.json

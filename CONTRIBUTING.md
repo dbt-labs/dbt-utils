@@ -52,17 +52,6 @@ These are the tools used in `dbt-utils` development and testing:
 
 A deep understanding of these tools in not required to effectively contribute to `dbt-utils`, but we recommend checking out the attached documentation if you're interested in learning more about each one.
 
-#### Virtual environments
-
-We strongly recommend using virtual environments when developing code in `dbt-utils`. We recommend creating this virtualenv
-in the root of the `dbt-utils` repository. To create a new virtualenv, run:
-```sh
-python3 -m venv env
-source env/bin/activate
-```
-
-This will create and activate a new Python virtual environment.
-
 ## Testing
 
 Once you're able to manually test that your code change is working as expected, it's important to run existing automated tests, as well as adding some new ones. These tests will ensure that:

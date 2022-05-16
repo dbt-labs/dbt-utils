@@ -10,9 +10,10 @@ deduped as (
 
     {{
         dbt_utils.deduplicate(
-            'source',
-            partition_by='user_id',
+            ref('data_deduplicate'),
+            group_by='user_id',
             order_by='version desc',
+            relation_alias='source',
         ) | indent
     }}
 

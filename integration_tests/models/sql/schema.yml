@@ -172,3 +172,8 @@ models:
     tests:
       - dbt_utils.equality:
           compare_model: ref('data_deduplicate_expected')
+
+  - name: test_deduplicate_deprecated
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_deduplicate_expected')

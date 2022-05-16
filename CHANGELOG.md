@@ -18,7 +18,7 @@ Before:
 After:
 ```jinja
 {% macro deduplicate(relation, partition_by, order_by) -%}
-...
+...d
 {% endmacro %}
 ```
 

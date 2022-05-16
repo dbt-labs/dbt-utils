@@ -6,12 +6,13 @@ echo $(which dbt)
 # Show version and installed adapters
 dbt --version
 
+# Set the profile
 cd integration_tests
 cp ci/sample.profiles.yml profiles.yml
 export DBT_PROFILES_DIR=.
 
-# Show location of profiles directory and test a connection
-dbt debug
+# Show the location of the profiles directory and test the connection
+dbt debug --target $1
 
 _models=""
 _seeds="--full-refresh"

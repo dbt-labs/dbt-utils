@@ -1,5 +1,13 @@
+<!--- Uncomment the following headers as-needed for unreleased features
 # Unreleased
+## New features
+## Fixes
+## Quality of life
+## Under the hood
+## Contributors:
+--->
 
+# dbt-utils v0.8.5
 ## 🚨 deduplicate ([#542](https://github.com/dbt-labs/dbt-utils/pull/542), [#548](https://github.com/dbt-labs/dbt-utils/pull/548))
 
 The call signature of `deduplicate` has changed. The previous call signature is marked as deprecated and will be removed in the next minor version.
@@ -34,17 +42,22 @@ After:
 ## Quality of life
 - Documentation about listagg macro ([#544](https://github.com/dbt-labs/dbt-utils/issues/544), [#560](https://github.com/dbt-labs/dbt-utils/pull/560))
 - Fix links to macro section in table of contents ([#555](https://github.com/dbt-labs/dbt-utils/pull/555))
+- Use the ADR (Architectural Design Record) pattern for documenting significant decisions ([#573](https://github.com/dbt-labs/dbt-utils/pull/573))
 - Contributing guide ([#574](https://github.com/dbt-labs/dbt-utils/pull/574))
 - Add better documentation for `deduplicate()` ([#542](https://github.com/dbt-labs/dbt-utils/pull/542), [#548](https://github.com/dbt-labs/dbt-utils/pull/548))
 
 ## Under the hood
 - Fail integration tests appropriately ([#540](https://github.com/dbt-labs/dbt-utils/issues/540), [#545](https://github.com/dbt-labs/dbt-utils/pull/545))
 - Upgrade CircleCI postgres convenience image ([#584](https://github.com/dbt-labs/dbt-utils/issues/584), [#585](https://github.com/dbt-labs/dbt-utils/pull/585))
+- Run test for `deduplicate` ([#579](https://github.com/dbt-labs/dbt-utils/issues/579), [#580](https://github.com/dbt-labs/dbt-utils/pull/580))
+- Reduce warnings when executing integration tests ([#558](https://github.com/dbt-labs/dbt-utils/issues/558), [#581](https://github.com/dbt-labs/dbt-utils/pull/581))
+- Framework for functional testing using `pytest` ([#588](https://github.com/dbt-labs/dbt-utils/pull/588))
 
 ## Contributors:
-- [@graciegoheen](https://github.com/graciegoheen) (#545)
-- [@judahrand](https://github.com/judahrand) (#552)
+- [@graciegoheen](https://github.com/graciegoheen) (#560)
+- [@judahrand](https://github.com/judahrand) (#548)
 - [@clausherther](https://github.com/clausherther) (#555)
+- [@LewisDavies](https://github.com/LewisDavies) (#554)
 - [@epapineau](https://github.com/epapineau) (#583)
 - [@b-per](https://github.com/b-per) (#559)
 

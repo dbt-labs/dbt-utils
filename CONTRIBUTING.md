@@ -3,11 +3,12 @@
 `dbt-utils` is open source software. It is what it is today because community members have opened issues, provided feedback, and [contributed to the knowledge loop](https://www.getdbt.com/dbt-labs/values/). Whether you are a seasoned open source contributor or a first-time committer, we welcome and encourage you to contribute code, documentation, ideas, or problem statements to this project.
 
 1. [About this document](#about-this-document)
-2. [Getting the code](#getting-the-code)
-3. [Setting up an environment](#setting-up-an-environment)
-4. [Testing dbt-utils](#testing)
-5. [Adding CHANGELOG Entry](#adding-changelog-entry)
-6. [Submitting a Pull Request](#submitting-a-pull-request)
+1. [Getting the code](#getting-the-code)
+1. [Setting up an environment](#setting-up-an-environment)
+1. [Implementation guidelines](#implementation-guidelines)
+1. [Testing dbt-utils](#testing)
+1. [Adding CHANGELOG Entry](#adding-changelog-entry)
+1. [Submitting a Pull Request](#submitting-a-pull-request)
 
 ## About this document
 
@@ -51,6 +52,13 @@ These are the tools used in `dbt-utils` development and testing:
 - [CircleCI](https://circleci.com/) for automating tests and checks, once a PR is pushed to the `dbt-utils` repository
 
 A deep understanding of these tools in not required to effectively contribute to `dbt-utils`, but we recommend checking out the attached documentation if you're interested in learning more about each one.
+
+## Implementation guidelines
+
+Ensure that changes will work on "non-core" adapters by:
+- dispatching any new macro(s) so non-core adapters can also use them (e.g. [the `star()` source](https://github.com/fishtown-analytics/dbt-utils/blob/master/macros/sql/star.sql))
+- using the `limit_zero()` macro in place of the literal string: `limit 0`
+- using `dbt_utils.type_*` macros instead of explicit datatypes (e.g. `dbt_utils.type_timestamp()` instead of `TIMESTAMP`
 
 ## Testing
 

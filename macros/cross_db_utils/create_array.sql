@@ -1,4 +1,4 @@
-{% macro create_array(inputs) -%}
+{% macro create_array(inputs=[]) -%}
   {{ return(adapter.dispatch('array', 'dbt_utils')(inputs)) }}
 {%- endmacro %}
 

@@ -1,0 +1,2 @@
+num_input,string_input,boolean_input,null_input,result_as_string
+1,hello,true,null,"[1,""hello"",true,undefined]"

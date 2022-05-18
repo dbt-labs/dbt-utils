@@ -1,14 +1,14 @@
 {# ------ IF WE DON'T CARE ABOUT BACKWARDS COMPATIBILITY AT ALL -------- #}
 
 {% macro dateadd(datepart, interval, from_date_or_timestamp) %}
-  {{ return(dbt.dateadd(datepart, interval, from_date_or_timestamp)) }}
+  {{ return(adapter.dispatch('dateadd', 'dbt')(datepart, interval, from_date_or_timestamp)) }}
 {% endmacro %}
 
 {# ------ IF WE CARE ABOUT BACKWARDS COMPATIBILITY A LITTLE -----------
 
 {% macro dateadd(datepart, interval, from_date_or_timestamp) %}
   {% if dbt_version[0]|int == 1 and dbt_version[2]|int >= 2 %}
-    {{ return(dbt.dateadd(datepart, interval, from_date_or_timestamp)) }}
+    {{ return(adapter.dispatch('dateadd', 'dbt')(datepart, interval, from_date_or_timestamp)) }}
   {% else %}
     {{ return(adapter.dispatch('dateadd', 'dbt_utils')(datepart, interval, from_date_or_timestamp)) }}
   {% endif %}

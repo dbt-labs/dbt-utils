@@ -27,7 +27,7 @@ create_array as (
 select
 
     {{ dbt_utils.array_append('array', 'element') }} as array_actual,
-    cast({{ dbt_utils.array_append('array', 'element') }} as string) as actual,
+    cast({{ dbt_utils.array_append('array', 'element') }} as {{ dbt_utils.type_string() }}) as actual,
     expected
 
 from create_array

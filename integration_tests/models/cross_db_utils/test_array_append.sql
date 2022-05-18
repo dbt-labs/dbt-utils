@@ -16,7 +16,6 @@ appended_array as (
 
     select
         {{ dbt_utils.array_append(dbt_utils.create_array(['num_input_1', 'num_input_2', 'num_input_3']), 'element') }} as array_actual,
-        cast({{ dbt_utils.array_append(dbt_utils.create_array(['num_input_1', 'num_input_2', 'num_input_3']), 'element') }} as {{ dbt_utils.type_string() }}) as actual,
         result_as_string as expected
     from data
 
@@ -26,6 +25,6 @@ appended_array as (
 -- we need to cast the arrays to strings in order to compare them to the output in our seed file  
 select
     array_actual,
-    {{ dbt_utils.replace(dbt_utils.replace('actual',"'}'","']'"),"'{'","'['") }} as actual,
+    {{ dbt_utils.cast_array_to_string('array_actual') }} as actual,
     expected
 from appended_array

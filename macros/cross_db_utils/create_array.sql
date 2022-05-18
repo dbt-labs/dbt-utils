@@ -3,7 +3,7 @@
 {%- endmacro %}
 
 {% macro default__array(inputs) -%}
-    array[ {{ inputs }} ]
+    array[ {{ inputs|join(' , ') }} ]
 {%- endmacro %}
 
 {% macro snowflake__array(inputs) -%}
@@ -11,9 +11,9 @@
 {%- endmacro %}
 
 {% macro redshift__array(inputs) -%}
-    array( {{ inputs }} )
+    array( {{ inputs|join(' , ') }} )
 {%- endmacro %}
 
 {% macro bigquery__array(inputs) -%}
-    [ {{ inputs }} ]
+    [ {{ inputs|join(' , ') }} ]
 {%- endmacro %}

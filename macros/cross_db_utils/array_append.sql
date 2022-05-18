@@ -7,9 +7,9 @@
 {%- endmacro %}
 
 {% macro bigquery__array_append(array, new_element) -%}
-    array_concat({{ array }}, {{ create_array(new_element) }})
+    array_concat({{ array }}, {{ dbt_utils.create_array(new_element) }})
 {%- endmacro %}
 
 {% macro redshift__array_append(array, new_element) -%}
-    array_concat({{ array }}, {{ create_array(new_element) }})
+    array_concat({{ array }}, {{ dbt_utils.create_array(new_element) }})
 {%- endmacro %}

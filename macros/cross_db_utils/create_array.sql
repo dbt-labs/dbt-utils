@@ -2,6 +2,7 @@
   {{ return(adapter.dispatch('array', 'dbt_utils')(inputs)) }}
 {%- endmacro %}
 
+{# all inputs must be the same data type to match postgres functionality #}
 {% macro default__array(inputs) -%}
     array[ {{ inputs|join(' , ') }} ]
 {%- endmacro %}

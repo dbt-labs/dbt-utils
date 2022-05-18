@@ -32,10 +32,13 @@ with
                 max("{{timestamp_field}}"), '{{start_date}}'
             )::timestamp as start_timestamp,
             coalesce(
-                {{dbt_utils.dateadd('millisecond',
-                                -1,
-                                "nullif('" ~ stop_date ~ "','')::timestamp")}},
-                {{ dbt_utils.current_timestamp() }}
+                {{
+                    dbt_utils.dateadd(
+                        "millisecond",
+                        -1,
+                        "nullif('" ~ stop_date ~ "','')::timestamp",
+                    )
+                }}, {{ dbt_utils.current_timestamp() }}
             ) as stop_timestamp
         from "{{target_schema}}"."{{target_table}}"
     )
@@ -179,7 +182,7 @@ commit
 {%- set msg = "Running for " ~ period ~ " " ~ (i + 1) ~ " of " ~ (num_periods) -%}
 {{ dbt_utils.log_info(msg) }}
 
-{%- set tmp_identifier = model['name'] ~ '__dbt_incremental_period' ~ i ~ '_tmp' -%}
+{%- set tmp_identifier = model["name"] ~ "__dbt_incremental_period" ~ i ~ "_tmp" -%}
 {%- set tmp_relation = api.Relation.create(
     identifier=tmp_identifier, schema=schema, type="table"
 ) -%}
@@ -201,13 +204,13 @@ commit
         from_relation=tmp_relation, to_relation=target_relation
     )
 }}
-{%- set name = 'main-' ~ i -%}
+{%- set name = "main-" ~ i -%}
 {% call statement(name, fetch_result=True) -%}
 insert into {{ target_relation }} ({{ target_cols_csv }})
 (select {{ target_cols_csv }} from {{ tmp_relation.include(schema=False) }})
 ;
 {%- endcall %}
-{% set result = load_result('main-' ~ i) %}
+{% set result = load_result("main-" ~ i) %}
 {% if "response" in result.keys() %}  {# added in v0.19.0 #}
 {% set rows_inserted = result["response"]["rows_affected"] %}
 {# older versions #}
@@ -217,7 +220,17 @@ insert into {{ target_relation }} ({{ target_cols_csv }})
 {%- set sum_rows_inserted = loop_vars["sum_rows_inserted"] + rows_inserted -%}
 {%- if loop_vars.update({"sum_rows_inserted": sum_rows_inserted}) %} {% endif -%}
 
-{%- set msg = "Ran for " ~ period ~ " " ~ (i + 1) ~ " of " ~ (num_periods) ~ "; " ~ rows_inserted ~ " records inserted" -%}
+{%- set msg = (
+    "Ran for "
+    ~ period
+    ~ " "
+    ~ (i + 1)
+    ~ " of "
+    ~ (num_periods)
+    ~ "; "
+    ~ rows_inserted
+    ~ " records inserted"
+) -%}
 {{ dbt_utils.log_info(msg) }}
 
 {%- endfor %}
@@ -236,7 +249,7 @@ commit
 
 {{ run_hooks(post_hooks, inside_transaction=False) }}
 
-{%- set status_string = "INSERT " ~ loop_vars['sum_rows_inserted'] -%}
+{%- set status_string = "INSERT " ~ loop_vars["sum_rows_inserted"] -%}
 
 {% call noop_statement('main', status_string) -%}
 -- no-op

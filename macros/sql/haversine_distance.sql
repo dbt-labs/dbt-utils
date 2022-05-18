@@ -21,7 +21,11 @@ The arguments should be float type.
 {%- if unit == "mi" %} {% set conversion_rate = 1 %}
 {% elif unit == "km" %} {% set conversion_rate = 1.60934 %}
 {% else %}
-{{ exceptions.raise_compiler_error("unit input must be one of 'mi' or 'km'. Got " ~ unit) }}
+{{
+    exceptions.raise_compiler_error(
+        "unit input must be one of 'mi' or 'km'. Got " ~ unit
+    )
+}}
 {% endif %}
 
 2 * 3961 * asin(
@@ -44,7 +48,11 @@ The arguments should be float type.
 {%- if unit == "mi" %} {% set conversion_rate = 1 %}
 {% elif unit == "km" %} {% set conversion_rate = 1.60934 %}
 {% else %}
-{{ exceptions.raise_compiler_error("unit input must be one of 'mi' or 'km'. Got " ~ unit) }}
+{{
+    exceptions.raise_compiler_error(
+        "unit input must be one of 'mi' or 'km'. Got " ~ unit
+    )
+}}
 {% endif %}
 2 * 3961 * asin(
     sqrt(

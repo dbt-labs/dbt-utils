@@ -31,13 +31,24 @@
 
 {%- if not relation_exists and default is none -%}
 
-{{ exceptions.raise_compiler_error("In get_column_values(): relation " ~ target_relation ~ " does not exist and no default value was provided.") }}
+{{
+    exceptions.raise_compiler_error(
+        "In get_column_values(): relation "
+        ~ target_relation
+        ~ " does not exist and no default value was provided."
+    )
+}}
 
 {%- elif not relation_exists and default is not none -%}
 
-{{ log("Relation " ~ target_relation ~ " does not exist. Returning the default value: " ~ default) }}
-
-{{ return(default) }}
+{{
+    log(
+        "Relation "
+        ~ target_relation
+        ~ " does not exist. Returning the default value: "
+        ~ default
+    )
+}} {{ return(default) }}
 
 {%- else -%}
 

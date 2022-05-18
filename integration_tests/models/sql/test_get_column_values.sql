@@ -21,9 +21,12 @@ from {{ ref("data_get_column_values") }}
 select
     {% for val in column_values -%}
 
-    {{ dbt_utils.safe_cast("sum(case when field = '" ~ val ~ "' then 1 else 0 end)", dbt_utils.type_string()) }}
-    as count_{{ val }}
-    {%- if not loop.last %},{% endif -%}
+    {{
+        dbt_utils.safe_cast(
+            "sum(case when field = '" ~ val ~ "' then 1 else 0 end)",
+            dbt_utils.type_string(),
+        )
+    }} as count_{{ val }} {%- if not loop.last %},{% endif -%}
 
     {%- endfor %}
 

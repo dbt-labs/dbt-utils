@@ -15,14 +15,13 @@
             )
     {%- endset -%}
 
-{%- set parsed_path =
-        dbt_utils.split_part(
-            dbt_utils.right(
-                stripped_url, 
-                dbt_utils.length(stripped_url) ~ "-" ~ first_slash_pos
-                ), 
-            "'?'", 1
-            ) -%}
+{%- set parsed_path = dbt_utils.split_part(
+    dbt_utils.right(
+        stripped_url, dbt_utils.length(stripped_url) ~ "-" ~ first_slash_pos
+    ),
+    "'?'",
+    1,
+) -%}
 
 {{ dbt_utils.safe_cast(parsed_path, dbt_utils.type_string()) }}
 

@@ -7,7 +7,8 @@
 {% endmacro %}
 
 {% macro postgres__cast_array_to_string(field) %}
-    cast({{ dbt_utils.replace(dbt_utils.replace(field,"'}'","']'"),"'{'","'['") }} as {{ dbt_utils.type_string() }})
+    {%- set field_as_string -%}cast({{ field }} as {{ dbt_utils.type_string() }}){%- endset -%}
+    {{ dbt_utils.replace(dbt_utils.replace(field_as_string,"'}'","']'"),"'{'","'['") }}
 {% endmacro %}
 
 {# redshift should use default instead of postgres #}

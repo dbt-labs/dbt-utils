@@ -10,23 +10,12 @@ with data as (
     left join {{ ref('data_create_array') }} as data_create_array
     on data_array_append.array_as_string = data_create_array.result_as_string
 
-),
-
-create_array as (
-    select
-
-        {{ dbt_utils.create_array(['num_input_1', 'num_input_2', 'num_input_3']) }} as array,
-        element,
-        result_as_string as expected
-
-    from data
-
 )
 
 select
 
-    {{ dbt_utils.array_append('array', 'element') }} as array_actual,
-    cast({{ dbt_utils.array_append('array', 'element') }} as {{ dbt_utils.type_string() }}) as actual,
-    expected
+    {{ dbt_utils.array_append(dbt_utils.create_array(['num_input_1', 'num_input_2', 'num_input_3']), 'element') }} as array_actual,
+    cast({{ dbt_utils.array_append(dbt_utils.create_array(['num_input_1', 'num_input_2', 'num_input_3']), 'element') }} as {{ dbt_utils.type_string() }}) as actual,
+    result_as_string as expected
 
-from create_array
+from data

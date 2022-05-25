@@ -1,20 +1,20 @@
-{% macro create_array(inputs=[]) -%}
-  {{ return(adapter.dispatch('array', 'dbt_utils')(inputs)) }}
+{% macro array_construct(inputs=[]) -%}
+  {{ return(adapter.dispatch('array_construct', 'dbt_utils')(inputs)) }}
 {%- endmacro %}
 
 {# all inputs must be the same data type to match postgres functionality #}
-{% macro default__array(inputs) -%}
+{% macro default__array_construct(inputs) -%}
     array[ {{ inputs|join(' , ') }} ]
 {%- endmacro %}
 
-{% macro snowflake__array(inputs) -%}
+{% macro snowflake__array_construct(inputs) -%}
     array_construct( {{ inputs|join(' , ') }} )
 {%- endmacro %}
 
-{% macro redshift__array(inputs) -%}
+{% macro redshift__array_construct(inputs) -%}
     array( {{ inputs|join(' , ') }} )
 {%- endmacro %}
 
-{% macro bigquery__array(inputs) -%}
+{% macro bigquery__array_construct(inputs) -%}
     [ {{ inputs|join(' , ') }} ]
 {%- endmacro %}

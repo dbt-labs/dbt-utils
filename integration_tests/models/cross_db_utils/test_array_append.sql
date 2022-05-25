@@ -3,19 +3,19 @@ with data as (
     select 
         data_array_append.element,
         data_array_append.result_as_string,
-        data_create_array.num_input_1,
-        data_create_array.num_input_2,
-        data_create_array.num_input_3
+        data_array_construct.num_input_1,
+        data_array_construct.num_input_2,
+        data_array_construct.num_input_3
     from {{ ref('data_array_append') }} as data_array_append
-    left join {{ ref('data_create_array') }} as data_create_array
-    on data_array_append.array_as_string = data_create_array.result_as_string
+    left join {{ ref('data_array_construct') }} as data_array_construct
+    on data_array_append.array_as_string = data_array_construct.result_as_string
 
 ),
 
 appended_array as (
 
     select
-        {{ dbt_utils.array_append(dbt_utils.create_array(['num_input_1', 'num_input_2', 'num_input_3']), 'element') }} as array_actual,
+        {{ dbt_utils.array_append(dbt_utils.array_construct(['num_input_1', 'num_input_2', 'num_input_3']), 'element') }} as array_actual,
         result_as_string as expected
     from data
 

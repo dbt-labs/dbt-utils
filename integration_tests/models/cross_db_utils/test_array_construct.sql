@@ -1,12 +1,12 @@
 with data as (
 
-    select * from {{ ref('data_create_array') }}
+    select * from {{ ref('data_array_construct') }}
 
 ),
 
-create_array as (
+array_construct as (
     select
-        {{ dbt_utils.create_array(['num_input_1', 'num_input_2', 'num_input_3']) }} as array_actual,
+        {{ dbt_utils.array_construct(['num_input_1', 'num_input_2', 'num_input_3']) }} as array_actual,
         result_as_string as expected
 
     from data
@@ -18,4 +18,4 @@ select
     array_actual,
     {{ dbt_utils.cast_array_to_string('array_actual') }} as actual,
     expected
-from create_array
+from array_construct

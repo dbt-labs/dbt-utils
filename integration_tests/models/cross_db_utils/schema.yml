@@ -23,7 +23,7 @@ models:
           actual: actual
           expected: expected
 
-  - name: test_create_array
+  - name: test_array_construct
     tests:
       - assert_equal:
           actual: actual

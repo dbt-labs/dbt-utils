@@ -2,8 +2,36 @@ import os
 import pytest
 from dbt.tests.util import run_dbt
 from dbt.tests.adapter.utils.base_utils import BaseUtils
+from dbt.tests.adapter.utils.test_any_value import BaseAnyValue
+from dbt.tests.adapter.utils.test_bool_or import BaseBoolOr
+from dbt.tests.adapter.utils.test_cast_bool_to_text import BaseCastBoolToText
+from dbt.tests.adapter.utils.test_concat import BaseConcat
+from dbt.tests.adapter.utils.test_current_timestamp_in_utc import BaseCurrentTimestampInUtc
+from dbt.tests.adapter.utils.test_current_timestamp import BaseCurrentTimestamp
 from dbt.tests.adapter.utils.test_dateadd import BaseDateAdd
 from dbt.tests.adapter.utils.test_datediff import BaseDateDiff
+from dbt.tests.adapter.utils.test_date_trunc import BaseDateTrunc
+from dbt.tests.adapter.utils.test_escape_single_quotes import BaseEscapeSingleQuotesQuote
+from dbt.tests.adapter.utils.test_escape_single_quotes import BaseEscapeSingleQuotesBackslash
+from dbt.tests.adapter.utils.test_except import BaseExcept
+from dbt.tests.adapter.utils.test_hash import BaseHash
+from dbt.tests.adapter.utils.test_intersect import BaseIntersect
+from dbt.tests.adapter.utils.test_last_day import BaseLastDay
+from dbt.tests.adapter.utils.test_length import BaseLength
+from dbt.tests.adapter.utils.test_listagg import BaseListagg
+from dbt.tests.adapter.utils.test_position import BasePosition
+from dbt.tests.adapter.utils.test_replace import BaseReplace
+from dbt.tests.adapter.utils.test_right import BaseRight
+from dbt.tests.adapter.utils.test_safe_cast import BaseSafeCast
+from dbt.tests.adapter.utils.test_split_part import BaseSplitPart
+from dbt.tests.adapter.utils.test_string_literal import BaseStringLiteral
+from dbt.tests.adapter.utils.test_type_bigint import BaseTypeBigint
+from dbt.tests.adapter.utils.test_type_boolean import BaseTypeBoolean
+from dbt.tests.adapter.utils.test_type_float import BaseTypeFloat
+from dbt.tests.adapter.utils.test_type_int import BaseTypeInt
+from dbt.tests.adapter.utils.test_type_numeric import BaseTypeNumeric
+from dbt.tests.adapter.utils.test_type_string import BaseTypeString
+from dbt.tests.adapter.utils.test_type_timestamp import BaseTypeTimestamp
 
 
 class BaseDbtUtilsBackCompat(BaseUtils):
@@ -25,9 +53,140 @@ class BaseDbtUtilsBackCompat(BaseUtils):
 
 # order matters for this multiple inheritance: leftmost "wins"
 # prioritize this package's macros
+class TestAnyValue(BaseDbtUtilsBackCompat, BaseAnyValue):
+    pass
+
+
+class TestBoolOr(BaseDbtUtilsBackCompat, BaseBoolOr):
+    pass
+
+
+class TestCastBoolToText(BaseDbtUtilsBackCompat, BaseCastBoolToText):
+    pass
+
+
+class TestConcat(BaseDbtUtilsBackCompat, BaseConcat):
+    pass
+
+
+class TestCurrentTimestampInUtc(BaseDbtUtilsBackCompat, BaseCurrentTimestampInUtc):
+    pass
+
+
+class TestCurrentTimestamp(BaseDbtUtilsBackCompat, BaseCurrentTimestamp):
+    pass
+
+
 class TestDateAdd(BaseDbtUtilsBackCompat, BaseDateAdd):
     pass
 
 
 class TestDateDiff(BaseDbtUtilsBackCompat, BaseDateDiff):
+    pass
+
+
+class TestDateTrunc(BaseDbtUtilsBackCompat, BaseDateTrunc):
+    pass
+
+
+@pytest.mark.only_profile("postgres")
+class TestEscapeSingleQuotesPostgres(BaseDbtUtilsBackCompat, BaseEscapeSingleQuotesQuote):
+    pass
+
+
+@pytest.mark.only_profile("redshift")
+class TestEscapeSingleQuotesRedshift(BaseDbtUtilsBackCompat, BaseEscapeSingleQuotesQuote):
+    pass
+
+
+@pytest.mark.only_profile("snowflake")
+class TestEscapeSingleQuotesSnowflake(BaseDbtUtilsBackCompat, BaseEscapeSingleQuotesBackslash):
+    pass
+
+
+@pytest.mark.only_profile("bigquery")
+class TestEscapeSingleQuotesBigQuery(BaseDbtUtilsBackCompat, BaseEscapeSingleQuotesBackslash):
+    pass
+
+
+class TestExcept(BaseDbtUtilsBackCompat, BaseExcept):
+    pass
+
+
+class TestHash(BaseDbtUtilsBackCompat, BaseHash):
+    pass
+
+
+class TestIntersect(BaseDbtUtilsBackCompat, BaseIntersect):
+    pass
+
+
+class TestLastDay(BaseDbtUtilsBackCompat, BaseLastDay):
+    pass
+
+
+class TestLength(BaseDbtUtilsBackCompat, BaseLength):
+    pass
+
+
+class TestListagg(BaseDbtUtilsBackCompat, BaseListagg):
+    pass
+
+
+class TestPosition(BaseDbtUtilsBackCompat, BasePosition):
+    pass
+
+
+class TestReplace(BaseDbtUtilsBackCompat, BaseReplace):
+    pass
+
+
+class TestRight(BaseDbtUtilsBackCompat, BaseRight):
+    pass
+
+
+class TestSafeCast(BaseDbtUtilsBackCompat, BaseSafeCast):
+    pass
+
+
+class TestSplitPart(BaseDbtUtilsBackCompat, BaseSplitPart):
+    pass
+
+
+class TestStringLiteral(BaseDbtUtilsBackCompat, BaseStringLiteral):
+    pass
+
+
+@pytest.mark.skip(reason="TODO - implement this test")
+class TestTypeBigint(BaseDbtUtilsBackCompat, BaseTypeBigint):
+    pass
+
+
+@pytest.mark.skip(reason="TODO - implement this test")
+class TestTypeBoolean(BaseDbtUtilsBackCompat, BaseTypeBoolean):
+    pass
+
+
+@pytest.mark.skip(reason="TODO - implement this test")
+class TestTypeFloat(BaseDbtUtilsBackCompat, BaseTypeFloat):
+    pass
+
+
+@pytest.mark.skip(reason="TODO - implement this test")
+class TestTypeInt(BaseDbtUtilsBackCompat, BaseTypeInt):
+    pass
+
+
+@pytest.mark.skip(reason="TODO - implement this test")
+class TestTypeNumeric(BaseDbtUtilsBackCompat, BaseTypeNumeric):
+    pass
+
+
+@pytest.mark.skip(reason="TODO - implement this test")
+class TestTypeString(BaseDbtUtilsBackCompat, BaseTypeString):
+    pass
+
+
+@pytest.mark.skip(reason="TODO - implement this test")
+class TestTypeTimestamp(BaseDbtUtilsBackCompat, BaseTypeTimestamp):
     pass

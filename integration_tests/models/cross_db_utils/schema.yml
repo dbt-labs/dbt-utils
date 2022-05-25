@@ -11,6 +11,18 @@ models:
       - assert_equal:
           actual: actual
           expected: expected
+
+  - name: test_array_concat
+    tests:
+      - assert_equal:
+          actual: actual
+          expected: expected
+
+  - name: test_array_construct
+    tests:
+      - assert_equal:
+          actual: actual
+          expected: expected
           
   - name: test_bool_or
     tests:
@@ -18,12 +30,6 @@ models:
           compare_model: ref('data_bool_or_expected')
 
   - name: test_concat
-    tests:
-      - assert_equal:
-          actual: actual
-          expected: expected
-
-  - name: test_array_construct
     tests:
       - assert_equal:
           actual: actual

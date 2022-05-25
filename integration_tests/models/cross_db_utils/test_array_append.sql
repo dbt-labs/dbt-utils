@@ -21,7 +21,6 @@ appended_array as (
 
 )
 
--- when casting as array to string, postgres uses {} (ex: {1,2,3}) while other dbs use [] (ex: [1,2,3])
 -- we need to cast the arrays to strings in order to compare them to the output in our seed file  
 select
     array_actual,

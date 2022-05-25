@@ -6,6 +6,7 @@
     cast({{ field }} as {{ dbt_utils.type_string() }})
 {% endmacro %}
 
+{# when casting as array to string, postgres uses {} (ex: {1,2,3}) while other dbs use [] (ex: [1,2,3]) #}
 {% macro postgres__cast_array_to_string(field) %}
     {%- set field_as_string -%}cast({{ field }} as {{ dbt_utils.type_string() }}){%- endset -%}
     {{ dbt_utils.replace(dbt_utils.replace(field_as_string,"'}'","']'"),"'{'","'['") }}

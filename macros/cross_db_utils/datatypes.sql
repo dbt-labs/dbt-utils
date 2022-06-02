@@ -23,6 +23,34 @@
     {{ return(adapter.dispatch('type_timestamp', 'dbt')()) }}
 {% endmacro %}
 
+<<<<<<< HEAD
+=======
+/*
+POSTGRES
+https://www.postgresql.org/docs/current/datatype-datetime.html:
+The SQL standard requires that writing just `timestamp` 
+be equivalent to `timestamp without time zone`, and 
+PostgreSQL honors that behavior. 
+`timestamptz` is accepted as an abbreviation for `timestamp with time zone`;
+this is a PostgreSQL extension.
+
+SNOWFLAKE
+https://docs.snowflake.com/en/sql-reference/data-types-datetime.html#timestamp
+The TIMESTAMP_* variation associated with TIMESTAMP is specified by the 
+TIMESTAMP_TYPE_MAPPING session parameter. The default is TIMESTAMP_NTZ.
+
+BIGQUERY
+TIMESTAMP means 'timestamp with time zone'
+DATETIME means 'timestamp without time zone'
+TODO: shouldn't this return DATETIME instead of TIMESTAMP, for consistency with other databases?
+e.g. dateadd returns a DATETIME
+
+/* Snowflake:
+https://docs.snowflake.com/en/sql-reference/data-types-datetime.html#timestamp
+The TIMESTAMP_* variation associated with TIMESTAMP is specified by the TIMESTAMP_TYPE_MAPPING session parameter. The default is TIMESTAMP_NTZ.
+*/
+
+>>>>>>> caf0388 (Refactor tests, passing on BQ)
 
 {# float  -------------------------------------------------     #}
 

@@ -62,9 +62,7 @@ def redshift_target():
 def bigquery_target():
     return {
         "type": "bigquery",
-        "method": "service-account",
-        "keyfile": os.getenv('BIGQUERY_SERVICE_KEY_PATH'),
-        "project": os.getenv('BIGQUERY_TEST_DATABASE'),
+        "method": "oauth"
     }
 
 

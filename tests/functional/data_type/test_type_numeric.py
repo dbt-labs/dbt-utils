@@ -35,6 +35,11 @@ class BaseTypeNumericLegacy(BaseLegacyDataTypeMacro, BaseTypeNumeric):
 
 
 @pytest.mark.skip_profile('bigquery')
+class TestTypeNumeric(BaseTypeNumeric):
+    pass
+
+
+@pytest.mark.skip_profile('bigquery')
 class TestTypeNumericLegacy(BaseTypeNumericLegacy):
     pass
 

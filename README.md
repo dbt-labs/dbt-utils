@@ -66,6 +66,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
     - [pretty_time](#pretty_time-source)
     - [pretty_log_format](#pretty_log_format-source)
     - [log_info](#log_info-source)
+    - [slugify](#slugify-source)
 
 [Materializations](#materializations):
 - [insert_by_period](#insert_by_period-source)

@@ -70,8 +70,13 @@ pip install --pre dbt-postgres -r dev-requirements.txt
 
 ### Run the integration tests
 
-To run the integration tests on your local machine, like they will get run in the CI (using CircleCI), you can do the following:
+To run all the integration tests on your local machine like they will get run in the CI (using CircleCI):
 
+```shell
+make test target=postgres
+```
+
+or, to run tests for a single model:
 ```shell
 make test target=[postgres|redshift|...] [models=...] [seeds=...]
 ```
@@ -80,11 +85,6 @@ or more specific:
 
 ```shell
 make test target=postgres models=sql.test_star seeds=sql.data_star
-```
-
-or, to run all tests:
-```shell
-make test target=postgres
 ```
 
 Specying `models=` and `seeds=` is optional, however _if_ you specify `seeds`, you have to specify `models` too.

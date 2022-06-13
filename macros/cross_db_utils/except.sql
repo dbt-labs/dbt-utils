@@ -3,6 +3,15 @@
 {% endmacro %}
 
 
-{% macro default__except() %} except {% endmacro %}
+{% macro default__except() %}
 
-{% macro bigquery__except() %} except distinct {% endmacro %}
+except
+
+{% endmacro %}
+
+{% macro bigquery__except() %}
+
+except
+distinct
+
+{% endmacro %}

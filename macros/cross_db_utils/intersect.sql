@@ -3,6 +3,15 @@
 {% endmacro %}
 
 
-{% macro default__intersect() %} intersect {% endmacro %}
+{% macro default__intersect() %}
 
-{% macro bigquery__intersect() %} intersect distinct {% endmacro %}
+intersect
+
+{% endmacro %}
+
+{% macro bigquery__intersect() %}
+
+intersect
+distinct
+
+{% endmacro %}

@@ -23,7 +23,9 @@ with
         select
             {{ dbt_utils.safe_cast("'" ~ val ~ "'", dbt_utils.type_string()) }}
             as actual_column_value
-        {% if not loop.last %} union all {% endif %}
+        {% if not loop.last %}
+        union all
+        {% endif %}
         {% endfor %}
     ),
 

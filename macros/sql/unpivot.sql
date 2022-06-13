@@ -96,7 +96,9 @@ select
 
 from {{ relation }}
 
-{% if not loop.last -%} union all {% endif -%}
+{% if not loop.last -%}
+union all
+{% endif -%}
 {%- endfor -%}
 
 {%- endmacro %}

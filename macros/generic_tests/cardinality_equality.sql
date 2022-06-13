@@ -27,7 +27,13 @@ with
 
     except_b as (select * from table_b {{ dbt_utils.except() }} select * from table_a),
 
-    unioned as (select * from except_a union all select * from except_b)
+    unioned as (
+        select *
+        from except_a
+        union all
+        select *
+        from except_b
+    )
 
 select *
 from unioned

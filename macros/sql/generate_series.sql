@@ -24,7 +24,11 @@
 {% set n = dbt_utils.get_powers_of_two(upper_bound) %}
 
 with
-    p as (select 0 as generated_number union all select 1),
+    p as (
+        select 0 as generated_number
+        union all
+        select 1
+    ),
     unioned as (
 
         select

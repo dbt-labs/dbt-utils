@@ -11,6 +11,12 @@ array_construct as (
 
     from data
 
+    union all
+
+    select
+        {{ dbt_utils.array_construct() }} as array_actual,
+        '[]' as expected
+
 )
 
 -- we need to cast the arrays to strings in order to compare them to the output in our seed file  

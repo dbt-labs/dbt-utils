@@ -61,6 +61,10 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
     - [last_day](#last_day-source)
     - [width_bucket](#width_bucket-source)
     - [listagg](#listagg-source)
+    - [array_construct](#array_construct-source)
+    - [array_append](#array_append-source)
+    - [array_concat](#array_concat-source)
+    - [cast_array_to_string](#cast_array_to_string-source)
 
 - [Jinja Helpers](#jinja-helpers)
     - [pretty_time](#pretty_time-source)
@@ -991,7 +995,7 @@ Boolean values are replaced with the strings 'true'|'false'
     | 2017-03-01 | processing | size       | S     |
     | 2017-03-01 | processing | color      | red   |
 
-**Args**:
+**Args:**
 - `relation`: The [Relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation) to unpivot.
 - `cast_to`: The data type to cast the unpivoted values to, default is varchar
 - `exclude`: A list of columns to exclude from the unpivot operation but keep in the resulting table.
@@ -1055,7 +1059,7 @@ This macro calculates the difference between two dates.
 #### split_part ([source](macros/cross_db_utils/split_part.sql))
 This macro splits a string of text using the supplied delimiter and returns the supplied part number (1-indexed).
 
-**Args**:
+**Args:**
 - `string_text` (required): Text to be split into parts.
 - `delimiter_text` (required): Text representing the delimiter to split by.
 - `part_number` (required): Requested part of the split (1-based). If the value is negative, the parts are counted backward from the end of the string.
@@ -1114,7 +1118,7 @@ When an expression falls outside the range, the function returns:
 #### listagg ([source](macros/cross_db_utils/listagg.sql))
 This macro returns the concatenated input values from a group of rows separated by a specified deliminator.
 
-**Args**:
+**Args:**
 - `measure` (required): The expression (typically a column name) that determines the values to be concatenated. To only include distinct values add keyword DISTINCT to beginning of expression (example: 'DISTINCT column_to_agg').
 - `delimiter_text` (required): Text representing the delimiter to separate concatenated values by.
 - `order_by_clause` (optional): An expression (typically a column name) that determines the order of the concatenated values.
@@ -1125,6 +1129,52 @@ Note: If there are instances of `delimiter_text` within your `measure`, you cann
 **Usage:**
 ```
 {{ dbt_utils.listagg(measure='column_to_agg', delimiter_text="','", order_by_clause="order by order_by_column", limit_num=10) }}
+```
+
+#### array_construct ([source](macros/cross_db_utils/array_construct.sql))
+This macro returns an array constructed from a set of inputs. 
+
+**Args:**
+- `inputs` (optional): The list of array contents. If not provided, this macro will create an empty array. All inputs must be the *same data type* in order to match Postgres functionality and *not null* to match Bigquery functionality.
+
+**Usage:**
+```
+{{ dbt_utils.array_construct(['column_1', 'column_2', 'column_3']) }}
+```
+
+#### array_append ([source](macros/cross_db_utils/array_append.sql))
+This macro appends an element to the end of an array and returns the appended array.
+
+**Args:**
+- `array` (required): The array to append to. 
+- `new_element` (required): The element to be appended. This element must *match the data type of the existing elements* in the array in order to match Postgres functionality and *not null* to match Bigquery functionality. 
+
+**Usage:**
+```
+{{ dbt_utils.array_append('array_column', 'element_column') }}
+```
+
+#### array_concat ([source](macros/cross_db_utils/array_concat.sql))
+This macro returns the concatenation of two arrays.
+
+**Args:**
+- `array_1` (required): The array to append to. 
+- `array_2` (required): The array to be appended to `array_1`. This array must match the data type of `array_1` in order to match Postgres functionality.
+
+**Usage:**
+```
+{{ dbt_utils.array_concat('array_column_1', 'array_column_2') }}
+```
+
+#### cast_array_to_string ([source](macros/cross_db_utils/cast_array_to_string.sql))
+This macro converts an array to a single string value and returns the resulting string. 
+
+**Args:**
+- `array` (required): The array to convert to a string.
+
+**Usage:**
+```
+{{ dbt_utils.cast_array_to_string('array_column') }}
 ```
 
 ---

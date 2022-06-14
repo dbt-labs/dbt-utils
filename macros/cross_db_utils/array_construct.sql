@@ -1,5 +1,5 @@
 {% macro array_construct(inputs = [], data_type = 'varchar') -%}
-  {{ return(adapter.dispatch('array_construct', 'dbt_utils')(inputs)) }}
+  {{ return(adapter.dispatch('array_construct', 'dbt_utils')(inputs, data_type)) }}
 {%- endmacro %}
 
 {# all inputs must be the same data type to match postgres functionality #}

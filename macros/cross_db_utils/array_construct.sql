@@ -3,7 +3,7 @@
 {%- endmacro %}
 
 {# all inputs must be the same data type to match postgres functionality #}
-{% macro default__array_construct(inputs) -%}
+{% macro default__array_construct(inputs, data_type) -%}
     {% if input|length > 0 %}
     array[ {{ inputs|join(' , ') }} ]
     {% else %}
@@ -11,14 +11,14 @@
     {% endif %}
 {%- endmacro %}
 
-{% macro snowflake__array_construct(inputs) -%}
+{% macro snowflake__array_construct(inputs, data_type) -%}
     array_construct( {{ inputs|join(' , ') }} )
 {%- endmacro %}
 
-{% macro redshift__array_construct(inputs) -%}
+{% macro redshift__array_construct(inputs, data_type) -%}
     array( {{ inputs|join(' , ') }} )
 {%- endmacro %}
 
-{% macro bigquery__array_construct(inputs) -%}
+{% macro bigquery__array_construct(inputs, data_type) -%}
     [ {{ inputs|join(' , ') }} ]
 {%- endmacro %}

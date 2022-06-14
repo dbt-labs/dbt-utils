@@ -1,4 +1,4 @@
-{% macro array_construct(inputs = [], data_type = 'integer') -%}
+{% macro array_construct(inputs = [], data_type = api.Column.translate_type('integer')) -%}
   {{ return(adapter.dispatch('array_construct', 'dbt_utils')(inputs, data_type)) }}
 {%- endmacro %}
 

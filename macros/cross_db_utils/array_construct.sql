@@ -1,4 +1,4 @@
-{% macro array_construct(inputs = [], data_type = 'varchar') -%}
+{% macro array_construct(inputs = [], data_type = 'integer') -%}
   {{ return(adapter.dispatch('array_construct', 'dbt_utils')(inputs, data_type)) }}
 {%- endmacro %}
 

@@ -4,7 +4,7 @@
 
 {# all inputs must be the same data type to match postgres functionality #}
 {% macro default__array_construct(inputs, data_type) -%}
-    {% if input|length > 0 %}
+    {% if inputs|length > 0 %}
     array[ {{ inputs|join(' , ') }} ]
     {% else %}
     array[]::{{data_type}}[]

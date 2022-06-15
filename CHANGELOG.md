@@ -1,23 +1,33 @@
 <!--- Copy, paste, and uncomment the following headers as-needed for unreleased features
 # Unreleased
 ## New features
+- XXX ([#XXX](https://github.com/dbt-labs/dbt-utils/issues/XXX), [#XXX](https://github.com/dbt-labs/dbt-utils/pull/XXX))
 ## Fixes
 ## Quality of life
 ## Under the hood
 ## Contributors:
 --->
 
-# Unreleased
+# dbt-utils v0.8.6
 
-<!--- ## New features --->
+## New features
+- New macros `array_append` and `array_construct` ([#595](https://github.com/dbt-labs/dbt-utils/pull/595))
 
 ## Fixes
+- Use `*` in `star` macro if no columns (for SQLFluff) ([#605](https://github.com/dbt-labs/dbt-utils/issues/605), [#561](https://github.com/dbt-labs/dbt-utils/pull/561))
 - Only raise error within `union_relations` for `build`/`run` sub-commands ([#606](https://github.com/dbt-labs/dbt-utils/issues/606), [#607](https://github.com/dbt-labs/dbt-utils/pull/607))
 
-<!--- ## Quality of life --->
-<!--- ## Under the hood --->
+## Quality of life
+- Add slugify to list of Jinja Helpers ([#602](https://github.com/dbt-labs/dbt-utils/pull/602))
+
+## Under the hood
+- Fix `make test` for running integration tests locally ([#344](https://github.com/dbt-labs/dbt-utils/issues/344), [#564](https://github.com/dbt-labs/dbt-utils/issues/564), [#591](https://github.com/dbt-labs/dbt-utils/pull/591))
 
 ## Contributors:
+- [@swanjson](https://github.com/swanjson) (#561)
+- [@dataders](https://github.com/dataders) (#561)
+- [@epapineau](https://github.com/epapineau) (#583)
+- [@graciegoheen](https://github.com/graciegoheen) (#595)
 - [@jeremyyeo](https://github.com/jeremyyeo) (#606)
 
 # dbt-utils v0.8.5

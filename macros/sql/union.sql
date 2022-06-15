@@ -60,7 +60,10 @@
     {%- endfor -%}
 
     {%- set ordered_column_names = column_superset.keys() -%}
+    {%- set dbt_command = flags.WHICH -%}
 
+
+    {% if dbt_command in ['run', 'build'] %}
     {% if (include | length > 0 or exclude | length > 0) and not column_superset.keys() %}
         {%- set relations_string -%}
             {%- for relation in relations -%}
@@ -74,6 +77,7 @@
         {%- endset -%}
 
         {{ exceptions.raise_compiler_error(error_message) }}
+    {%- endif -%}
     {%- endif -%}
 
     {%- for relation in relations %}

@@ -1,4 +1,4 @@
-<!--- Uncomment the following headers as-needed for unreleased features
+<!--- Copy, paste, and uncomment the following headers as-needed for unreleased features
 # Unreleased
 ## New features
 ## Fixes
@@ -6,6 +6,19 @@
 ## Under the hood
 ## Contributors:
 --->
+
+# Unreleased
+
+<!--- ## New features --->
+
+## Fixes
+- Only raise error within `union_relations` for `build`/`run` sub-commands ([#606](https://github.com/dbt-labs/dbt-utils/issues/606), [#607](https://github.com/dbt-labs/dbt-utils/pull/607))
+
+<!--- ## Quality of life --->
+<!--- ## Under the hood --->
+
+## Contributors:
+- [@jeremyyeo](https://github.com/jeremyyeo) (#606)
 
 # dbt-utils v0.8.5
 ## 🚨 deduplicate ([#542](https://github.com/dbt-labs/dbt-utils/pull/542), [#548](https://github.com/dbt-labs/dbt-utils/pull/548))

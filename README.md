@@ -163,17 +163,17 @@ This macro can also be used at the column level. When this is done, the `express
 ```yaml
 version: 2
 models:
-    - name: model_name
-      columns:
-        - name: col_a
-          tests:
-            - dbt_utils.expression_is_true:
-                expression: '>= 1'
-        - name: col_b
-          tests:
-            - dbt_utils.expression_is_true:
-                expression: '= 1'
-                condition: col_a = 1
+  - name: model_name
+    columns:
+      - name: col_a
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: '>= 1'
+      - name: col_b
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: '= 1'
+              condition: col_a = 1
 ```
 
 #### recency ([source](macros/generic_tests/recency.sql))
@@ -383,13 +383,13 @@ to the `lower_` and `upper_bound_column` arguments, like so:
 version: 2
 
 models:
-- name: subscriptions
-  tests:
-    - dbt_utils.mutually_exclusive_ranges:
-        lower_bound_column: coalesce(started_at, '1900-01-01')
-        upper_bound_column: coalesce(ended_at, '2099-12-31')
-        partition_by: customer_id
-        gaps: allowed
+  - name: subscriptions
+    tests:
+      - dbt_utils.mutually_exclusive_ranges:
+          lower_bound_column: coalesce(started_at, '1900-01-01')
+          upper_bound_column: coalesce(ended_at, '2099-12-31')
+          partition_by: customer_id
+          gaps: allowed
 ```
 <details>
 <summary>Additional `gaps` and `zero_length_range_allowed` examples</summary>

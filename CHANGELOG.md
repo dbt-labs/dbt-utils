@@ -8,11 +8,20 @@
 ## Contributors:
 --->
 
+# Unreleased
+## New features
+- New `where` clause parameter to `unique_combination_of_columns` test to filter values tested ([#612](https://github.com/dbt-labs/dbt-utils/pull/612))
+
+## Fixes
+## Quality of life
+## Under the hood
+## Contributors:
+- [@epapineau](https://github.com/epapineau) (#612)
+
 # dbt-utils v0.8.6
 
 ## New features
 - New macros `array_append` and `array_construct` ([#595](https://github.com/dbt-labs/dbt-utils/pull/595))
-- New `where` clause parameter to `unique_combination_of_columns` test to filter values tested ([#612](https://github.com/dbt-labs/dbt-utils/pull/612))
 
 ## Fixes
 - Use `*` in `star` macro if no columns (for SQLFluff) ([#605](https://github.com/dbt-labs/dbt-utils/issues/605), [#561](https://github.com/dbt-labs/dbt-utils/pull/561))
@@ -27,7 +36,7 @@
 ## Contributors:
 - [@swanjson](https://github.com/swanjson) (#561)
 - [@dataders](https://github.com/dataders) (#561)
-- [@epapineau](https://github.com/epapineau) (#612)
+- [@epapineau](https://github.com/epapineau) (#602)
 - [@graciegoheen](https://github.com/graciegoheen) (#595)
 - [@jeremyyeo](https://github.com/jeremyyeo) (#606)
 

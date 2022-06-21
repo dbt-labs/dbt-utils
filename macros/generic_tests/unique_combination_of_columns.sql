@@ -1,8 +1,8 @@
 {% test unique_combination_of_columns(model, combination_of_columns, quote_columns=false) %}
-  {{ return(adapter.dispatch('test_unique_combination_of_columns', 'dbt_utils')(model, combination_of_columns, quote_columns)) }}
+  {{ return(adapter.dispatch('test_unique_combination_of_columns', 'dbt_utils')(model, combination_of_columns, quote_columns, where=none)) }}
 {% endtest %}
 
-{% macro default__test_unique_combination_of_columns(model, combination_of_columns, quote_columns=false) %}
+{% macro default__test_unique_combination_of_columns(model, combination_of_columns, quote_columns=false, where=none) %}
 
 {% if not quote_columns %}
     {%- set column_list=combination_of_columns %}
@@ -25,6 +25,11 @@ with validation_errors as (
     select
         {{ columns_csv }}
     from {{ model }}
+
+    {% if where is not none %}
+        where {{ where }}
+    {% endif %}
+
     group by {{ columns_csv }}
     having count(*) > 1
 

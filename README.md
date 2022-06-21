@@ -493,18 +493,9 @@ case we recommend using this test instead.
           - product
 ```
 
-An optional `quote_columns` argument (`default=false`) can also be used if a column name needs to be quoted.
-
-```yaml
-- name: revenue_by_product_by_month
-  tests:
-    - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - month
-          - group
-        quote_columns: true
-
-```
+**Args:**
+* `quote_columns` (default=false): Used when a column name needs to be quoted.
+* `where` (default=None): A where clause to filter the tested column values.
 
 #### accepted_range ([source](macros/generic_tests/accepted_range.sql))
 Asserts that a column's values fall inside an expected range. Any combination of `min_value` and `max_value` is allowed, and the range can be inclusive or exclusive. Provide a `where` argument to filter to specific records only.

@@ -105,6 +105,14 @@ seeds:
             - month
             - product
   
+  - name: data_unique_combination_of_columns_where
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - id
+            - is_x
+          where: "is_x = true"
+  
   - name: data_cardinality_equality_a
     columns:
       - name: same_name

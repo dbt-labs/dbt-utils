@@ -105,14 +105,26 @@ seeds:
             - month
             - product
   
-  - name: data_unique_combination_of_columns_where
+  - name: data_unique_combination_of_columns_where_passing
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - id
-            - is_x
-          where: "is_x = true"
+            - color
+          where: "color = 'orange'"
   
+  - name: data_unique_combination_of_columns_where_failing
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - id
+            - color
+          where: "color = 'orange'"
+          config:
+            severity: error
+            error_if: "<1"
+            warn_if: "<0"
+
   - name: data_cardinality_equality_a
     columns:
       - name: same_name

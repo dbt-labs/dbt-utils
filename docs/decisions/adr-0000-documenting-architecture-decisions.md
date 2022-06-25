@@ -48,7 +48,7 @@ We will use a format with just a few parts, so each document is easy to digest. 
 The whole document should be one or two pages long. We will write each ADR as if it is a conversation with a future developer. This requires good writing style, with full sentences organized into paragraphs. Bullets are acceptable only for visual style, not as an excuse for writing sentence fragments. (Bullets kill people, even PowerPoint bullets.)
 
 ## STATUS
-Accepted.
+Superseded by [ADR-0001](adr-0001-decision-record-format.md).
 
 ## CONSEQUENCES
 One ADR describes one significant decision for a specific project. It should be something that has an effect on how the rest of the project will run.

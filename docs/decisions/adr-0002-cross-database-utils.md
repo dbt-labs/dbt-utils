@@ -2,7 +2,7 @@
 status: accepted
 date: 2022-03-01
 deciders: Joel Labes and Jeremy Cohen
-consulted: dbt community (primarily via [dbt-utils #487](https://github.com/dbt-labs/dbt-utils/discussions/487))
+consulted: dbt community
 informed: dbt community
 ---
 # The future of `dbt_utils` - break it into more logical chunks

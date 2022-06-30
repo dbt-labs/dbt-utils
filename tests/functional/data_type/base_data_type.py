@@ -1,4 +1,3 @@
-import os
 import pytest
 from dbt.tests.util import run_dbt, check_relations_equal, get_relation_columns
 from dbt.tests.adapter.utils.data_types.base_data_type_macro import BaseDataTypeMacro

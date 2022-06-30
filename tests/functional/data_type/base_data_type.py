@@ -1,16 +1,20 @@
 import os
 import pytest
 from dbt.tests.util import run_dbt, check_relations_equal, get_relation_columns
-from dbt.tests.adapter.utils.base_utils import BaseUtils
+from dbt.tests.adapter.utils.data_types.base_data_type_macro import BaseDataTypeMacro
 
 class BaseDbtUtilsBackCompat(BaseDataTypeMacro):
+    # install this repo as a package
     @pytest.fixture(scope="class")
     def packages(self):
         return {"packages": [{"local": os.getcwd()}]}
 
-    def assert_columns_equal(self, project, expected_cols, actual_cols):
-        assert expected_cols == actual_cols, f"Type difference detected: {expected_cols} vs. {actual_cols}"
+    # call the macros from the 'dbt_utils' namespace
+    # instead of the unspecified / global namespace
+    def macro_namespace(self):
+        return "dbt_utils"
 
+    # actual test sequence needs to run 'deps' first
     def test_check_types_assert_match(self, project):
         run_dbt(['deps'])
         super().test_check_types_assert_match(project)

@@ -1,6 +1,6 @@
 import os
 import pytest
-from tests.functional.data_type.base_data_type import BaseDbtUtilsLegacyDataTypeMacro
+from tests.functional.data_type.base_data_type import BaseDbtUtilsBackCompat, BaseLegacyDataTypeMacro
 from dbt.tests.adapter.utils.data_types.test_type_bigint import BaseTypeBigInt
 
 

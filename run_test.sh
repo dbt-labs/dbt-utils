@@ -5,9 +5,6 @@ echo $(which dbt)
 
 # Show version and installed adapters
 dbt --version
-    python3 -m pip install --upgrade pip setuptools
-    python3 -m pip install --pre "dbt-$1"
-fi
 
 # Set the profile
 cd integration_tests

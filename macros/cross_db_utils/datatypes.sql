@@ -1,99 +1,67 @@
+{# These macros have been moved into dbt-core #}
+{# Here for backwards compatibility ONLY #}
+
 {# string  -------------------------------------------------     #}
 
 {%- macro type_string() -%}
-  {{ return(adapter.dispatch('type_string', 'dbt_utils')()) }}
+    {{ return(adapter.dispatch('type_string', 'dbt_utils')()) }}
 {%- endmacro -%}
 
 {% macro default__type_string() %}
-    string
+    {{ return(adapter.dispatch('type_string', 'dbt')()) }}
 {% endmacro %}
-
-{%- macro redshift__type_string() -%}
-    varchar
-{%- endmacro -%}
-
-{% macro postgres__type_string() %}
-    varchar
-{% endmacro %}
-
-{% macro snowflake__type_string() %}
-    varchar
-{% endmacro %}
-
 
 
 {# timestamp  -------------------------------------------------     #}
 
 {%- macro type_timestamp() -%}
-  {{ return(adapter.dispatch('type_timestamp', 'dbt_utils')()) }}
+    {{ return(adapter.dispatch('type_timestamp', 'dbt_utils')()) }}
 {%- endmacro -%}
 
 {% macro default__type_timestamp() %}
-    timestamp
-{% endmacro %}
-
-{% macro postgres__type_timestamp() %}
-    timestamp without time zone
-{% endmacro %}
-
-{% macro snowflake__type_timestamp() %}
-    timestamp_ntz
+    {{ return(adapter.dispatch('type_timestamp', 'dbt')()) }}
 {% endmacro %}
 
 
 {# float  -------------------------------------------------     #}
 
 {%- macro type_float() -%}
-  {{ return(adapter.dispatch('type_float', 'dbt_utils')()) }}
+    {{ return(adapter.dispatch('type_float', 'dbt_utils')()) }}
 {%- endmacro -%}
 
 {% macro default__type_float() %}
-    float
+    {{ return(adapter.dispatch('type_float', 'dbt')()) }}
 {% endmacro %}
 
-{% macro bigquery__type_float() %}
-    float64
-{% endmacro %}
 
 {# numeric  ------------------------------------------------     #}
 
 {%- macro type_numeric() -%}
-  {{ return(adapter.dispatch('type_numeric', 'dbt_utils')()) }}
+    {{ return(adapter.dispatch('type_numeric', 'dbt_utils')()) }}
 {%- endmacro -%}
 
 {% macro default__type_numeric() %}
-    numeric(28, 6)
-{% endmacro %}
-
-{% macro bigquery__type_numeric() %}
-    numeric
+    {{ return(adapter.dispatch('type_numeric', 'dbt')()) }}
 {% endmacro %}
 
 
 {# bigint  -------------------------------------------------     #}
 
 {%- macro type_bigint() -%}
-  {{ return(adapter.dispatch('type_bigint', 'dbt_utils')()) }}
+    {{ return(adapter.dispatch('type_bigint', 'dbt_utils')()) }}
 {%- endmacro -%}
 
 {% macro default__type_bigint() %}
-    bigint
+    {{ return(adapter.dispatch('type_bigint', 'dbt')()) }}
 {% endmacro %}
 
-{% macro bigquery__type_bigint() %}
-    int64
-{% endmacro %}
 
 {# int  -------------------------------------------------     #}
 
 {%- macro type_int() -%}
-  {{ return(adapter.dispatch('type_int', 'dbt_utils')()) }}
+    {{ return(adapter.dispatch('type_int', 'dbt_utils')()) }}
 {%- endmacro -%}
 
 {% macro default__type_int() %}
-    int
-{% endmacro %}
-
-{% macro bigquery__type_int() %}
-    int64
+    {{ return(adapter.dispatch('type_int', 'dbt')()) }}
 {% endmacro %}

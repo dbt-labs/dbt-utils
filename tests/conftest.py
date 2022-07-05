@@ -5,10 +5,10 @@ pytest_plugins = ["dbt.tests.fixtures.project"]
 
 
 def pytest_addoption(parser):
-    parser.addoption("--profile", action="store", default="apache_spark", type=str)
+    parser.addoption("--profile", action="store", default="postgres", type=str)
 
 
-# Using @pytest.mark.skip_adapter('apache_spark') uses the 'skip_by_adapter_type'
+# Using @pytest.mark.skip_profile('postgres') uses the 'skip_by_profile_type'
 # autouse fixture below
 def pytest_configure(config):
     config.addinivalue_line(

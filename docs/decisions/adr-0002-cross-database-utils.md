@@ -40,6 +40,10 @@ that was the consensus that emerged from the discussion in [dbt-utils #487](http
 
 Passthroughs will be left behind for migrated macros (so that calls to `dbt_utils.hash` don't suddenly start failing). New cross-database macros can be added in minor and major releases for dbt Core (but not patch releases). End users will retain the ability to use `dispatch` to shim/extend packages to adapters that don't yet support a particular macro.
 
+Additional decisions:
+- Keep tests and non-cross-database macros together in `dbt_utils`
+- Move experiments to a separate repo (i.e., the `load_by_period` macro)
+
 ## Validation
 
 Each moved macro will be validated by leaving a definition in `dbt_utils` and dispatching it to `dbt-core`. Independent continuous integration (CI) testing will exist within `dbt-core`, adapters, and `dbt_utils` using the [new pytest framework](https://docs.getdbt.com/docs/contributing/testing-a-new-adapter).
@@ -51,7 +55,7 @@ Each moved macro will be validated by leaving a definition in `dbt_utils` and di
 * Good, because common, reusable functionality that differs across databases will work "out of the box"
 * Good, because functionality can subjected to more [rigorous testing](https://docs.getdbt.com/docs/contributing/testing-a-new-adapter)
 * Good, because we hope that many package vendors could drop their dependencies on `dbt_utils` altogether, which makes version resolution easier
-* Good, because it's slightly more convenient to reference the macro as `dateadd` instead of `dbt_utils.dateadd`
+* Good, because it's more convenient to reference the macro as `dateadd` instead of `dbt_utils.dateadd` (and `dbt.dateadd` is preserved as an option for those that appreciate an explicit namespace)
 * Good, because overriding global macros is more simple than overriding package macros
 * Good, because changes to macros are more clearly tied to `dbt-core` versions, rather than needing to worry about breaking changes in the matrix of `dbt-core` + `dbt_utils` minor versions
 * Good, because it establishes a precedent and pathway for battle-testing and maturing functionality before being promoted to Core

@@ -11,9 +11,8 @@
 with
     validation as (
         select
-            sum(case when {{ column_name }} is null then 0 else 1 end) / cast(
-                count(*) as numeric
-            ) as not_null_proportion
+            sum(case when {{ column_name }} is null then 0 else 1 end)
+            / cast(count(*) as numeric) as not_null_proportion
         from {{ model }}
     ),
     validation_errors as (

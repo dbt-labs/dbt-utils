@@ -28,9 +28,8 @@
 with
     data as (
         select
-            coalesce(
-                max("{{timestamp_field}}"), '{{start_date}}'
-            )::timestamp as start_timestamp,
+            coalesce(max("{{timestamp_field}}"), '{{start_date}}')::timestamp
+            as start_timestamp,
             coalesce(
                 {{
                     dbt_utils.dateadd(
@@ -47,8 +46,7 @@ select
     start_timestamp,
     stop_timestamp,
     {{ dbt_utils.datediff("start_timestamp", "stop_timestamp", period) }}
-    + 1
-    as num_periods
+    + 1 as num_periods
 from data {%- endcall %}
 
 {%- endmacro %}

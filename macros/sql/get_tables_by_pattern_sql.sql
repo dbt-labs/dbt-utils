@@ -25,8 +25,6 @@ where
     and table_name not ilike '{{ exclude }}'
 
 {% endmacro %}
-
-
     {% macro bigquery__get_tables_by_pattern_sql(
     schema_pattern, table_pattern, exclude="", database=target.database
 ) %}

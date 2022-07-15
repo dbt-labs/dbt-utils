@@ -25,10 +25,6 @@ select
     {%- endif -%}
 
 {%- endmacro %}
-
-
-
-
     {% macro date_spine(datepart, start_date, end_date) %}
     {{
         return(
@@ -38,8 +34,6 @@ select
     {%- endmacro %}
 
 {% macro default__date_spine(datepart, start_date, end_date) %}
-
-
 {# call as follows:
 
 date_spine(

@@ -1,5 +1,3 @@
-
-
 {% macro concat(fields) -%}
 {{ return(adapter.dispatch("concat", "dbt_utils")(fields)) }}
 {%- endmacro %}

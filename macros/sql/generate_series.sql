@@ -36,7 +36,8 @@ with
             {% for i in range(n) %}
             p{{ i }}.generated_number * power(2, {{ i }})
             {% if not loop.last %} + {% endif %}
-            {% endfor %} + 1 as generated_number
+            {% endfor %}
+            + 1 as generated_number
 
         from
 

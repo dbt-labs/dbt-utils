@@ -76,7 +76,8 @@ with
 
             row_number() over (
                 {{ partition_clause }} order by {{ lower_bound_column }} desc
-            ) = 1 as is_last_record
+            )
+            = 1 as is_last_record
 
         from {{ model }}
 

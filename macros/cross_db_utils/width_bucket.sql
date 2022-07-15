@@ -21,13 +21,13 @@
             mod(
                 {{ dbt_utils.safe_cast(expr, dbt_utils.type_numeric()) }},
                 {{ dbt_utils.safe_cast(bin_size, dbt_utils.type_numeric()) }}
-            ) = 0
+            )
+            = 0
         then 1
         else 0
     end
-) +
 -- Anything over max_value goes the N+1 bucket
-least(ceil( ({{ expr }} - {{ min_value }}) /{{ bin_size }}), {{ num_buckets }} + 1)
+) + least(ceil( ({{ expr }} - {{ min_value }}) /{{ bin_size }}), {{ num_buckets }} + 1)
 {%- endmacro %}
 
 {% macro redshift__width_bucket(expr, min_value, max_value, num_buckets) -%}
@@ -40,15 +40,13 @@ least(ceil( ({{ expr }} - {{ min_value }}) /{{ bin_size }}), {{ num_buckets }} +
     case
         when
             {{ dbt_utils.safe_cast(expr, dbt_utils.type_numeric()) }}
-            %
-            {{ dbt_utils.safe_cast(bin_size, dbt_utils.type_numeric()) }}
+            % {{ dbt_utils.safe_cast(bin_size, dbt_utils.type_numeric()) }}
             = 0
         then 1
         else 0
     end
-) +
 -- Anything over max_value goes the N+1 bucket
-least(ceil( ({{ expr }} - {{ min_value }}) /{{ bin_size }}), {{ num_buckets }} + 1)
+) + least(ceil( ({{ expr }} - {{ min_value }}) /{{ bin_size }}), {{ num_buckets }} + 1)
 {%- endmacro %}
 
 {% macro snowflake__width_bucket(expr, min_value, max_value, num_buckets) %}

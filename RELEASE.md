@@ -1,5 +1,7 @@
 # dbt-utils releases
 
+TODO - update the following content since it is not up-to-date.
+
 ## When do we release?
 There's a few scenarios that might prompt a release:
 

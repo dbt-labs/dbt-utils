@@ -26,4 +26,4 @@ If tests fail, this _is_ a breaking change. You'll need to create a minor releas
 - [ ] Fix any errors
 - [ ] Merge `dev` into `master`
 - [ ] Create a minor release
-- [ ] Once the release is available on hub, [create a new issue](https://github.com/fishtown-analytics/dbt-utils/issues/new/choose) using the "dbt-utils Minor Release Checklist" template
+- [ ] Once the release is available on hub, [create a new issue](https://github.com/dbt-labs/dbt-utils/issues/new/choose) using the "dbt-utils Minor Release Checklist" template

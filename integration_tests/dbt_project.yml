@@ -62,11 +62,11 @@ seeds:
 
       data_deduplicate:
         +column_types:
-          event: string
+          event: {{ type_string() }}
 
       data_deduplicate_expected:
         +column_types:
-          event: string
+          event: {{ type_string() }}
 
     schema_tests:
       data_test_sequential_timestamps:

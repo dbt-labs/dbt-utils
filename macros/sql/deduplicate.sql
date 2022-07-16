@@ -44,7 +44,7 @@ The {{ model.package_name }}.{{ model.name }} model triggered this warning.
             _inner.*,
             row_number() over (
                 partition by {{ partition_by }}
-                order by {{ order_by }}
+                order by {{ order_by }} nulls last
             ) as rn
         from {{ relation }} as _inner
     )

@@ -63,3 +63,24 @@ The {{ model.package_name }}.{{ model.name }} model triggered this warning.
     where row_numbered.rn = 1
 
 {%- endmacro -%}
+
+{#
+--  It is more performant to deduplicate using `array_agg` with a limit
+--  clause in BigQuery:
+--  https://github.com/dbt-labs/dbt-utils/issues/335#issuecomment-788157572
+#}
+{%- macro bigquery__deduplicate(relation, partition_by, order_by) -%}
+
+    select unique.*
+    from (
+        select
+            array_agg (
+                original
+                order by {{ order_by }}
+                limit 1
+            )[offset(0)] unique
+        from {{ relation }} original
+        group by {{ partition_by }}
+    )
+
+{%- endmacro -%}

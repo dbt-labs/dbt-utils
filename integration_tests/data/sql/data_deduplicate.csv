@@ -1,4 +1,5 @@
 user_id,event,version
 1,play,1
 1,play,2
+1,play,NULL
 2,pause,1

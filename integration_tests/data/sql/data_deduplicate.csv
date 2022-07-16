@@ -1,5 +1,5 @@
 user_id,event,version,category
-1,play,1,green
-1,play,2,blue
+1,play,"1",green
+1,play,"2",blue
 1,play,NULL,green
-2,pause,1,blue
+2,pause,"1",blue

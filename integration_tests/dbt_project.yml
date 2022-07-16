@@ -60,14 +60,6 @@ seeds:
         # this.incorporate() to hardcode the node's type as otherwise dbt doesn't know it yet
         +post-hook: "{% do adapter.drop_relation(this.incorporate(type='table')) %}"
 
-      data_deduplicate:
-        +column_types:
-          event: {{ type_string() }}
-
-      data_deduplicate_expected:
-        +column_types:
-          event: {{ type_string() }}
-
     schema_tests:
       data_test_sequential_timestamps:
         +column_types:

@@ -56,9 +56,9 @@ A deep understanding of these tools in not required to effectively contribute to
 ## Implementation guidelines
 
 Ensure that changes will work on "non-core" adapters by:
-- dispatching any new macro(s) so non-core adapters can also use them (e.g. [the `star()` source](https://github.com/fishtown-analytics/dbt-utils/blob/master/macros/sql/star.sql))
+- dispatching any new macro(s) so non-core adapters can also use them (e.g. [the `star()` source](https://github.com/dbt-labs/dbt-utils/blob/main/macros/sql/star.sql))
 - using the `limit_zero()` macro in place of the literal string: `limit 0`
-- using `dbt_utils.type_*` macros instead of explicit datatypes (e.g. `dbt_utils.type_timestamp()` instead of `TIMESTAMP`
+- using [`type_*` macros](https://docs.getdbt.com/reference/dbt-jinja-functions/cross-database-macros#data-type-functions) instead of explicit datatypes (e.g. [`type_timestamp()`](https://docs.getdbt.com/reference/dbt-jinja-functions/cross-database-macros#type_timestamp) instead of `TIMESTAMP`
 
 ## Testing
 
@@ -80,6 +80,6 @@ You don't need to worry about which `dbt-utils` version your change will go into
 
 A `dbt-utils` maintainer will review your PR. They may suggest code revision for style or clarity, or request that you add unit or integration test(s). These are good things! We believe that, with a little bit of help, anyone can contribute high-quality code.
 
-Automated tests run via CircleCI. If you're a first-time contributor, all tests (including code checks and unit tests) will require a maintainer to approve. Changes in the `dbt-utils` repository trigger integration tests against Postgres [TODO]. dbt Labs also provides CI environments in which to test changes to other adapters, triggered by PRs in those adapters' repositories, as well as periodic maintenance checks of each adapter in concert with the latest `dbt-utils` code changes.
+Automated tests run via CircleCI. If you're a first-time contributor, all tests (including code checks and unit tests) will require a maintainer to approve. Changes in the `dbt-utils` repository trigger integration tests.
 
 Once all tests are passing and your PR has been approved, a `dbt-utils` maintainer will merge your changes into the active development branch. And that's it! Happy developing :tada:

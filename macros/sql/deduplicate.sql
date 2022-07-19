@@ -44,8 +44,7 @@ from
                 original
                 {% if order_by is not none -%} order by {{ order_by }} {%- endif %}
                 limit 1
-            ) [offset (0)
-            ] as deduped
+            )[offset(0)] as deduped
         from {{ relation if relation_alias is none else relation_alias }} as original
         group by {{ group_by }}
     )

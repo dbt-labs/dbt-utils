@@ -18,6 +18,6 @@ split_part({{ string_text }}, {{ delimiter_text }}, {{ part_number }})
 
 {% macro bigquery__split_part(string_text, delimiter_text, part_number) %}
 
-split({{ string_text }}, {{ delimiter_text }}) [safe_offset({{ part_number - 1 }})]
+split({{ string_text }}, {{ delimiter_text }})[safe_offset({{ part_number - 1 }})]
 
 {% endmacro %}

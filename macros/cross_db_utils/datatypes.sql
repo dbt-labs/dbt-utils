@@ -1,6 +1,3 @@
-{# These macros have been moved into dbt-core #}
-{# Here for backwards compatibility ONLY #}
-
 {# string  -------------------------------------------------     #}
 
 {%- macro type_string() -%}
@@ -8,6 +5,7 @@
 {%- endmacro -%}
 
 {% macro default__type_string() %}
+    {% do dbt_utils.xdb_deprecation_warning('type_string', model.package_name, model.name) %}
     {{ return(adapter.dispatch('type_string', 'dbt')()) }}
 {% endmacro %}
 
@@ -19,6 +17,7 @@
 {%- endmacro -%}
 
 {% macro default__type_timestamp() %}
+    {% do dbt_utils.xdb_deprecation_warning('type_timestamp', model.package_name, model.name) %}
     {{ return(adapter.dispatch('type_timestamp', 'dbt')()) }}
 {% endmacro %}
 
@@ -30,6 +29,7 @@
 {%- endmacro -%}
 
 {% macro default__type_float() %}
+    {% do dbt_utils.xdb_deprecation_warning('type_float', model.package_name, model.name) %}
     {{ return(adapter.dispatch('type_float', 'dbt')()) }}
 {% endmacro %}
 
@@ -41,6 +41,7 @@
 {%- endmacro -%}
 
 {% macro default__type_numeric() %}
+    {% do dbt_utils.xdb_deprecation_warning('type_numeric', model.package_name, model.name) %}
     {{ return(adapter.dispatch('type_numeric', 'dbt')()) }}
 {% endmacro %}
 
@@ -52,6 +53,7 @@
 {%- endmacro -%}
 
 {% macro default__type_bigint() %}
+    {% do dbt_utils.xdb_deprecation_warning('type_bigint', model.package_name, model.name) %}
     {{ return(adapter.dispatch('type_bigint', 'dbt')()) }}
 {% endmacro %}
 
@@ -63,5 +65,6 @@
 {%- endmacro -%}
 
 {% macro default__type_int() %}
+    {% do dbt_utils.xdb_deprecation_warning('type_int', model.package_name, model.name) %}
     {{ return(adapter.dispatch('type_int', 'dbt')()) }}
 {% endmacro %}

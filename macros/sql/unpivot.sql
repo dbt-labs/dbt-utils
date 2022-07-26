@@ -10,13 +10,14 @@ Arguments:
     remove: A list of columns to remove from the resulting table. Default is none.
     field_name: Destination table column name for the source table column names.
     value_name: Destination table column name for the pivoted values
+    quote_columns: Flag for whether or not the columns being pivoted require quoting
 #}
 
-{% macro unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', table=none) -%}
-    {{ return(adapter.dispatch('unpivot', 'dbt_utils')(relation, cast_to, exclude, remove, field_name, value_name, table)) }}
+{% macro unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', quote_columns=false, table=none) -%}
+    {{ return(adapter.dispatch('unpivot', 'dbt_utils')(relation, cast_to, exclude, remove, field_name, value_name, quote_columns, table)) }}
 {% endmacro %}
 
-{% macro default__unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', table=none) -%}
+{% macro default__unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', quote_columns=false, table=none) -%}
 
     {% if table %}
         {%- set error_message = '
@@ -63,9 +64,9 @@ Arguments:
 
       cast('{{ col.column }}' as {{ dbt_utils.type_string() }}) as {{ field_name }},
       cast(  {% if col.data_type == 'boolean' %}
-           {{ dbt_utils.cast_bool_to_text(col.column) }}
+           {% if quote_columns == true %}"{{ dbt_utils.cast_bool_to_text(col.column) }}"{% else %}{{ dbt_utils.cast_bool_to_text(col.column) }}{% endif %}
              {% else %}
-           {{ col.column }}
+           {% if quote_columns == true %}"{{ col.column }}"{% else %}{{ col.column }}{% endif %}
              {% endif %}
            as {{ cast_to }}) as {{ value_name }}
 

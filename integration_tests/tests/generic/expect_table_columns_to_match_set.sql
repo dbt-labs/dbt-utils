@@ -17,7 +17,7 @@
                                     | list 
     -%}
 
-    {# Replaces dbt_exoectations._list_intersect() #}
+    {# Replaces dbt_expectations._list_intersect() #}
     {%- set matching_columns = [] -%}
     {%- for itm in column_list -%}
         {%- if itm in relation_column_names -%}

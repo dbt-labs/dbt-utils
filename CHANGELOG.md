@@ -8,6 +8,14 @@
 ## Contributors:
 --->
 
+# Unreleased
+
+## New features
+- New feature to omit the `source_column_name` column on the `union_relations` macro ([#331](https://github.com/dbt-labs/dbt-utils/issues/331), [#624](https://github.com/dbt-labs/dbt-utils/pull/624))
+
+## Contributors:
+- [@christineberger](https://github.com/christineberger) (#624)
+
 # dbt-utils v0.8.6
 
 ## New features

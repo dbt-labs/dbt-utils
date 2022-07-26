@@ -886,7 +886,7 @@ final query. Note the `include` and `exclude` arguments are mutually exclusive.
 * `column_override` (optional): A dictionary of explicit column type overrides,
 e.g. `{"some_field": "varchar(100)"}`.``
 * `source_column_name` (optional, `default="_dbt_source_relation"`): The name of
-the column that records the source of this row.
+the column that records the source of this row. Pass `None` to omit this column from the results.
 * `where` (optional): Filter conditions to include in the `where` clause.
 
 #### generate_series ([source](macros/sql/generate_series.sql))

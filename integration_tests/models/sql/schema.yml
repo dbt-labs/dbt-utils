@@ -162,6 +162,11 @@ models:
       - name: favorite_number
         tests:
           - dbt_utils.not_constant
+  
+  - name: test_union_no_source_column
+    tests:
+      - expect_table_columns_to_match_set:
+          column_list: ["id", "name", "favorite_color", "favorite_number"]
 
   - name: test_get_relations_by_pattern
     tests:

@@ -55,6 +55,9 @@
   {%- set start_date = config.require('start_date') -%}
   {%- set stop_date = config.get('stop_date') or '' -%}
   {%- set period = config.get('period') or 'week' -%}
+  
+  {%- set deprecation_warning = "Warning: the `insert_by_period` materialization will be removed from dbt_utils in version 1.0.0. Install from dbt-labs/dbt-labs-experimental-features instead (see https://github.com/dbt-labs/dbt-utils/discussions/487). The " ~ package ~ "." ~ model ~ " model triggered this warning." -%}
+  {%- do exceptions.warn(deprecation_warning) -%}
 
   {%- if sql.find('__PERIOD_FILTER__') == -1 -%}
     {%- set error_message -%}

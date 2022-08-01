@@ -70,6 +70,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
     - [pretty_time](#pretty_time-source)
     - [pretty_log_format](#pretty_log_format-source)
     - [log_info](#log_info-source)
+    - [retrieve_columns](#retrieve_columns)
     - [slugify](#slugify-source)
 
 [Materializations](#materializations):
@@ -558,7 +559,7 @@ This macro returns the unique values for a column in a given [relation](https://
 **Args:**
 - `table` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
 - `column` (required): The name of the column you wish to find the column values of
-- `where` (optional, default=`none`): A where clause to filter the column values by. 
+- `where` (optional, default=`none`): A where clause to filter the column values by.
 - `order_by` (optional, default=`'count(*) desc'`): How the results should be ordered. The default is to order by `count(*) desc`, i.e. decreasing frequency. Setting this as `'my_column'` will sort alphabetically, while `'min(created_at)'` will sort by when thevalue was first observed.
 - `max_records` (optional, default=`none`): The maximum number of column values you want to return
 - `default` (optional, default=`[]`): The results this macro should return if the relation has not yet been created (and therefore has no column values).
@@ -1133,7 +1134,7 @@ Note: If there are instances of `delimiter_text` within your `measure`, you cann
 ```
 
 #### array_construct ([source](macros/cross_db_utils/array_construct.sql))
-This macro returns an array constructed from a set of inputs. 
+This macro returns an array constructed from a set of inputs.
 
 **Args:**
 - `inputs` (optional): The list of array contents. If not provided, this macro will create an empty array. All inputs must be the *same data type* in order to match Postgres functionality and *not null* to match Bigquery functionality.
@@ -1149,8 +1150,8 @@ This macro returns an array constructed from a set of inputs.
 This macro appends an element to the end of an array and returns the appended array.
 
 **Args:**
-- `array` (required): The array to append to. 
-- `new_element` (required): The element to be appended. This element must *match the data type of the existing elements* in the array in order to match Postgres functionality and *not null* to match Bigquery functionality. 
+- `array` (required): The array to append to.
+- `new_element` (required): The element to be appended. This element must *match the data type of the existing elements* in the array in order to match Postgres functionality and *not null* to match Bigquery functionality.
 
 **Usage:**
 ```
@@ -1161,7 +1162,7 @@ This macro appends an element to the end of an array and returns the appended ar
 This macro returns the concatenation of two arrays.
 
 **Args:**
-- `array_1` (required): The array to append to. 
+- `array_1` (required): The array to append to.
 - `array_2` (required): The array to be appended to `array_1`. This array must match the data type of `array_1` in order to match Postgres functionality.
 
 **Usage:**
@@ -1170,7 +1171,7 @@ This macro returns the concatenation of two arrays.
 ```
 
 #### cast_array_to_string ([source](macros/cross_db_utils/cast_array_to_string.sql))
-This macro converts an array to a single string value and returns the resulting string. 
+This macro converts an array to a single string value and returns the resulting string.
 
 **Args:**
 - `array` (required): The array to convert to a string.
@@ -1211,6 +1212,59 @@ This macro logs a formatted message (with a timestamp) to the command line.
 11:07:28 | 1 of 1 START table model analytics.fct_orders........................ [RUN]
 11:07:31 + my pretty message
 ```
+
+#### retrieve_columns ([source](macros/jinja_helpers/retrieve_columns.sql))
+Use this macro to standardize how you build lists of columns in a from clause, either using a list, or dictionary. If a dictionary is provided, the key is the column being selected, and the value is the column alias.
+
+**Args:**
+* `columns` (required): The name of the column that represents the
+upper value of the range.
+* `is_dict` (default is `false`): If this is true, we take the input as a key-value dictionary.
+* `starts` (default is `false`): when True, this column will begin the list with a leading comma.
+* `prefix` (optional): When provided, this precedes each item on the list as the table alias prefix
+
+**Usage:**
+```sql
+
+{% set salesforce_columns = {
+    "total_time_in_minutes__c": "total_time_in_minutes",
+    "assignee__c": "assignee",
+    "account_id__c": "account_id"
+%}
+
+{% set company_columns = {
+  "company_id",
+  "company_name",
+  "domain"
+}
+%}
+
+select
+  {retrieve_columns(salesforce_columns, is_dict=True, prefix='opp', starts=True)}
+  {retrieve_columns(company_columns)}
+
+from opportunities opp
+left join company c
+  on opp.account_id__c = c.account_id
+```
+
+Would compile to
+
+```sql
+
+select
+  opp.total_time_in_minutes__c as total_time_in_minutes
+  , opp.assignee__c as asignee
+  , opp.account_id__c as account_id
+  , company_id
+  , company_name
+  , comain
+from opportunities opp
+left join company c
+  on opp.account_id__c = c.account_id
+
+```
+
 
 #### slugify ([source](macros/jinja_helpers/slugify.sql))
 This macro is useful for transforming Jinja strings into "slugs", and can be useful when using a Jinja object as a column name, especially when that Jinja object is not hardcoded.

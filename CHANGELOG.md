@@ -27,6 +27,7 @@
 
 ## Quality of life
 - Add slugify to list of Jinja Helpers ([#602](https://github.com/dbt-labs/dbt-utils/pull/602))
+- Add retreive_columns to the list of Jinja Helpers
 
 ## Under the hood
 - Fix `make test` for running integration tests locally ([#344](https://github.com/dbt-labs/dbt-utils/issues/344), [#564](https://github.com/dbt-labs/dbt-utils/issues/564), [#591](https://github.com/dbt-labs/dbt-utils/pull/591))

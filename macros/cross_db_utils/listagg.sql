@@ -16,7 +16,7 @@
 array_to_string(
     array_slice(
         array_agg({{ measure }})
-        {% if order_by_clause -%} within group({{ order_by_clause }}) {%- endif %},
+        {% if order_by_clause -%} within group ({{ order_by_clause }}) {%- endif %},
         0,
         {{ limit_num }}
     ),
@@ -24,7 +24,7 @@ array_to_string(
 )
 {%- else %}
 listagg({{ measure }}, {{ delimiter_text }})
-{% if order_by_clause -%} within group({{ order_by_clause }})
+{% if order_by_clause -%} within group ({{ order_by_clause }})
 {%- endif %}
 {%- endif %}
 
@@ -78,12 +78,12 @@ string_agg(
     {% set regex %}'([^{{ ns.delimiter_text_regex }}]+{{ ns.delimiter_text_regex }}){1,{{ limit_num - 1}}}[^{{ ns.delimiter_text_regex }}]+'{% endset %}
 regexp_substr(
     listagg({{ measure }}, {{ delimiter_text }})
-    {% if order_by_clause -%} within group({{ order_by_clause }}) {%- endif %},
+    {% if order_by_clause -%} within group ({{ order_by_clause }}) {%- endif %},
     {{ regex }}
 )
 {%- else %}
 listagg({{ measure }}, {{ delimiter_text }})
-{% if order_by_clause -%} within group({{ order_by_clause }})
+{% if order_by_clause -%} within group ({{ order_by_clause }})
 {%- endif %}
 {%- endif %}
 

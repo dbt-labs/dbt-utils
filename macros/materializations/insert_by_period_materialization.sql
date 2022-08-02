@@ -46,7 +46,7 @@
     {{target_cols_csv}}
   from (
     {{filtered_sql}}
-  )
+  ) t
 
 {%- endmacro %}
 
@@ -55,7 +55,7 @@
   {%- set start_date = config.require('start_date') -%}
   {%- set stop_date = config.get('stop_date') or '' -%}
   {%- set period = config.get('period') or 'week' -%}
-  
+
   {%- set deprecation_warning = "Warning: the `insert_by_period` materialization will be removed from dbt_utils in version 1.0.0. Install from dbt-labs/dbt-labs-experimental-features instead (see https://github.com/dbt-labs/dbt-utils/discussions/487). The " ~ package ~ "." ~ model ~ " model triggered this warning." -%}
   {%- do exceptions.warn(deprecation_warning) -%}
 
@@ -130,7 +130,7 @@
 
     {%- set tmp_identifier = model['name'] ~ '__dbt_incremental_period' ~ i ~ '_tmp' -%}
     {%- set tmp_relation = api.Relation.create(identifier=tmp_identifier,
-                                               schema=schema, type='table') -%}
+                                               schema=None, type='table') -%}
     {% call statement() -%}
       {% set tmp_table_sql = dbt_utils.get_period_sql(target_cols_csv,
                                                        sql,
@@ -159,7 +159,7 @@
     {% else %} {# older versions #}
         {% set rows_inserted = result['status'].split(" ")[2] | int %}
     {% endif %}
-    
+
     {%- set sum_rows_inserted = loop_vars['sum_rows_inserted'] + rows_inserted -%}
     {%- if loop_vars.update({'sum_rows_inserted': sum_rows_inserted}) %} {% endif -%}
 
@@ -187,6 +187,6 @@
   {%- endcall %}
 
   -- Return the relations created in this materialization
-  {{ return({'relations': [target_relation]}) }}  
+  {{ return({'relations': [target_relation]}) }}
 
 {%- endmaterialization %}

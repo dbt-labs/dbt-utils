@@ -11,10 +11,12 @@
 # Unreleased
 
 ## New features
+- Implemented an optional `group_by_columns` argument across many of the generic testing macros to test for properties that only pertain to group-level or are can be more rigorously conducted at the group level. Property available in `recency`, `at_least_one`, `equal_row_count`, `fewer_rws_than`, `not_constant`, `not_null_proportion`, and `sequential` tests [#633](https://github.com/dbt-labs/dbt-utils/pull/633)
 - New feature to omit the `source_column_name` column on the `union_relations` macro ([#331](https://github.com/dbt-labs/dbt-utils/issues/331), [#624](https://github.com/dbt-labs/dbt-utils/pull/624))
 
 ## Contributors:
 - [@christineberger](https://github.com/christineberger) (#624)
+- [@emilyriederer](https://github.com/emilyriederer) 
 
 # dbt-utils v0.8.6
 

@@ -1,28 +1,56 @@
-{% test fewer_rows_than(model, compare_model) %}
-  {{ return(adapter.dispatch('test_fewer_rows_than', 'dbt_utils')(model, compare_model)) }}
+{% test fewer_rows_than(model, compare_model, group_by_columns = []) %}
+  {{ return(adapter.dispatch('test_fewer_rows_than', 'dbt_utils')(model, compare_model, group_by_columns)) }}
 {% endtest %}
 
-{% macro default__test_fewer_rows_than(model, compare_model) %}
+{% macro default__test_fewer_rows_than(model, compare_model, group_by_columns) %}
 
-{{ config(fail_calc = 'coalesce(row_count_delta, 0)') }}
+{{ config(fail_calc = 'sum(coalesce(row_count_delta, 0))') }}
+
+{% if group_by_columns|length() > 0 %}
+  {% set select_gb_cols = group_by_columns|join(' ,') + ', ' %}
+  {% set join_gb_cols %}
+    {% for c in group_by_columns %}
+      and a.{{c}} = b.{{c}}
+    {% endfor %}
+  {% endset %}
+{% endif %}
+{% set group_by_columns = ['id'] + group_by_columns %}
+{% set groupby_gb_cols = 'group by ' + group_by_columns|join(',') %}
 
 with a as (
 
-    select count(*) as count_our_model from {{ model }}
+    select 
+      {{select_gb_cols}}
+      1 as id,
+      count(*) as count_our_model 
+    from {{ model }}
+    {{ groupby_gb_cols }}
 
 ),
 b as (
 
-    select count(*) as count_comparison_model from {{ compare_model }}
+    select 
+      {{select_gb_cols}}
+      count(*) as count_comparison_model 
+    from {{ compare_model }}
+    {{ groupby_gb_cols }}
 
 ),
 counts as (
 
     select
+
+        {% for c in group_by_columns -%}
+          a.{{c}} as {{c}}_a,
+          b.{{c}} as {{c}}_b,
+        {% endfor %}
+
         count_our_model,
         count_comparison_model
     from a
-    cross join b
+    full join b on
+    a.id = b.id 
+    {{ join_gb_cols }}
 
 ),
 final as (

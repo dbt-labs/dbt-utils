@@ -1,7 +1,9 @@
 {% test recency(model, field, datepart, interval) %}
 {{
     return(
-        adapter.dispatch("test_recency", "dbt_utils")(model, field, datepart, interval)
+        adapter.dispatch("test_recency", "dbt_utils")(
+            model, field, datepart, interval
+        )
     )
 }}
 {% endtest %}

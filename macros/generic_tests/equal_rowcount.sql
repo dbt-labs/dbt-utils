@@ -1,5 +1,9 @@
 {% test equal_rowcount(model, compare_model) %}
-{{ return(adapter.dispatch("test_equal_rowcount", "dbt_utils")(model, compare_model)) }}
+{{
+    return(
+        adapter.dispatch("test_equal_rowcount", "dbt_utils")(model, compare_model)
+    )
+}}
 {% endtest %}
 
 {% macro default__test_equal_rowcount(model, compare_model) %}

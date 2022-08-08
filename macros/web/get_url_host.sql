@@ -20,6 +20,12 @@
     ),
     "'?'",
     1,
-) -%} {{ dbt_utils.safe_cast(parsed, dbt_utils.type_string()) }}
+) -%}
+{{
+    dbt_utils.safe_cast(
+        parsed,
+        dbt_utils.type_string(),
+    )
+}}
 
 {%- endmacro %}

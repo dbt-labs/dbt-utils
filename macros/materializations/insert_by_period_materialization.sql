@@ -9,7 +9,12 @@
 {{
     return(
         adapter.dispatch("get_period_boundaries", "dbt_utils")(
-            target_schema, target_table, timestamp_field, start_date, stop_date, period
+            target_schema,
+            target_table,
+            timestamp_field,
+            start_date,
+            stop_date,
+            period,
         )
     )
 }}

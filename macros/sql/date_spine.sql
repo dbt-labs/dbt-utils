@@ -28,7 +28,9 @@ select
     {% macro date_spine(datepart, start_date, end_date) %}
     {{
         return(
-            adapter.dispatch("date_spine", "dbt_utils")(datepart, start_date, end_date)
+            adapter.dispatch("date_spine", "dbt_utils")(
+                datepart, start_date, end_date
+            )
         )
     }}
     {%- endmacro %}

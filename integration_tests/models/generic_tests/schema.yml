@@ -142,6 +142,9 @@ seeds:
           - dbt_utils.not_null_proportion:
               at_least: 0.5
               at_most: 0.5
+          - dbt_utils.not_null_proportion:
+              at_least: 0
+              group_by_columns: ['point_9']
       - name: point_9
         tests:
           - dbt_utils.not_null_proportion:
@@ -154,11 +157,24 @@ models:
           datepart: day
           field: today
           interval: 1
+      - dbt_utils.recency:
+          datepart: day
+          field: today
+          interval: 1
+          group_by_columns: ['col1']
+      - dbt_utils.recency:
+          datepart: day
+          field: today
+          interval: 1
+          group_by_columns: ['col1', 'col2']
 
   - name: test_equal_rowcount
     tests:
       - dbt_utils.equal_rowcount:
           compare_model: ref('test_equal_rowcount')
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('test_equal_rowcount')
+          group_by_columns: ['field']
 
   - name: test_equal_column_subset
     tests:

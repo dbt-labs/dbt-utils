@@ -31,6 +31,7 @@ b as (
 
     select 
       {{select_gb_cols}}
+      1 as id,
       count(*) as count_comparison_model 
     from {{ compare_model }}
     {{ groupby_gb_cols }}

@@ -188,3 +188,11 @@ models:
             - first_name
             - last_name
             - email
+  
+  - name: test_fewer_rows_than
+    tests:
+      - dbt_utils.fewer_rows_than:
+          compare_model: ref('data_test_fewer_rows_than_table_2')
+      - dbt_utils.fewer_rows_than:
+          compare_model: ref('data_test_fewer_rows_than_table_2')
+          group_by_columns: ['col_a']

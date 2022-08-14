@@ -31,6 +31,18 @@ seeds:
               expression: = 0.5
               condition: col_a = 0.5
 
+  - name: data_test_expression_is_true_table_1
+    tests:
+      - dbt_utils.expression_is_true_between_tables:
+          model_alias: t1
+          join_condition: inner join {{ ref('data_test_expression_is_true_table_2') }} t2 on t2.id = t1.id
+          expression: t1.val_a < t2.val_a
+      - dbt_utils.expression_is_true_between_tables:
+          model_alias: t1
+          join_condition: inner join {{ ref('data_test_expression_is_true_table_2') }} t2 on t2.id = t1.id
+          expression: t1.date_a > t2.date_a
+          condition: t1.val_a = 3
+
   - name: data_people
     columns:
       - name: is_active

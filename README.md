@@ -14,6 +14,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
   - [fewer_rows_than](#fewer_rows_than-source)
   - [equality](#equality-source)
   - [expression_is_true](#expression_is_true-source)
+  - [expression_is_true_between_tables](#expression_is_true_between_tables-source)
   - [recency](#recency-source)
   - [at_least_one](#at_least_one-source)
   - [not_constant](#not_constant-source)

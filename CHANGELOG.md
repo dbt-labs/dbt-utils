@@ -12,11 +12,11 @@
 
 ## New features
 - New feature to omit the `source_column_name` column on the `union_relations` macro ([#331](https://github.com/dbt-labs/dbt-utils/issues/331), [#624](https://github.com/dbt-labs/dbt-utils/pull/624))
-- Add new generic test, `expression_is_true_between_tables` ([#](https://github.com/dbt-labs/dbt-utils/pull/))
+- Add new generic test, `expression_is_true_between_tables` ([#639](https://github.com/dbt-labs/dbt-utils/pull/639))
 
 ## Contributors:
 - [@christineberger](https://github.com/christineberger) (#624)
-- [@JimMcKenzieSmith](https://github.com/JimMcKenzieSmith) (#)
+- [@JimMcKenzieSmith](https://github.com/JimMcKenzieSmith) (#639)
 
 # dbt-utils v0.8.6
 

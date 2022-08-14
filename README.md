@@ -127,7 +127,7 @@ models:
 Asserts that a valid SQL expression is true for all records. This is useful when checking integrity across columns.
 Examples:
 
-- Verify an outcome based on the application of basic alegbraic operations between columns.
+- Verify an outcome based on the application of basic algebraic operations between columns.
 - Verify the length of a column.
 - Verify the truth value of a column.
 
@@ -174,6 +174,45 @@ models:
           - dbt_utils.expression_is_true:
               expression: '= 1'
               condition: col_a = 1
+```
+
+#### expression_is_true_between_tables ([source](macros/generic_tests/expression_is_true_between_tables.sql))
+Asserts that a valid SQL expression is true for all records across two or more tables. This is useful when checking integrity across tables.
+Examples:
+
+- Verify a date in one table is within a range of two dates in another table.
+- Verify the length of a column compared with the length of a column in another table.
+- Verify the truth value of a column matches the truth value of a column in another table.
+
+**Usage:**
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    tests:
+      - dbt_utils.expression_is_true_between_tables:
+          model_alias: "t"
+          join_condition: "inner join {{ ref('some_other_table') }} s on s.some_id = t.some_id"
+          expression: "t.event_date >= s.start_date and t.event_date <= s.end_date"
+```
+
+The macro accepts an optional argument `condition` that allows for asserting
+the `expression` on a subset of all records.
+
+**Usage:**
+
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    tests:
+      - dbt_utils.expression_is_true_between_tables:
+          model_alias: "t"
+          join_condition: "inner join {{ ref('some_other_table') }} s on s.some_id = t.some_id"
+          expression: "t.event_date >= s.start_date and t.event_date <= s.end_date"
+          condition: "t.some_flag = true and t.created_at > '2021-12-31'"
 ```
 
 #### recency ([source](macros/generic_tests/recency.sql))

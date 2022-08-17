@@ -1,0 +1,10 @@
+customer_id,created_at,prop,val
+123,2017-01-01,Segment,tier 1
+123,2017-01-01,Status,active
+123,2017-01-01,isUpdated,true
+234,2017-02-01,Segment,tier 3
+234,2017-02-01,Status,active
+234,2017-02-01,isUpdated,false
+567,2017-03-01,Status,churned
+567,2017-03-01,isUpdated,
+567,2017-03-01,Segment,tier 2

@@ -10,14 +10,14 @@ Arguments:
     remove: A list of columns to remove from the resulting table. Default is none.
     field_name: Destination table column name for the source table column names.
     value_name: Destination table column name for the pivoted values
-    quote_columns: Flag for whether or not the columns being pivoted require quoting
+    quote_identifiers: Whether to surround column aliases with double quotes, default is false
 #}
 
-{% macro unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', quote_columns=false, table=none) -%}
-    {{ return(adapter.dispatch('unpivot', 'dbt_utils')(relation, cast_to, exclude, remove, field_name, value_name, quote_columns, table)) }}
+{% macro unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', quote_identifiers=false, table=none) -%}
+    {{ return(adapter.dispatch('unpivot', 'dbt_utils')(relation, cast_to, exclude, remove, field_name, value_name, quote_identifiers, table)) }}
 {% endmacro %}
 
-{% macro default__unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', quote_columns=false, table=none) -%}
+{% macro default__unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', quote_identifiers=false, table=none) -%}
 
     {% if table %}
         {%- set error_message = '
@@ -64,9 +64,17 @@ Arguments:
 
       cast('{{ col.column }}' as {{ dbt_utils.type_string() }}) as {{ field_name }},
       cast(  {% if col.data_type == 'boolean' %}
-           {% if quote_columns == true %}"{{ dbt_utils.cast_bool_to_text(col.column) }}"{% else %}{{ dbt_utils.cast_bool_to_text(col.column) }}{% endif %}
-             {% else %}
-           {% if quote_columns == true %}"{{ col.column }}"{% else %}{{ col.column }}{% endif %}
+                {% if quote_identifiers %}
+                  {{ dbt_utils.cast_bool_to_text(adapter.quote(col.column)) }}
+                {% else %}
+                  {{ dbt_utils.cast_bool_to_text(col.column) }}
+                {% endif %}
+              {% else %}
+                {% if quote_identifiers %}
+                  {{ adapter.quote(col.column) }}
+                {% else %}
+                  {{ col.column }}
+                {% endif %}
              {% endif %}
            as {{ cast_to }}) as {{ value_name }}
 

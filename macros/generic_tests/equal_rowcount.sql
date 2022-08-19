@@ -13,21 +13,19 @@
 {% endif %}
 
 {% if group_by_columns|length() > 0 %}
-  {% set select_gb_cols = group_by_columns|join(' ,') + ', ' %}
+  {% set select_gb_cols = group_by_columns|join(', ') + ', ' %}
   {% set join_gb_cols %}
     {% for c in group_by_columns %}
       and a.{{c}} = b.{{c}}
     {% endfor %}
   {% endset %}
+  {% set groupby_gb_cols = 'group by ' + group_by_columns|join(',') %}
 {% endif %}
-{% set group_by_columns = ['id'] + group_by_columns %}
-{% set groupby_gb_cols = 'group by ' + group_by_columns|join(',') %}
 
 with a as (
 
     select 
       {{select_gb_cols}}
-      1 as id, 
       count(*) as count_a 
     from {{ model }}
     {{groupby_gb_cols}}
@@ -38,7 +36,6 @@ b as (
 
     select 
       {{select_gb_cols}}
-      1 as id, 
       count(*) as count_b 
     from {{ compare_model }}
     {{groupby_gb_cols}}
@@ -58,9 +55,9 @@ final as (
         abs(count_a - count_b) as diff_count
 
     from a
-    full join b
+    full outer join b
     on
-    a.id = b.id 
+    1 = 1
     {{join_gb_cols}}
 
 

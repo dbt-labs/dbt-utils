@@ -33,9 +33,8 @@ with
         select *
         from actual
         where
-            actual.actual_column_value not in (
-                select expected.expected_column_value from expected
-            )
+            actual.actual_column_value
+            not in (select expected.expected_column_value from expected)
     )
 
 select *

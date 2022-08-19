@@ -55,7 +55,7 @@ final as (
         abs(count_a - count_b) as diff_count
 
     from a
-    full outer join b
+    full join b
     on
     1 = 1
     {{join_gb_cols}}

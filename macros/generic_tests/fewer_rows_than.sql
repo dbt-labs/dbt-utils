@@ -47,7 +47,7 @@ counts as (
         count_our_model,
         count_comparison_model
     from a
-    full outer join b on 
+    full join b on 
     1 = 1
     {{ join_gb_cols }}
 

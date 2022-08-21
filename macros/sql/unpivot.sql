@@ -63,18 +63,15 @@ Arguments:
       {%- endfor %}
 
       cast('{{ col.column }}' as {{ dbt_utils.type_string() }}) as {{ field_name }},
-      cast(  {% if col.data_type == 'boolean' %}
-                {% if quote_identifiers %}
-                  {{ dbt_utils.cast_bool_to_text(adapter.quote(col.column)) }}
-                {% else %}
-                  {{ dbt_utils.cast_bool_to_text(col.column) }}
-                {% endif %}
-              {% else %}
-                {% if quote_identifiers %}
-                  {{ adapter.quote(col.column) }}
-                {% else %}
-                  {{ col.column }}
-                {% endif %}
+      cast(  {% if quote_identifiers %}
+               {% set column_identifier = adapter.quote(col.column) %}
+             {% else %}
+               {% set column_identifier = col.column %}
+             {% endif %}
+             {% if col.data_type == 'boolean' %}
+               {{ dbt_utils.cast_bool_to_text(column_identifier) }}
+             {% else %}
+               {{ column_identifier }}
              {% endif %}
            as {{ cast_to }}) as {{ value_name }}
 

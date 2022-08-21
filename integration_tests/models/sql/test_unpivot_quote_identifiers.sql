@@ -29,3 +29,7 @@ from (
         quote_identifiers=true
     ) }}
 ) as sbq
+order by
+    customer_id asc,
+    created_at asc,
+    prop asc

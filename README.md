@@ -21,6 +21,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
   - [unique_where](#unique_where-source)
   - [not_null_where](#not_null_where-source)
   - [not_null_proportion](#not_null_proportion-source)
+  - [not_accepted_values](#not_accepted_values-source)
   - [relationships_where](#relationships_where-source)
   - [mutually_exclusive_ranges](#mutually_exclusive_ranges-source)
   - [unique_combination_of_columns](#unique_combination_of_columns-source)

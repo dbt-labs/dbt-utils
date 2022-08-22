@@ -19,7 +19,7 @@
 {#-- We must add a fake join key in case additional grouping variables are not provided --#}
 {#-- Redshift does not allow for dynamically created join conditions (e.g. full join on 1 = 1 --#}
 {#-- The same logic is used in fewer_rows_than. In case of changes, maintain consistent logic --#}
-{% set group_by_columns = ['id_dbtutils_test_equal_rowcount'] + group_by_columns %}
+{% set group_by_columns = ['id_dbtutils_test_fewer_rows_than'] + group_by_columns %}
 {% set groupby_gb_cols = 'group by ' + group_by_columns|join(',') %}
 
 
@@ -27,7 +27,7 @@ with a as (
 
     select 
       {{select_gb_cols}}
-      1 as id_dbtutils_test_equal_rowcount,
+      1 as id_dbtutils_test_fewer_rows_than,
       count(*) as count_our_model 
     from {{ model }}
     {{ groupby_gb_cols }}
@@ -37,7 +37,7 @@ b as (
 
     select 
       {{select_gb_cols}}
-      1 as id_dbtutils_test_equal_rowcount,
+      1 as id_dbtutils_test_fewer_rows_than,
       count(*) as count_comparison_model 
     from {{ compare_model }}
     {{ groupby_gb_cols }}
@@ -56,7 +56,7 @@ counts as (
         count_comparison_model
     from a
     full join b on 
-    a.id_dbtutils_test_equal_rowcount = b.id_dbtutils_test_equal_rowcount
+    a.id_dbtutils_test_fewer_rows_than = b.id_dbtutils_test_fewer_rows_than
     {{ join_gb_cols }}
 
 ),

@@ -17,6 +17,7 @@ For compatibility details between versions of dbt-core and dbt-utils, [see this 
   - [recency](#recency-source)
   - [at_least_one](#at_least_one-source)
   - [not_constant](#not_constant-source)
+  - [not_empty_string](#not_empty_string-source)
   - [cardinality_equality](#cardinality_equality-source)
   - [unique_where](#unique_where-source)
   - [not_null_where](#not_null_where-source)
@@ -220,6 +221,37 @@ models:
       - name: column_name
         tests:
           - dbt_utils.not_constant
+```
+
+#### not_empty_string ([source](macros/generic_tests/not_empty_string.sql))
+Asserts that a column does not have any values equal to `''`. 
+
+**Usage:**
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    columns:
+      - name: column_name
+        tests:
+          - dbt_utils.not_empty_string
+```
+
+The macro accepts an optional argument `trim_whitespace` that controls whether whitespace should be trimmed from the column when evaluating. The default is `true`. 
+
+**Usage:**
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    columns:
+      - name: column_name
+        tests:
+          - dbt_utils.not_empty_string:
+              trim_whitespace: false
+              
 ```
 
 #### cardinality_equality ([source](macros/generic_tests/cardinality_equality.sql))

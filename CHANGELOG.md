@@ -12,9 +12,11 @@
 
 ## New features
 - New feature to omit the `source_column_name` column on the `union_relations` macro ([#331](https://github.com/dbt-labs/dbt-utils/issues/331), [#624](https://github.com/dbt-labs/dbt-utils/pull/624))
+- Add `not_empty_string` generic test that asserts column values are not an empty string. ([#632](https://github.com/dbt-labs/dbt-utils/issues/632), [#634](https://github.com/dbt-labs/dbt-utils/pull/634))
 
 ## Contributors:
 - [@christineberger](https://github.com/christineberger) (#624)
+- [@epapineau](https://github.com/epapineau) (#634)
 
 # dbt-utils v0.8.6
 

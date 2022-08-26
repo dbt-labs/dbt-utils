@@ -584,7 +584,7 @@ To use this feature, the names of grouping variables can be passed as a list. Fo
       - name: field
         tests:
           - dbt_utils.at_least_one:
-              group_by_columns: ['group_var']
+              group_by_columns: ['customer_segment']
 ```
 
 ## Macros

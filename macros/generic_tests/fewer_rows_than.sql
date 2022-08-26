@@ -18,7 +18,7 @@
 
 {#-- We must add a fake join key in case additional grouping variables are not provided --#}
 {#-- Redshift does not allow for dynamically created join conditions (e.g. full join on 1 = 1 --#}
-{#-- The same logic is used in fewer_rows_than. In case of changes, maintain consistent logic --#}
+{#-- The same logic is used in equal_rowcount. In case of changes, maintain consistent logic --#}
 {% set group_by_columns = ['id_dbtutils_test_fewer_rows_than'] + group_by_columns %}
 {% set groupby_gb_cols = 'group by ' + group_by_columns|join(',') %}
 

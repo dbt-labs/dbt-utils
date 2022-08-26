@@ -24,6 +24,10 @@ macros__legacy_sql = """
 {% macro snowflake__type_string() %}
     varchar
 {% endmacro %}
+
+{% macro synapse__type_string() %}
+    varchar
+{% endmacro %}
 """
 
 

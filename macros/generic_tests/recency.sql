@@ -4,7 +4,7 @@
 
 {% macro default__test_recency(model, field, datepart, interval) %}
 
-{% set threshold = dbt_utils.dateadd(datepart, interval * -1, dbt_utils.current_timestamp()) %}
+{% set threshold = dateadd(datepart, interval * -1, current_timestamp()) %}
 
 with recency as (
 

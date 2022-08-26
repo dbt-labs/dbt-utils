@@ -1,4 +1,5 @@
 {% macro cast_array_to_string(array) %}
+  {% do dbt_utils.xdb_deprecation_warning_without_replacement('cast_array_to_string', model.package_name, model.name) %}
   {{ adapter.dispatch('cast_array_to_string', 'dbt_utils') (array) }}
 {% endmacro %}
 

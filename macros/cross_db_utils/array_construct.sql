@@ -1,4 +1,5 @@
 {% macro array_construct(inputs = [], data_type = api.Column.translate_type('integer')) -%}
+  {% do dbt_utils.xdb_deprecation_warning_without_replacement('array_construct', model.package_name, model.name) %}
   {{ return(adapter.dispatch('array_construct', 'dbt_utils')(inputs, data_type)) }}
 {%- endmacro %}
 

@@ -23,11 +23,11 @@
 {%- endmacro %}
 
 {% macro default__current_timestamp_in_utc() %}
-    {{ current_timestamp() }}
+    {{ dbt_utils.current_timestamp() }}
 {% endmacro %}
 
 {% macro snowflake__current_timestamp_in_utc() %}
-    convert_timezone('UTC', {{current_timestamp() }})::{{ type_timestamp() }}
+    convert_timezone('UTC', {{ dbt_utils.current_timestamp() }})::{{ type_timestamp() }}
 {% endmacro %}
 
 {% macro postgres__current_timestamp_in_utc() %}

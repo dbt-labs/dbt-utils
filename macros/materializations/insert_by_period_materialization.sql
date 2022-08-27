@@ -12,7 +12,7 @@
             {{ dateadd('millisecond',
                                 -1,
                                 "nullif('" ~ stop_date ~ "','')::timestamp") }},
-            {{ current_timestamp() }}
+            {{ dbt_utils.current_timestamp() }}
           ) as stop_timestamp
       from "{{target_schema}}"."{{target_table}}"
     )

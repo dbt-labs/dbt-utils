@@ -1160,9 +1160,9 @@ This macro extracts a page path from a column containing a url.
 These macros make it easier for package authors (especially those writing modeling packages) to implement cross-database
 compatibility. In general, you should not use these macros in your own dbt project (unless it is a package)
 
-Note that most of these macros moved to dbt Core as of dbt_utils v0.9.0 and dbt Core v1.2.0, and will soon be removed from `dbt_utils`. 
+Note that most of these macros moved to dbt Core as of dbt_utils v0.9.0 and dbt Core v1.2.0, and will soon be removed from `dbt_utils`.
 
-To access the version defined in dbt Core, remove the `dbt_utils.` prefix (see [https://docs.getdbt.com/reference/dbt-jinja-functions/cross-database-macros](https://docs.getdbt.com/reference/dbt-jinja-functions/cross-database-macros) for examples). 
+To access the version defined in dbt Core, remove the `dbt_utils.` prefix (see [https://docs.getdbt.com/reference/dbt-jinja-functions/cross-database-macros](https://docs.getdbt.com/reference/dbt-jinja-functions/cross-database-macros) for examples).
 As highlighted below, some of the cross-database macros are still in the process of being deprecated.
 
 #### current_timestamp ([source](macros/cross_db_utils/current_timestamp.sql))
@@ -1186,7 +1186,7 @@ This macro adds a time/day interval to the supplied date/timestamp. Note: The `d
 **Usage:**
 
 ```
-{{ dateadd(datepart='day', interval=1, from_date_or_timestamp="'2017-01-01'") }}
+{{ dbt_utils.dateadd(datepart='day', interval=1, from_date_or_timestamp="'2017-01-01'") }}
 ```
 
 #### datediff ([source](macros/cross_db_utils/datediff.sql))
@@ -1198,7 +1198,7 @@ This macro calculates the difference between two dates.
 **Usage:**
 
 ```
-{{ datediff("'2018-01-01'", "'2018-01-20'", 'day') }}
+{{ dbt_utils.datediff("'2018-01-01'", "'2018-01-20'", 'day') }}
 ```
 
 #### split_part ([source](macros/cross_db_utils/split_part.sql))
@@ -1217,8 +1217,8 @@ This macro splits a string of text using the supplied delimiter and returns the 
 When referencing a column, use one pair of quotes. When referencing a string, use single quotes enclosed in double quotes.
 
 ```
-{{ split_part(string_text='column_to_split', delimiter_text='delimiter_column', part_number=1) }}
-{{ split_part(string_text="'1|2|3'", delimiter_text="'|'", part_number=1) }}
+{{ dbt_utils.split_part(string_text='column_to_split', delimiter_text='delimiter_column', part_number=1) }}
+{{ dbt_utils.split_part(string_text="'1|2|3'", delimiter_text="'|'", part_number=1) }}
 ```
 
 #### date_trunc ([source](macros/cross_db_utils/date_trunc.sql))
@@ -1230,7 +1230,7 @@ Truncates a date or timestamp to the specified datepart. Note: The `datepart` ar
 **Usage:**
 
 ```
-{{ date_trunc(datepart, date) }}
+{{ dbt_utils.date_trunc(datepart, date) }}
 ```
 
 #### last_day ([source](macros/cross_db_utils/last_day.sql))
@@ -1245,7 +1245,7 @@ Gets the last day for a given date and datepart. Notes:
 **Usage:**
 
 ```
-{{ last_day(date, datepart) }}
+{{ dbt_utils.last_day(date, datepart) }}
 ```
 
 #### listagg ([source](macros/cross_db_utils/listagg.sql))
@@ -1266,7 +1266,7 @@ Note: If there are instances of `delimiter_text` within your `measure`, you cann
 **Usage:**
 
 ```
-{{ listagg(measure='column_to_agg', delimiter_text="','", order_by_clause="order by order_by_column", limit_num=10) }}
+{{ dbt_utils.listagg(measure='column_to_agg', delimiter_text="','", order_by_clause="order by order_by_column", limit_num=10) }}
 ```
 
 #### array_construct ([source](macros/cross_db_utils/array_construct.sql))

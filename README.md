@@ -1160,7 +1160,9 @@ This macro extracts a page path from a column containing a url.
 These macros make it easier for package authors (especially those writing modeling packages) to implement cross-database
 compatibility. In general, you should not use these macros in your own dbt project (unless it is a package)
 
-Note that most of these macros have now moved to dbt-core. Instead of the `dbt_utils.` namespace, you should now call these macros with the `dbt.` prefix, or without a prefix altogether (as shown in the examples below). They will eventuall be removed from `dbt_utils`.
+Note that most of these macros moved to dbt Core as of dbt_utils v0.9.0 and dbt Core v1.2.0, and will soon be removed from `dbt_utils`. 
+
+To access the version defined in dbt Core, remove the `dbt_utils.` prefix (see [https://docs.getdbt.com/reference/dbt-jinja-functions/cross-database-macros](https://docs.getdbt.com/reference/dbt-jinja-functions/cross-database-macros) for examples). 
 As highlighted below, some of the cross-database macros are still in the process of being deprecated.
 
 #### current_timestamp ([source](macros/cross_db_utils/current_timestamp.sql))

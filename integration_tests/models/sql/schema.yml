@@ -193,7 +193,6 @@ models:
                 error_if: "<1"
                 warn_if: "<0"
 
-
   - name: test_not_empty_string_passing
     columns:
       - name: string

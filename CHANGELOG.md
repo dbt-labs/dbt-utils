@@ -72,6 +72,7 @@ After:
 - Add Snowflake specific implementation of `deduplicate()` ([#543](https://github.com/dbt-labs/dbt-utils/issues/543), [#548](https://github.com/dbt-labs/dbt-utils/pull/548))
 
 ## Fixes
+- Fix `union_relations` `source_column_name` none option.
 - Enable a negative part_number for `split_part()` ([#557](https://github.com/dbt-labs/dbt-utils/issues/557), [#559](https://github.com/dbt-labs/dbt-utils/pull/559))
 
 ## Quality of life

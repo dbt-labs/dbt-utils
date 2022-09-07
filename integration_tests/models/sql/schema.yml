@@ -188,23 +188,14 @@ models:
       - name: string
         tests:
           - dbt_utils.not_empty_string:
-              trim_whitespace: True
-              config:
-                severity: error
-                error_if: "<1"
-                warn_if: "<0"
-          - dbt_utils.not_empty_string:
-              trim_whitespace: False
               config:
                 severity: error
                 error_if: "<1"
                 warn_if: "<0"
 
+
   - name: test_not_empty_string_passing
     columns:
       - name: string
         tests:
-          - dbt_utils.not_empty_string:
-              trim_whitespace: True
-          - dbt_utils.not_empty_string:
-              trim_whitespace: False
+          - dbt_utils.not_empty_string

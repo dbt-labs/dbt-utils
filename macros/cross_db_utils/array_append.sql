@@ -1,4 +1,5 @@
 {% macro array_append(array, new_element) -%}
+  {% do dbt_utils.xdb_deprecation_warning_without_replacement('array_append', model.package_name, model.name) %}
   {{ return(adapter.dispatch('array_append', 'dbt_utils')(array, new_element)) }}
 {%- endmacro %}
 

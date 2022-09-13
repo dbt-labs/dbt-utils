@@ -14,9 +14,15 @@
 - New feature to omit the `source_column_name` column on the `union_relations` macro ([#331](https://github.com/dbt-labs/dbt-utils/issues/331), [#624](https://github.com/dbt-labs/dbt-utils/pull/624))
 - Add `not_empty_string` generic test that asserts column values are not an empty string. ([#632](https://github.com/dbt-labs/dbt-utils/issues/632), [#634](https://github.com/dbt-labs/dbt-utils/pull/634))
 
+## Fixes
+- Better handling of whitespaces in the star macro ([#651](https://github.com/dbt-labs/dbt-utils/pull/651))
+- Fix to correct behavior in `mutually_exclusive_ranges` test in certain situations when `zero_length_range_allowed: true` and multiple ranges in a partition have the same value for `lower_bound_column`. ([[#659](https://github.com/dbt-labs/dbt-utils/issues/659)], [#660](https://github.com/dbt-labs/dbt-utils/pull/660))
+
 ## Contributors:
 - [@christineberger](https://github.com/christineberger) (#624)
 - [@epapineau](https://github.com/epapineau) (#634)
+- [@courentin](https://github.com/courentin) (#651)
+- [@sfc-gh-ancoleman](https://github.com/sfc-gh-ancoleman) (#660)
 
 # dbt-utils v0.8.6
 
@@ -70,6 +76,7 @@ After:
 - Add Snowflake specific implementation of `deduplicate()` ([#543](https://github.com/dbt-labs/dbt-utils/issues/543), [#548](https://github.com/dbt-labs/dbt-utils/pull/548))
 
 ## Fixes
+- Fix `union_relations` `source_column_name` none option.
 - Enable a negative part_number for `split_part()` ([#557](https://github.com/dbt-labs/dbt-utils/issues/557), [#559](https://github.com/dbt-labs/dbt-utils/pull/559))
 
 ## Quality of life

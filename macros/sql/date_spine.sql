@@ -5,7 +5,7 @@
 {% macro default__get_intervals_between(start_date, end_date, datepart) -%}
     {%- call statement('get_intervals_between', fetch_result=True) %}
 
-        select {{dbt_utils.datediff(start_date, end_date, datepart)}}
+        select {{ datediff(start_date, end_date, datepart) }}
 
     {%- endcall -%}
 
@@ -51,7 +51,7 @@ all_periods as (
 
     select (
         {{
-            dbt_utils.dateadd(
+            dateadd(
                 datepart,
                 "row_number() over (order by 1) - 1",
                 start_date

@@ -42,12 +42,12 @@ with window_functions as (
 
         lead({{ lower_bound_column }}) over (
             {{ partition_clause }}
-            order by {{ lower_bound_column }}
+            order by {{ lower_bound_column }}, {{ upper_bound_column }}
         ) as next_lower_bound,
 
         row_number() over (
             {{ partition_clause }}
-            order by {{ lower_bound_column }} desc
+            order by {{ lower_bound_column }} desc, {{ upper_bound_column }} desc
         ) = 1 as is_last_record
 
     from {{ model }}

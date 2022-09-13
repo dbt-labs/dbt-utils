@@ -202,3 +202,10 @@ models:
         tests:
           - dbt_utils.not_empty_string:
               trim_whitespace: false
+
+  - name: test_width_bucket
+    tests:
+      - assert_equal:
+          actual: actual
+          expected: expected
+

@@ -185,7 +185,7 @@ models:
 
   - name: test_not_empty_string_failing
     columns:
-      - name: string
+      - name: string_trim_whitespace_true
         tests:
           - dbt_utils.not_empty_string:
               config:
@@ -195,6 +195,10 @@ models:
 
   - name: test_not_empty_string_passing
     columns:
-      - name: string
+      - name: string_trim_whitespace_true
         tests:
           - dbt_utils.not_empty_string
+      - name: string_trim_whitespace_false
+        tests:
+          - dbt_utils.not_empty_string:
+              trim_whitespace: false

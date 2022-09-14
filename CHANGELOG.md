@@ -78,6 +78,7 @@ After:
 ## Fixes
 - Fix `union_relations` `source_column_name` none option.
 - Enable a negative part_number for `split_part()` ([#557](https://github.com/dbt-labs/dbt-utils/issues/557), [#559](https://github.com/dbt-labs/dbt-utils/pull/559))
+- Make `exclude` case insensitive for `union_relations()` ([#578](https://github.com/dbt-labs/dbt-utils/issues/557), [#587](https://github.com/dbt-labs/dbt-utils/issues/587))
 
 ## Quality of life
 - Documentation about listagg macro ([#544](https://github.com/dbt-labs/dbt-utils/issues/544), [#560](https://github.com/dbt-labs/dbt-utils/pull/560))
@@ -100,6 +101,7 @@ After:
 - [@LewisDavies](https://github.com/LewisDavies) (#554)
 - [@epapineau](https://github.com/epapineau) (#583)
 - [@b-per](https://github.com/b-per) (#559)
+- [@dbeatty10](https://github.com/dbeatty10), [@jeremyyeo](https://github.com/jeremyyeo) (#587)
 
 # dbt-utils v0.8.4
 ## Fixes

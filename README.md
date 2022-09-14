@@ -10,22 +10,23 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
 
 **[Generic tests](#generic-tests)**
 
-- [equal_rowcount](#equal_rowcount-source)
-- [fewer_rows_than](#fewer_rows_than-source)
-- [equality](#equality-source)
-- [expression_is_true](#expression_is_true-source)
-- [recency](#recency-source)
-- [at_least_one](#at_least_one-source)
-- [not_constant](#not_constant-source)
-- [cardinality_equality](#cardinality_equality-source)
-- [unique_where](#unique_where-source)
-- [not_null_where](#not_null_where-source)
-- [not_null_proportion](#not_null_proportion-source)
-- [not_accepted_values](#not_accepted_values-source)
-- [relationships_where](#relationships_where-source)
-- [mutually_exclusive_ranges](#mutually_exclusive_ranges-source)
-- [unique_combination_of_columns](#unique_combination_of_columns-source)
-- [accepted_range](#accepted_range-source)
+  - [equal_rowcount](#equal_rowcount-source)
+  - [fewer_rows_than](#fewer_rows_than-source)
+  - [equality](#equality-source)
+  - [expression_is_true](#expression_is_true-source)
+  - [recency](#recency-source)
+  - [at_least_one](#at_least_one-source)
+  - [not_constant](#not_constant-source)
+  - [not_empty_string](#not_empty_string-source)
+  - [cardinality_equality](#cardinality_equality-source)
+  - [unique_where](#unique_where-source)
+  - [not_null_where](#not_null_where-source)
+  - [not_null_proportion](#not_null_proportion-source)
+  - [not_accepted_values](#not_accepted_values-source)
+  - [relationships_where](#relationships_where-source)
+  - [mutually_exclusive_ranges](#mutually_exclusive_ranges-source)
+  - [unique_combination_of_columns](#unique_combination_of_columns-source)
+  - [accepted_range](#accepted_range-source)
 
 **[Macros](#macros)**
 
@@ -238,6 +239,37 @@ models:
       - name: column_name
         tests:
           - dbt_utils.not_constant
+```
+
+#### not_empty_string ([source](macros/generic_tests/not_empty_string.sql))
+Asserts that a column does not have any values equal to `''`. 
+
+**Usage:**
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    columns:
+      - name: column_name
+        tests:
+          - dbt_utils.not_empty_string
+```
+
+The macro accepts an optional argument `trim_whitespace` that controls whether whitespace should be trimmed from the column when evaluating. The default is `true`. 
+
+**Usage:**
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    columns:
+      - name: column_name
+        tests:
+          - dbt_utils.not_empty_string:
+              trim_whitespace: false
+              
 ```
 
 #### cardinality_equality ([source](macros/generic_tests/cardinality_equality.sql))

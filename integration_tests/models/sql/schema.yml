@@ -183,8 +183,29 @@ models:
       - dbt_utils.equality:
           compare_model: ref('data_deduplicate_expected')
 
+  - name: test_not_empty_string_failing
+    columns:
+      - name: string_trim_whitespace_true
+        tests:
+          - dbt_utils.not_empty_string:
+              config:
+                severity: error
+                error_if: "<1"
+                warn_if: "<0"
+
+  - name: test_not_empty_string_passing
+    columns:
+      - name: string_trim_whitespace_true
+        tests:
+          - dbt_utils.not_empty_string
+      - name: string_trim_whitespace_false
+        tests:
+          - dbt_utils.not_empty_string:
+              trim_whitespace: false
+
   - name: test_width_bucket
     tests:
       - assert_equal:
           actual: actual
           expected: expected
+

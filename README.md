@@ -628,6 +628,7 @@ This macro returns the unique values for a column in a given [relation](https://
 -- Returns the list sorted alphabetically
 {% set payment_methods = dbt_utils.get_column_values(
         table=ref('stg_payments'),
+        where="payment_method = 'bank_transfer'",
         column='payment_method',
         order_by='payment_method'
 ) %}

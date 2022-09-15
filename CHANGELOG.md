@@ -17,6 +17,7 @@
 
 ## Under the hood
 - Remove deprecated table argument from unpivot ([#671](https://github.com/dbt-labs/dbt-utils/pull/671))
+- Delete the deprecated identifier macro ([#672](https://github.com/dbt-labs/dbt-utils/pull/672))
 
 ## Fixes
 - Better handling of whitespaces in the star macro ([#651](https://github.com/dbt-labs/dbt-utils/pull/651))
@@ -27,7 +28,7 @@
 - [@epapineau](https://github.com/epapineau) (#634)
 - [@courentin](https://github.com/courentin) (#651)
 - [@sfc-gh-ancoleman](https://github.com/sfc-gh-ancoleman) (#660)
-- [@miles170](https://github.com/miles170) (#671)
+- [@miles170](https://github.com/miles170)
 - [@emilyriederer](https://github.com/emilyriederer) 
 
 # dbt-utils v0.8.6

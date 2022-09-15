@@ -142,9 +142,6 @@ models:
           actual: actual_column_1_only
           expected: expected_column_1_only
       - assert_equal:
-          actual: actual_all_columns_arguments
-          expected: expected_all_columns
-      - assert_equal:
           actual: actual_all_columns_list
           expected: expected_all_columns
 
@@ -218,4 +215,3 @@ models:
       - assert_equal:
           actual: actual
           expected: expected
-

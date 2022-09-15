@@ -18,6 +18,9 @@
 ## Under the hood
 - Remove deprecated table argument from unpivot ([#671](https://github.com/dbt-labs/dbt-utils/pull/671))
 
+## Under the hood
+- Fully remove varargs usage in surrogate_key ([#674](https://github.com/dbt-labs/dbt-utils/pull/674))
+
 ## Fixes
 - Better handling of whitespaces in the star macro ([#651](https://github.com/dbt-labs/dbt-utils/pull/651))
 - Fix to correct behavior in `mutually_exclusive_ranges` test in certain situations when `zero_length_range_allowed: true` and multiple ranges in a partition have the same value for `lower_bound_column`. ([[#659](https://github.com/dbt-labs/dbt-utils/issues/659)], [#660](https://github.com/dbt-labs/dbt-utils/pull/660))
@@ -27,7 +30,7 @@
 - [@epapineau](https://github.com/epapineau) (#634)
 - [@courentin](https://github.com/courentin) (#651)
 - [@sfc-gh-ancoleman](https://github.com/sfc-gh-ancoleman) (#660)
-- [@miles170](https://github.com/miles170) (#671)
+- [@miles170](https://github.com/miles170)
 - [@emilyriederer](https://github.com/emilyriederer) 
 
 # dbt-utils v0.8.6

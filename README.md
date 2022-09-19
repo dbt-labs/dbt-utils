@@ -99,6 +99,8 @@ models:
 
 ```
 
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
+
 #### fewer_rows_than ([source](macros/generic_tests/fewer_rows_than.sql))
 
 Asserts that the respective model has fewer rows than the model being compared.
@@ -114,6 +116,8 @@ models:
       - dbt_utils.fewer_rows_than:
           compare_model: ref('other_table_name')
 ```
+
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
 
 #### equality ([source](macros/generic_tests/equality.sql))
 
@@ -206,6 +210,7 @@ models:
           field: created_at
           interval: 1
 ```
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
 
 #### at_least_one ([source](macros/generic_tests/at_least_one.sql))
 
@@ -224,6 +229,8 @@ models:
           - dbt_utils.at_least_one
 ```
 
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
+
 #### not_constant ([source](macros/generic_tests/not_constant.sql))
 
 Asserts that a column does not have the same value in all rows.
@@ -240,6 +247,8 @@ models:
         tests:
           - dbt_utils.not_constant
 ```
+
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
 
 #### not_empty_string ([source](macros/generic_tests/not_empty_string.sql))
 Asserts that a column does not have any values equal to `''`. 
@@ -348,6 +357,8 @@ models:
           - dbt_utils.not_null_proportion:
               at_least: 0.95
 ```
+
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
 
 #### not_accepted_values ([source](macros/generic_tests/not_accepted_values.sql))
 
@@ -543,6 +554,8 @@ seeds:
 - `interval` (default=1): The gap between two sequential values
 - `datepart` (default=None): Used when the gaps are a unit of time. If omitted, the test will check for a numeric gap.
 
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
+
 #### unique_combination_of_columns ([source](macros/generic_tests/unique_combination_of_columns.sql))
 
 Asserts that the combination of columns is unique. For example, the
@@ -623,6 +636,34 @@ models:
 ```
 
 ----
+
+#### Grouping in tests
+
+Certain tests support the optional `group_by_columns` argument to provide more granularity in performing tests. This can be useful when:
+
+- Some data checks can only be expressed within a group (e.g. ID values should be unique within a group but can be repeated between groups)
+- Some data checks are more precise when done by group (e.g. not only should table rowcounts be equal but the counts within each group should be equal)
+
+This feature is currently available for the following tests:
+
+- equal_rowcount()
+- fewer_rows_than()
+- recency()
+- at_least_one()
+- not_constant()
+- sequential_values()
+- non_null_proportion()
+
+To use this feature, the names of grouping variables can be passed as a list. For example, to test for at least one valid value by group, the `group_by_columns` argument could be used as follows:
+
+```
+  - name: data_test_at_least_one
+    columns:
+      - name: field
+        tests:
+          - dbt_utils.at_least_one:
+              group_by_columns: ['customer_segment']
+```
 
 ## Macros
 

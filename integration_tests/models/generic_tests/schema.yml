@@ -43,20 +43,6 @@ seeds:
               field: is_active
               to: ref('data_people')
 
-  - name: data_test_unique_where
-    columns:
-      - name: id
-        tests:
-          - dbt_utils.unique_where:
-              where: "_deleted = false"
-
-  - name: data_test_not_null_where
-    columns:
-      - name: id
-        tests:
-          - dbt_utils.not_null_where:
-              where: "_deleted = false"
-
   - name: data_test_not_accepted_values
     columns:
       - name: city

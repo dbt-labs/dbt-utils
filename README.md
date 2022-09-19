@@ -19,8 +19,6 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [not_constant](#not_constant-source)
   - [not_empty_string](#not_empty_string-source)
   - [cardinality_equality](#cardinality_equality-source)
-  - [unique_where](#unique_where-source)
-  - [not_null_where](#not_null_where-source)
   - [not_null_proportion](#not_null_proportion-source)
   - [not_accepted_values](#not_accepted_values-source)
   - [relationships_where](#relationships_where-source)
@@ -300,45 +298,6 @@ models:
               to: ref('other_model_name')
 ```
 
-#### unique_where ([source](macros/generic_tests/test_unique_where.sql))
-
-Asserts that there are no duplicate values present in a field for a subset of rows by specifying a `where` clause.
-
-*Warning*: This test is no longer supported. Starting in dbt v0.20.0, the built-in `unique` test supports a `where` config. [See the dbt docs for more details](https://docs.getdbt.com/reference/resource-configs/where).
-
-**Usage:**
-
-```yaml
-version: 2
-
-models:
-  - name: my_model
-    columns:
-      - name: id
-        tests:
-          - dbt_utils.unique_where:
-              where: "_deleted = false"
-```
-
-#### not_null_where ([source](macros/generic_tests/test_not_null_where.sql))
-
-Asserts that there are no null values present in a column for a subset of rows by specifying a `where` clause.
-
-*Warning*: This test is no longer supported. Starting in dbt v0.20.0, the built-in `not_null` test supports a `where` config. [See the dbt docs for more details](https://docs.getdbt.com/reference/resource-configs/where).
-
-**Usage:**
-
-```yaml
-version: 2
-
-models:
-  - name: my_model
-    columns:
-      - name: id
-        tests:
-          - dbt_utils.not_null_where:
-              where: "_deleted = false"
-```
 
 #### not_null_proportion ([source](macros/generic_tests/not_null_proportion.sql))
 

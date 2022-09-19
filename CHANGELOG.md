@@ -18,6 +18,8 @@
 ## Under the hood
 - Remove deprecated table argument from unpivot ([#671](https://github.com/dbt-labs/dbt-utils/pull/671))
 - Delete the deprecated identifier macro ([#672](https://github.com/dbt-labs/dbt-utils/pull/672))
+- Handle deprecations in deduplicate macro ([#673](https://github.com/dbt-labs/dbt-utils/pull/673))
+- Fully remove varargs usage in surrogate_key and safe_add ([#674](https://github.com/dbt-labs/dbt-utils/pull/674))
 
 ## Fixes
 - Better handling of whitespaces in the star macro ([#651](https://github.com/dbt-labs/dbt-utils/pull/651))

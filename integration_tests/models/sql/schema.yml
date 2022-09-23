@@ -136,7 +136,7 @@ models:
       - dbt_utils.equality:
           compare_model: ref('data_star_expected')
 
-  - name: test_surrogate_key
+  - name: test_generate_surrogate_key
     tests:
       - assert_equal:
           actual: actual_column_1_only

@@ -12,6 +12,7 @@
 
 ## New features
 - New feature to omit the `source_column_name` column on the `union_relations` macro ([#331](https://github.com/dbt-labs/dbt-utils/issues/331), [#624](https://github.com/dbt-labs/dbt-utils/pull/624))
+- New feature to select fewer columns in `expression_is_true` ([#683](https://github.com/dbt-labs/dbt-utils/issues/683), [#686](https://github.com/dbt-labs/dbt-utils/pull/686))
 
 ## Fixes
 - Better handling of whitespaces in the star macro ([#651](https://github.com/dbt-labs/dbt-utils/pull/651))

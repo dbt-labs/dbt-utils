@@ -56,7 +56,7 @@ with window_functions as (
 
 calc as (
     -- We want to return records where one of our assumptions fails, so we'll use
-    -- the `not` function with `and` statements so we can write our assumptions nore cleanly
+    -- the `not` function with `and` statements so we can write our assumptions more cleanly
     select
         *,
 

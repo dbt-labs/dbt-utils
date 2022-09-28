@@ -10,22 +10,21 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
 
 **[Generic tests](#generic-tests)**
 
-- [equal_rowcount](#equal_rowcount-source)
-- [fewer_rows_than](#fewer_rows_than-source)
-- [equality](#equality-source)
-- [expression_is_true](#expression_is_true-source)
-- [recency](#recency-source)
-- [at_least_one](#at_least_one-source)
-- [not_constant](#not_constant-source)
-- [cardinality_equality](#cardinality_equality-source)
-- [unique_where](#unique_where-source)
-- [not_null_where](#not_null_where-source)
-- [not_null_proportion](#not_null_proportion-source)
-- [not_accepted_values](#not_accepted_values-source)
-- [relationships_where](#relationships_where-source)
-- [mutually_exclusive_ranges](#mutually_exclusive_ranges-source)
-- [unique_combination_of_columns](#unique_combination_of_columns-source)
-- [accepted_range](#accepted_range-source)
+  - [equal_rowcount](#equal_rowcount-source)
+  - [fewer_rows_than](#fewer_rows_than-source)
+  - [equality](#equality-source)
+  - [expression_is_true](#expression_is_true-source)
+  - [recency](#recency-source)
+  - [at_least_one](#at_least_one-source)
+  - [not_constant](#not_constant-source)
+  - [not_empty_string](#not_empty_string-source)
+  - [cardinality_equality](#cardinality_equality-source)
+  - [not_null_proportion](#not_null_proportion-source)
+  - [not_accepted_values](#not_accepted_values-source)
+  - [relationships_where](#relationships_where-source)
+  - [mutually_exclusive_ranges](#mutually_exclusive_ranges-source)
+  - [unique_combination_of_columns](#unique_combination_of_columns-source)
+  - [accepted_range](#accepted_range-source)
 
 **[Macros](#macros)**
 
@@ -98,6 +97,8 @@ models:
 
 ```
 
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
+
 #### fewer_rows_than ([source](macros/generic_tests/fewer_rows_than.sql))
 
 Asserts that the respective model has fewer rows than the model being compared.
@@ -113,6 +114,8 @@ models:
       - dbt_utils.fewer_rows_than:
           compare_model: ref('other_table_name')
 ```
+
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
 
 #### equality ([source](macros/generic_tests/equality.sql))
 
@@ -205,6 +208,7 @@ models:
           field: created_at
           interval: 1
 ```
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
 
 #### at_least_one ([source](macros/generic_tests/at_least_one.sql))
 
@@ -223,6 +227,8 @@ models:
           - dbt_utils.at_least_one
 ```
 
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
+
 #### not_constant ([source](macros/generic_tests/not_constant.sql))
 
 Asserts that a column does not have the same value in all rows.
@@ -238,6 +244,39 @@ models:
       - name: column_name
         tests:
           - dbt_utils.not_constant
+```
+
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
+
+#### not_empty_string ([source](macros/generic_tests/not_empty_string.sql))
+Asserts that a column does not have any values equal to `''`. 
+
+**Usage:**
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    columns:
+      - name: column_name
+        tests:
+          - dbt_utils.not_empty_string
+```
+
+The macro accepts an optional argument `trim_whitespace` that controls whether whitespace should be trimmed from the column when evaluating. The default is `true`. 
+
+**Usage:**
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    columns:
+      - name: column_name
+        tests:
+          - dbt_utils.not_empty_string:
+              trim_whitespace: false
+              
 ```
 
 #### cardinality_equality ([source](macros/generic_tests/cardinality_equality.sql))
@@ -259,45 +298,6 @@ models:
               to: ref('other_model_name')
 ```
 
-#### unique_where ([source](macros/generic_tests/test_unique_where.sql))
-
-Asserts that there are no duplicate values present in a field for a subset of rows by specifying a `where` clause.
-
-*Warning*: This test is no longer supported. Starting in dbt v0.20.0, the built-in `unique` test supports a `where` config. [See the dbt docs for more details](https://docs.getdbt.com/reference/resource-configs/where).
-
-**Usage:**
-
-```yaml
-version: 2
-
-models:
-  - name: my_model
-    columns:
-      - name: id
-        tests:
-          - dbt_utils.unique_where:
-              where: "_deleted = false"
-```
-
-#### not_null_where ([source](macros/generic_tests/test_not_null_where.sql))
-
-Asserts that there are no null values present in a column for a subset of rows by specifying a `where` clause.
-
-*Warning*: This test is no longer supported. Starting in dbt v0.20.0, the built-in `not_null` test supports a `where` config. [See the dbt docs for more details](https://docs.getdbt.com/reference/resource-configs/where).
-
-**Usage:**
-
-```yaml
-version: 2
-
-models:
-  - name: my_model
-    columns:
-      - name: id
-        tests:
-          - dbt_utils.not_null_where:
-              where: "_deleted = false"
-```
 
 #### not_null_proportion ([source](macros/generic_tests/not_null_proportion.sql))
 
@@ -316,6 +316,8 @@ models:
           - dbt_utils.not_null_proportion:
               at_least: 0.95
 ```
+
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
 
 #### not_accepted_values ([source](macros/generic_tests/not_accepted_values.sql))
 
@@ -511,6 +513,8 @@ seeds:
 - `interval` (default=1): The gap between two sequential values
 - `datepart` (default=None): Used when the gaps are a unit of time. If omitted, the test will check for a numeric gap.
 
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
+
 #### unique_combination_of_columns ([source](macros/generic_tests/unique_combination_of_columns.sql))
 
 Asserts that the combination of columns is unique. For example, the
@@ -591,6 +595,34 @@ models:
 ```
 
 ----
+
+#### Grouping in tests
+
+Certain tests support the optional `group_by_columns` argument to provide more granularity in performing tests. This can be useful when:
+
+- Some data checks can only be expressed within a group (e.g. ID values should be unique within a group but can be repeated between groups)
+- Some data checks are more precise when done by group (e.g. not only should table rowcounts be equal but the counts within each group should be equal)
+
+This feature is currently available for the following tests:
+
+- equal_rowcount()
+- fewer_rows_than()
+- recency()
+- at_least_one()
+- not_constant()
+- sequential_values()
+- non_null_proportion()
+
+To use this feature, the names of grouping variables can be passed as a list. For example, to test for at least one valid value by group, the `group_by_columns` argument could be used as follows:
+
+```
+  - name: data_test_at_least_one
+    columns:
+      - name: field
+        tests:
+          - dbt_utils.at_least_one:
+              group_by_columns: ['customer_segment']
+```
 
 ## Macros
 

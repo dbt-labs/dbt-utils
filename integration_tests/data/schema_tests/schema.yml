@@ -7,6 +7,9 @@ seeds:
         tests:
           - dbt_utils.sequential_values:
               interval: 2
+          - dbt_utils.sequential_values:
+              interval: 2
+              group_by_columns: ['col_a']
 
 
   - name: data_test_sequential_timestamps

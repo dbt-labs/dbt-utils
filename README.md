@@ -56,7 +56,6 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [get_url_path](#get_url_path-source)
 
 - [Cross-database macros](#cross-database-macros):
-  - [current_timestamp](#current_timestamp-source)
   - [dateadd](#dateadd-source)
   - [datediff](#datediff-source)
   - [split_part](#split_part-source)
@@ -1161,18 +1160,6 @@ Note that most of these macros moved to dbt Core as of dbt_utils v0.9.0 and dbt 
 
 To access the version defined in dbt Core, remove the `dbt_utils.` prefix (see [https://docs.getdbt.com/reference/dbt-jinja-functions/cross-database-macros](https://docs.getdbt.com/reference/dbt-jinja-functions/cross-database-macros) for examples).
 As highlighted below, some of the cross-database macros are still in the process of being deprecated.
-
-#### current_timestamp ([source](macros/cross_db_utils/current_timestamp.sql))
-
-*DEPRECATED: This macro is deprecated and will be removed in a future version of the package, once equivalent functionality is implemented in dbt Core.*
-
-This macro returns the current timestamp.
-
-**Usage:**
-
-```
-{{ dbt_utils.current_timestamp() }}
-```
 
 #### dateadd ([source](macros/cross_db_utils/dateadd.sql))
 

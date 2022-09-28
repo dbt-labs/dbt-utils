@@ -12,6 +12,7 @@
 
 ## New features
 - New feature to omit the `source_column_name` column on the `union_relations` macro ([#331](https://github.com/dbt-labs/dbt-utils/issues/331), [#624](https://github.com/dbt-labs/dbt-utils/pull/624))
+- New feature to allow a `condition` option to `not_null_proportion` tests ([#691](https://github.com/dbt-labs/dbt-utils/pull/691))
 
 ## Fixes
 - Better handling of whitespaces in the star macro ([#651](https://github.com/dbt-labs/dbt-utils/pull/651))

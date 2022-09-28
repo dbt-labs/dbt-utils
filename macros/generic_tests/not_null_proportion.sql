@@ -7,11 +7,13 @@
 {% set column_name = kwargs.get('column_name', kwargs.get('arg')) %}
 {% set at_least = kwargs.get('at_least', kwargs.get('arg')) %}
 {% set at_most = kwargs.get('at_most', kwargs.get('arg', 1)) %}
+{% set condition = kwargs.get('condition', kwargs.get('arg', '1=1')) %}
 
 with validation as (
   select
     sum(case when {{ column_name }} is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion
   from {{ model }}
+  where {{ condition }}
 ),
 validation_errors as (
   select

@@ -317,6 +317,23 @@ models:
               at_least: 0.95
 ```
 
+The macro accepts an optional argument `condition` that allows for asserting the proportion is not null on a subset of all records.
+
+**Usage:**
+
+```yaml
+version: 2
+
+models:
+  - name: my_model
+    columns:
+      - name: id
+        tests:
+          - dbt_utils.not_null_proportion:
+              at_least: 0.95
+              condition: "created_at > '2018-12-31'"
+```
+
 #### not_accepted_values ([source](macros/generic_tests/not_accepted_values.sql))
 
 Asserts that there are no rows that match the given values.

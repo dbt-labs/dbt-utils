@@ -146,6 +146,10 @@ seeds:
         tests:
           - dbt_utils.not_null_proportion:
               at_least: 0.9
+          - dbt_utils.not_null_proportion:
+              at_least: 1
+              at_most: 1
+              condition: "point_9 IS NOT NULL"
 
 models:
   - name: test_recency

@@ -6,11 +6,12 @@
 {%- macro default__surrogate_key(field_list) -%}
 
 {%- set error_message = '
-Warning: the `dbt_utils.surrogate_key` macro has been fully deprecated in favor of \
-the new `generate_surrogate_key` macro. This new macro adjusts the default string value \
-passed to the coalesce function. To achieve parity with the original macro, \
-add a variable called `surrogate_key_treat_nulls_as_empty_strings` to your project with a \
-value of True. \
+Warning: `dbt_utils.surrogate_key` has been replaced by \
+`dbt_utils.generate_surrogate_key`. The new macro treats null values \
+differently to empty strings. To restore the behaviour of the original \
+macro, add a variable scoped to the dbt_utils package called \
+`surrogate_key_treat_nulls_as_empty_strings` to your \
+dbt_project.yml file with a value of True. \
 The {}.{} model triggered this warning. \
 '.format(model.package_name, model.name) -%}
 

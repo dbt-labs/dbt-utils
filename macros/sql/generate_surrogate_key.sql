@@ -14,12 +14,12 @@
 
 {%- for field in field_list -%}
 
-    {%- set _ = fields.append(
+    {%- do fields.append(
         "coalesce(cast(" ~ field ~ " as " ~ type_string() ~ "), '" ~ default_null_value  ~"')"
     ) -%}
 
     {%- if not loop.last %}
-        {%- set _ = fields.append("'-'") -%}
+        {%- do fields.append("'-'") -%}
     {%- endif -%}
 
 {%- endfor -%}

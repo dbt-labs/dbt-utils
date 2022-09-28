@@ -1,34 +1,20 @@
 {%- macro surrogate_key(field_list) -%}
-    {{ return(adapter.dispatch('surrogate_key', 'dbt_utils')(field_list)) }}
+    {% set frustrating_jinja_feature = varargs %}
+    {{ return(adapter.dispatch('surrogate_key', 'dbt_utils')(field_list, *varargs)) }}
 {% endmacro %}
 
 {%- macro default__surrogate_key(field_list) -%}
 
-{%- if field_list is not iterable or field_list is string or field_list is mapping -%}
-
 {%- set error_message = '
-Warning: the `surrogate_key` macro now takes a single list argument instead of \
-string arguments. The {}.{} model triggered this warning. \
+Warning: `dbt_utils.surrogate_key` has been replaced by \
+`dbt_utils.generate_surrogate_key`. The new macro treats null values \
+differently to empty strings. To restore the behaviour of the original \
+macro, add a variable scoped to the dbt_utils package called \
+`surrogate_key_treat_nulls_as_empty_strings` to your \
+dbt_project.yml file with a value of True. \
+The {}.{} model triggered this warning. \
 '.format(model.package_name, model.name) -%}
 
-{%- do exceptions.warn(error_message) -%}
-
-{%- endif -%}
-
-{%- set fields = [] -%}
-
-{%- for field in field_list -%}
-
-    {%- do fields.append(
-        "coalesce(cast(" ~ field ~ " as " ~ type_string() ~ "), '')"
-    ) -%}
-
-    {%- if not loop.last %}
-        {%- do fields.append("'-'") -%}
-    {%- endif -%}
-
-{%- endfor -%}
-
-{{ hash(concat(fields)) }}
+{%- do exceptions.raise_compiler_error(error_message) -%}
 
 {%- endmacro -%}

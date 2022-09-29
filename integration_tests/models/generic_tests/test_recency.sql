@@ -1,3 +1,4 @@
+
 {% if target.type == 'postgres' %}
 
 select

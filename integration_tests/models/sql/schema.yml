@@ -1,6 +1,13 @@
 version: 2
 
 models:
+  - name: test_get_query_results_as_single_value
+    columns:
+      - name: default_value
+        tests:
+          - accepted_values:
+              values:
+                - '9/30/2022'
   - name: test_generate_series
     tests:
       - dbt_utils.equality:

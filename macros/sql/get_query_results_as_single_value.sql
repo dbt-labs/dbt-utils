@@ -24,6 +24,6 @@
     
     {%- endif -%}
 
-    {{ return("'"+sql_result+"'::text") }}
+    {{ return("'"+sql_result+"'::"+dbt.type_string()) }}
 
 {% endmacro %}

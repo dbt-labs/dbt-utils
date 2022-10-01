@@ -1,5 +1,4 @@
 {%- set default_ref = ref('data_get_single_column_row_value')|string -%}
-{%- set secondary_ref = ref('') -%}
 
 with default_data as (
 

@@ -3,7 +3,7 @@ version: 2
 models:
   - name: test_get_query_results_as_single_value
     columns:
-      - name: default_value
+      - name: date_value
         tests:
           - accepted_values:
               values:

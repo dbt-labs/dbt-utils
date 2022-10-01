@@ -1,4 +1,8 @@
 {% macro get_query_results_as_single_value(query, row_position=0, column_position=0) %}
+    {{ return(adapter.dispatch('get_query_results_as_single_value', 'dbt_utils')(query, row_position=0, column_position=0)) }}
+{% endmacro %}
+
+{% macro default__get_query_results_as_single_value(query, row_position=0, column_position=0) %}
 
 {# This macro returns the (row_position, column_position) record in a query #}
     {%- set nth_row = row_position -%}
@@ -20,6 +24,6 @@
     
     {%- endif -%}
 
-    {{ return(sql_result) }}
+    {{ return("'"+sql_result+"'") }}
 
 {% endmacro %}

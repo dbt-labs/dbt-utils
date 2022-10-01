@@ -16,7 +16,7 @@
 
     {%- if execute -%}
 
-        {% set sql_result = load_result('get_query_result').table.columns[nth_column].values()[nth_row] %}
+        {% set sql_result = load_result('get_query_result').table.columns[nth_column].values()[nth_row]|string %}
     
     {%- else -%}
     
@@ -24,6 +24,6 @@
     
     {%- endif -%}
 
-    {{ return("'"+sql_result+"'") }}
+    {{ return("'"+sql_result+"'::text") }}
 
 {% endmacro %}

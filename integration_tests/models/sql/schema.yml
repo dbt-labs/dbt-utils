@@ -8,6 +8,21 @@ models:
           - accepted_values:
               values:
                 - '9/30/2022'
+      - name: float_value
+        tests:
+          - accepted_values:
+              values:
+                - '3.3'
+      - name: integer_value
+        tests:
+          - accepted_values:
+              values:
+                - '19'
+      - name: string_value
+        tests:
+          - accepted_values:
+              values:
+                - 'coalesce'
   - name: test_generate_series
     tests:
       - dbt_utils.equality:

@@ -66,6 +66,7 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [array_append](#array_append-source)
   - [array_concat](#array_concat-source)
   - [cast_array_to_string](#cast_array_to_string-source)
+  - [safe_divide](#safe_divide-source)
 
 - [Jinja Helpers](#jinja-helpers)
   - [pretty_time](#pretty_time-source)
@@ -1332,6 +1333,21 @@ This macro converts an array to a single string value and returns the resulting 
 
 ```
 {{ dbt_utils.cast_array_to_string('array_column') }}
+```
+
+#### safe_divide ([source](macros/cross_db_utils/safe_divide.sql))
+
+This macro performs division but returns null if the denominator is 0. 
+
+**Args:**
+
+- `numerator` (required): The number you want to divide.
+- `denominator` (required): The number you want to divide by.
+
+**Usage:**
+
+```
+{{ dbt_utils.safe_divide('numerator', 'denominator') }}
 ```
 
 ---

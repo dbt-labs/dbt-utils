@@ -68,3 +68,16 @@
 
 
 {% endmacro %}
+
+{% macro clickhouse__get_tables_by_pattern_sql(schema_pattern, table_pattern, exclude='', database=target.database) %}
+
+        select
+            database as "table_schema",
+            name as "table_name",
+            'table' as "table_type"
+        from system.tables
+        where database ilike '{{ schema_pattern }}'
+        and name ilike '{{ table_pattern }}'
+        and name not ilike '{{ exclude }}'
+
+{% endmacro %}

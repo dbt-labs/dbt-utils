@@ -3,7 +3,7 @@ from tests.functional.data_type.base_data_type import BaseDbtUtilsBackCompat, Ba
 from dbt.tests.adapter.utils.data_types.test_type_string import BaseTypeString
 
 
-class TestTypeInt(BaseDbtUtilsBackCompat, BaseTypeString):
+class TestTypeString(BaseDbtUtilsBackCompat, BaseTypeString):
     pass
 
 

@@ -11,7 +11,16 @@
 # Unreleased
 
 ## New features
+- Implemented an optional `group_by_columns` argument across many of the generic testing macros to test for properties that only pertain to group-level or are can be more rigorously conducted at the group level. Property available in `recency`, `at_least_one`, `equal_row_count`, `fewer_rows_than`, `not_constant`, `not_null_proportion`, and `sequential` tests [#633](https://github.com/dbt-labs/dbt-utils/pull/633)
 - New feature to omit the `source_column_name` column on the `union_relations` macro ([#331](https://github.com/dbt-labs/dbt-utils/issues/331), [#624](https://github.com/dbt-labs/dbt-utils/pull/624))
+- New feature to select fewer columns in `expression_is_true` ([#683](https://github.com/dbt-labs/dbt-utils/issues/683), [#686](https://github.com/dbt-labs/dbt-utils/pull/686))
+- Add `not_empty_string` generic test that asserts column values are not an empty string. ([#632](https://github.com/dbt-labs/dbt-utils/issues/632), [#634](https://github.com/dbt-labs/dbt-utils/pull/634))
+
+## Under the hood
+- Remove deprecated table argument from unpivot ([#671](https://github.com/dbt-labs/dbt-utils/pull/671))
+- Delete the deprecated identifier macro ([#672](https://github.com/dbt-labs/dbt-utils/pull/672))
+- Handle deprecations in deduplicate macro ([#673](https://github.com/dbt-labs/dbt-utils/pull/673))
+- Fully remove varargs usage in surrogate_key and safe_add ([#674](https://github.com/dbt-labs/dbt-utils/pull/674))
 
 ## Fixes
 - Better handling of whitespaces in the star macro ([#651](https://github.com/dbt-labs/dbt-utils/pull/651))
@@ -20,9 +29,12 @@
 
 ## Contributors:
 - [@christineberger](https://github.com/christineberger) (#624)
+- [@epapineau](https://github.com/epapineau) (#634)
 - [@courentin](https://github.com/courentin) (#651)
 - [@sfc-gh-ancoleman](https://github.com/sfc-gh-ancoleman) (#660)
 - [@zachoj10](https://github.com/zachoj10) (#692)
+- [@miles170](https://github.com/miles170)
+- [@emilyriederer](https://github.com/emilyriederer) 
 
 # dbt-utils v0.8.6
 
@@ -78,6 +90,7 @@ After:
 ## Fixes
 - Fix `union_relations` `source_column_name` none option.
 - Enable a negative part_number for `split_part()` ([#557](https://github.com/dbt-labs/dbt-utils/issues/557), [#559](https://github.com/dbt-labs/dbt-utils/pull/559))
+- Make `exclude` case insensitive for `union_relations()` ([#578](https://github.com/dbt-labs/dbt-utils/issues/557), [#587](https://github.com/dbt-labs/dbt-utils/issues/587))
 
 ## Quality of life
 - Documentation about listagg macro ([#544](https://github.com/dbt-labs/dbt-utils/issues/544), [#560](https://github.com/dbt-labs/dbt-utils/pull/560))
@@ -100,6 +113,7 @@ After:
 - [@LewisDavies](https://github.com/LewisDavies) (#554)
 - [@epapineau](https://github.com/epapineau) (#583)
 - [@b-per](https://github.com/b-per) (#559)
+- [@dbeatty10](https://github.com/dbeatty10), [@jeremyyeo](https://github.com/jeremyyeo) (#587)
 
 # dbt-utils v0.8.4
 ## Fixes

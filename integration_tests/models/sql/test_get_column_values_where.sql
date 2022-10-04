@@ -2,5 +2,5 @@
 
 -- Create a relation using the values
 {% for val in column_values -%}
-select {{ dbt_utils.string_literal(val) }} as field {% if not loop.last %}union all{% endif %} 
+select {{ string_literal(val) }} as field {% if not loop.last %}union all{% endif %} 
 {% endfor %}

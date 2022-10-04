@@ -23,7 +23,8 @@ seeds:
           expression: col_a + col_b = 1
       - dbt_utils.expression_is_true:
           expression: col_a = 0.5
-          condition: col_b = 0.5
+          config:
+            where: col_b = 0.5
     columns:
       - name: col_a
         tests:
@@ -33,7 +34,8 @@ seeds:
         tests:
           - dbt_utils.expression_is_true:
               expression: = 0.5
-              condition: col_a = 0.5
+              config:
+                where: col_a = 0.5
 
   - name: data_people
     columns:

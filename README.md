@@ -55,7 +55,6 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [get_url_path](#get_url_path-source)
 
 - [Cross-database macros](#cross-database-macros):
-  - [current_timestamp](#current_timestamp-source)
   - [dateadd](#dateadd-source)
   - [datediff](#datediff-source)
   - [split_part](#split_part-source)
@@ -1194,18 +1193,6 @@ Note that most of these macros moved to dbt Core as of dbt_utils v0.9.0 and dbt 
 To access the version defined in dbt Core, remove the `dbt_utils.` prefix (see [https://docs.getdbt.com/reference/dbt-jinja-functions/cross-database-macros](https://docs.getdbt.com/reference/dbt-jinja-functions/cross-database-macros) for examples).
 As highlighted below, some of the cross-database macros are still in the process of being deprecated.
 
-#### current_timestamp ([source](macros/cross_db_utils/current_timestamp.sql))
-
-*DEPRECATED: This macro is deprecated and will be removed in a future version of the package, once equivalent functionality is implemented in dbt Core.*
-
-This macro returns the current timestamp.
-
-**Usage:**
-
-```
-{{ dbt_utils.current_timestamp() }}
-```
-
 #### dateadd ([source](macros/cross_db_utils/dateadd.sql))
 
 *DEPRECATED: This macro is now provided in dbt Core. It is no longer available in dbt_utils and backwards compatibility will be removed in a future version of the package.*
@@ -1509,7 +1496,7 @@ A useful workaround is to change the above post-hook to:
 ### Reporting bugs and contributing code
 
 - Want to report a bug or request a feature? Let us know in the `#package-ecosystem` channel on [Slack](http://community.getdbt.com/), or open [an issue](https://github.com/dbt-labs/dbt-utils/issues/new)
-- Want to help us build dbt-utils? Check out the [Contributing Guide](https://github.com/dbt-utils/dbt-core/blob/HEAD/CONTRIBUTING.md)
+- Want to help us build dbt-utils? Check out the [Contributing Guide](https://github.com/dbt-labs/dbt-utils/blob/main/CONTRIBUTING.md)
   - **TL;DR** Open a Pull Request with 1) your changes, 2) updated documentation for the `README.md` file, and 3) a working integration test.
 
 ----

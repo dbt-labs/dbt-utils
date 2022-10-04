@@ -4,7 +4,7 @@
 
 {% macro default__test_recency(model, field, datepart, interval, group_by_columns) %}
 
-{% set threshold = dateadd(datepart, interval * -1, current_timestamp()) %}
+{% set threshold = dateadd(datepart, interval * -1, current_timestamp_backcompat()) %}
 {% if group_by_columns|length() > 0 %}
   {% set select_gb_cols = group_by_columns|join(' ,') + ', ' %}
   {% set groupby_gb_cols = 'group by ' + group_by_columns|join(',') %}

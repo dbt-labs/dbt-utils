@@ -24,7 +24,7 @@ select
 from (
     {{ dbt_utils.unpivot(
         relation=ref('data_unpivot_bool'),
-        cast_to=dbt_utils.type_string(),
+        cast_to=type_string(),
         exclude=exclude,
         field_name='prop',
         value_name='val'

@@ -13,11 +13,11 @@ Arguments:
     quote_identifiers: Whether to surround column aliases with double quotes, default is false
 #}
 
-{% macro unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', quote_identifiers=fals) -%}
+{% macro unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', quote_identifiers=false) -%}
     {{ return(adapter.dispatch('unpivot', 'dbt_utils')(relation, cast_to, exclude, remove, field_name, value_name, quote_identifiers)) }}
 {% endmacro %}
 
-{% macro default__unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', quote_identifiers=fals) -%}
+{% macro default__unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', quote_identifiers=false) -%}
 
     {% if not relation %}
         {{ exceptions.raise_compiler_error("Error: argument `relation` is required for `unpivot` macro.") }}
@@ -44,21 +44,17 @@ Arguments:
 
 
   {%- for col in include_cols -%}
+    {% set column_identifier = adapter.quote(col.column) if quote_identifiers else col.column %}
     select
       {%- for exclude_col in exclude %}
         {{ exclude_col }},
       {%- endfor %}
 
-      cast('{{ col.column }}' as {{ type_string() }}) as {{ field_name }},
-      cast(  {% if quote_identifiers %}
-               {% set column_identifier = adapter.quote(col.column) %}
+      cast( '{{ col.column }}' as {{ type_string() }}) as {{ field_name }},
+      cast(  {% if col.data_type == 'boolean' %}
+           {{ cast_bool_to_text(column_identifier) }}
              {% else %}
-               {% set column_identifier = col.column %}
-             {% endif %}
-             {% if col.data_type == 'boolean' %}
-               {{ dbt_utils.cast_bool_to_text(column_identifier) }}
-             {% else %}
-               {{ column_identifier }}
+           {{ column_identifier }}
              {% endif %}
            as {{ cast_to }}) as {{ value_name }}
 

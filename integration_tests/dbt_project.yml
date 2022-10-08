@@ -61,6 +61,9 @@ seeds:
           min_value: float
           max_value: float
 
+      data_unpivot_quote_identifiers:
+        +quote_columns: true
+
     schema_tests:
       data_test_sequential_timestamps:
         +column_types:

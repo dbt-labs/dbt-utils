@@ -13,26 +13,13 @@ Arguments:
     quote_identifiers: Whether to surround column aliases with double quotes, default is false
 #}
 
-{% macro unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', quote_identifiers=false, table=none) -%}
-    {{ return(adapter.dispatch('unpivot', 'dbt_utils')(relation, cast_to, exclude, remove, field_name, value_name, quote_identifiers, table)) }}
+{% macro unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', quote_identifiers=fals) -%}
+    {{ return(adapter.dispatch('unpivot', 'dbt_utils')(relation, cast_to, exclude, remove, field_name, value_name, quote_identifiers)) }}
 {% endmacro %}
 
-{% macro default__unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', quote_identifiers=false, table=none) -%}
+{% macro default__unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', quote_identifiers=fals) -%}
 
-    {% if table %}
-        {%- set error_message = '
-            Warning: the `unpivot` macro no longer accepts a `table` parameter. \
-            This parameter will be deprecated in a future release of dbt-utils. Use the `relation` parameter instead. \
-            The {}.{} model triggered this warning. \
-            '.format(model.package_name, model.name) -%}
-        {%- do exceptions.warn(error_message) -%}
-    {% endif %}
-
-    {% if relation and table %}
-        {{ exceptions.raise_compiler_error("Error: both the `relation` and `table` parameters were provided to `unpivot` macro. Choose one only (we recommend `relation`).") }}
-    {% elif not relation and table %}
-        {% set relation=table %}
-    {% elif not relation and not table %}
+    {% if not relation %}
         {{ exceptions.raise_compiler_error("Error: argument `relation` is required for `unpivot` macro.") }}
     {% endif %}
 
@@ -62,7 +49,7 @@ Arguments:
         {{ exclude_col }},
       {%- endfor %}
 
-      cast('{{ col.column }}' as {{ dbt_utils.type_string() }}) as {{ field_name }},
+      cast('{{ col.column }}' as {{ type_string() }}) as {{ field_name }},
       cast(  {% if quote_identifiers %}
                {% set column_identifier = adapter.quote(col.column) %}
              {% else %}

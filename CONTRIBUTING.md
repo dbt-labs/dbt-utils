@@ -2,6 +2,8 @@
 
 `dbt-utils` is open source software. It is what it is today because community members have opened issues, provided feedback, and [contributed to the knowledge loop](https://www.getdbt.com/dbt-labs/values/). Whether you are a seasoned open source contributor or a first-time committer, we welcome and encourage you to contribute code, documentation, ideas, or problem statements to this project.
 
+Remember: all PRs (apart from cosmetic fixes like typos) should be [associated with an issue](https://docs.getdbt.com/docs/contributing/oss-expectations#pull-requests).
+
 1. [About this document](#about-this-document)
 1. [Getting the code](#getting-the-code)
 1. [Setting up an environment](#setting-up-an-environment)

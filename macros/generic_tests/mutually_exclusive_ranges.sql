@@ -42,12 +42,12 @@ with window_functions as (
 
         lead({{ lower_bound_column }}) over (
             {{ partition_clause }}
-            order by {{ lower_bound_column }}
+            order by {{ lower_bound_column }}, {{ upper_bound_column }}
         ) as next_lower_bound,
 
         row_number() over (
             {{ partition_clause }}
-            order by {{ lower_bound_column }} desc
+            order by {{ lower_bound_column }} desc, {{ upper_bound_column }} desc
         ) = 1 as is_last_record
 
     from {{ model }}
@@ -56,7 +56,7 @@ with window_functions as (
 
 calc as (
     -- We want to return records where one of our assumptions fails, so we'll use
-    -- the `not` function with `and` statements so we can write our assumptions nore cleanly
+    -- the `not` function with `and` statements so we can write our assumptions more cleanly
     select
         *,
 

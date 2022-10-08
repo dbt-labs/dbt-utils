@@ -24,16 +24,16 @@ from nulled
 
 select
 
-    {{ dbt_utils.safe_cast('field_1',
-        dbt_utils.type_string()
+    {{ safe_cast('field_1',
+        type_string()
     )}} as field_1,
 
-    {{ dbt_utils.safe_cast('field_2',
-        dbt_utils.type_string()
+    {{ safe_cast('field_2',
+        type_string()
     )}} as field_2,
 
-    {{ dbt_utils.safe_cast('field_3',
-        dbt_utils.type_string()
+    {{ safe_cast('field_3',
+        type_string()
     )}} as field_3
 
 from nulled

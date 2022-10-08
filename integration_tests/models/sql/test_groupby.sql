@@ -2,8 +2,8 @@ with test_data as (
     
     select
     
-        {{ dbt_utils.safe_cast("'a'", dbt_utils.type_string() )}} as column_1,
-        {{ dbt_utils.safe_cast("'b'", dbt_utils.type_string() )}} as column_2
+        {{ safe_cast("'a'", type_string() )}} as column_1,
+        {{ safe_cast("'b'", type_string() )}} as column_2
     
 ),
 

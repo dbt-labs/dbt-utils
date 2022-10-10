@@ -23,18 +23,20 @@
 - Fully remove varargs usage in surrogate_key and safe_add ([#674](https://github.com/dbt-labs/dbt-utils/pull/674))
 
 ## Fixes
+- Explicitly stating the namespace for cross-db macros so that the dispatch logic works correctly by restoring the dbt. prefix for all migrated cross-db macros ([#701](https://github.com/dbt-labs/dbt-utils/pull/701))
 - Better handling of whitespaces in the star macro ([#651](https://github.com/dbt-labs/dbt-utils/pull/651))
 - Fix to correct behavior in `mutually_exclusive_ranges` test in certain situations when `zero_length_range_allowed: true` and multiple ranges in a partition have the same value for `lower_bound_column`. ([[#659](https://github.com/dbt-labs/dbt-utils/issues/659)], [#660](https://github.com/dbt-labs/dbt-utils/pull/660))
 - Fix to utilize dbt Core version of `escape_single_quotes` instead of version from dbt Utils ([[#689](https://github.com/dbt-labs/dbt-utils/issues/689)], [#692](https://github.com/dbt-labs/dbt-utils/pull/692))
 
 ## Contributors:
+- [@SimonQuvang](https://github.com/SimonQuvang) (#701)
 - [@christineberger](https://github.com/christineberger) (#624)
 - [@epapineau](https://github.com/epapineau) (#634)
 - [@courentin](https://github.com/courentin) (#651)
 - [@sfc-gh-ancoleman](https://github.com/sfc-gh-ancoleman) (#660)
 - [@zachoj10](https://github.com/zachoj10) (#692)
 - [@miles170](https://github.com/miles170)
-- [@emilyriederer](https://github.com/emilyriederer) 
+- [@emilyriederer](https://github.com/emilyriederer)
 
 # dbt-utils v0.8.6
 

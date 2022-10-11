@@ -156,7 +156,7 @@ models:
           expression: "col_a + col_b = total"
 ```
 
-The macro accepts an optional argument `condition` that allows for asserting
+The macro accepts an optional argument `where` that allows for asserting
 the `expression` on a subset of all records.
 
 **Usage:**
@@ -169,7 +169,8 @@ models:
     tests:
       - dbt_utils.expression_is_true:
           expression: "col_a + col_b = total"
-          condition: "created_at > '2018-12-31'"
+          config:
+            where: "created_at > '2018-12-31'"
 ```
 
 This macro can also be used at the column level. When this is done, the `expression` is evaluated against the column.
@@ -187,7 +188,8 @@ models:
         tests:
           - dbt_utils.expression_is_true:
               expression: '= 1'
-              condition: col_a = 1
+              config:
+                where: col_a = 1
 ```
 
 #### recency ([source](macros/generic_tests/recency.sql))

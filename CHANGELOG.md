@@ -23,6 +23,33 @@
 - Fully remove varargs usage in `surrogate_key` and `safe_add` ([#674](https://github.com/dbt-labs/dbt-utils/pull/674))
 - Remove obsolete condition argument from `expression_is_true` ([#699](https://github.com/dbt-labs/dbt-utils/pull/699))
 
+## Migration instructions
+- If your project uses the `expression_is_true` macro, replace `condition` argument with `where`. 
+
+Before:
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "col_a + col_b = total"
+          condition: "created_at > '2018-12-31'"
+```
+After:
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "col_a + col_b = total"
+          config:
+            where: "created_at > '2018-12-31'"
+```
+
 ## Fixes
 - Better handling of whitespaces in the star macro ([#651](https://github.com/dbt-labs/dbt-utils/pull/651))
 - Fix to correct behavior in `mutually_exclusive_ranges` test in certain situations when `zero_length_range_allowed: true` and multiple ranges in a partition have the same value for `lower_bound_column`. ([[#659](https://github.com/dbt-labs/dbt-utils/issues/659)], [#660](https://github.com/dbt-labs/dbt-utils/pull/660))

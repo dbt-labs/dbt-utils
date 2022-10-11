@@ -3,5 +3,5 @@
 {%- endmacro %}
 
 {% macro default__safe_divide(numerator, denominator) %}
-    {{ numerator }} / nullif( {{ denominator }}, 0)
+    ( {{ numerator }} ) / nullif( ( {{ denominator }} ), 0)
 {% endmacro %}

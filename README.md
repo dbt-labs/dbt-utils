@@ -173,8 +173,6 @@ models:
             where: "created_at > '2018-12-31'"
 ```
 
-This macro can also be used at the column level. When this is done, the `expression` is evaluated against the column.
-
 ```yaml
 version: 2
 models:

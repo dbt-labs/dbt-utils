@@ -17,10 +17,38 @@
 - Add `not_empty_string` generic test that asserts column values are not an empty string. ([#632](https://github.com/dbt-labs/dbt-utils/issues/632), [#634](https://github.com/dbt-labs/dbt-utils/pull/634))
 
 ## Under the hood
-- Remove deprecated table argument from unpivot ([#671](https://github.com/dbt-labs/dbt-utils/pull/671))
+- Remove deprecated table argument from `unpivot` ([#671](https://github.com/dbt-labs/dbt-utils/pull/671))
 - Delete the deprecated identifier macro ([#672](https://github.com/dbt-labs/dbt-utils/pull/672))
 - Handle deprecations in deduplicate macro ([#673](https://github.com/dbt-labs/dbt-utils/pull/673))
-- Fully remove varargs usage in surrogate_key and safe_add ([#674](https://github.com/dbt-labs/dbt-utils/pull/674))
+- Fully remove varargs usage in `surrogate_key` and `safe_add` ([#674](https://github.com/dbt-labs/dbt-utils/pull/674))
+- Remove obsolete condition argument from `expression_is_true` ([#699](https://github.com/dbt-labs/dbt-utils/pull/699))
+
+## Migration instructions
+- If your project uses the `expression_is_true` macro, replace `condition` argument with `where`. 
+
+Before:
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "col_a + col_b = total"
+          condition: "created_at > '2018-12-31'"
+```
+After:
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "col_a + col_b = total"
+          config:
+            where: "created_at > '2018-12-31'"
+```
 
 ## Fixes
 - Explicitly stating the namespace for cross-db macros so that the dispatch logic works correctly by restoring the dbt. prefix for all migrated cross-db macros ([#701](https://github.com/dbt-labs/dbt-utils/pull/701))

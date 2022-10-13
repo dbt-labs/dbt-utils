@@ -5,30 +5,30 @@
 {% macro default__get_url_path(field) -%}
 
     {%- set stripped_url =
-        replace(
-            replace(field, "'http://'", "''"), "'https://'", "''")
+        dbt.replace(
+            dbt.replace(field, "'http://'", "''"), "'https://'", "''")
     -%}
 
     {%- set first_slash_pos -%}
         coalesce(
-            nullif({{ position("'/'", stripped_url) }}, 0),
-            {{ position("'?'", stripped_url) }} - 1
+            nullif({{ dbt.position("'/'", stripped_url) }}, 0),
+            {{ dbt.position("'?'", stripped_url) }} - 1
             )
     {%- endset -%}
 
     {%- set parsed_path =
-        split_part(
-            right(
+        dbt.split_part(
+            dbt.right(
                 stripped_url,
-                length(stripped_url) ~ "-" ~ first_slash_pos
+                dbt.length(stripped_url) ~ "-" ~ first_slash_pos
                 ),
             "'?'", 1
             )
     -%}
 
-    {{ safe_cast(
+    {{ dbt.safe_cast(
         parsed_path,
-        type_string()
+        dbt.type_string()
     )}}
 
 {%- endmacro %}

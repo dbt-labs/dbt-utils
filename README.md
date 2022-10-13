@@ -45,6 +45,7 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [generate_series](#generate_series-source)
   - [surrogate_key](#surrogate_key-source)
   - [safe_add](#safe_add-source)
+  - [safe_divide](#safe_divide-source)
   - [pivot](#pivot-source)
   - [unpivot](#unpivot-source)
   - [width_bucket](#width_bucket-source)
@@ -1022,6 +1023,21 @@ Implements a cross-database way to sum nullable fields using the fields specifie
 
 ```
 {{ dbt_utils.safe_add('field_a', 'field_b'[,...]) }}
+```
+
+#### safe_divide ([source](macros/cross_db_utils/safe_divide.sql))
+
+This macro performs division but returns null if the denominator is 0. 
+
+**Args:**
+
+- `numerator` (required): The number you want to divide.
+- `denominator` (required): The number you want to divide by.
+
+**Usage:**
+
+```
+{{ dbt_utils.safe_divide('numerator', 'denominator') }}
 ```
 
 #### pivot ([source](macros/sql/pivot.sql))

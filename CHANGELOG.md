@@ -9,6 +9,7 @@
 --->
 
 # Unreleased
+- Fixed the `recency` test, truncating it appropriately when datepart is day or greater. Also allows tests on TIMESTAMP type columns to work (was failing before since it required a comparison of TIMESTAMP to DATETIME). [#414]
 
 ## New features
 - Implemented an optional `group_by_columns` argument across many of the generic testing macros to test for properties that only pertain to group-level or are can be more rigorously conducted at the group level. Property available in `recency`, `at_least_one`, `equal_row_count`, `fewer_rows_than`, `not_constant`, `not_null_proportion`, and `sequential` tests [#633](https://github.com/dbt-labs/dbt-utils/pull/633)

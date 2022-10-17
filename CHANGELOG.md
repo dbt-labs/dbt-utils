@@ -29,6 +29,8 @@
 - Fix to utilize dbt Core version of `escape_single_quotes` instead of version from dbt Utils ([[#689](https://github.com/dbt-labs/dbt-utils/issues/689)], [#692](https://github.com/dbt-labs/dbt-utils/pull/692))
 
 ## Contributors:
+- [@fivetran-catfritz](https://github.com/fivetran-catfritz)
+- [@crowemi](https://github.com/crowemi)
 - [@christineberger](https://github.com/christineberger) (#624)
 - [@epapineau](https://github.com/epapineau) (#634)
 - [@courentin](https://github.com/courentin) (#651)

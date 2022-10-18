@@ -20,10 +20,10 @@
             {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}
                 {%- if quote_identifiers -%}
                     {{ adapter.quote(col)|trim }} {%- if prefix!='' or suffix!='' %} as {{ adapter.quote(prefix ~ col ~ suffix)|trim }} {%- endif -%}
-                {% elif not quote_identifiers %}
+                {%- elif not quote_identifiers -%}
                     {{ col|trim }} {%- if prefix!='' or suffix!='' %} as {{ (prefix ~ col ~ suffix)|trim }} {%- endif -%}
                 {% endif %}
-            {%- if not loop.last %},{{ '\n  ' }}{% endif %}
+            {%- if not loop.last %},{{ '\n  ' }}{%- endif -%}
         {%- endfor -%}
     {% endif %}
 {%- endmacro %}

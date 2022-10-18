@@ -127,18 +127,11 @@ models:
       - dbt_utils.equality:
           compare_model: ref('data_star_expected')
 
-  - name: test_star_quotes
+  - name: test_star_quote_identifiers
     tests:
-      - dbt_utils.equality:
-          compare_model: ref('data_star_quotes_expected')
-
-  - name: test_star_no_quotes
-    columns:
-      - name: field_1
-        tests:
-          - accepted_values:
-              values:
-                - 'a'
+      - assert_equal:
+          actual: actual
+          expected: expected
 
   - name: test_star_prefix_suffix
     tests:

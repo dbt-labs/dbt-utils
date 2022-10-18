@@ -138,7 +138,7 @@ models:
         tests:
           - accepted_values:
               values:
-                - '1'
+                - 'a'
 
   - name: test_star_prefix_suffix
     tests:

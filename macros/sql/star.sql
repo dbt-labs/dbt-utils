@@ -20,7 +20,11 @@
             {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}
                 {%- if quote_identifiers -%}
                     {{ adapter.quote(col)|trim }} {%- if prefix!='' or suffix!='' %} as {{ adapter.quote(prefix ~ col ~ suffix)|trim }} {%- endif -%}
+<<<<<<< HEAD
                 {%- elif not quote_identifiers -%}
+=======
+                {% else %}
+>>>>>>> 37a2b695782e225d7f72bd1a8c5e7b2f3ee616d4
                     {{ col|trim }} {%- if prefix!='' or suffix!='' %} as {{ (prefix ~ col ~ suffix)|trim }} {%- endif -%}
                 {% endif %}
             {%- if not loop.last %},{{ '\n  ' }}{%- endif -%}

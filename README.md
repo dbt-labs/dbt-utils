@@ -45,6 +45,7 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [generate_series](#generate_series-source)
   - [surrogate_key](#surrogate_key-source)
   - [safe_add](#safe_add-source)
+  - [safe_divide](#safe_divide-source)
   - [pivot](#pivot-source)
   - [unpivot](#unpivot-source)
   - [width_bucket](#width_bucket-source)
@@ -156,7 +157,7 @@ models:
           expression: "col_a + col_b = total"
 ```
 
-The macro accepts an optional argument `condition` that allows for asserting
+The macro accepts an optional argument `where` that allows for asserting
 the `expression` on a subset of all records.
 
 **Usage:**
@@ -169,10 +170,9 @@ models:
     tests:
       - dbt_utils.expression_is_true:
           expression: "col_a + col_b = total"
-          condition: "created_at > '2018-12-31'"
+          config:
+            where: "created_at > '2018-12-31'"
 ```
-
-This macro can also be used at the column level. When this is done, the `expression` is evaluated against the column.
 
 ```yaml
 version: 2
@@ -187,7 +187,8 @@ models:
         tests:
           - dbt_utils.expression_is_true:
               expression: '= 1'
-              condition: col_a = 1
+              config:
+                where: col_a = 1
 ```
 
 #### recency ([source](macros/generic_tests/recency.sql))
@@ -932,6 +933,7 @@ the star macro.
 This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias (`relation_alias`.`field_name`).
 The macro also has optional `prefix` and `suffix` arguments. When one or both are provided, they will be concatenated onto each field's alias
 in the output (`prefix` ~ `field_name` ~ `suffix`). NB: This prevents the output from being used in any context other than a select statement.
+This macro also has an optional `quote_identifiers` argument that will encase the selected columns and their aliases in double quotes.
 
 **Args:**
 
@@ -940,12 +942,20 @@ in the output (`prefix` ~ `field_name` ~ `suffix`). NB: This prevents the output
 - `relation_alias` (optional, default=`''`): will prefix all generated fields with an alias (`relation_alias`.`field_name`).
 - `prefix` (optional, default=`''`): will prefix the output `field_name` (`field_name as prefix_field_name`).
 - `suffix` (optional, default=`''`): will suffix the output `field_name` (`field_name as field_name_suffix`).
+- `quote_identifiers` (optional, default=`True`): will encase selected columns and aliases in double quotes (`"field_name" as "field_name"`).
 
 **Usage:**
 
 ```sql
 select
   {{ dbt_utils.star(ref('my_model')) }}
+from {{ ref('my_model') }}
+
+```
+
+```sql
+select
+  {{ dbt_utils.star(from=ref('my_model'), quote_identifiers=False) }}
 from {{ ref('my_model') }}
 
 ```
@@ -1022,6 +1032,21 @@ Implements a cross-database way to sum nullable fields using the fields specifie
 
 ```
 {{ dbt_utils.safe_add('field_a', 'field_b'[,...]) }}
+```
+
+#### safe_divide ([source](macros/cross_db_utils/safe_divide.sql))
+
+This macro performs division but returns null if the denominator is 0. 
+
+**Args:**
+
+- `numerator` (required): The number you want to divide.
+- `denominator` (required): The number you want to divide by.
+
+**Usage:**
+
+```
+{{ dbt_utils.safe_divide('numerator', 'denominator') }}
 ```
 
 #### pivot ([source](macros/sql/pivot.sql))

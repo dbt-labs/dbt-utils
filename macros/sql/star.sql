@@ -1,8 +1,8 @@
-{% macro star(from, relation_alias=False, except=[], prefix='', suffix='') -%}
-    {{ return(adapter.dispatch('star', 'dbt_utils')(from, relation_alias, except, prefix, suffix)) }}
+{% macro star(from, relation_alias=False, except=[], prefix='', suffix='', quote_identifiers=True) -%}
+    {{ return(adapter.dispatch('star', 'dbt_utils')(from, relation_alias, except, prefix, suffix, quote_identifiers)) }}
 {% endmacro %}
 
-{% macro default__star(from, relation_alias=False, except=[], prefix='', suffix='') -%}
+{% macro default__star(from, relation_alias=False, except=[], prefix='', suffix='', quote_identifiers=True) -%}
     {%- do dbt_utils._is_relation(from, 'star') -%}
     {%- do dbt_utils._is_ephemeral(from, 'star') -%}
 
@@ -17,8 +17,14 @@
       {{- return('*') -}}
     {%- else -%}
         {%- for col in cols %}
-            {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}{{ adapter.quote(col)|trim }} {%- if prefix!='' or suffix!='' %} as {{ adapter.quote(prefix ~ col ~ suffix)|trim }} {%- endif -%}
-            {%- if not loop.last %},{{ '\n  ' }}{% endif %}
+            {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}
+                {%- if quote_identifiers -%}
+                    {{ adapter.quote(col)|trim }} {%- if prefix!='' or suffix!='' %} as {{ adapter.quote(prefix ~ col ~ suffix)|trim }} {%- endif -%}
+                {%- else -%}
+                    {{ col|trim }} {%- if prefix!='' or suffix!='' %} as {{ (prefix ~ col ~ suffix)|trim }} {%- endif -%}
+                {% endif %}
+            {%- if not loop.last %},{{ '\n  ' }}{%- endif -%}
         {%- endfor -%}
     {% endif %}
 {%- endmacro %}
+

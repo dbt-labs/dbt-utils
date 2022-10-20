@@ -5,11 +5,11 @@
 {% macro default__get_url_host(field) -%}
 
 {%- set parsed =
-    split_part(
-        split_part(
-            replace(
-                replace(
-                    replace(field, "'android-app://'", "''"
+    dbt.split_part(
+        dbt.split_part(
+            dbt.replace(
+                dbt.replace(
+                    dbt.replace(field, "'android-app://'", "''"
                     ), "'http://'", "''"
                 ), "'https://'", "''"
             ), "'/'", 1
@@ -21,7 +21,7 @@
 
     {{ dbt.safe_cast(
         parsed,
-        type_string()
+        dbt.type_string()
         )}}
 
 {%- endmacro %}

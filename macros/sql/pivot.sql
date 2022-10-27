@@ -69,7 +69,7 @@ Arguments:
     {{ agg }}(
       {% if distinct %} distinct {% endif %}
       case
-      when {{ column }} {{ cmp }} '{{ dbt_utils.escape_single_quotes(value) }}'
+      when {{ column }} {{ cmp }} '{{ dbt.escape_single_quotes(value) }}'
         then {{ then_value }}
       else {{ else_value }}
       end

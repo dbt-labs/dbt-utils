@@ -6,7 +6,7 @@
 
 {%- set formatted_url_parameter = "'" + url_parameter + "='" -%}
 
-{%- set split = split_part(split_part(field, formatted_url_parameter, 2), "'&'", 1) -%}
+{%- set split = dbt.split_part(dbt.split_part(field, formatted_url_parameter, 2), "'&'", 1) -%}
 
 nullif({{ split }},'')
 

@@ -1,12 +1,10 @@
-{% macro get_query_results_as_single_value(query, row_position=0, column_position=0) %}
+{% macro get_query_results_as_single_value(query) %}
     {{ return(adapter.dispatch('get_query_results_as_single_value', 'dbt_utils')(query, row_position, column_position)) }}
 {% endmacro %}
 
-{% macro default__get_query_results_as_single_value(query, row_position=0, column_position=0) %}
+{% macro default__get_query_results_as_single_value(query) %}
 
-{# This macro returns the (row_position, column_position) record in a query as a string #}
-    {%- set nth_row = row_position -%}
-    {%- set nth_column = column_position -%}
+{# This macro returns the (0, 0) record in a query #}
 
     {%- call statement('get_query_result', fetch_result=True,auto_begin=false) -%}
 
@@ -16,7 +14,7 @@
 
     {%- if execute -%}
 
-        {% set sql_result = load_result('get_query_result').table.columns[nth_column].values()[nth_row]|string %}
+        {% set sql_result = load_result('get_query_result').table.columns[0].values()[0] %}
     
     {%- else -%}
     
@@ -24,6 +22,6 @@
     
     {%- endif -%}
 
-    {{ return("CAST('"+sql_result+"' AS "+dbt.type_string()+")") }}
+    {% do return(sql_result) %}
 
 {% endmacro %}

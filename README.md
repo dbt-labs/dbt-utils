@@ -35,6 +35,7 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [get_relations_by_pattern](#get_relations_by_pattern-source)
   - [get_relations_by_prefix](#get_relations_by_prefix-source)
   - [get_query_results_as_dict](#get_query_results_as_dict-source)
+  - [get_query_results_as_single_value](#get_query_results_as_single_value)
 
 - [SQL generators](#sql-generators)
   - [date_spine](#date_spine-source)
@@ -760,6 +761,34 @@ for relations.
 #### get_query_results_as_dict ([source](macros/sql/get_query_results_as_dict.sql))
 
 This macro returns a dictionary from a sql query, so that you don't need to interact with the Agate library to operate on the result
+
+**Usage:**
+
+```
+{% set sql_statement %}
+    select city, state from {{ ref('users') }}
+{% endset %}
+
+{%- set places = dbt_utils.get_query_results_as_dict(sql_statement) -%}
+
+select
+
+    {% for city in places['CITY'] | unique -%}
+      sum(case when city = '{{ city }}' then 1 else 0 end) as users_in_{{ dbt_utils.slugify(city) }},
+    {% endfor %}
+
+    {% for state in places['STATE'] | unique -%}
+      sum(case when state = '{{ state }}' then 1 else 0 end) as users_in_{{ state }},
+    {% endfor %}
+
+    count(*) as total_total
+
+from {{ ref('users') }}
+```
+
+#### get_query_results_as_single_value ([source](macros/sql/get_query_results_as_single_value.sql))
+
+This macro returns a single value from a sql query, so that you don't need to interact with the Agate library to operate on the result
 
 **Usage:**
 

@@ -12,13 +12,11 @@
 
 {#- Use a date-based threshold if column type is DATE or datepart is day or greater #}
 {%- if column_type == 'DATE' and datepart in ['year', 'quarter', 'month', 'week', 'day'] %}
-  {%- set threshold = dbt.dateadd(datepart, interval * -1, dbt.safe_cast(dbt.current_timestamp_backcompat(), api.Column.translate_type("date"))) %}
+  {%- set threshold = dbt.dateadd(datepart, interval * -1, dbt.safe_cast(dbt.current_timestamp_backcompat(), 'date')) %}
 {%- else %}
   {%- set threshold = dbt.dateadd(datepart, interval * -1, dbt.current_timestamp_backcompat()) %}
 {%- endif %}
 
-
-{%- set field_datetime = dbt.safe_cast(field, api.Column.translate_type("datetime")) %}
 
 {% if group_by_columns|length() > 0 %}
   {% set select_gb_cols = group_by_columns|join(' ,') + ', ' %}

@@ -1,5 +1,5 @@
 {% macro get_query_results_as_single_value(query) %}
-    {{ return(adapter.dispatch('get_query_results_as_single_value', 'dbt_utils')(query, row_position, column_position)) }}
+    {{ return(adapter.dispatch('get_query_results_as_single_value', 'dbt_utils')(query)) }}
 {% endmacro %}
 
 {% macro default__get_query_results_as_single_value(query) %}

@@ -12,6 +12,7 @@
 
 ## New features
 - New feature to omit the `source_column_name` column on the `union_relations` macro ([#331](https://github.com/dbt-labs/dbt-utils/issues/331), [#624](https://github.com/dbt-labs/dbt-utils/pull/624))
+- New macro `get_query_results_as_single_value` ([#696](https://github.com/dbt-labs/dbt-utils/pull/696))
 
 ## Fixes
 - Better handling of whitespaces in the star macro ([#651](https://github.com/dbt-labs/dbt-utils/pull/651))
@@ -23,6 +24,8 @@
 - [@courentin](https://github.com/courentin) (#651)
 - [@sfc-gh-ancoleman](https://github.com/sfc-gh-ancoleman) (#660)
 - [@zachoj10](https://github.com/zachoj10) (#692)
+- [@CR-Lough](https://github.com/CR-Lough) (#696)
+
 
 # dbt-utils v0.8.6
 

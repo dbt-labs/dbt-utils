@@ -15,7 +15,7 @@ models:
               values:
                 - '3.3'
 
-      - name: integer_value
+      - name: int_value
         tests:
           - accepted_values:
               values:

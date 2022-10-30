@@ -11,21 +11,63 @@
 # Unreleased
 
 ## New features
+- Implemented an optional `group_by_columns` argument across many of the generic testing macros to test for properties that only pertain to group-level or are can be more rigorously conducted at the group level. Property available in `recency`, `at_least_one`, `equal_row_count`, `fewer_rows_than`, `not_constant`, `not_null_proportion`, and `sequential` tests [#633](https://github.com/dbt-labs/dbt-utils/pull/633)
 - New feature to omit the `source_column_name` column on the `union_relations` macro ([#331](https://github.com/dbt-labs/dbt-utils/issues/331), [#624](https://github.com/dbt-labs/dbt-utils/pull/624))
 - New macro `get_query_results_as_single_value` ([#696](https://github.com/dbt-labs/dbt-utils/pull/696))
+- New feature to select fewer columns in `expression_is_true` ([#683](https://github.com/dbt-labs/dbt-utils/issues/683), [#686](https://github.com/dbt-labs/dbt-utils/pull/686))
+- Add `not_empty_string` generic test that asserts column values are not an empty string. ([#632](https://github.com/dbt-labs/dbt-utils/issues/632), [#634](https://github.com/dbt-labs/dbt-utils/pull/634))
+
+## Under the hood
+- Remove deprecated table argument from `unpivot` ([#671](https://github.com/dbt-labs/dbt-utils/pull/671))
+- Delete the deprecated identifier macro ([#672](https://github.com/dbt-labs/dbt-utils/pull/672))
+- Handle deprecations in deduplicate macro ([#673](https://github.com/dbt-labs/dbt-utils/pull/673))
+- Fully remove varargs usage in `surrogate_key` and `safe_add` ([#674](https://github.com/dbt-labs/dbt-utils/pull/674))
+- Remove obsolete condition argument from `expression_is_true` ([#699](https://github.com/dbt-labs/dbt-utils/pull/699))
+
+## Migration instructions
+- If your project uses the `expression_is_true` macro, replace `condition` argument with `where`. 
+
+Before:
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "col_a + col_b = total"
+          condition: "created_at > '2018-12-31'"
+```
+After:
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "col_a + col_b = total"
+          config:
+            where: "created_at > '2018-12-31'"
+```
 
 ## Fixes
+- Add star macro option to not encase column names in quotes. ([#706](https://github.com/dbt-labs/dbt-utils/pull/706))
+- Explicitly stating the namespace for cross-db macros so that the dispatch logic works correctly by restoring the dbt. prefix for all migrated cross-db macros ([#701](https://github.com/dbt-labs/dbt-utils/pull/701))
 - Better handling of whitespaces in the star macro ([#651](https://github.com/dbt-labs/dbt-utils/pull/651))
 - Fix to correct behavior in `mutually_exclusive_ranges` test in certain situations when `zero_length_range_allowed: true` and multiple ranges in a partition have the same value for `lower_bound_column`. ([[#659](https://github.com/dbt-labs/dbt-utils/issues/659)], [#660](https://github.com/dbt-labs/dbt-utils/pull/660))
 - Fix to utilize dbt Core version of `escape_single_quotes` instead of version from dbt Utils ([[#689](https://github.com/dbt-labs/dbt-utils/issues/689)], [#692](https://github.com/dbt-labs/dbt-utils/pull/692))
 
 ## Contributors:
+- [@CR-Lough] (https://github.com/CR-Lough) (#706) (#696)
+- [@SimonQuvang](https://github.com/SimonQuvang) (#701)
 - [@christineberger](https://github.com/christineberger) (#624)
+- [@epapineau](https://github.com/epapineau) (#634)
 - [@courentin](https://github.com/courentin) (#651)
 - [@sfc-gh-ancoleman](https://github.com/sfc-gh-ancoleman) (#660)
 - [@zachoj10](https://github.com/zachoj10) (#692)
-- [@CR-Lough](https://github.com/CR-Lough) (#696)
-
+- [@miles170](https://github.com/miles170)
+- [@emilyriederer](https://github.com/emilyriederer)
 
 # dbt-utils v0.8.6
 
@@ -81,6 +123,7 @@ After:
 ## Fixes
 - Fix `union_relations` `source_column_name` none option.
 - Enable a negative part_number for `split_part()` ([#557](https://github.com/dbt-labs/dbt-utils/issues/557), [#559](https://github.com/dbt-labs/dbt-utils/pull/559))
+- Make `exclude` case insensitive for `union_relations()` ([#578](https://github.com/dbt-labs/dbt-utils/issues/557), [#587](https://github.com/dbt-labs/dbt-utils/issues/587))
 
 ## Quality of life
 - Documentation about listagg macro ([#544](https://github.com/dbt-labs/dbt-utils/issues/544), [#560](https://github.com/dbt-labs/dbt-utils/pull/560))
@@ -103,6 +146,7 @@ After:
 - [@LewisDavies](https://github.com/LewisDavies) (#554)
 - [@epapineau](https://github.com/epapineau) (#583)
 - [@b-per](https://github.com/b-per) (#559)
+- [@dbeatty10](https://github.com/dbeatty10), [@jeremyyeo](https://github.com/jeremyyeo) (#587)
 
 # dbt-utils v0.8.4
 ## Fixes

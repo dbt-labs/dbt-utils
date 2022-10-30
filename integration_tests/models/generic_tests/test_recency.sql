@@ -2,11 +2,15 @@
 {% if target.type == 'postgres' %}
 
 select
-    {{ dbt_utils.date_trunc('day', dbt_utils.current_timestamp()) }} as today
+    1 as col1,
+    2 as col2,
+    {{ date_trunc('day', current_timestamp_backcompat()) }} as today
 
 {% else %}
 
 select
-    cast({{ dbt_utils.date_trunc('day', dbt_utils.current_timestamp()) }} as datetime) as today
+    1 as col1,
+    2 as col2,
+    cast({{ date_trunc('day', current_timestamp_backcompat()) }} as datetime) as today
     
 {% endif %}

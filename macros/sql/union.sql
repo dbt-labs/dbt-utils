@@ -17,6 +17,20 @@
 
     {%- set relation_columns = {} -%}
     {%- set column_superset = {} -%}
+    {%- set all_excludes = [] -%}
+    {%- set all_includes = [] -%}
+
+    {%- if exclude -%}
+        {%- for exc in exclude -%}
+            {%- do all_excludes.append(exc | lower) -%}
+        {%- endfor -%}
+    {%- endif -%}
+
+    {%- if include -%}
+        {%- for inc in include -%}
+            {%- do all_includes.append(inc | lower) -%}
+        {%- endfor -%}
+    {%- endif -%}
 
     {%- for relation in relations -%}
 
@@ -28,10 +42,10 @@
         {%- for col in cols -%}
 
         {#- If an exclude list was provided and the column is in the list, do nothing -#}
-        {%- if exclude and col.column in exclude -%}
+        {%- if exclude and col.column | lower in all_excludes -%}
 
         {#- If an include list was provided and the column is not in the list, do nothing -#}
-        {%- elif include and col.column not in include -%}
+        {%- elif include and col.column | lower not in all_includes -%}
 
         {#- Otherwise add the column to the column superset -#}
         {%- else -%}
@@ -86,7 +100,7 @@
             select
 
                 {%- if source_column_name is not none %}
-                cast({{ string_literal(relation) }} as {{ type_string() }}) as {{ source_column_name }},
+                cast({{ dbt.string_literal(relation) }} as {{ dbt.type_string() }}) as {{ source_column_name }},
                 {%- endif %}
 
                 {% for col_name in ordered_column_names -%}

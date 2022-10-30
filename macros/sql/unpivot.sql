@@ -12,26 +12,13 @@ Arguments:
     value_name: Destination table column name for the pivoted values
 #}
 
-{% macro unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', table=none) -%}
-    {{ return(adapter.dispatch('unpivot', 'dbt_utils')(relation, cast_to, exclude, remove, field_name, value_name, table)) }}
+{% macro unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value') -%}
+    {{ return(adapter.dispatch('unpivot', 'dbt_utils')(relation, cast_to, exclude, remove, field_name, value_name)) }}
 {% endmacro %}
 
-{% macro default__unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value', table=none) -%}
+{% macro default__unpivot(relation=none, cast_to='varchar', exclude=none, remove=none, field_name='field_name', value_name='value') -%}
 
-    {% if table %}
-        {%- set error_message = '
-            Warning: the `unpivot` macro no longer accepts a `table` parameter. \
-            This parameter will be deprecated in a future release of dbt-utils. Use the `relation` parameter instead. \
-            The {}.{} model triggered this warning. \
-            '.format(model.package_name, model.name) -%}
-        {%- do exceptions.warn(error_message) -%}
-    {% endif %}
-
-    {% if relation and table %}
-        {{ exceptions.raise_compiler_error("Error: both the `relation` and `table` parameters were provided to `unpivot` macro. Choose one only (we recommend `relation`).") }}
-    {% elif not relation and table %}
-        {% set relation=table %}
-    {% elif not relation and not table %}
+    {% if not relation %}
         {{ exceptions.raise_compiler_error("Error: argument `relation` is required for `unpivot` macro.") }}
     {% endif %}
 
@@ -61,9 +48,9 @@ Arguments:
         {{ exclude_col }},
       {%- endfor %}
 
-      cast('{{ col.column }}' as {{ type_string() }}) as {{ field_name }},
+      cast('{{ col.column }}' as {{ dbt.type_string() }}) as {{ field_name }},
       cast(  {% if col.data_type == 'boolean' %}
-           {{ cast_bool_to_text(col.column) }}
+           {{ dbt.cast_bool_to_text(col.column) }}
              {% else %}
            {{ col.column }}
              {% endif %}

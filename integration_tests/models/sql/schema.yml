@@ -106,6 +106,12 @@ models:
           actual: actual
           expected: expected
 
+  - name: test_safe_divide
+    tests:
+      - assert_equal:
+          actual: actual
+          expected: expected
+
   - name: test_pivot
     tests:
       - dbt_utils.equality:
@@ -136,6 +142,12 @@ models:
       - dbt_utils.equality:
           compare_model: ref('data_star_expected')
 
+  - name: test_star_quote_identifiers
+    tests:
+      - assert_equal:
+          actual: actual
+          expected: expected
+
   - name: test_star_prefix_suffix
     tests:
       - dbt_utils.equality:
@@ -151,14 +163,11 @@ models:
       - dbt_utils.equality:
           compare_model: ref('data_star_expected')
 
-  - name: test_surrogate_key
+  - name: test_generate_surrogate_key
     tests:
       - assert_equal:
           actual: actual_column_1_only
           expected: expected_column_1_only
-      - assert_equal:
-          actual: actual_all_columns_arguments
-          expected: expected_all_columns
       - assert_equal:
           actual: actual_all_columns_list
           expected: expected_all_columns
@@ -183,6 +192,16 @@ models:
       - expect_table_columns_to_match_set:
           column_list: ["id", "name", "favorite_color", "favorite_number"]
 
+  - name: test_union_exclude_lowercase
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_union_exclude_expected')
+
+  - name: test_union_exclude_uppercase
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_union_exclude_expected')
+
   - name: test_get_relations_by_pattern
     tests:
       - dbt_utils.equality:
@@ -193,10 +212,25 @@ models:
       - dbt_utils.equality:
           compare_model: ref('data_deduplicate_expected')
 
-  - name: test_deduplicate_deprecated
-    tests:
-      - dbt_utils.equality:
-          compare_model: ref('data_deduplicate_expected')
+  - name: test_not_empty_string_failing
+    columns:
+      - name: string_trim_whitespace_true
+        tests:
+          - dbt_utils.not_empty_string:
+              config:
+                severity: error
+                error_if: "<1"
+                warn_if: "<0"
+
+  - name: test_not_empty_string_passing
+    columns:
+      - name: string_trim_whitespace_true
+        tests:
+          - dbt_utils.not_empty_string
+      - name: string_trim_whitespace_false
+        tests:
+          - dbt_utils.not_empty_string:
+              trim_whitespace: false
 
   - name: test_width_bucket
     tests:

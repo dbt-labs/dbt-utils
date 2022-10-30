@@ -10,22 +10,21 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
 
 **[Generic tests](#generic-tests)**
 
-- [equal_rowcount](#equal_rowcount-source)
-- [fewer_rows_than](#fewer_rows_than-source)
-- [equality](#equality-source)
-- [expression_is_true](#expression_is_true-source)
-- [recency](#recency-source)
-- [at_least_one](#at_least_one-source)
-- [not_constant](#not_constant-source)
-- [cardinality_equality](#cardinality_equality-source)
-- [unique_where](#unique_where-source)
-- [not_null_where](#not_null_where-source)
-- [not_null_proportion](#not_null_proportion-source)
-- [not_accepted_values](#not_accepted_values-source)
-- [relationships_where](#relationships_where-source)
-- [mutually_exclusive_ranges](#mutually_exclusive_ranges-source)
-- [unique_combination_of_columns](#unique_combination_of_columns-source)
-- [accepted_range](#accepted_range-source)
+  - [equal_rowcount](#equal_rowcount-source)
+  - [fewer_rows_than](#fewer_rows_than-source)
+  - [equality](#equality-source)
+  - [expression_is_true](#expression_is_true-source)
+  - [recency](#recency-source)
+  - [at_least_one](#at_least_one-source)
+  - [not_constant](#not_constant-source)
+  - [not_empty_string](#not_empty_string-source)
+  - [cardinality_equality](#cardinality_equality-source)
+  - [not_null_proportion](#not_null_proportion-source)
+  - [not_accepted_values](#not_accepted_values-source)
+  - [relationships_where](#relationships_where-source)
+  - [mutually_exclusive_ranges](#mutually_exclusive_ranges-source)
+  - [unique_combination_of_columns](#unique_combination_of_columns-source)
+  - [accepted_range](#accepted_range-source)
 
 **[Macros](#macros)**
 
@@ -47,6 +46,7 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [generate_series](#generate_series-source)
   - [surrogate_key](#surrogate_key-source)
   - [safe_add](#safe_add-source)
+  - [safe_divide](#safe_divide-source)
   - [pivot](#pivot-source)
   - [unpivot](#unpivot-source)
   - [width_bucket](#width_bucket-source)
@@ -57,7 +57,6 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [get_url_path](#get_url_path-source)
 
 - [Cross-database macros](#cross-database-macros):
-  - [current_timestamp](#current_timestamp-source)
   - [dateadd](#dateadd-source)
   - [datediff](#datediff-source)
   - [split_part](#split_part-source)
@@ -99,6 +98,8 @@ models:
 
 ```
 
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
+
 #### fewer_rows_than ([source](macros/generic_tests/fewer_rows_than.sql))
 
 Asserts that the respective model has fewer rows than the model being compared.
@@ -114,6 +115,8 @@ models:
       - dbt_utils.fewer_rows_than:
           compare_model: ref('other_table_name')
 ```
+
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
 
 #### equality ([source](macros/generic_tests/equality.sql))
 
@@ -155,7 +158,7 @@ models:
           expression: "col_a + col_b = total"
 ```
 
-The macro accepts an optional argument `condition` that allows for asserting
+The macro accepts an optional argument `where` that allows for asserting
 the `expression` on a subset of all records.
 
 **Usage:**
@@ -168,10 +171,9 @@ models:
     tests:
       - dbt_utils.expression_is_true:
           expression: "col_a + col_b = total"
-          condition: "created_at > '2018-12-31'"
+          config:
+            where: "created_at > '2018-12-31'"
 ```
-
-This macro can also be used at the column level. When this is done, the `expression` is evaluated against the column.
 
 ```yaml
 version: 2
@@ -186,7 +188,8 @@ models:
         tests:
           - dbt_utils.expression_is_true:
               expression: '= 1'
-              condition: col_a = 1
+              config:
+                where: col_a = 1
 ```
 
 #### recency ([source](macros/generic_tests/recency.sql))
@@ -206,6 +209,7 @@ models:
           field: created_at
           interval: 1
 ```
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
 
 #### at_least_one ([source](macros/generic_tests/at_least_one.sql))
 
@@ -224,6 +228,8 @@ models:
           - dbt_utils.at_least_one
 ```
 
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
+
 #### not_constant ([source](macros/generic_tests/not_constant.sql))
 
 Asserts that a column does not have the same value in all rows.
@@ -239,6 +245,39 @@ models:
       - name: column_name
         tests:
           - dbt_utils.not_constant
+```
+
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
+
+#### not_empty_string ([source](macros/generic_tests/not_empty_string.sql))
+Asserts that a column does not have any values equal to `''`. 
+
+**Usage:**
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    columns:
+      - name: column_name
+        tests:
+          - dbt_utils.not_empty_string
+```
+
+The macro accepts an optional argument `trim_whitespace` that controls whether whitespace should be trimmed from the column when evaluating. The default is `true`. 
+
+**Usage:**
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    columns:
+      - name: column_name
+        tests:
+          - dbt_utils.not_empty_string:
+              trim_whitespace: false
+              
 ```
 
 #### cardinality_equality ([source](macros/generic_tests/cardinality_equality.sql))
@@ -260,45 +299,6 @@ models:
               to: ref('other_model_name')
 ```
 
-#### unique_where ([source](macros/generic_tests/test_unique_where.sql))
-
-Asserts that there are no duplicate values present in a field for a subset of rows by specifying a `where` clause.
-
-*Warning*: This test is no longer supported. Starting in dbt v0.20.0, the built-in `unique` test supports a `where` config. [See the dbt docs for more details](https://docs.getdbt.com/reference/resource-configs/where).
-
-**Usage:**
-
-```yaml
-version: 2
-
-models:
-  - name: my_model
-    columns:
-      - name: id
-        tests:
-          - dbt_utils.unique_where:
-              where: "_deleted = false"
-```
-
-#### not_null_where ([source](macros/generic_tests/test_not_null_where.sql))
-
-Asserts that there are no null values present in a column for a subset of rows by specifying a `where` clause.
-
-*Warning*: This test is no longer supported. Starting in dbt v0.20.0, the built-in `not_null` test supports a `where` config. [See the dbt docs for more details](https://docs.getdbt.com/reference/resource-configs/where).
-
-**Usage:**
-
-```yaml
-version: 2
-
-models:
-  - name: my_model
-    columns:
-      - name: id
-        tests:
-          - dbt_utils.not_null_where:
-              where: "_deleted = false"
-```
 
 #### not_null_proportion ([source](macros/generic_tests/not_null_proportion.sql))
 
@@ -317,6 +317,8 @@ models:
           - dbt_utils.not_null_proportion:
               at_least: 0.95
 ```
+
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
 
 #### not_accepted_values ([source](macros/generic_tests/not_accepted_values.sql))
 
@@ -512,6 +514,8 @@ seeds:
 - `interval` (default=1): The gap between two sequential values
 - `datepart` (default=None): Used when the gaps are a unit of time. If omitted, the test will check for a numeric gap.
 
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
+
 #### unique_combination_of_columns ([source](macros/generic_tests/unique_combination_of_columns.sql))
 
 Asserts that the combination of columns is unique. For example, the
@@ -592,6 +596,34 @@ models:
 ```
 
 ----
+
+#### Grouping in tests
+
+Certain tests support the optional `group_by_columns` argument to provide more granularity in performing tests. This can be useful when:
+
+- Some data checks can only be expressed within a group (e.g. ID values should be unique within a group but can be repeated between groups)
+- Some data checks are more precise when done by group (e.g. not only should table rowcounts be equal but the counts within each group should be equal)
+
+This feature is currently available for the following tests:
+
+- equal_rowcount()
+- fewer_rows_than()
+- recency()
+- at_least_one()
+- not_constant()
+- sequential_values()
+- non_null_proportion()
+
+To use this feature, the names of grouping variables can be passed as a list. For example, to test for at least one valid value by group, the `group_by_columns` argument could be used as follows:
+
+```
+  - name: data_test_at_least_one
+    columns:
+      - name: field
+        tests:
+          - dbt_utils.at_least_one:
+              group_by_columns: ['customer_segment']
+```
 
 ## Macros
 
@@ -922,6 +954,7 @@ the star macro.
 This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias (`relation_alias`.`field_name`).
 The macro also has optional `prefix` and `suffix` arguments. When one or both are provided, they will be concatenated onto each field's alias
 in the output (`prefix` ~ `field_name` ~ `suffix`). NB: This prevents the output from being used in any context other than a select statement.
+This macro also has an optional `quote_identifiers` argument that will encase the selected columns and their aliases in double quotes.
 
 **Args:**
 
@@ -930,12 +963,20 @@ in the output (`prefix` ~ `field_name` ~ `suffix`). NB: This prevents the output
 - `relation_alias` (optional, default=`''`): will prefix all generated fields with an alias (`relation_alias`.`field_name`).
 - `prefix` (optional, default=`''`): will prefix the output `field_name` (`field_name as prefix_field_name`).
 - `suffix` (optional, default=`''`): will suffix the output `field_name` (`field_name as field_name_suffix`).
+- `quote_identifiers` (optional, default=`True`): will encase selected columns and aliases in double quotes (`"field_name" as "field_name"`).
 
 **Usage:**
 
 ```sql
 select
   {{ dbt_utils.star(ref('my_model')) }}
+from {{ ref('my_model') }}
+
+```
+
+```sql
+select
+  {{ dbt_utils.star(from=ref('my_model'), quote_identifiers=False) }}
 from {{ ref('my_model') }}
 
 ```
@@ -1012,6 +1053,21 @@ Implements a cross-database way to sum nullable fields using the fields specifie
 
 ```
 {{ dbt_utils.safe_add('field_a', 'field_b'[,...]) }}
+```
+
+#### safe_divide ([source](macros/cross_db_utils/safe_divide.sql))
+
+This macro performs division but returns null if the denominator is 0. 
+
+**Args:**
+
+- `numerator` (required): The number you want to divide.
+- `denominator` (required): The number you want to divide by.
+
+**Usage:**
+
+```
+{{ dbt_utils.safe_divide('numerator', 'denominator') }}
 ```
 
 #### pivot ([source](macros/sql/pivot.sql))
@@ -1182,18 +1238,6 @@ Note that most of these macros moved to dbt Core as of dbt_utils v0.9.0 and dbt 
 
 To access the version defined in dbt Core, remove the `dbt_utils.` prefix (see [https://docs.getdbt.com/reference/dbt-jinja-functions/cross-database-macros](https://docs.getdbt.com/reference/dbt-jinja-functions/cross-database-macros) for examples).
 As highlighted below, some of the cross-database macros are still in the process of being deprecated.
-
-#### current_timestamp ([source](macros/cross_db_utils/current_timestamp.sql))
-
-*DEPRECATED: This macro is deprecated and will be removed in a future version of the package, once equivalent functionality is implemented in dbt Core.*
-
-This macro returns the current timestamp.
-
-**Usage:**
-
-```
-{{ dbt_utils.current_timestamp() }}
-```
 
 #### dateadd ([source](macros/cross_db_utils/dateadd.sql))
 

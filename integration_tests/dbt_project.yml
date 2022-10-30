@@ -57,9 +57,10 @@ seeds:
 
       data_get_single_column_row_value:
         +column_types:
-          date_value: date
+          date_value: timestamp
           float_value: float
           int_value: integer
+          string_value: varchar(32)
 
       data_width_bucket:
         +column_types:

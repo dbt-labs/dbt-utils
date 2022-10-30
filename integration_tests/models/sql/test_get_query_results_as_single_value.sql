@@ -1,14 +1,35 @@
-{%- set default_ref = ref('data_get_single_column_row_value') -%}
+{% set date_statement %}
+    select date_value from {{ ref('data_get_single_column_row_value') }}
+{% endset %}
+
+{% set float_statement %}
+    select float_value from {{ ref('data_get_single_column_row_value') }}
+{% endset %}
+
+{% set int_statement %}
+    select int_value from {{ ref('data_get_single_column_row_value') }}
+{% endset %}
+
+{% set string_statement %}
+    select string_value from {{ ref('data_get_single_column_row_value') }}
+{% endset %}
 
 with default_data as (
 
-    select 
-        {{ dbt_utils.get_query_results_as_single_value('select date_value from '+ default_ref) }} as date_value,
-        {{ dbt_utils.get_query_results_as_single_value('select float_value from '+ default_ref) }} as float_value,
-        {{ dbt_utils.get_query_results_as_single_value('select int_value from '+ default_ref) }} as int_value,
-        {{ dbt_utils.get_query_results_as_single_value('select string_value from '+ default_ref) }} as string_value
-    from {{ ref('data_get_single_column_row_value') }}
+    select
+        date_value as date_expected, 
+        {{ dbt_utils.get_query_results_as_single_value(date_statement) }} as date_actual,
 
+        float_value as float_expected,
+        {{ dbt_utils.get_query_results_as_single_value(float_statement) }} as float_actual,
+
+        int_value as int_expected,
+        {{ dbt_utils.get_query_results_as_single_value(int_statement) }} as int_actual,
+
+        string_value as string_expected,    
+        '{{ dbt_utils.get_query_results_as_single_value(string_statement) }}' as string_actual
+
+    from {{ ref('data_get_single_column_row_value') }}
 )
 
 select * 

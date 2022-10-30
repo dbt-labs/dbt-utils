@@ -2,30 +2,19 @@ version: 2
 
 models:
   - name: test_get_query_results_as_single_value
-    columns:
-      - name: date_value
-        tests:
-          - accepted_values:
-              values:
-                - '9/30/2022'
-
-      - name: float_value
-        tests:
-          - accepted_values:
-              values:
-                - '3.3'
-
-      - name: int_value
-        tests:
-          - accepted_values:
-              values:
-                - '19'
-                
-      - name: string_value
-        tests:
-          - accepted_values:
-              values:
-                - 'coalesce'
+    tests:
+      - assert_equal:
+          actual: date_actual
+          expected: date_expected
+      - assert_equal:
+          actual: float_actual
+          expected: float_expected
+      - assert_equal:
+          actual: int_actual
+          expected: int_expected
+      - assert_equal:
+          actual: string_actual
+          expected: string_expected
 
   - name: test_generate_series
     tests:

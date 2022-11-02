@@ -11,6 +11,7 @@
 # Unreleased
 
 ## New features
+- Updated the `slugify` macro to prepend "_" to column names beginning with a number since most databases do not allow names to begin with numbers. 
 - Implemented an optional `group_by_columns` argument across many of the generic testing macros to test for properties that only pertain to group-level or are can be more rigorously conducted at the group level. Property available in `recency`, `at_least_one`, `equal_row_count`, `fewer_rows_than`, `not_constant`, `not_null_proportion`, and `sequential` tests [#633](https://github.com/dbt-labs/dbt-utils/pull/633)
 - New feature to omit the `source_column_name` column on the `union_relations` macro ([#331](https://github.com/dbt-labs/dbt-utils/issues/331), [#624](https://github.com/dbt-labs/dbt-utils/pull/624))
 - New feature to select fewer columns in `expression_is_true` ([#683](https://github.com/dbt-labs/dbt-utils/issues/683), [#686](https://github.com/dbt-labs/dbt-utils/pull/686))
@@ -58,6 +59,8 @@ models:
 - Fix to utilize dbt Core version of `escape_single_quotes` instead of version from dbt Utils ([[#689](https://github.com/dbt-labs/dbt-utils/issues/689)], [#692](https://github.com/dbt-labs/dbt-utils/pull/692))
 
 ## Contributors:
+- [@fivetran-catfritz](https://github.com/fivetran-catfritz)
+- [@crowemi](https://github.com/crowemi)
 - [@CR-Lough] (https://github.com/CR-Lough) (#706)
 - [@SimonQuvang](https://github.com/SimonQuvang) (#701)
 - [@christineberger](https://github.com/christineberger) (#624)

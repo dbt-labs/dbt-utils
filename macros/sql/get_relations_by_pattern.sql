@@ -14,7 +14,7 @@
     schema_pattern, table_pattern, exclude="", database=target.database
 ) %}
 
-{%- call statement('get_tables', fetch_result=True) %}
+{%- call statement("get_tables", fetch_result=True) %}
 
 {{
     dbt_utils.get_tables_by_pattern_sql(

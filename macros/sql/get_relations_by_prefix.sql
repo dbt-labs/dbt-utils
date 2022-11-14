@@ -14,7 +14,7 @@
     schema, prefix, exclude="", database=target.database
 ) %}
 
-{%- call statement('get_tables', fetch_result=True) %}
+{%- call statement("get_tables", fetch_result=True) %}
 
 {{ dbt_utils.get_tables_by_prefix_sql(schema, prefix, exclude, database) }}
 

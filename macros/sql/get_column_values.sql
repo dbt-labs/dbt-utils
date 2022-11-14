@@ -27,7 +27,7 @@
 {# adapter.load_relation is a convenience wrapper to avoid building a Relation when we already have one #}
 {% set relation_exists = (load_relation(target_relation)) is not none %}
 
-{%- call statement('get_column_values', fetch_result=true) %}
+{%- call statement("get_column_values", fetch_result=true) %}
 
 {%- if not relation_exists and default is none -%}
 
@@ -62,14 +62,13 @@ order by {{ order_by }}
 
 {% endif %}
 
-    {%- endcall -%}
+{%- endcall -%}
 
-    {%- set value_list = load_result("get_column_values") -%}
+{%- set value_list = load_result("get_column_values") -%}
 
-    {%- if value_list and value_list["data"] -%}
-    {%- set values = value_list["data"] | map(attribute=0) | list %}
-    {{ return(values) }}
-    {%- else -%} {{ return(default) }}
-    {%- endif -%}
+{%- if value_list and value_list["data"] -%}
+{%- set values = value_list["data"] | map(attribute=0) | list %} {{ return(values) }}
+{%- else -%} {{ return(default) }}
+{%- endif -%}
 
 {%- endmacro %}

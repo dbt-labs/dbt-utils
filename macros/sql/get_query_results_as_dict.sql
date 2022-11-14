@@ -5,7 +5,7 @@
 {% macro default__get_query_results_as_dict(query) %}
 
 {# This macro returns a dictionary of the form {column_name: (tuple_of_results)} #}
-{%- call statement('get_query_results', fetch_result=True,auto_begin=false) -%}
+{%- call statement("get_query_results", fetch_result=True, auto_begin=false) -%}
 
 {{ query }}
 

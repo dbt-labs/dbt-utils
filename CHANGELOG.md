@@ -8,8 +8,14 @@
 ## Contributors:
 --->
 
-# Unreleased
+# 0.9.5
+## Fixes
+- Stop showing cross-db deprecation warnings for macros who have already been migrated ([#725](https://github.com/dbt-labs/dbt-utils/pull/725))
 
+## 0.9.3 and 0.9.4
+Rolled back due to accidental incompatibilities
+
+# 0.9.2
 ## New features
 - New feature to omit the `source_column_name` column on the `union_relations` macro ([#331](https://github.com/dbt-labs/dbt-utils/issues/331), [#624](https://github.com/dbt-labs/dbt-utils/pull/624))
 

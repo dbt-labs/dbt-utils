@@ -14,19 +14,47 @@
 
 ## 0.9.3 and 0.9.4
 Rolled back due to accidental incompatibilities
+# dbt-utils 0.9.2
+## What's Changed
+* Remove unnecessary generated new lines in `star` by @courentin in https://github.com/dbt-labs/dbt-utils/pull/651
+* fix: Actually suppress `union_relations` source_column_name when passing `none` by @kmclaugh in https://github.com/dbt-labs/dbt-utils/pull/661
+* Make `mutually_exclusive_ranges`' test deterministic by adding `upper_bound_column` to `order by` clause by @sfc-gh-ancoleman in https://github.com/dbt-labs/dbt-utils/pull/660
+* update union_relations to use core string literal macro by @dave-connors-3 in https://github.com/dbt-labs/dbt-utils/pull/665
+* Add where clause example to get_column_values documentation by @arsenkhy in https://github.com/dbt-labs/dbt-utils/pull/623
 
-# 0.9.2
-## New features
-- New feature to omit the `source_column_name` column on the `union_relations` macro ([#331](https://github.com/dbt-labs/dbt-utils/issues/331), [#624](https://github.com/dbt-labs/dbt-utils/pull/624))
+## New Contributors
+* @courentin made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/651
+* @kmclaugh made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/661
+* @sfc-gh-ancoleman made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/660
+* @dave-connors-3 made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/665
+* @arsenkhy made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/623
+
+# dbt-utils 0.9.1
+## Fixes
+- Remove cross-db dbt_utils references by @clausherther in #650
+
+
+# dbt-utils 0.9.0
+## Changed functionality
+* 🚨 (Almost all) cross-db macros are now implemented in dbt Core instead of dbt-utils. A backwards-compatibility layer remains for now and will be removed in dbt utils 1.0 later this year. Completed by @dbeatty10 and @jtcohen6 in https://github.com/dbt-labs/dbt-utils/pull/597, https://github.com/dbt-labs/dbt-utils/pull/586 and https://github.com/dbt-labs/dbt-utils/pull/615
+  * See #487 for further discussion on the backstory
+  * If you are a package maintainer with a dependency on these macros, prepare for their removal by switching to `{{ dbt.some_macro() }}`. Refer to [#package-ecosystem in the Community Slack](https://getdbt.slack.com/archives/CU4MRJ7QB/p1658467817852129) for further assistance
+* Feature: Add option to remove the `source_column_name` on the `union_relations` macro by @christineberger in https://github.com/dbt-labs/dbt-utils/pull/624
 
 ## Fixes
-- Better handling of whitespaces in the star macro ([#651](https://github.com/dbt-labs/dbt-utils/pull/651))
-- Fix to correct behavior in `mutually_exclusive_ranges` test in certain situations when `zero_length_range_allowed: true` and multiple ranges in a partition have the same value for `lower_bound_column`. ([[#659](https://github.com/dbt-labs/dbt-utils/issues/659)], [#660](https://github.com/dbt-labs/dbt-utils/pull/660))
+* Use adapter.quote() instead of hardcoded BQ quoting for get_table_types_sql by @alla-bongard in https://github.com/dbt-labs/dbt-utils/pull/636
 
-## Contributors:
-- [@christineberger](https://github.com/christineberger) (#624)
-- [@courentin](https://github.com/courentin) (#651)
-- [@sfc-gh-ancoleman](https://github.com/sfc-gh-ancoleman) (#660)
+## Documentation
+* standardize yml indentation under the 'models:' line on the README by @leoebfolsom in https://github.com/dbt-labs/dbt-utils/pull/613
+* Use MADR 3.0.0 for formatting decision records by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/614
+* Docs cleanup by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/620
+* Add not_accepted_values to README ToC by @david-beallor in https://github.com/dbt-labs/dbt-utils/pull/646
+
+# New Contributors
+* @leoebfolsom made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/613
+* @christineberger made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/624
+* @alla-bongard made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/636
+* @david-beallor made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/646
 
 # dbt-utils v0.8.6
 

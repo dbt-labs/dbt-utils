@@ -1,4 +1,4 @@
-{% set false_statement = 'select 1 as id where 1=0' %}
+{% set false_statement = 'select 1 as id ' ~ limit_zero() %}
 
 with default_data as (
 

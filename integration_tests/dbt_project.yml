@@ -55,7 +55,7 @@ seeds:
         # this.incorporate() to hardcode the node's type as otherwise dbt doesn't know it yet
         +post-hook: "{% do adapter.drop_relation(this.incorporate(type='table')) %}"
 
-      data_get_single_column_row_value:
+      data_get_query_results_as_single_value:
         +column_types:
           date_value: timestamp
           float_value: float

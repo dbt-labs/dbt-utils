@@ -17,8 +17,8 @@
 with default_data as (
 
     select
-        {{ dbt.safe_cast('date_value', dbt.type_timestamp()) }} as date_expected, 
-        {{ dbt.safe_cast(dbt.string_literal(dbt_utils.get_query_results_as_single_value(date_statement)), dbt.type_timestamp()) }} as date_actual,
+        cast(date_value as {{ dbt.type_timestamp() }}) as date_expected, 
+        cast({{ dbt.string_literal(dbt_utils.get_query_results_as_single_value(date_statement)) }} as {{ dbt.type_timestamp() }}) as date_actual,
 
         float_value as float_expected,
         {{ dbt_utils.get_query_results_as_single_value(float_statement) }} as float_actual,
@@ -27,7 +27,7 @@ with default_data as (
         {{ dbt_utils.get_query_results_as_single_value(int_statement) }} as int_actual,
 
         string_value as string_expected,    
-        {{ dbt.safe_cast(dbt.string_literal(dbt_utils.get_query_results_as_single_value(string_statement)), dbt.type_string()) }} as string_actual
+        cast({{ dbt.string_literal(dbt_utils.get_query_results_as_single_value(string_statement)) }} as {{ dbt.type_string() }}) as string_actual
 
     from {{ ref('data_get_query_results_as_single_value') }}
 )

@@ -826,14 +826,15 @@ This macro returns a single value from a sql query, so that you don't need to in
 
 ```
 {% set sql_statement %}
-    select city from {{ ref('users') }}
+    select max(created_at) from {{ ref('processed_orders') }}
 {% endset %}
 
-{%- set places = dbt_utils.get_query_results_as_single_value(sql_statement) -%}
+{%- set newest_processed_order = dbt_utils.get_query_results_as_single_value(sql_statement) -%}
 
 select
 
-    places,
+    *,
+    last_order_at > '{{ newest_processed_order }}' as has_unprocessed_order
 
 from {{ ref('users') }}
 ```

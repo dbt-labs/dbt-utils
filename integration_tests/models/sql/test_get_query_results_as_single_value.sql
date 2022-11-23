@@ -1,3 +1,9 @@
+{# 
+    Dear future reader, 
+    Before you go restructuring the delicate web of casts and quotes below, a warning:
+    I once thought as you are thinking.
+#}
+
 {% set date_statement %}
     select date_value from {{ ref('data_get_query_results_as_single_value') }}
 {% endset %}

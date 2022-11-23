@@ -1,3 +1,9 @@
+{# 
+    Dear future reader, 
+    Before you go restructuring the delicate web of casts and quotes below, a warning:
+    I once thought as you are thinking. Proceed with caution.
+#}
+
 {% set false_statement = 'select 1 as id ' ~ limit_zero() %}
 
 with default_data as (

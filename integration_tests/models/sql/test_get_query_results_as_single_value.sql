@@ -1,17 +1,17 @@
 {% set date_statement %}
-    select date_value from {{ ref('data_get_single_column_row_value') }}
+    select date_value from {{ ref('data_get_query_results_as_single_value') }}
 {% endset %}
 
 {% set float_statement %}
-    select float_value from {{ ref('data_get_single_column_row_value') }}
+    select float_value from {{ ref('data_get_query_results_as_single_value') }}
 {% endset %}
 
 {% set int_statement %}
-    select int_value from {{ ref('data_get_single_column_row_value') }}
+    select int_value from {{ ref('data_get_query_results_as_single_value') }}
 {% endset %}
 
 {% set string_statement %}
-    select string_value from {{ ref('data_get_single_column_row_value') }}
+    select string_value from {{ ref('data_get_query_results_as_single_value') }}
 {% endset %}
 
 with default_data as (
@@ -27,7 +27,7 @@ with default_data as (
         {{ dbt_utils.get_query_results_as_single_value(int_statement) }} as int_actual,
 
         string_value as string_expected,    
-        {{ dbt.safe_cast(dbt.string_literal(dbt_utils.get_query_results_as_single_value(string_statement)), dbt.type_string()) }} as string_actual
+        {{ dbt.string_literal(dbt_utils.get_query_results_as_single_value(string_statement)), dbt.type_string() }} as string_actual
 
     from {{ ref('data_get_single_column_row_value') }}
 )

@@ -911,7 +911,7 @@ Optionally takes a `unit` string argument ('km' or 'mi') which defaults to miles
 
 #### group_by ([source](macros/sql/groupby.sql))
 
-This macro build a group by statement for fields 1...N
+This macro builds a group by statement for fields 1...N
 
 **Usage:**
 
@@ -1016,7 +1016,7 @@ This macro implements a cross-database mechanism to generate an arbitrarily long
 
 #### surrogate_key ([source](macros/sql/surrogate_key.sql))
 
-Implements a cross-database way to generate a hashed surrogate key using the fields specified.
+This macro implements a cross-database way to generate a hashed surrogate key using the fields specified.
 
 **Usage:**
 
@@ -1026,7 +1026,7 @@ Implements a cross-database way to generate a hashed surrogate key using the fie
 
 #### safe_add ([source](macros/sql/safe_add.sql))
 
-Implements a cross-database way to sum nullable fields using the fields specified.
+This macro implements a cross-database way to sum nullable fields using the fields specified.
 
 **Usage:**
 

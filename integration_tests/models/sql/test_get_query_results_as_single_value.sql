@@ -17,7 +17,7 @@
 with default_data as (
 
     select
-        {{ dbt.safe_cast(date_value, dbt.type_timestamp()) }} as date_expected, 
+        {{ dbt.safe_cast('date_value', dbt.type_timestamp()) }} as date_expected, 
         {{ dbt.safe_cast(dbt.string_literal(dbt_utils.get_query_results_as_single_value(date_statement)), dbt.type_timestamp()) }} as date_actual,
 
         float_value as float_expected,

@@ -27,7 +27,7 @@ with default_data as (
         {{ dbt_utils.get_query_results_as_single_value(int_statement) }} as int_actual,
 
         string_value as string_expected,    
-        {{ dbt.string_literal(dbt_utils.get_query_results_as_single_value(string_statement)) }} as string_actual
+        {{ dbt.safe_cast(dbt.string_literal(dbt_utils.get_query_results_as_single_value(string_statement)), dbt.type_string()) }} as string_actual
 
     from {{ ref('data_get_query_results_as_single_value') }}
 )

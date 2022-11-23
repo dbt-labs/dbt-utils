@@ -15,7 +15,7 @@ with default_data as (
         {{ dbt.string_literal('fallback') }} as string_expected,    
         {{ dbt.string_literal(dbt_utils.get_query_results_as_single_value(false_statement, 'fallback')) }} as string_actual
 
-    from {{ ref('data_get_single_column_row_value') }}
+    from {{ ref('data_get_query_results_as_single_value') }}
 )
 
 select * 

@@ -16,6 +16,21 @@ models:
           actual: string_actual
           expected: string_expected
 
+  - name: test_get_query_results_as_single_value_default
+    tests:
+      - assert_equal:
+          actual: date_actual
+          expected: date_expected
+      - assert_equal:
+          actual: float_actual
+          expected: float_expected
+      - assert_equal:
+          actual: int_actual
+          expected: int_expected
+      - assert_equal:
+          actual: string_actual
+          expected: string_expected
+
   - name: test_generate_series
     tests:
       - dbt_utils.equality:

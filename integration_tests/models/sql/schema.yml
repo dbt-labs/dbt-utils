@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: test_get_query_results_as_single_value
+  - name: test_get_single_value
     tests:
       - assert_equal:
           actual: date_actual
@@ -16,7 +16,7 @@ models:
           actual: string_actual
           expected: string_expected
 
-  - name: test_get_query_results_as_single_value_default
+  - name: test_get_single_value_default
     tests:
       - assert_equal:
           actual: date_actual

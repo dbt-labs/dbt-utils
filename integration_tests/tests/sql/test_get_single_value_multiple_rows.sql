@@ -9,9 +9,9 @@ with input as (
 {% endset %}
 
 with comparisons as (
-    select {{ dbt_utils.get_query_results_as_single_value(query ~ " select min(id) from input") }} as output, 1 as expected
+    select {{ dbt_utils.get_single_value(query ~ " select min(id) from input") }} as output, 1 as expected
     union all
-    select {{ dbt_utils.get_query_results_as_single_value(query ~ " select max(di) from input") }} as output, 6 as expected
+    select {{ dbt_utils.get_single_value(query ~ " select max(di) from input") }} as output, 6 as expected
 )
 select * 
 from comparisons

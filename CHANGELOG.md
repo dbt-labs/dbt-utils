@@ -14,7 +14,7 @@
 - Updated the `slugify` macro to prepend "_" to column names beginning with a number since most databases do not allow names to begin with numbers. 
 - Implemented an optional `group_by_columns` argument across many of the generic testing macros to test for properties that only pertain to group-level or are can be more rigorously conducted at the group level. Property available in `recency`, `at_least_one`, `equal_row_count`, `fewer_rows_than`, `not_constant`, `not_null_proportion`, and `sequential` tests [#633](https://github.com/dbt-labs/dbt-utils/pull/633)
 - New feature to omit the `source_column_name` column on the `union_relations` macro ([#331](https://github.com/dbt-labs/dbt-utils/issues/331), [#624](https://github.com/dbt-labs/dbt-utils/pull/624))
-- New macro `get_query_results_as_single_value` ([#696](https://github.com/dbt-labs/dbt-utils/pull/696))
+- New macro `get_single_value` ([#696](https://github.com/dbt-labs/dbt-utils/pull/696))
 - New feature to select fewer columns in `expression_is_true` ([#683](https://github.com/dbt-labs/dbt-utils/issues/683), [#686](https://github.com/dbt-labs/dbt-utils/pull/686))
 - Add `not_empty_string` generic test that asserts column values are not an empty string. ([#632](https://github.com/dbt-labs/dbt-utils/issues/632), [#634](https://github.com/dbt-labs/dbt-utils/pull/634))
 

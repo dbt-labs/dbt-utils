@@ -34,7 +34,7 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [get_relations_by_pattern](#get_relations_by_pattern-source)
   - [get_relations_by_prefix](#get_relations_by_prefix-source)
   - [get_query_results_as_dict](#get_query_results_as_dict-source)
-  - [get_query_results_as_single_value](#get_query_results_as_single_value)
+  - [get_single_value](#get_single_value)
 
 - [SQL generators](#sql-generators)
   - [date_spine](#date_spine-source)
@@ -818,7 +818,7 @@ select
 from {{ ref('users') }}
 ```
 
-#### get_query_results_as_single_value ([source](macros/sql/get_query_results_as_single_value.sql))
+#### get_single_value ([source](macros/sql/get_single_value.sql))
 
 This macro returns a single value from a sql query, so that you don't need to interact with the Agate library to operate on the result
 
@@ -829,7 +829,7 @@ This macro returns a single value from a sql query, so that you don't need to in
     select max(created_at) from {{ ref('processed_orders') }}
 {% endset %}
 
-{%- set newest_processed_order = dbt_utils.get_query_results_as_single_value(sql_statement) -%}
+{%- set newest_processed_order = dbt_utils.get_single_value(sql_statement) -%}
 
 select
 

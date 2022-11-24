@@ -1,8 +1,8 @@
-{% macro get_query_results_as_single_value(query, default=none) %}
-    {{ return(adapter.dispatch('get_query_results_as_single_value', 'dbt_utils')(query, default)) }}
+{% macro get_single_value(query, default=none) %}
+    {{ return(adapter.dispatch('get_single_value', 'dbt_utils')(query, default)) }}
 {% endmacro %}
 
-{% macro default__get_query_results_as_single_value(query, default) %}
+{% macro default__get_single_value(query, default) %}
 
 {# This macro returns the (0, 0) record in a query, i.e. the first row of the first column #}
 

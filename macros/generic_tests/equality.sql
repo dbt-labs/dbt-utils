@@ -1,10 +1,14 @@
-{% test equality(model, compare_model, compare_columns=None) %}
-  {{ return(adapter.dispatch('test_equality', 'dbt_utils')(model, compare_model, compare_columns)) }}
+{% test equality(model, compare_model, compare_columns=None, ignore_columns=None) %}
+  {{ return(adapter.dispatch('test_equality', 'dbt_utils')(model, compare_model, compare_columns, ignore_columns)) }}
 {% endtest %}
 
-{% macro default__test_equality(model, compare_model, compare_columns=None) %}
+{% macro default__test_equality(model, compare_model, compare_columns=None, ignore_columns=None) %}
 
-{% set set_diff %}
+{%- if compare_columns and ignore_columns -%}
+    {{ exceptions.raise_compiler_error("Both a compare and an ignore list were provided to the `equality` macro. Only one is allowed") }}
+{%- endif -%}
+
+{% set set_diff %}  
     count(*) + coalesce(abs(
         sum(case when which_diff = 'a_minus_b' then 1 else 0 end) -
         sum(case when which_diff = 'b_minus_a' then 1 else 0 end)
@@ -29,7 +33,22 @@ information schema — this allows the model to be an ephemeral model
 
 {%- if not compare_columns -%}
     {%- do dbt_utils._is_ephemeral(model, 'test_equality') -%}
-    {%- set compare_columns = adapter.get_columns_in_relation(model) | map(attribute='quoted') -%}
+    {%- set compare_columns = adapter.get_columns_in_relation(model) | map(attribute='name') -%}
+{%- endif -%}
+
+{%- if ignore_columns -%}
+    {#-- Lower case ignore columns for easier comparison --#}
+    {%- set ignore_columns = ignore_columns | map("lower") | list %}
+
+    {%- set include_columns = [] %}
+    {%- for column in compare_columns -%}
+        {%- if column | lower not in ignore_columns -%}
+            {% do include_columns.append(column) %}
+        {%- endif %}
+    {%- endfor %}
+
+    {%- set compare_columns = include_columns %}
+
 {%- endif -%}
 
 {% set compare_cols_csv = compare_columns | join(', ') %}

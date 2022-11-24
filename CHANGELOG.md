@@ -9,6 +9,12 @@
 --->
 
 # Unreleased
+## New features
+- Add option to ignore columns in equality test ([#734](https://github.com/dbt-labs/dbt-utils/issues/734), [#737](https://github.com/dbt-labs/dbt-utils/pull/737))
+## Contributors:
+- [@brunocostalopes](https://github.com/brunocostalopes)
+
+# Unreleased
 ## Fixes
 - deduplicate macro for Databricks now uses the QUALIFY clause, which fixes NULL columns issues from the default natural join logic
 - deduplicate macro for Redshift now uses the QUALIFY clause, which fixes NULL columns issues from the default natural join logic
@@ -19,7 +25,7 @@
 
 # dbt utils v1.1.1
 ## New features
-* Improve the performance of the `at_least_one` test by pruning early. This is especially helpful when running against external tables. By @joshuahuntley in https://github.com/dbt-labs/dbt-utils/pull/775
+* ZZZ by @YYY in https://github.com/dbt-labs/dbt-utils/pull/XXX
 ## Fixes
 * Fix legacy links in README by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/796
 

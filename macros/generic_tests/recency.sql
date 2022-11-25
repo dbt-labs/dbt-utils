@@ -23,9 +23,9 @@ with recency as (
       {{ select_gb_cols }}
       {% if ignore_time_component %}
         max({{ dbt.date_trunc('day', field) }}) as most_recent
-      {%- else -%}
+      {%- else %}
         max({{ field }}) as most_recent
-      {%- endif -%}
+      {%- endif %}
 
     from {{ model }}
 

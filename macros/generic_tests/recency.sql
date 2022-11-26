@@ -22,7 +22,7 @@ with recency as (
 
       {{ select_gb_cols }}
       {% if ignore_time_component %}
-        max(cast({{ field }} as date)) as most_recent
+        cast(max({{ field }}) as date) as most_recent
       {%- else %}
         max({{ field }}) as most_recent
       {%- endif %}

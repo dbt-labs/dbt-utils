@@ -4,7 +4,7 @@
 
 {% macro default__test_recency(model, field, datepart, interval, ignore_time_component, group_by_columns) %}
 
-{% set threshold = dbt.dateadd(datepart, interval * -1, current_timestamp_backcompat()) %}
+{% set threshold = dbt.dateadd(datepart, interval * -1, dbt.current_timestamp()) %}
 
 {% if ignore_time_component %}
   {% set threshold = dbt.date_trunc('day', threshold) %}
@@ -37,9 +37,9 @@ select
 
     {{ select_gb_cols }}
     most_recent,
-    {{ threshold }} as threshold
+    cast({{ threshold }} as dbt.type_timestamp()) as threshold
 
 from recency
-where most_recent < {{ threshold }}
+where most_recent < threshold
 
 {% endmacro %}

@@ -7,7 +7,7 @@
 {% set threshold = dbt.dateadd(datepart, interval * -1, dbt.current_timestamp()) %}
 
 {% if ignore_time_component %}
-  {% set threshold = dbt.date_trunc('day', threshold) %}
+  {% set threshold = 'cast(' ~ threshold ~ ' as date)' %}
 {% endif %}
 
 {% if group_by_columns|length() > 0 %}
@@ -22,7 +22,7 @@ with recency as (
 
       {{ select_gb_cols }}
       {% if ignore_time_component %}
-        max({{ dbt.date_trunc('day', field) }}) as most_recent
+        max(cast({{ field }} as date)) as most_recent
       {%- else %}
         max({{ field }}) as most_recent
       {%- endif %}

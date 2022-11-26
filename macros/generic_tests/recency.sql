@@ -10,6 +10,8 @@
   {% set threshold = dbt.date_trunc('day', threshold) %}
 {% endif %}
 
+{% set threshold = 'cast(' ~ threshold ~ ' as ' ~ dbt.type_datetime() ~ ')' %}
+
 {% if group_by_columns|length() > 0 %}
   {% set select_gb_cols = group_by_columns|join(' ,') + ', ' %}
   {% set groupby_gb_cols = 'group by ' + group_by_columns|join(',') %}
@@ -37,9 +39,9 @@ select
 
     {{ select_gb_cols }}
     most_recent,
-    cast({{ threshold }} as {{ dbt.type_timestamp() }}) as threshold
+    {{ threshold }} as threshold
 
 from recency
-where most_recent < threshold
+where most_recent < {{ threshold }}
 
 {% endmacro %}

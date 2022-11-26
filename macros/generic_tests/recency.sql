@@ -10,8 +10,6 @@
   {% set threshold = dbt.date_trunc('day', threshold) %}
 {% endif %}
 
-{% set threshold = 'cast(' ~ threshold ~ ' as ' ~ dbt.type_timestamp() ~ ')' %}
-
 {% if group_by_columns|length() > 0 %}
   {% set select_gb_cols = group_by_columns|join(' ,') + ', ' %}
   {% set groupby_gb_cols = 'group by ' + group_by_columns|join(',') %}

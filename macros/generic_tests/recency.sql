@@ -37,7 +37,7 @@ select
 
     {{ select_gb_cols }}
     most_recent,
-    cast({{ threshold }} as dbt.type_timestamp()) as threshold
+    cast({{ threshold }} as {{ dbt.type_timestamp() }}) as threshold
 
 from recency
 where most_recent < threshold

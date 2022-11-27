@@ -24,6 +24,8 @@ jobs:
           command: ./run_test.sh postgres
       - store_artifacts:
           path: /logs
+      - store_artifacts:
+          path: target
 
   integration-redshift:
     docker:
@@ -64,9 +66,9 @@ jobs:
           name: "Run OG Tests - BigQuery"
           command: ./run_test.sh bigquery
       - store_artifacts:
-          path: /logs
+          path: logs
       - store_artifacts:
-          path: /target
+          path: target
 
 workflows:
   version: 2

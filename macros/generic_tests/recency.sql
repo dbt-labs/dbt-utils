@@ -4,11 +4,7 @@
 
 {% macro default__test_recency(model, field, datepart, interval, ignore_time_component, group_by_columns) %}
 
-{% set threshold = dbt.dateadd(datepart, interval * -1, dbt.current_timestamp()) %}
-
-{% if ignore_time_component %}
-  {% set threshold = 'cast(' ~ threshold ~ ' as date)' %}
-{% endif %}
+{% set threshold = 'cast(' ~ dbt.dateadd(datepart, interval * -1, dbt.current_timestamp()) ~ ' as ' ~ 'date' if ignore_time_component else 'datetime' ~ ')'  %}
 
 {% if group_by_columns|length() > 0 %}
   {% set select_gb_cols = group_by_columns|join(' ,') + ', ' %}

@@ -25,7 +25,7 @@ jobs:
       - store_artifacts:
           path: /logs
       - store_artifacts:
-          path: target
+          path: integration_tests/target
 
   integration-redshift:
     docker:

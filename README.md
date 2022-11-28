@@ -1081,7 +1081,7 @@ This macro pivots values from rows to columns.
 {{ dbt_utils.pivot(<column>, <list of values>) }}
 ```
 
-**Example:**
+**Examples:**
 
     Input: orders
 
@@ -1107,6 +1107,36 @@ This macro pivots values from rows to columns.
     |------|-----|------|
     | S    | 2   | 1    |
     | M    | 1   | 0    |
+
+    Input: orders
+
+    | size | color | quantity |
+    |------|-------|----------|
+    | S    | red   | 1        |
+    | S    | blue  | 2        |
+    | S    | red   | 4        |
+    | M    | red   | 8        |
+
+    select
+      size,
+      {{ dbt_utils.pivot(
+          'color',
+          dbt_utils.get_column_values(ref('orders'), 'color'),
+          agg='sum',
+          then_value='quantity',
+          prefix='pre_',
+          suffix='_post'
+      ) }}
+    from {{ ref('orders') }}
+    group by size
+
+    Output:
+
+    | size | pre_red_post | pre_blue_post |
+    |------|--------------|---------------|
+    | S    | 5            | 2             |
+    | M    | 8            | 0             |
+
 
 **Args:**
 

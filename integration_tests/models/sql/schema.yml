@@ -178,6 +178,12 @@ models:
       - dbt_utils.equality:
           compare_model: ref('data_star_expected')
 
+  - name: test_star_no_columns
+    columns: 
+      - name: outcome_msg #don't want to check for the specific error message, but do want to check that the error column is there
+        tests: 
+          - not_null
+
   - name: test_generate_surrogate_key
     tests:
       - assert_equal:

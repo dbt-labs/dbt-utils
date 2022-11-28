@@ -14,7 +14,7 @@
     {% set cols = dbt_utils.get_filtered_columns_in_relation(from, except) %}
 
     {%- if cols|length <= 0 -%}
-      {{- return('*') -}}
+      {{- return(dbt.string_literal("no columns returned from star() macro") ~ " as outcome_msg") -}}
     {%- else -%}
         {%- for col in cols %}
             {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}

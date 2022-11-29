@@ -118,7 +118,7 @@ This test supports the `group_by_columns` parameter; see [Grouping in tests](#gr
 
 #### equality ([source](macros/generic_tests/equality.sql))
 
-Asserts the equality of two relations. Optionally specify a subset of columns to compare.
+Asserts the equality of two relations. Optionally specify a subset of columns to compare and/or exclude.
 
 **Usage:**
 
@@ -133,6 +133,9 @@ models:
           compare_columns:
             - first_column
             - second_column
+          exclude_columns:
+            - third_column
+            - fourth_column
 ```
 
 #### expression_is_true ([source](macros/generic_tests/expression_is_true.sql))

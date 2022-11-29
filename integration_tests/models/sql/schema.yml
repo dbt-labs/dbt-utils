@@ -180,7 +180,7 @@ models:
 
   - name: test_star_no_columns
     columns: 
-      - name: outcome_msg #don't want to check for the specific error message, but do want to check that the error column is there
+      - name: canary_column #If the no-columns state isn't hit, this table won't be queryable because there will be a missing comma
         tests: 
           - not_null
 

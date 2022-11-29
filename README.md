@@ -71,7 +71,7 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
 
 [Materializations](#materializations):
 
-- [insert_by_period](#insert_by_period-source)
+- [insert_by_period](#insert_by_period)
 
 ----
 

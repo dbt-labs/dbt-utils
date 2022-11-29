@@ -178,6 +178,12 @@ models:
       - dbt_utils.equality:
           compare_model: ref('data_star_expected')
 
+  - name: test_star_no_columns
+    columns: 
+      - name: canary_column #If the no-columns state isn't hit, this table won't be queryable because there will be a missing comma
+        tests: 
+          - not_null
+
   - name: test_generate_surrogate_key
     tests:
       - assert_equal:

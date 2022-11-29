@@ -62,15 +62,6 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [get_url_path](#get_url_path-source)
 
 - [Cross-database macros](#cross-database-macros):
-  - [dateadd](#dateadd-source)
-  - [datediff](#datediff-source)
-  - [split_part](#split_part-source)
-  - [last_day](#last_day-source)
-  - [listagg](#listagg-source)
-  - [array_construct](#array_construct-source)
-  - [array_append](#array_append-source)
-  - [array_concat](#array_concat-source)
-  - [cast_array_to_string](#cast_array_to_string-source)
 
 - [Jinja Helpers](#jinja-helpers)
   - [pretty_time](#pretty_time-source)

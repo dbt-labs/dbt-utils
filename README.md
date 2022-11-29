@@ -1062,8 +1062,8 @@ This macro performs division but returns null if the denominator is 0.
 
 **Args:**
 
-- `numerator` (required): The number you want to divide.
-- `denominator` (required): The number you want to divide by.
+- `numerator` (required): The number or SQL expression you want to divide.
+- `denominator` (required): The number or SQL expression you want to divide by.
 
 **Usage:**
 
@@ -1262,173 +1262,7 @@ This macro extracts a page path from a column containing a url.
 
 ### Cross-database macros
 
-These macros make it easier for package authors (especially those writing modeling packages) to implement cross-database
-compatibility. In general, you should not use these macros in your own dbt project (unless it is a package)
-
-Note that most of these macros moved to dbt Core as of dbt_utils v0.9.0 and dbt Core v1.2.0, and will soon be removed from `dbt_utils`.
-
-To access the version defined in dbt Core, remove the `dbt_utils.` prefix (see [https://docs.getdbt.com/reference/dbt-jinja-functions/cross-database-macros](https://docs.getdbt.com/reference/dbt-jinja-functions/cross-database-macros) for examples).
-As highlighted below, some of the cross-database macros are still in the process of being deprecated.
-
-#### dateadd ([source](macros/cross_db_utils/dateadd.sql))
-
-*DEPRECATED: This macro is now provided in dbt Core. It is no longer available in dbt_utils and backwards compatibility will be removed in a future version of the package.*
-
-This macro adds a time/day interval to the supplied date/timestamp. Note: The `datepart` argument is database-specific.
-
-**Usage:**
-
-```
-{{ dbt_utils.dateadd(datepart='day', interval=1, from_date_or_timestamp="'2017-01-01'") }}
-```
-
-#### datediff ([source](macros/cross_db_utils/datediff.sql))
-
-*DEPRECATED: This macro is now provided in dbt Core. It is no longer available in dbt_utils and backwards compatibility will be removed in a future version of the package.*
-
-This macro calculates the difference between two dates.
-
-**Usage:**
-
-```
-{{ dbt_utils.datediff("'2018-01-01'", "'2018-01-20'", 'day') }}
-```
-
-#### split_part ([source](macros/cross_db_utils/split_part.sql))
-
-*DEPRECATED: This macro is now provided in dbt Core. It is no longer available in dbt_utils and backwards compatibility will be removed in a future version of the package.*
-
-This macro splits a string of text using the supplied delimiter and returns the supplied part number (1-indexed).
-
-**Args:**
-
-- `string_text` (required): Text to be split into parts.
-- `delimiter_text` (required): Text representing the delimiter to split by.
-- `part_number` (required): Requested part of the split (1-based). If the value is negative, the parts are counted backward from the end of the string.
-
-**Usage:**
-When referencing a column, use one pair of quotes. When referencing a string, use single quotes enclosed in double quotes.
-
-```
-{{ dbt_utils.split_part(string_text='column_to_split', delimiter_text='delimiter_column', part_number=1) }}
-{{ dbt_utils.split_part(string_text="'1|2|3'", delimiter_text="'|'", part_number=1) }}
-```
-
-#### date_trunc ([source](macros/cross_db_utils/date_trunc.sql))
-
-*DEPRECATED: This macro is now provided in dbt Core. It is no longer available in dbt_utils and backwards compatibility will be removed in a future version of the package.*
-
-Truncates a date or timestamp to the specified datepart. Note: The `datepart` argument is database-specific.
-
-**Usage:**
-
-```
-{{ dbt_utils.date_trunc(datepart, date) }}
-```
-
-#### last_day ([source](macros/cross_db_utils/last_day.sql))
-
-*DEPRECATED: This macro is now provided in dbt Core. It is no longer available in dbt_utils and backwards compatibility will be removed in a future version of the package.*
-
-Gets the last day for a given date and datepart. Notes:
-
-- The `datepart` argument is database-specific.
-- This macro currently only supports dateparts of `month` and `quarter`.
-
-**Usage:**
-
-```
-{{ dbt_utils.last_day(date, datepart) }}
-```
-
-#### listagg ([source](macros/cross_db_utils/listagg.sql))
-
-*DEPRECATED: This macro is now provided in dbt Core. It is no longer available in dbt_utils and backwards compatibility will be removed in a future version of the package.*
-
-This macro returns the concatenated input values from a group of rows separated by a specified deliminator.
-
-**Args:**
-
-- `measure` (required): The expression (typically a column name) that determines the values to be concatenated. To only include distinct values add keyword DISTINCT to beginning of expression (example: 'DISTINCT column_to_agg').
-- `delimiter_text` (required): Text representing the delimiter to separate concatenated values by.
-- `order_by_clause` (optional): An expression (typically a column name) that determines the order of the concatenated values.
-- `limit_num` (optional): Specifies the maximum number of values to be concatenated.
-
-Note: If there are instances of `delimiter_text` within your `measure`, you cannot include a `limit_num`.
-
-**Usage:**
-
-```
-{{ dbt_utils.listagg(measure='column_to_agg', delimiter_text="','", order_by_clause="order by order_by_column", limit_num=10) }}
-```
-
-#### array_construct ([source](macros/cross_db_utils/array_construct.sql))
-
-*DEPRECATED: This macro is deprecated and will be removed in a future version of the package, once equivalent functionality is implemented in dbt Core.*
-
-This macro returns an array constructed from a set of inputs.
-
-**Args:**
-
-- `inputs` (optional): The list of array contents. If not provided, this macro will create an empty array. All inputs must be the *same data type* in order to match Postgres functionality and *not null* to match Bigquery functionality.
-- `data_type` (optional): Specifies the data type of the constructed array. This is only relevant when creating an empty array (will otherwise use the data type of the inputs). If `inputs` are `data_type` are both not provided, this macro will create an empty array of type integer.
-
-**Usage:**
-
-```
-{{ dbt_utils.array_construct(['column_1', 'column_2', 'column_3']) }}
-{{ dbt_utils.array_construct([],'integer') }}
-```
-
-#### array_append ([source](macros/cross_db_utils/array_append.sql))
-
-*DEPRECATED: This macro is deprecated and will be removed in a future version of the package, once equivalent functionality is implemented in dbt Core.*
-
-This macro appends an element to the end of an array and returns the appended array.
-
-**Args:**
-
-- `array` (required): The array to append to.
-- `new_element` (required): The element to be appended. This element must *match the data type of the existing elements* in the array in order to match Postgres functionality and *not null* to match Bigquery functionality.
-
-**Usage:**
-
-```
-{{ dbt_utils.array_append('array_column', 'element_column') }}
-```
-
-#### array_concat ([source](macros/cross_db_utils/array_concat.sql))
-
-*DEPRECATED: This macro is deprecated and will be removed in a future version of the package, once equivalent functionality is implemented in dbt Core.*
-
-This macro returns the concatenation of two arrays.
-
-**Args:**
-
-- `array_1` (required): The array to append to.
-- `array_2` (required): The array to be appended to `array_1`. This array must match the data type of `array_1` in order to match Postgres functionality.
-
-**Usage:**
-
-```
-{{ dbt_utils.array_concat('array_column_1', 'array_column_2') }}
-```
-
-#### cast_array_to_string ([source](macros/cross_db_utils/cast_array_to_string.sql))
-
-*DEPRECATED: This macro is deprecated and will be removed in a future version of the package, once equivalent functionality is implemented in dbt Core.*
-
-This macro converts an array to a single string value and returns the resulting string.
-
-**Args:**
-
-- `array` (required): The array to convert to a string.
-
-**Usage:**
-
-```
-{{ dbt_utils.cast_array_to_string('array_column') }}
-```
+These macros were removed from `dbt_utils` version 1.0, as they have been implemented in dbt Core instead. See [https://docs.getdbt.com/reference/dbt-jinja-functions/cross-database-macros](https://docs.getdbt.com/reference/dbt-jinja-functions/cross-database-macros).
 
 ---
 
@@ -1475,8 +1309,8 @@ This macro logs a formatted message (with a timestamp) to the command line.
 
 This macro is useful for transforming Jinja strings into "slugs", and can be useful when using a Jinja object as a column name, especially when that Jinja object is not hardcoded.
 
-For this example, let's pretend that we have payment methods in our payments table like `['venmo App', 'ca$h-money']`, which we can't use as a column name due to the spaces and special characters. This macro does its best to strip those out in a sensible way: `['venmo_app',
-'cah_money']`.
+For this example, let's pretend that we have payment methods in our payments table like `['venmo App', 'ca$h-money', '1337pay']`, which we can't use as a column name due to the spaces and special characters. This macro does its best to strip those out in a sensible way: `['venmo_app',
+'cah_money', '_1337pay']`.
 
 ```sql
 {%- set payment_methods = dbt_utils.get_column_values(
@@ -1503,76 +1337,22 @@ sum(case when payment_method = 'Venmo App' then amount end)
 
 sum(case when payment_method = 'ca$h money' then amount end)
   as cah_money_amount,
+
+sum(case when payment_method = '1337pay' then amount end)
+  as _1337pay_amount,
 ...
 ```
-
+---
 ### Materializations
 
-#### insert_by_period ([source](macros/materializations/insert_by_period_materialization.sql))
-
-`insert_by_period` allows dbt to insert records into a table one period (i.e. day, week) at a time.
-
-This materialization is appropriate for event data that can be processed in discrete periods. It is similar in concept to the built-in incremental materialization, but has the added benefit of building the model in chunks even during a full-refresh so is particularly useful for models where the initial run can be problematic.
-
-Should a run of a model using this materialization be interrupted, a subsequent run will continue building the target table from where it was interrupted (granted the `--full-refresh` flag is omitted).
-
-Progress is logged in the command line for easy monitoring.
-
-**Usage:**
-
-```sql
-{{
-  config(
-    materialized = "insert_by_period",
-    period = "day",
-    timestamp_field = "created_at",
-    start_date = "2018-01-01",
-    stop_date = "2018-06-01")
-}}
-
-with events as (
-
-  select *
-  from {{ ref('events') }}
-  where __PERIOD_FILTER__ -- This will be replaced with a filter in the materialization code
-
-)
-
-....complex aggregates here....
-
-```
-
-**Configuration values:**
-
-- `period`: period to break the model into, must be a valid [datepart](https://docs.aws.amazon.com/redshift/latest/dg/r_Dateparts_for_datetime_functions.html) (default='Week')
-- `timestamp_field`: the column name of the timestamp field that will be used to break the model into smaller queries
-- `start_date`: literal date or timestamp - generally choose a date that is earlier than the start of your data
-- `stop_date`: literal date or timestamp (default=current_timestamp)
-
-**Caveats:**
-
-- This materialization is compatible with dbt 0.10.1.
-- This materialization has been written for Redshift.
-- This materialization can only be used for a model where records are not expected to change after they are created.
-- Any model post-hooks that use `{{ this }}` will fail using this materialization. For example:
-
-```yaml
-models:
-    project-name:
-        post-hook: "grant select on {{ this }} to db_reader"
-```
-
-A useful workaround is to change the above post-hook to:
-
-```yaml
-        post-hook: "grant select on {{ this.schema }}.{{ this.name }} to db_reader"
-```
+#### insert_by_period 
+In dbt_utils v1.0, this materialization moved to the [experimental features repository](https://github.com/dbt-labs/dbt-labs-experimental-features/tree/main/insert_by_period). 
 
 ----
 
 ### Reporting bugs and contributing code
 
-- Want to report a bug or request a feature? Let us know in the `#package-ecosystem` channel on [Slack](http://community.getdbt.com/), or open [an issue](https://github.com/dbt-labs/dbt-utils/issues/new)
+- Want to report a bug or request a feature? Let us know in the `#package-ecosystem` channel on [Slack](https://getdbt.com/community), or open [an issue](https://github.com/dbt-labs/dbt-utils/issues/new)
 - Want to help us build dbt-utils? Check out the [Contributing Guide](https://github.com/dbt-labs/dbt-utils/blob/main/CONTRIBUTING.md)
   - **TL;DR** Open a Pull Request with 1) your changes, 2) updated documentation for the `README.md` file, and 3) a working integration test.
 
@@ -1585,11 +1365,11 @@ A useful workaround is to change the above post-hook to:
 - Users and maintainers of community-supported [adapter plugins](https://docs.getdbt.com/docs/available-adapters)
 - Users who wish to override a low-lying `dbt_utils` macro with a custom implementation, and have that implementation used by other `dbt_utils` macros
 
-If you use Postgres, Redshift, Snowflake, or Bigquery, this likely does not apply to you.
+If you use Postgres, Redshift, Snowflake, or BigQuery, this likely does not apply to you.
 
-dbt v0.18.0 introduced [`adapter.dispatch()`](https://docs.getdbt.com/reference/dbt-jinja-functions/adapter#dispatch), a reliable way to define different implementations of the same macro across different databases.
+[`adapter.dispatch()`](https://docs.getdbt.com/reference/dbt-jinja-functions/adapter#dispatch) provides a reliable way to define different implementations of the same macro across different databases.
 
-dbt v0.20.0 introduced a new project-level `dispatch` config that enables an "override" setting for all dispatched macros. If you set this config in your project, when dbt searches for implementations of a macro in the `dbt_utils` namespace, it will search through your list of packages instead of just looking in the `dbt_utils` package.
+In `dbt_project.yml`, you can define a project-level `dispatch` config that enables an "override" setting for all dispatched macros. When dbt searches for implementations of a macro in the `dbt_utils` namespace, it will search through your list of packages instead of just looking in the `dbt_utils` package.
 
 Set the config in `dbt_project.yml`:
 
@@ -1602,17 +1382,17 @@ dispatch:
       - dbt_utils                  # always include dbt_utils as the last place to search
 ```
 
-If overriding a dispatched macro with a custom implementation in your own project's `macros/` directory, you must name your custom macro with a prefix: either `default__` (note the two underscores), or the name of your adapter followed by two underscores. For example, if you're running on Postgres and wish to override the behavior of `dbt_utils.datediff` (such that `dbt_utils.date_spine` will use your version instead), you can do this by defining a macro called either `default__datediff` or `postgres__datediff`.
+If overriding a dispatched macro with a custom implementation in your own project's `macros/` directory, you must name your custom macro with a prefix: either `default__` (note the two underscores), or the name of your adapter followed by two underscores. For example, if you're running on Postgres and wish to override the behavior of `dbt_utils.safe_add` (such that other macros will use your version instead), you can do this by defining a macro called either `default__safe_add` or `postgres__safe_add`.
 
-Let's say we have the config defined above, and we're running on Spark. When dbt goes to dispatch `dbt_utils.datediff`, it will search for macros the following in order:
+Let's say we have the config defined above, and we're running on Spark. When dbt goes to dispatch `dbt_utils.safe_add`, it will search for macros the following in order:
 
 ```
-first_package_to_search.spark__datediff
-first_package_to_search.default__datediff
-second_package_to_search.spark__datediff
-second_package_to_search.default__datediff
-dbt_utils.spark__datediff
-dbt_utils.default__datediff
+first_package_to_search.spark__safe_add
+first_package_to_search.default__safe_add
+second_package_to_search.spark__safe_add
+second_package_to_search.default__safe_add
+dbt_utils.spark__safe_add
+dbt_utils.default__safe_add
 ```
 
 ----
@@ -1621,15 +1401,9 @@ dbt_utils.default__datediff
 
 - [What is dbt](https://docs.getdbt.com/docs/introduction)?
 - Read the [dbt viewpoint](https://docs.getdbt.com/docs/about/viewpoint)
-- [Installation](https://docs.getdbt.com/dbt-cli/installation)
+- [Installation](https://docs.getdbt.com/docs/get-started/getting-started/overview)
 - Join the [chat](https://www.getdbt.com/community/) on Slack for live questions and support.
 
 ## Code of Conduct
 
-Everyone interacting in the dbt project's codebases, issue trackers, chat rooms, and mailing lists is expected to follow the [PyPA Code of Conduct].
-
-[PyPA Code of Conduct]: https://www.pypa.io/en/latest/code-of-conduct/
-[slack-url]: http://ac-slackin.herokuapp.com/
-[Installation]: https://dbt.readme.io/docs/installation
-[What is dbt]: https://dbt.readme.io/docs/overview
-[dbt viewpoint]: https://dbt.readme.io/docs/viewpoint
+Everyone interacting in the dbt project's codebases, issue trackers, chat rooms, and mailing lists is expected to follow the [PyPA Code of Conduct](https://www.pypa.io/en/latest/code-of-conduct/).

@@ -143,22 +143,37 @@ seeds:
               at_least: 0.9
 
 models:
-  - name: test_recency
+  - name: recency_time_included
     tests:
       - dbt_utils.recency:
           datepart: day
-          field: today
+          field: created_at
           interval: 1
       - dbt_utils.recency:
           datepart: day
-          field: today
+          field: created_at
           interval: 1
           group_by_columns: ['col1']
       - dbt_utils.recency:
           datepart: day
-          field: today
+          field: created_at
           interval: 1
           group_by_columns: ['col1', 'col2']
+
+  - name: recency_time_excluded
+    tests:
+      - dbt_utils.recency:
+          datepart: day
+          field: created_at
+          interval: 1
+          ignore_time_component: true
+      - dbt_utils.recency:
+          datepart: day
+          field: created_at
+          interval: 1
+          ignore_time_component: false
+          error_if: "<1" #sneaky way to ensure that the test is returning failing rows
+          warn_if: "<0"
 
   - name: test_equal_rowcount
     tests:

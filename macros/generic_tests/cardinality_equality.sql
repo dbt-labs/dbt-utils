@@ -26,7 +26,7 @@ group by {{ field }}
 except_a as (
   select *
   from table_a
-  {{ except() }}
+  {{ dbt.except() }}
   select *
   from table_b
 ),
@@ -34,7 +34,7 @@ except_a as (
 except_b as (
   select *
   from table_b
-  {{ except() }}
+  {{ dbt.except() }}
   select *
   from table_a
 ),

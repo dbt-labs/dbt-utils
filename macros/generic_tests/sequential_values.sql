@@ -30,7 +30,7 @@ validation_errors as (
         *
     from windowed
     {% if datepart %}
-    where not(cast({{ column_name }} as {{ type_timestamp() }})= cast({{ dateadd(datepart, interval, previous_column_name) }} as {{ type_timestamp() }}))
+    where not(cast({{ column_name }} as {{ dbt.type_timestamp() }})= cast({{ dbt.dateadd(datepart, interval, previous_column_name) }} as {{ dbt.type_timestamp() }}))
     {% else %}
     where not({{ column_name }} = {{ previous_column_name }} + {{ interval }})
     {% endif %}

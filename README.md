@@ -49,7 +49,7 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [star](#star-source)
   - [union_relations](#union_relations-source)
   - [generate_series](#generate_series-source)
-  - [surrogate_key](#surrogate_key-source)
+  - [generate_surrogate_key](#generate_surrogate_key-source)
   - [safe_add](#safe_add-source)
   - [safe_divide](#safe_divide-source)
   - [pivot](#pivot-source)
@@ -61,7 +61,7 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [get_url_host](#get_url_host-source)
   - [get_url_path](#get_url_path-source)
 
-- [Cross-database macros](#cross-database-macros):
+- [Cross-database macros](#cross-database-macros)
 
 - [Jinja Helpers](#jinja-helpers)
   - [pretty_time](#pretty_time-source)
@@ -1032,14 +1032,22 @@ This macro implements a cross-database mechanism to generate an arbitrarily long
 {{ dbt_utils.generate_series(upper_bound=1000) }}
 ```
 
-#### surrogate_key ([source](macros/sql/surrogate_key.sql))
+#### generate_surrogate_key ([source](macros/sql/generate_surrogate_key.sql))
 
 This macro implements a cross-database way to generate a hashed surrogate key using the fields specified.
 
 **Usage:**
 
 ```
-{{ dbt_utils.surrogate_key(['field_a', 'field_b'[,...]]) }}
+{{ dbt_utils.generate_surrogate_key(['field_a', 'field_b'[,...]]) }}
+```
+
+A precursor to this macro, `surrogate_key()`, treated nulls and blanks strings the same. If you need to enable this incorrect behaviour for backward compatibility reasons, add the following variable to your `dbt_project.yml`: 
+
+```yaml
+#dbt_project.yml
+vars:
+  surrogate_key_treat_nulls_as_empty_strings: true #turn on legacy behaviour
 ```
 
 #### safe_add ([source](macros/sql/safe_add.sql))

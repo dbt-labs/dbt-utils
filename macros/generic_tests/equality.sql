@@ -5,7 +5,7 @@
 {% macro default__test_equality(model, compare_model, compare_columns=None, ignore_columns=None) %}
 
 {%- if compare_columns and ignore_columns -%}
-    {{ exceptions.raise_compiler_error("Both an compare and ignore list were provided to the `equality` macro. Only one is allowed") }}
+    {{ exceptions.raise_compiler_error("Both a compare and an ignore list were provided to the `equality` macro. Only one is allowed") }}
 {%- endif -%}
 
 {% set set_diff %}  

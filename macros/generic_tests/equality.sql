@@ -4,7 +4,11 @@
 
 {% macro default__test_equality(model, compare_model, compare_columns=None, ignore_columns=None) %}
 
-{% set set_diff %}
+{%- if compare_columns and ignore_columns -%}
+    {{ exceptions.raise_compiler_error("Both an compare and ignore list were provided to the `equality` macro. Only one is allowed") }}
+{%- endif -%}
+
+{% set set_diff %}  
     count(*) + coalesce(abs(
         sum(case when which_diff = 'a_minus_b' then 1 else 0 end) -
         sum(case when which_diff = 'b_minus_a' then 1 else 0 end)

@@ -33,7 +33,7 @@ information schema — this allows the model to be an ephemeral model
 
 {%- if not compare_columns -%}
     {%- do dbt_utils._is_ephemeral(model, 'test_equality') -%}
-    {%- set compare_columns = adapter.get_columns_in_relation(model) | map(attribute='quoted') -%}
+    {%- set compare_columns = adapter.get_columns_in_relation(model) | map(attribute='name') -%}
 {%- endif -%}
 
 {%- if ignore_columns -%}
@@ -42,13 +42,13 @@ information schema — this allows the model to be an ephemeral model
 
     {%- set include_columns = [] %}
     {%- for column in compare_columns -%}
-        {#-- Compare columns retrieved via the adapter wrapper are quoted --#}
-        {%- if column | lower | trim('"') not in ignore_columns -%}
+        {%- if column | lower not in ignore_columns -%}
             {% do include_columns.append(column) %}
         {%- endif %}
     {%- endfor %}
 
     {%- set compare_columns = include_columns %}
+
 {%- endif -%}
 
 {% set compare_cols_csv = compare_columns | join(', ') %}

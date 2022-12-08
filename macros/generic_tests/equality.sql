@@ -1,8 +1,8 @@
-{% test equality(model, compare_model, compare_columns=None, exclude_columns=None) %}
-  {{ return(adapter.dispatch('test_equality', 'dbt_utils')(model, compare_model, compare_columns, exclude_columns)) }}
+{% test equality(model, compare_model, compare_columns=None, ignore_columns=None) %}
+  {{ return(adapter.dispatch('test_equality', 'dbt_utils')(model, compare_model, compare_columns, ignore_columns)) }}
 {% endtest %}
 
-{% macro default__test_equality(model, compare_model, compare_columns=None, exclude_columns=None) %}
+{% macro default__test_equality(model, compare_model, compare_columns=None, ignore_columns=None) %}
 
 {% set set_diff %}
     count(*) + coalesce(abs(
@@ -32,14 +32,14 @@ information schema — this allows the model to be an ephemeral model
     {%- set compare_columns = adapter.get_columns_in_relation(model) | map(attribute='quoted') -%}
 {%- endif -%}
 
-{%- if exclude_columns -%}
-    {#-- Lower case exclude columns for easier comparison --#}
-    {%- set exclude_columns = exclude_columns | map("lower") | list %}
+{%- if ignore_columns -%}
+    {#-- Lower case ignore columns for easier comparison --#}
+    {%- set ignore_columns = ignore_columns | map("lower") | list %}
 
     {%- set include_columns = [] %}
     {%- for column in compare_columns -%}
         {#-- Compare columns retrieved via the adapter wrapper are quoted --#}
-        {%- if column | lower | trim('"') not in exclude_columns -%}
+        {%- if column | lower | trim('"') not in ignore_columns -%}
             {% do include_columns.append(column) %}
         {%- endif %}
     {%- endfor %}

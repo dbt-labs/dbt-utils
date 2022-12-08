@@ -116,7 +116,7 @@ This test supports the `group_by_columns` parameter; see [Grouping in tests](#gr
 
 #### equality ([source](macros/generic_tests/equality.sql))
 
-Asserts the equality of two relations. Optionally specify a subset of columns to compare and/or exclude.
+Asserts the equality of two relations. Optionally specify a subset of columns to compare or ignore.
 
 **Usage:**
 
@@ -124,16 +124,28 @@ Asserts the equality of two relations. Optionally specify a subset of columns to
 version: 2
 
 models:
+  # compare the entire table 
   - name: model_name
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('other_table_name')
+
+  # only compare some of the columns
+  - name: model_name_compare_columns
     tests:
       - dbt_utils.equality:
           compare_model: ref('other_table_name')
           compare_columns:
             - first_column
             - second_column
-          exclude_columns:
+
+  # compare all columns except the ones on the ignore list
+  - name: model_name_ignore_columns
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('other_table_name')
+          ignore_columns:
             - third_column
-            - fourth_column
 ```
 
 #### expression_is_true ([source](macros/generic_tests/expression_is_true.sql))

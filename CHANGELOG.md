@@ -8,6 +8,12 @@
 ## Contributors:
 --->
 
+# Unreleased
+## New features
+- Add option to ignore columns in equality test ([#734](https://github.com/dbt-labs/dbt-utils/issues/734), [#737](https://github.com/dbt-labs/dbt-utils/pull/737))
+## Contributors:
+- [@brunocostalopes](https://github.com/brunocostalopes)
+
 # dbt utils v1.0
 
 ## Migration Guide 

@@ -91,11 +91,11 @@ from data
     offset
 ) -%}
 
-  {%- set period_filter -%}
+{%- set period_filter -%}
     ("{{timestamp_field}}" >  '{{start_timestamp}}'::timestamp + interval '{{offset}} {{period}}' and
      "{{timestamp_field}}" <= '{{start_timestamp}}'::timestamp + interval '{{offset}} {{period}}' + interval '1 {{period}}' and
      "{{timestamp_field}}" <  '{{stop_timestamp}}'::timestamp)
-  {%- endset -%}
+{%- endset -%}
 
 {%- set filtered_sql = sql | replace("__PERIOD_FILTER__", period_filter) -%}
 
@@ -111,9 +111,9 @@ from ({{ filtered_sql }})
 {%- set period = config.get("period") or "week" -%}
 
 {%- if sql.find("__PERIOD_FILTER__") == -1 -%}
-    {%- set error_message -%}
+{%- set error_message -%}
       Model '{{ model.unique_id }}' does not include the required string '__PERIOD_FILTER__' in its sql
-    {%- endset -%}
+{%- endset -%}
 {{ exceptions.raise_compiler_error(error_message) }}
 {%- endif -%}
 

@@ -8,12 +8,12 @@
     dbt_utils.replace(field, "'http://'", "''"), "'https://'", "''"
 ) -%}
 
-    {%- set first_slash_pos -%}
+{%- set first_slash_pos -%}
         coalesce(
             nullif({{dbt_utils.position("'/'", stripped_url)}}, 0),
             {{dbt_utils.position("'?'", stripped_url)}} - 1
             )
-    {%- endset -%}
+{%- endset -%}
 
 {%- set parsed_path = dbt_utils.split_part(
     dbt_utils.right(

@@ -4,7 +4,7 @@
 {# pass #}
 {% elif actual_object != expected_object %}
 
-    {% set msg %}
+{% set msg %}
     Expected did not match actual
 
     -----------
@@ -17,7 +17,7 @@
     -----------
     --->{{ expected_object }}<---
 
-    {% endset %}
+{% endset %}
 
 {{ log(msg, info=True) }}
 

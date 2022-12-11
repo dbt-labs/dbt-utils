@@ -80,16 +80,16 @@
 {%- set ordered_column_names = column_superset.keys() -%}
 
 {% if (include | length > 0 or exclude | length > 0) and not column_superset.keys() %}
-        {%- set relations_string -%}
+{%- set relations_string -%}
             {%- for relation in relations -%}
                 {{ relation.name }}
             {%- if not loop.last %}, {% endif -%}
             {%- endfor -%}
-        {%- endset -%}
+{%- endset -%}
 
-        {%- set error_message -%}
+{%- set error_message -%}
             There were no columns found to union for relations {{ relations_string }}
-        {%- endset -%}
+{%- endset -%}
 
 {{ exceptions.raise_compiler_error(error_message) }}
 {%- endif -%}

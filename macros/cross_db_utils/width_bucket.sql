@@ -11,9 +11,9 @@
 
 {% macro default__width_bucket(expr, min_value, max_value, num_buckets) -%}
 
-    {% set bin_size -%}
+{% set bin_size -%}
     (( {{ max_value }} - {{ min_value }} ) / {{ num_buckets }} )
-    {%- endset %}
+{%- endset %}
 (
     -- to break ties when the amount is eaxtly at the bucket egde
     case
@@ -33,9 +33,9 @@
 
 {% macro redshift__width_bucket(expr, min_value, max_value, num_buckets) -%}
 
-    {% set bin_size -%}
+{% set bin_size -%}
     (( {{ max_value }} - {{ min_value }} ) / {{ num_buckets }} )
-    {%- endset %}
+{%- endset %}
 (
     -- to break ties when the amount is exactly at the bucket edge
     case

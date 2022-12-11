@@ -38,7 +38,7 @@ where
 {% else %} {% set schemata = [schema_pattern] %}
 {% endif %}
 
-    {% set sql %}
+{% set sql %}
         {% for schema in schemata %}
             select distinct
                 table_schema,
@@ -52,7 +52,7 @@ where
             {% if not loop.last %} union all {% endif %}
 
         {% endfor %}
-    {% endset %}
+{% endset %}
 
 {{ return(sql) }}
 
@@ -62,10 +62,10 @@ where
 {% macro _bigquery__get_matching_schemata(schema_pattern, database) %}
 {% if execute %}
 
-        {% set sql %}
+{% set sql %}
         select schema_name from {{ adapter.quote(database) }}.INFORMATION_SCHEMA.SCHEMATA
         where lower(schema_name) like lower('{{ schema_pattern }}')
-        {% endset %}
+{% endset %}
 
 {% set results = run_query(sql) %}
 

@@ -30,11 +30,11 @@ Instead, we'll manually check that the values of these dictionaries are equivale
 
 {% if expected_keys != actual_keys %}
 {% set ns.pass = False %}
-    {% set ns.err_msg %}
+{% set ns.err_msg %}
     The two dictionaries have different keys:
       expected_dictionary has keys: {{ expected_keys }}
       actual_dictionary has keys: {{ actual_keys }}
-    {% endset %}
+{% endset %}
 
 {% else %}
 
@@ -44,11 +44,11 @@ Instead, we'll manually check that the values of these dictionaries are equivale
 
 {% if expected_length != actual_length %}
 {% set ns.pass = False %}
-        {% set ns.err_msg %}
+{% set ns.err_msg %}
     The {{ key }} column has different lengths:
       expected_dictionary[{{ key }}] has length {{ expected_length }}
       actual_dictionary[{{ key }}] has length {{ actual_length }}
-        {% endset %}
+{% endset %}
 
 {% else %}
 
@@ -57,11 +57,11 @@ Instead, we'll manually check that the values of these dictionaries are equivale
 {% set actual_value = actual_dictionary[key][i] %}
 {% if expected_value != actual_value %}
 {% set ns.pass = False %}
-                {% set ns.err_msg %}
+{% set ns.err_msg %}
     The {{ key }} column has differing values:
       expected_dictionary[{{ key }}][{{ i }}] == {{ expected_value }}
       actual_dictionary[{{ key }}][{{ i }}] == {{ actual_value }}
-                {% endset %}
+{% endset %}
 
 {% endif %}
 {% endfor %}

@@ -138,7 +138,7 @@ models:
 Asserts that a valid SQL expression is true for all records. This is useful when checking integrity across columns.
 Examples:
 
-- Verify an outcome based on the application of basic alegbraic operations between columns.
+- Verify an outcome based on the application of basic algebraic operations between columns.
 - Verify the length of a column.
 - Verify the truth value of a column.
 

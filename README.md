@@ -6,11 +6,6 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
 
 ----
 
-> **Note**
-> This readme reflects dbt utils 1.0, currently in release candidate status. The currently shipping version of dbt utils is [0.9.6](https://github.com/dbt-labs/dbt-utils/tree/0.9.6).
-
----
-
 ## Contents
 
 **[Generic tests](#generic-tests)**

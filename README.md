@@ -515,7 +515,7 @@ in isolation.
 
 We generally recommend testing this uniqueness condition by either:
 
-- generating a [surrogate_key](#surrogate_key-source) for your model and testing
+- generating a [surrogate_key](#generate_surrogate_key-source) for your model and testing
 the uniqueness of said key, OR
 - passing the `unique` test a concatenation of the columns (as discussed [here](https://docs.getdbt.com/docs/building-a-dbt-project/testing-and-documentation/testing/#testing-expressions)).
 

@@ -1,12 +1,8 @@
-<!--- Copy, paste, and uncomment the following headers as-needed for unreleased features
 # Unreleased
-## New features
-- XXX ([#XXX](https://github.com/dbt-labs/dbt-utils/issues/XXX), [#XXX](https://github.com/dbt-labs/dbt-utils/pull/XXX))
 ## Fixes
-## Quality of life
-## Under the hood
-## Contributors:
---->
+- Fixed fewer_rows_than and equal_rowcount macros to work with warehouses which do not support lateral column aliasing ([#744](https://github.com/dbt-labs/dbt-utils/issues/744), [#746](https://github.com/dbt-labs/dbt-utils/pull/746))
+## Contributors: @damian3031
+
 
 # dbt utils v1.0
 

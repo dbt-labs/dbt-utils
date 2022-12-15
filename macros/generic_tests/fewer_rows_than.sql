@@ -20,7 +20,7 @@
 {#-- Redshift does not allow for dynamically created join conditions (e.g. full join on 1 = 1 --#}
 {#-- The same logic is used in equal_rowcount. In case of changes, maintain consistent logic --#}
 {% set group_by_columns = ['id_dbtutils_test_fewer_rows_than'] + group_by_columns %}
-{% set groupby_gb_cols = 'group by ' + group_by_columns|join(',') %}
+{% set groupby_gb_cols = dbt_utils.group_by(group_by_columns|length) %}
 
 
 with a as (

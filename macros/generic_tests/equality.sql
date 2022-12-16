@@ -33,21 +33,18 @@ information schema — this allows the model to be an ephemeral model
 
 {%- if not compare_columns -%}
     {%- do dbt_utils._is_ephemeral(model, 'test_equality') -%}
-    {%- set compare_columns = adapter.get_columns_in_relation(model) | map(attribute='name') -%}
+    {%- set compare_columns = adapter.get_columns_in_relation(model) | map(attribute='name') | list -%}
 {%- endif -%}
 
 {%- if ignore_columns -%}
     {#-- Lower case ignore columns for easier comparison --#}
     {%- set ignore_columns = ignore_columns | map("lower") | list %}
 
-    {%- set include_columns = [] %}
     {%- for column in compare_columns -%}
-        {%- if column | lower not in ignore_columns -%}
-            {% do include_columns.append(column) %}
+        {%- if column | lower in ignore_columns -%}
+            {% do compare_columns.remove(column) %}
         {%- endif %}
     {%- endfor %}
-
-    {%- set compare_columns = include_columns %}
 
 {%- endif -%}
 

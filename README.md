@@ -548,7 +548,7 @@ An optional `quote_columns` argument (`default=false`) can also be used if a col
 
 #### accepted_range ([source](macros/generic_tests/accepted_range.sql))
 
-Asserts that a column's values fall inside an expected range. Any combination of `min_value` and `max_value` is allowed, and the range can be inclusive or exclusive. Provide a `where` argument to filter to specific records only.
+Asserts that a column's values fall inside an expected range. Any combination of `min_value` and `max_value` is allowed, and the range can be inclusive or exclusive. Provide [a `where` argument](https://docs.getdbt.com/reference/resource-configs/where) to filter to specific records only.
 
 In addition to comparisons to a scalar value, you can also compare to another column's values. Any data type that supports the `>` or `<` operators can be compared, so you could also run tests like checking that all order dates are in the past.
 
@@ -583,7 +583,8 @@ models:
           - dbt_utils.accepted_range:
               min_value: 0
               inclusive: false
-              where: "num_orders > 0"
+              config:
+                where: "num_orders > 0"
 ```
 
 ----

@@ -47,6 +47,7 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [generate_surrogate_key](#generate_surrogate_key-source)
   - [safe_add](#safe_add-source)
   - [safe_divide](#safe_divide-source)
+  - [safe_subtract](#safe_subtract-source)
   - [pivot](#pivot-source)
   - [unpivot](#unpivot-source)
   - [width_bucket](#width_bucket-source)
@@ -1069,6 +1070,16 @@ This macro performs division but returns null if the denominator is 0.
 
 ```
 {{ dbt_utils.safe_divide('numerator', 'denominator') }}
+```
+
+#### safe_subtract ([source](macros/sql/safe_subtract.sql))
+
+This macro implements a cross-database way to take the difference of nullable fields using the fields specified.
+
+**Usage:**
+
+```
+{{ dbt_utils.safe_subtract('field_a', 'field_b'[,...]) }}
 ```
 
 #### pivot ([source](macros/sql/pivot.sql))

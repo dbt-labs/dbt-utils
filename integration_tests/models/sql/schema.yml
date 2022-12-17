@@ -120,6 +120,12 @@ models:
       - assert_equal:
           actual: actual
           expected: expected
+  
+  - name: test_safe_subtract
+    tests:
+      - assert_equal:
+          actual: actual
+          expected: expected
 
   - name: test_safe_divide
     tests:

@@ -1,6 +1,36 @@
 version: 2
 
 models:
+  - name: test_get_single_value
+    tests:
+      - assert_equal:
+          actual: date_actual
+          expected: date_expected
+      - assert_equal:
+          actual: float_actual
+          expected: float_expected
+      - assert_equal:
+          actual: int_actual
+          expected: int_expected
+      - assert_equal:
+          actual: string_actual
+          expected: string_expected
+
+  - name: test_get_single_value_default
+    tests:
+      - assert_equal:
+          actual: date_actual
+          expected: date_expected
+      - assert_equal:
+          actual: float_actual
+          expected: float_expected
+      - assert_equal:
+          actual: int_actual
+          expected: int_expected
+      - assert_equal:
+          actual: string_actual
+          expected: string_expected
+
   - name: test_generate_series
     tests:
       - dbt_utils.equality:
@@ -91,6 +121,12 @@ models:
           actual: actual
           expected: expected
 
+  - name: test_safe_divide
+    tests:
+      - assert_equal:
+          actual: actual
+          expected: expected
+
   - name: test_pivot
     tests:
       - dbt_utils.equality:
@@ -126,6 +162,12 @@ models:
       - dbt_utils.equality:
           compare_model: ref('data_star_expected')
 
+  - name: test_star_quote_identifiers
+    tests:
+      - assert_equal:
+          actual: actual
+          expected: expected
+
   - name: test_star_prefix_suffix
     tests:
       - dbt_utils.equality:
@@ -140,6 +182,12 @@ models:
     tests:
       - dbt_utils.equality:
           compare_model: ref('data_star_expected')
+
+  - name: test_star_no_columns
+    columns: 
+      - name: canary_column #If the no-columns state isn't hit, this table won't be queryable because there will be a missing comma
+        tests: 
+          - not_null
 
   - name: test_generate_surrogate_key
     tests:

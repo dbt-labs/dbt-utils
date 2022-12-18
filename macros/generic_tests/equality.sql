@@ -49,7 +49,7 @@ b as (
 a_minus_b as (
 
     select {{compare_cols_csv}} from a
-    {{ except() }}
+    {{ dbt.except() }}
     select {{compare_cols_csv}} from b
 
 ),
@@ -57,7 +57,7 @@ a_minus_b as (
 b_minus_a as (
 
     select {{compare_cols_csv}} from b
-    {{ except() }}
+    {{ dbt.except() }}
     select {{compare_cols_csv}} from a
 
 ),

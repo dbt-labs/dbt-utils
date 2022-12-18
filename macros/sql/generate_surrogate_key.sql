@@ -15,7 +15,7 @@
 {%- for field in field_list -%}
 
     {%- do fields.append(
-        "coalesce(cast(" ~ field ~ " as " ~ type_string() ~ "), '" ~ default_null_value  ~"')"
+        "coalesce(cast(" ~ field ~ " as " ~ dbt.type_string() ~ "), '" ~ default_null_value  ~"')"
     ) -%}
 
     {%- if not loop.last %}
@@ -24,6 +24,6 @@
 
 {%- endfor -%}
 
-{{ hash(concat(fields)) }}
+{{ dbt.hash(dbt.concat(fields)) }}
 
 {%- endmacro -%}

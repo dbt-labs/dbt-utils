@@ -5,7 +5,7 @@
 {% macro default__get_intervals_between(start_date, end_date, datepart) -%}
     {%- call statement('get_intervals_between', fetch_result=True) %}
 
-        select {{ datediff(start_date, end_date, datepart) }}
+        select {{ dbt.datediff(start_date, end_date, datepart) }}
 
     {%- endcall -%}
 
@@ -35,7 +35,7 @@
 date_spine(
     "day",
     "to_date('01/01/2016', 'mm/dd/yyyy')",
-    "dateadd(week, 1, current_date)"
+    "dbt.dateadd(week, 1, current_date)"
 ) #}
 
 
@@ -51,7 +51,7 @@ all_periods as (
 
     select (
         {{
-            dateadd(
+            dbt.dateadd(
                 datepart,
                 "row_number() over (order by 1) - 1",
                 start_date

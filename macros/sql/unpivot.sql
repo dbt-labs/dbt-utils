@@ -50,9 +50,9 @@ Arguments:
         {{ exclude_col }},
       {%- endfor %}
 
-      cast( '{{ col.column }}' as {{ type_string() }}) as {{ field_name }},
+      cast('{{ col.column }}' as {{ dbt.type_string() }}) as {{ field_name }},
       cast(  {% if col.data_type == 'boolean' %}
-           {{ cast_bool_to_text(column_identifier) }}
+           {{ dbt.cast_bool_to_text(col.column) }}
              {% else %}
            {{ column_identifier }}
              {% endif %}

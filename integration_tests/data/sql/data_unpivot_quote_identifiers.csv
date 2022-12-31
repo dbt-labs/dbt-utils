@@ -1,4 +1,4 @@
-customer_id,created_at,status,2022_01_01
+customer_id,created_at,status,_2022_01_01
 123,"2017-01-01","active",1
 234,"2017-02-01","active",2
 567,"2017-03-01","churned",3

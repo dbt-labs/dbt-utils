@@ -1,8 +1,8 @@
 select
-    customer_id,
-    created_at,
-    prop,
-    val
+    "customer_id",
+    "created_at",
+    "prop",
+    "val"
 
 from (
     {{ dbt_utils.unpivot(
@@ -15,6 +15,6 @@ from (
     ) }}
 ) as sbq
 order by
-    customer_id asc,
-    created_at asc,
-    prop asc
+    "customer_id" asc,
+    "created_at" asc,
+    "prop" asc

@@ -69,6 +69,8 @@ seeds:
 
       data_unpivot_quote_identifiers:
         +quote_columns: true
+      data_unpivot_quote_identifiers_expected:
+        +quote_columns: true
 
     schema_tests:
       data_test_sequential_timestamps:

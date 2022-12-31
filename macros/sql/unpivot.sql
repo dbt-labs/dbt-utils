@@ -47,16 +47,16 @@ Arguments:
     {% set column_identifier = adapter.quote(col.column) if quote_identifiers else col.column %}
     select
       {%- for exclude_col in exclude %}
-        {{ exclude_col }},
+        {{ adapter.quote(exclude_col) if quote_identifiers else exclude_col }},
       {%- endfor %}
 
-      cast('{{ col.column }}' as {{ dbt.type_string() }}) as {{ field_name }},
+      cast('{{ col.column }}' as {{ dbt.type_string() }}) as {{ adapter.quote(field_name) if quote_identifiers else field_name }},
       cast(  {% if col.data_type == 'boolean' %}
            {{ dbt.cast_bool_to_text(col.column) }}
              {% else %}
            {{ column_identifier }}
              {% endif %}
-           as {{ cast_to }}) as {{ value_name }}
+           as {{ cast_to }}) as {{ adapter.quote(value_name) if quote_identifiers else value_name }}
 
     from {{ relation }}
 

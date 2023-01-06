@@ -8,6 +8,16 @@
 ## Contributors:
 --->
 
+# Unreleased
+## Fixes
+- get_tables_by_pattern_sql will now:
+  - return redshift external tables ([#752](https://github.com/dbt-labs/dbt-utils/issues/752)
+  - work with valid redshift database names that contain dashes
+## Under the hood
+- created a new dispatch redshift__get_tables_by_pattern which unions the result of the default macro
+and querying svv_external_tables for the same conditions (schema name, pattern, exclude pattern).
+## Contributors: [@brendan-cook-87](https://github.com/brendan-cook-87)
+
 # dbt utils v1.0
 
 ## Migration Guide 

@@ -9,11 +9,30 @@
             table_schema as {{ adapter.quote('table_schema') }},
             table_name as {{ adapter.quote('table_name') }},
             {{ dbt_utils.get_table_types_sql() }}
-        from {{ database }}.information_schema.tables
+        from "{{ database }}"."information_schema"."tables"
         where table_schema ilike '{{ schema_pattern }}'
         and table_name ilike '{{ table_pattern }}'
         and table_name not ilike '{{ exclude }}'
 
+{% endmacro %}
+
+{% macro redshift__get_tables_by_pattern_sql(schema_pattern, table_pattern, exclude='', database=target.database) %}
+
+    {% set sql %}
+        {{ dbt_utils.default__get_tables_by_pattern_sql(schema_pattern, table_pattern, exclude, database) }}
+        union all
+        select distinct
+            schemaname as {{ adapter.quote('table_schema') }},
+            tablename as {{ adapter.quote('table_name') }},
+            'external' as {{ adapter.quote('table_type') }}
+        from svv_external_tables
+        where redshift_database_name = '{{ database }}'
+        and schemaname ilike '{{ schema_pattern }}'
+        and table_name ilike '{{ table_pattern }}'
+        and table_name not ilike '{{ exclude }}'
+    {% endset %}
+
+    {{ return(sql) }}
 {% endmacro %}
 
 

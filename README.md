@@ -26,6 +26,8 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [unique_combination_of_columns](#unique_combination_of_columns-source)
   - [accepted_range](#accepted_range-source)
 
+**[Grouping in tests](#grouping-in-tests)**
+
 **[Macros](#macros)**
 
 - [Introspective macros](#introspective-macros):
@@ -34,7 +36,7 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [get_relations_by_pattern](#get_relations_by_pattern-source)
   - [get_relations_by_prefix](#get_relations_by_prefix-source)
   - [get_query_results_as_dict](#get_query_results_as_dict-source)
-  - [get_single_value](#get_single_value)
+  - [get_single_value](#get_single_value-source)
 
 - [SQL generators](#sql-generators)
   - [date_spine](#date_spine-source)

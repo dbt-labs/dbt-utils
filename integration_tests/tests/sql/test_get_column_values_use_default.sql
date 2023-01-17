@@ -1,4 +1,3 @@
-
 {% set column_values = dbt_utils.get_column_values(
     ref("data_get_column_values_dropped"),
     "field",

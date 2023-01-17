@@ -1,4 +1,3 @@
-
 {%- macro string_literal(value) -%}
 {{ return(adapter.dispatch("string_literal", "dbt_utils")(value)) }}
 {%- endmacro -%}

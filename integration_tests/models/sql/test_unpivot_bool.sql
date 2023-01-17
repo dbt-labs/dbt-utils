@@ -1,4 +1,3 @@
-
 -- snowflake messes with these tests pretty badly since the
 -- output of the macro considers the casing of the source
 -- table columns. Using some hacks here to get this to work,

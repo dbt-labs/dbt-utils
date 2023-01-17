@@ -1,4 +1,3 @@
-
 -- unpivot() was enhanced with 3 new parameters
 -- This test targets the original API.
 -- snowflake messes with these tests pretty badly since the

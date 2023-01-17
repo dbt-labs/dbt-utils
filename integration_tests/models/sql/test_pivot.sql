@@ -1,4 +1,3 @@
-
 -- TODO: How do we make this work nicely on Snowflake too?
 {% if target.type == "snowflake" %}
 {% set column_values = ["RED", "BLUE"] %} {% set cmp = "ilike" %}

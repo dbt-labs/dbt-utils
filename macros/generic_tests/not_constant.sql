@@ -1,4 +1,3 @@
-
 {% test not_constant(model, column_name) %}
 {{ return(adapter.dispatch("test_not_constant", "dbt_utils")(model, column_name)) }}
 {% endtest %}

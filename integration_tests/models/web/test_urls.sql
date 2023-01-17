@@ -1,4 +1,3 @@
-
 with data as (select * from {{ ref("data_urls") }})
 
 select

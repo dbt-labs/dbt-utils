@@ -82,7 +82,6 @@ Arguments:
 {%- endif %}
 {%- endfor %}
 
-
 {%- for col in include_cols -%}
 select
     {%- for exclude_col in exclude %} {{ exclude_col }}, {%- endfor %}

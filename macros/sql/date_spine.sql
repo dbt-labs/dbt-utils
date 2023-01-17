@@ -25,8 +25,6 @@ select {{ dbt_utils.datediff(start_date, end_date, datepart) }}
 {%- endmacro %}
 
 
-
-
 {% macro date_spine(datepart, start_date, end_date) %}
 {{
     return(
@@ -36,7 +34,6 @@ select {{ dbt_utils.datediff(start_date, end_date, datepart) }}
 {%- endmacro %}
 
 {% macro default__date_spine(datepart, start_date, end_date) %}
-
 
 {# call as follows:
 

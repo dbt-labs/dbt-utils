@@ -43,7 +43,6 @@ The arguments should be float type.
 {%- endmacro %}
 
 
-
 {% macro bigquery__haversine_distance(lat1, lon1, lat2, lon2, unit="mi") -%}
 {% set radians_lat1 = dbt_utils.degrees_to_radians(lat1) %}
 {% set radians_lat2 = dbt_utils.degrees_to_radians(lat2) %}

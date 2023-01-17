@@ -32,7 +32,6 @@
 
 {%- set columns_csv = column_list | join(", ") %}
 
-
 with
     validation_errors as (
 
@@ -45,6 +44,5 @@ with
 
 select *
 from validation_errors
-
 
 {% endmacro %}

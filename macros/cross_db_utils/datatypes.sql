@@ -12,7 +12,6 @@
 {% macro snowflake__type_string() %} varchar {% endmacro %}
 
 
-
 {# timestamp  -------------------------------------------------     #}
 {%- macro type_timestamp() -%}
 {{ return(adapter.dispatch("type_timestamp", "dbt_utils")()) }}

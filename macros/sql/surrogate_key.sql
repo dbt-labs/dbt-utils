@@ -25,7 +25,6 @@
 
 {%- endif -%}
 
-
 {%- set fields = [] -%}
 
 {%- for field in field_list_xf -%}

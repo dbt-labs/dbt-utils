@@ -992,7 +992,7 @@ from {{ ref('my_model') }}
 
 #### union_relations ([source](macros/sql/union.sql))
 
-This macro unions together an array of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation),
+This macro combines via `union all` an array of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation),
 even when columns have differing orders in each Relation, and/or some columns are
 missing from some relations. Any columns exclusive to a subset of these
 relations will be filled with `null` where not present. A new column

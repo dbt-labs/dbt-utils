@@ -31,7 +31,9 @@
 
 {%- set _ = fields.append(
     "coalesce(cast(" ~ field ~ " as " ~ dbt_utils.type_string() ~ "), '')"
-) -%} {%- if not loop.last %} {%- set _ = fields.append("'-'") -%} {%- endif -%}
+) -%}
+
+{%- if not loop.last %} {%- set _ = fields.append("'-'") -%} {%- endif -%}
 
 {%- endfor -%}
 

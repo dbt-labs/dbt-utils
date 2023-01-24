@@ -42,7 +42,8 @@ with
                         -1,
                         "nullif('" ~ stop_date ~ "','')::timestamp",
                     )
-                }}, {{ dbt_utils.current_timestamp() }}
+                }},
+                {{ dbt_utils.current_timestamp() }}
             ) as stop_timestamp
         from "{{target_schema}}"."{{target_table}}"
     )
@@ -197,7 +198,8 @@ commit
     start_timestamp,
     stop_timestamp,
     i,
-) %} {{ dbt.create_table_as(True, tmp_relation, tmp_table_sql) }}
+) %}
+{{ dbt.create_table_as(True, tmp_relation, tmp_table_sql) }}
 {%- endcall %}
 
 {{

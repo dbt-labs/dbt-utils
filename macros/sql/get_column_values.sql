@@ -48,7 +48,9 @@
         ~ " does not exist. Returning the default value: "
         ~ default
     )
-}} {{ return(default) }}
+}}
+
+{{ return(default) }}
 
 {%- else -%}
 

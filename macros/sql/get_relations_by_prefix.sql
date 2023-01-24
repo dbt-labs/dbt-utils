@@ -30,7 +30,8 @@
     schema=row.table_schema,
     identifier=row.table_name,
     type=row.table_type,
-) -%} {%- do tbl_relations.append(tbl_relation) -%}
+) -%}
+{%- do tbl_relations.append(tbl_relation) -%}
 {%- endfor -%}
 
 {{ return(tbl_relations) }}

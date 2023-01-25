@@ -1054,7 +1054,7 @@ This macro implements a cross-database way to sum nullable fields using the fiel
 **Usage:**
 
 ```
-{{ dbt_utils.safe_add('field_a', 'field_b'[,...]) }}
+{{ dbt_utils.safe_add(['field_a', 'field_b', ...]) }}
 ```
 
 #### safe_divide ([source](macros/cross_db_utils/safe_divide.sql))
@@ -1079,7 +1079,7 @@ This macro implements a cross-database way to take the difference of nullable fi
 **Usage:**
 
 ```
-{{ dbt_utils.safe_subtract('field_a', 'field_b'[,...]) }}
+{{ dbt_utils.safe_subtract(['field_a', 'field_b', ...]) }}
 ```
 
 #### pivot ([source](macros/sql/pivot.sql))

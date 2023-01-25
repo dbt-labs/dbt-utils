@@ -7,11 +7,11 @@
 {%- if field_list is not iterable or field_list is string or field_list is mapping -%}
 
 {%- set error_message = '
-Warning: the `safe_subtract` macro now takes a single list argument instead of \
+Warning: the `safe_subtract` macro takes a single list argument instead of \
 string arguments. The {}.{} model triggered this warning. \
 '.format(model.package_name, model.name) -%}
 
-{%- do exceptions.warn(error_message) -%}
+{%- do exceptions.raise_compiler_error(error_message) -%}
 
 {%- endif -%}
 

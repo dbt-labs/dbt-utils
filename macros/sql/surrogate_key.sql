@@ -20,8 +20,10 @@
 
 {%- for field in varargs %} {%- set _ = field_list_xf.append(field) -%} {%- endfor -%}
 
+{%- else -%}
+
 {# if using list, just set field_list_xf as field_list #}
-{%- else -%} {%- set field_list_xf = field_list -%}
+{%- set field_list_xf = field_list -%}
 
 {%- endif -%}
 

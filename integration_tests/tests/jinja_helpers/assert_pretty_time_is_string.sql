@@ -1,5 +1,7 @@
+{% if dbt_utils.pretty_time() is string %}
 {# Return 0 rows for the test to pass #}
-{% if dbt_utils.pretty_time() is string %} select 1 as col_name {{ limit_zero() }}
+select 1 as col_name {{ limit_zero() }}
+{% else %}
 {# Return >0 rows for the test to fail #}
-{% else %} select 1
+select 1
 {% endif %}

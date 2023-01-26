@@ -154,8 +154,8 @@ from ({{ filtered_sql }})
 -- `begin` happens here, so `commit` after it to finish the transaction
 {{ run_hooks(pre_hooks, inside_transaction=True) }}
 {% call statement() -%}
-begin  -- make extra sure we've closed out the transaction
-;
+begin
+;  -- make extra sure we've closed out the transaction
 commit
 ;
 {%- endcall %}
@@ -219,8 +219,8 @@ commit
 {% set result = load_result("main-" ~ i) %}
 {% if "response" in result.keys() %}  {# added in v0.19.0 #}
 {% set rows_inserted = result["response"]["rows_affected"] %}
-{# older versions #}
-{% else %} {% set rows_inserted = result["status"].split(" ")[2] | int %}
+{% else %}  {# older versions #}
+{% set rows_inserted = result["status"].split(" ")[2] | int %}
 {% endif %}
 
 {%- set sum_rows_inserted = loop_vars["sum_rows_inserted"] + rows_inserted -%}
@@ -257,8 +257,9 @@ commit
 
 {%- set status_string = "INSERT " ~ loop_vars["sum_rows_inserted"] -%}
 
+{% call noop_statement("main", status_string) -%}
 -- no-op
-{% call noop_statement("main", status_string) -%} {%- endcall %}
+{%- endcall %}
 
 -- Return the relations created in this materialization
 {{ return({"relations": [target_relation]}) }}

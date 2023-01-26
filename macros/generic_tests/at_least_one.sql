@@ -7,9 +7,10 @@
 select *
 from
     (
-        {# In TSQL, subquery aggregate columns need aliases #}
-        {# thus: a filler col name, 'filler_column' #}
-        select count({{ column_name }}) as filler_column
+        select
+            {# In TSQL, subquery aggregate columns need aliases #}
+            {# thus: a filler col name, 'filler_column' #}
+            count({{ column_name }}) as filler_column
 
         from {{ model }}
 

@@ -23,6 +23,7 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [not_accepted_values](#not_accepted_values-source)
   - [relationships_where](#relationships_where-source)
   - [mutually_exclusive_ranges](#mutually_exclusive_ranges-source)
+  - [sequential_values](#sequential_values-source)
   - [unique_combination_of_columns](#unique_combination_of_columns-source)
   - [accepted_range](#accepted_range-source)
 

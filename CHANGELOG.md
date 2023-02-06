@@ -10,6 +10,12 @@
 
 # Unreleased
 ## New features
+- The `equality` test now accepts an additional argument, `precision` to aide in comparing floating point numbers ([#757](https://github.com/dbt-labs/dbt-utils/issues/757), [#765](https://github.com/dbt-labs/dbt-utils/pull/765))
+## Contributors: 
+- [@rlh1994](https://github.com/rlh1994)
+
+# Unreleased
+## New features
 - Add option to ignore columns in equality test ([#734](https://github.com/dbt-labs/dbt-utils/issues/734), [#737](https://github.com/dbt-labs/dbt-utils/pull/737))
 ## Contributors:
 - [@brunocostalopes](https://github.com/brunocostalopes)

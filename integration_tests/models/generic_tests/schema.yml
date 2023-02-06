@@ -210,6 +210,40 @@ models:
             - last_name
             - email
 
+  - name: test_equality_floats
+    tests:
+      # test precision only
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_floats')
+          precision: 4
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_floats')
+          precision: 8
+          error_if: "<1" #sneaky way to ensure that the test is returning failing rows
+          warn_if: "<0"
+
+  - name: test_equality_floats_columns
+    tests:
+    # Positive assertion tests
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_floats_columns')
+          compare_columns:
+            - id
+            - float_number
+          precision: 4
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_floats_columns')
+          ignore_columns:
+            - to_ignore
+          precision: 4
+    # all columns should fail even with rounding
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_floats_columns')
+          precision: 4
+          error_if: "<1" #sneaky way to ensure that the test is returning failing rows
+          warn_if: "<0"
+
+
   - name: test_fewer_rows_than
     tests:
       - dbt_utils.fewer_rows_than:

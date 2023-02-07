@@ -54,11 +54,18 @@ seeds:
         +column_types:
           my_timestamp: timestamp
 
-      data_test_equality_floats:
+      data_test_equality_floats_a:
         +column_types:
           float_number: float
 
-      data_test_equality_floats_columns:
+      data_test_equality_floats_columns_a:
         +column_types:
           float_number: float
-          to_ignore: varchar(1)
+
+      data_test_equality_floats_b:
+        +column_types:
+          float_number: float
+
+      data_test_equality_floats_columns_b:
+        +column_types:
+          float_number: float

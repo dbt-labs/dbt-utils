@@ -5,5 +5,5 @@ with data as (
 )
 
 select
-    id, float_number + 0.0000001 as float_number, 'b' as to_ignore
+    id, float_number + 0.0000001 as float_number, cast('b' as varchar(1)) as to_ignore
 from data

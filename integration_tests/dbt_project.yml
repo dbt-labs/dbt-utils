@@ -61,3 +61,4 @@ seeds:
       data_test_equality_floats_columns:
         +column_types:
           float_number: float
+          to_ignore: varchar(1)

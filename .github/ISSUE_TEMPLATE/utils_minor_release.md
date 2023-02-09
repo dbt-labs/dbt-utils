@@ -27,12 +27,12 @@ If this _is_ a breaking change:
 ## Checklist of dependent packages
 | Package                                                                      | PR     | Release     |
 |------------------------------------------------------------------------------|--------|-------------|
-| [audit-helper](https://github.com/fishtown-analytics/dbt-audit-helper)       | [PR]() | [Release]() |
-| [codegen](https://github.com/fishtown-analytics/dbt-codegen)                 | [PR]() | [Release]() |
-| [redshift](https://github.com/fishtown-analytics/redshift)                   | [PR]() | [Release]() |
-| [event-logging](https://github.com/fishtown-analytics/dbt-event-logging)     | [PR]() | [Release]() |
-| [snowplow](https://github.com/fishtown-analytics/snowplow)                   | [PR]() | [Release]() |
-| [external-tables](https://github.com/fishtown-analytics/dbt-external-tables) | [PR]() | [Release]() |
-| [segment](https://github.com/fishtown-analytics/segment)                     | [PR]() | [Release]() |
-| [facebook-ads](https://github.com/fishtown-analytics/facebook-ads)           | [PR]() | [Release]() |
-| [stitch-utils](https://github.com/fishtown-analytics/stitch-utils)           | [PR]() | [Release]() |
+| [audit-helper](https://github.com/dbt-labs/dbt-audit-helper)                 | [PR]() | [Release]() |
+| [codegen](https://github.com/dbt-labs/dbt-codegen)                           | [PR]() | [Release]() |
+| [redshift](https://github.com/dbt-labs/redshift)                             | [PR]() | [Release]() |
+| [event-logging](https://github.com/dbt-labs/dbt-event-logging)               | [PR]() | [Release]() |
+| [snowplow](https://github.com/dbt-labs/snowplow)                             | [PR]() | [Release]() |
+| [external-tables](https://github.com/dbt-labs/dbt-external-tables)           | [PR]() | [Release]() |
+| [segment](https://github.com/dbt-labs/segment)                               | [PR]() | [Release]() |
+| [facebook-ads](https://github.com/dbt-labs/facebook-ads)                     | [PR]() | [Release]() |
+| [stitch-utils](https://github.com/dbt-labs/stitch-utils)                     | [PR]() | [Release]() |

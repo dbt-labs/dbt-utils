@@ -1,0 +1,9 @@
+pytest
+pytest-dotenv
+git+https://github.com/dbt-labs/dbt-core.git#egg=dbt-core&subdirectory=core
+git+https://github.com/dbt-labs/dbt-core.git#egg=dbt-tests-adapter&subdirectory=tests/adapter
+git+https://github.com/dbt-labs/dbt-core.git#egg=dbt-postgres&subdirectory=plugins/postgres
+git+https://github.com/dbt-labs/dbt-redshift.git
+git+https://github.com/dbt-labs/dbt-snowflake.git
+git+https://github.com/dbt-labs/dbt-bigquery.git
+pytest-xdist

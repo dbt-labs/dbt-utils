@@ -1,7 +1,9 @@
-{% if dbt_utils.slugify('!Hell0 world-hi') == 'hell0_world_hi' %}
-    {# Return 0 rows for the test to pass #}
-    select 1 as col_name {{ limit_zero() }}
-{% else %}
-    {# Return >0 rows for the test to fail #}
-    select 1 as col_name
-{% endif %}
+with comparisons as (
+  select '{{ dbt_utils.slugify("!Hell0 world-hi") }}' as output, 'hell0_world_hi' as expected
+  union all
+  select '{{ dbt_utils.slugify("0Hell0 world-hi") }}' as output, '_0hell0_world_hi' as expected
+)
+
+select * 
+from comparisons
+where output != expected

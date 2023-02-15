@@ -1,0 +1,5 @@
+field_1,field_2,field_3,expected
+3,2,1,0
+4,,3,1
+,,2,-2
+,,,0

@@ -8,6 +8,14 @@
 ## Contributors:
 --->
 
+# Unreleased
+## Fixes
+- get_relations_by_pattern for Databricks connection with Unity catalog #768 ([#768](https://github.com/dbt-labs/dbt-utils/issues/768), [#769](https://github.com/dbt-labs/dbt-utils/pull/769))
+
+## Contributors:
+@Harmuth94, [#768](https://github.com/dbt-labs/dbt-utils/issues/768)
+
+
 # dbt utils v1.0
 
 ## Migration Guide 

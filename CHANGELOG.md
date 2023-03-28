@@ -11,10 +11,11 @@
 # Unreleased
 ## Fixes
 - get_relations_by_pattern for Databricks connection with Unity catalog #768 ([#768](https://github.com/dbt-labs/dbt-utils/issues/768), [#769](https://github.com/dbt-labs/dbt-utils/pull/769))
+- Handle empty strings in slugify macro #773 ([#773](https://github.com/dbt-labs/dbt-utils/issues/773), [#XXX](https://github.com/dbt-labs/dbt-utils/pull/XXX))
 
 ## Contributors:
 @Harmuth94, [#768](https://github.com/dbt-labs/dbt-utils/issues/768)
-
+@atvaccaro, [#773](https://github.com/dbt-labs/dbt-utils/issues/773)
 
 # dbt utils v1.0
 

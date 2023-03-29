@@ -7,7 +7,7 @@
 {#- Ensure that column_name is not in the group by list or the database will throw an ambiguous column error #}
 {%- set group_by_cols_filtered = [] %}
 {% for column in group_by_columns %}
-  {%- if column != column_name %}
+  {%- if column|upper != column_name|upper %}
       {%- do group_by_cols_filtered.append(column) %}
   {% endif -%}
 {% endfor %}

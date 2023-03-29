@@ -4,9 +4,17 @@
 
 {% macro default__test_at_least_one(model, column_name, group_by_columns) %}
 
-{% if group_by_columns|length() > 0 %}
-  {% set select_gb_cols = group_by_columns|join(' ,') + ', ' %}
-  {% set groupby_gb_cols = 'group by ' + group_by_columns|join(',') %}
+{#- Ensure that column_name is not in the group by list or the database will throw an ambiguous column error #}
+{%- set group_by_cols_filtered = [] %}
+{% for column in group_by_columns %}
+  {%- if column != column_name %}
+      {%- do group_by_cols_filtered.append(column) %}
+  {% endif -%}
+{% endfor %}
+
+{% if group_by_cols_filtered|length() > 0 %}
+  {% set select_gb_cols = group_by_cols_filtered|join(' ,') + ', ' %}
+  {% set groupby_gb_cols = 'group by ' + group_by_cols_filtered|join(',') %}
 {% endif %}
 
 select *

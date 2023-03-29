@@ -14,12 +14,13 @@
 
 ## Contributors:
 @Harmuth94, [#768](https://github.com/dbt-labs/dbt-utils/issues/768)
+@joshuahuntley, [#775](https://github.com/dbt-labs/dbt-utils/issues/775)
 
 
 # dbt utils v1.0
 
-## Migration Guide 
-The full migration guide is at https://docs.getdbt.com/guides/migration/versions/upgrading-to-dbt-utils-v1.0 
+## Migration Guide
+The full migration guide is at https://docs.getdbt.com/guides/migration/versions/upgrading-to-dbt-utils-v1.0
 
 ## New features
 - New macro `get_single_value` ([#696](https://github.com/dbt-labs/dbt-utils/pull/696))
@@ -29,11 +30,12 @@ The full migration guide is at https://docs.getdbt.com/guides/migration/versions
 ## Enhancements
 - Implemented an optional `group_by_columns` argument across many of the generic testing macros to test for properties that only pertain to group-level or are can be more rigorously conducted at the group level. Property available in `recency`, `at_least_one`, `equal_row_count`, `fewer_rows_than`, `not_constant`, `not_null_proportion`, and `sequential` tests [#633](https://github.com/dbt-labs/dbt-utils/pull/633)
 - With the addition of an on-by-default quote_identifiers flag in the star() macro, you can now disable quoting if necessary. ([#706](https://github.com/dbt-labs/dbt-utils/pull/706))
+- Improve the performance of the `at_least_one` test by pruning early. This is especially helpful when running against external tables.([#775](https://github.com/dbt-labs/dbt-utils/pull/775))
 
 ## Fixes
 - `union()` now includes/excludes columns case-insensitively
 - The `expression_is_true test` doesn’t output * unless storing failures, a cost improvement for BigQuery ([#683](https://github.com/dbt-labs/dbt-utils/issues/683), [#686](https://github.com/dbt-labs/dbt-utils/pull/686))
-- Updated the `slugify` macro to prepend "_" to column names beginning with a number since most databases do not allow names to begin with numbers. 
+- Updated the `slugify` macro to prepend "_" to column names beginning with a number since most databases do not allow names to begin with numbers.
 
 ## Under the hood
 - Remove deprecated table argument from `unpivot` ([#671](https://github.com/dbt-labs/dbt-utils/pull/671))
@@ -54,6 +56,7 @@ The full migration guide is at https://docs.getdbt.com/guides/migration/versions
 - [@zachoj10](https://github.com/zachoj10) (#692)
 - [@miles170](https://github.com/miles170)
 - [@emilyriederer](https://github.com/emilyriederer)
+- [@joshuahuntley](https://github.com/JoshuaHuntley)
 # 0.9.5
 ## Fixes
 - Stop showing cross-db deprecation warnings for macros who have already been migrated ([#725](https://github.com/dbt-labs/dbt-utils/pull/725))

@@ -17,7 +17,14 @@ from (
       {{select_gb_cols}}
       count({{ column_name }}) as filler_column
 
-    from {{ model }}
+    from (
+          select
+            {{select_gb_cols}}
+            {{ column_name }}
+          from {{ model }}
+          where {{ column_name }} is not null
+          limit 1
+          )
 
     {{groupby_gb_cols}}
 

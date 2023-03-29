@@ -24,7 +24,7 @@ from (
           from {{ model }}
           where {{ column_name }} is not null
           limit 1
-          )
+          ) pruned_rows
 
     {{groupby_gb_cols}}
 

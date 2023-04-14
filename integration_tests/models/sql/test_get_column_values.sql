@@ -5,30 +5,30 @@
 
 {% if target.type == "snowflake" %}
 
-select
-    {% for val in column_values -%}
+    select
+        {% for val in column_values -%}
 
-    sum(case when field = '{{ val }}' then 1 else 0 end) as count_{{ val }}
-    {%- if not loop.last %},{% endif -%}
+            sum(case when field = '{{ val }}' then 1 else 0 end) as count_{{ val }}
+            {%- if not loop.last %},{% endif -%}
 
-    {%- endfor %}
+        {%- endfor %}
 
-from {{ ref("data_get_column_values") }}
+    from {{ ref("data_get_column_values") }}
 
 {% else %}
 
-select
-    {% for val in column_values -%}
+    select
+        {% for val in column_values -%}
 
-    {{
-        dbt_utils.safe_cast(
-            "sum(case when field = '" ~ val ~ "' then 1 else 0 end)",
-            dbt_utils.type_string(),
-        )
-    }} as count_{{ val }} {%- if not loop.last %},{% endif -%}
+            {{
+                dbt_utils.safe_cast(
+                    "sum(case when field = '" ~ val ~ "' then 1 else 0 end)",
+                    dbt_utils.type_string(),
+                )
+            }} as count_{{ val }} {%- if not loop.last %},{% endif -%}
 
-    {%- endfor %}
+        {%- endfor %}
 
-from {{ ref("data_get_column_values") }}
+    from {{ ref("data_get_column_values") }}
 
 {% endif %}

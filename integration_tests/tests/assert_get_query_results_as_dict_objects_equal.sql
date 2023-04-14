@@ -7,11 +7,11 @@
 
 {#- Handle snowflake casing silliness -#}
 {% if target.type == "snowflake" %}
-{% set expected_dictionary = {
-    "COL_1": [1, 2, 3],
-    "COL_2": ["a", "b", "c"],
-    "COL_3": [True, False, none],
-} %}
+    {% set expected_dictionary = {
+        "COL_1": [1, 2, 3],
+        "COL_2": ["a", "b", "c"],
+        "COL_3": [True, False, none],
+    } %}
 {% endif %}
 
 
@@ -24,53 +24,53 @@ Instead, we'll manually check that the values of these dictionaries are equivale
 -#}
 {% set ns = namespace(pass=True, err_msg="") %}
 {% if execute %}
-{#- Check that the dictionaries have the same keys -#}
-{% set expected_keys = expected_dictionary.keys() | list | sort %}
-{% set actual_keys = actual_dictionary.keys() | list | sort %}
+    {#- Check that the dictionaries have the same keys -#}
+    {% set expected_keys = expected_dictionary.keys() | list | sort %}
+    {% set actual_keys = actual_dictionary.keys() | list | sort %}
 
-{% if expected_keys != actual_keys %}
-{% set ns.pass = False %}
-{% set ns.err_msg %}
+    {% if expected_keys != actual_keys %}
+        {% set ns.pass = False %}
+        {% set ns.err_msg %}
     The two dictionaries have different keys:
       expected_dictionary has keys: {{ expected_keys }}
       actual_dictionary has keys: {{ actual_keys }}
-{% endset %}
+        {% endset %}
 
-{% else %}
+    {% else %}
 
-{% for key, value in expected_dictionary.items() %}
-{% set expected_length = expected_dictionary[key] | length %}
-{% set actual_length = actual_dictionary[key] | length %}
+        {% for key, value in expected_dictionary.items() %}
+            {% set expected_length = expected_dictionary[key] | length %}
+            {% set actual_length = actual_dictionary[key] | length %}
 
-{% if expected_length != actual_length %}
-{% set ns.pass = False %}
-{% set ns.err_msg %}
+            {% if expected_length != actual_length %}
+                {% set ns.pass = False %}
+                {% set ns.err_msg %}
     The {{ key }} column has different lengths:
       expected_dictionary[{{ key }}] has length {{ expected_length }}
       actual_dictionary[{{ key }}] has length {{ actual_length }}
-{% endset %}
+                {% endset %}
 
-{% else %}
+            {% else %}
 
-{% for i in range(value | length) %}
-{% set expected_value = expected_dictionary[key][i] %}
-{% set actual_value = actual_dictionary[key][i] %}
-{% if expected_value != actual_value %}
-{% set ns.pass = False %}
-{% set ns.err_msg %}
+                {% for i in range(value | length) %}
+                    {% set expected_value = expected_dictionary[key][i] %}
+                    {% set actual_value = actual_dictionary[key][i] %}
+                    {% if expected_value != actual_value %}
+                        {% set ns.pass = False %}
+                        {% set ns.err_msg %}
     The {{ key }} column has differing values:
       expected_dictionary[{{ key }}][{{ i }}] == {{ expected_value }}
       actual_dictionary[{{ key }}][{{ i }}] == {{ actual_value }}
-{% endset %}
+                        {% endset %}
 
-{% endif %}
-{% endfor %}
-{% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
 
-{% endfor %}
+        {% endfor %}
 
-{% endif %}
+    {% endif %}
 
-{{ log(ns.err_msg, info=True) }}
-select 1 as col_name {% if ns.pass %} {{ limit_zero() }} {% endif %}
+    {{ log(ns.err_msg, info=True) }}
+    select 1 as col_name {% if ns.pass %} {{ limit_zero() }} {% endif %}
 {% endif %}

@@ -1,5 +1,5 @@
 {% macro bool_or(expression) -%}
-{{ return(adapter.dispatch("bool_or", "dbt_utils")(expression)) }}
+    {{ return(adapter.dispatch("bool_or", "dbt_utils")(expression)) }}
 {% endmacro %}
 
 

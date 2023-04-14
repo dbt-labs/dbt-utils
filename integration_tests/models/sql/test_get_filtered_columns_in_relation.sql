@@ -9,8 +9,8 @@ with
         select
 
             {% for column_name in column_names %}
-            max({{ column_name }}) as {{ column_name }}
-            {% if not loop.last %},{% endif %}
+                max({{ column_name }}) as {{ column_name }}
+                {% if not loop.last %},{% endif %}
             {% endfor %}
 
         from {{ ref("data_filtered_columns_in_relation") }}

@@ -1,8 +1,8 @@
-{%- macro union_relations(relations, column_override=none, include=[], exclude=[], source_column_name='_dbt_source_relation', where=none) -%}
-    {{ return(adapter.dispatch('union_relations', 'dbt_utils')(relations, column_override, include, exclude, source_column_name, where)) }}
+{%- macro union_relations(relations, column_override=none, include=[], exclude=[], source_column_name='_dbt_source_relation', where=none, fill_values={}) -%}
+    {{ return(adapter.dispatch('union_relations', 'dbt_utils')(relations, column_override, include, exclude, source_column_name, where, fill_values)) }}
 {% endmacro %}
 
-{%- macro default__union_relations(relations, column_override=none, include=[], exclude=[], source_column_name='_dbt_source_relation', where=none) -%}
+{%- macro default__union_relations(relations, column_override=none, include=[], exclude=[], source_column_name='_dbt_source_relation', where=none, fill_values={}) -%}
 
     {%- if exclude and include -%}
         {{ exceptions.raise_compiler_error("Both an exclude and include list were provided to the `union` macro. Only one is allowed") }}
@@ -19,6 +19,7 @@
     {%- set column_superset = {} -%}
     {%- set all_excludes = [] -%}
     {%- set all_includes = [] -%}
+    {%- set fill_values_clean = {} -%}
 
     {%- if exclude -%}
         {%- for exc in exclude -%}
@@ -29,6 +30,12 @@
     {%- if include -%}
         {%- for inc in include -%}
             {%- do all_includes.append(inc | lower) -%}
+        {%- endfor -%}
+    {%- endif -%}
+
+    {%- if fill_values -%}
+        {%- for f_col,f_val in fill_values|items -%}
+            {%- do fill_values_clean.update({f_col | lower: f_val}) -%}
         {%- endfor -%}
     {%- endif -%}
 
@@ -107,7 +114,8 @@
 
                     {%- set col = column_superset[col_name] %}
                     {%- set col_type = column_override.get(col.column, col.data_type) %}
-                    {%- set col_name = adapter.quote(col_name) if col_name in relation_columns[relation] else 'null' %}
+                    {%- set col_fill_value = dbt.string_literal(fill_values_clean[col_name]) if col_name in fill_values_clean.keys() else 'null' %}
+                    {%- set col_name = adapter.quote(col_name) if col_name in relation_columns[relation] else col_fill_value %}
                     cast({{ col_name }} as {{ col_type }}) as {{ col.quoted }} {% if not loop.last %},{% endif -%}
 
                 {%- endfor %}

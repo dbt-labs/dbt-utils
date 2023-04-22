@@ -1020,6 +1020,7 @@ e.g. `{"some_field": "varchar(100)"}`.``
 - `source_column_name` (optional, `default="_dbt_source_relation"`): The name of
 the column that records the source of this row. Pass `None` to omit this column from the results.
 - `where` (optional): Filter conditions to include in the `where` clause.
+- `fill_values` (optional): A dictionary specifying a value to use for each record for each column when that column is not present in the input relation (instead of the default `null`).  e.g. `{'column_name': 'fill_value'}`.
 
 ### generate_series ([source](macros/sql/generate_series.sql))
 

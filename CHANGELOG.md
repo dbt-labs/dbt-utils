@@ -10,7 +10,7 @@
 
 # Unreleased
 ## New features
-- Optional `fill_values` parameter for `union_relations` macro. ([#772](https://github.com/dbt-labs/dbt-utils/issues/772), [#XXX](https://github.com/dbt-labs/dbt-utils/pull/XXX))
+- Optional `fill_values` parameter for `union_relations` macro. ([#772](https://github.com/dbt-labs/dbt-utils/issues/772), [#783](https://github.com/dbt-labs/dbt-utils/pull/783))
 
 ## Fixes
 - get_relations_by_pattern for Databricks connection with Unity catalog #768 ([#768](https://github.com/dbt-labs/dbt-utils/issues/768), [#769](https://github.com/dbt-labs/dbt-utils/pull/769))

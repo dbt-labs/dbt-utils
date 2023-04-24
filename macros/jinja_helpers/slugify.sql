@@ -1,7 +1,7 @@
 {% macro slugify(string) %}
 
 {% if not string %}
-{{ return(string) }}
+{{ return('') }}
 {% endif %}
 
 {#- Lower case the string -#}

@@ -10,6 +10,13 @@
 
 # Unreleased
 ## Fixes
+- deduplicate macro for Databricks now uses the QUALIFY clause, which fixes NULL columns issues from the defualt natural join logic
+
+## Contributors:
+[@graciegoheen](https://github.com/graciegoheen) 
+
+# Unreleased
+## Fixes
 - get_relations_by_pattern for Databricks connection with Unity catalog #768 ([#768](https://github.com/dbt-labs/dbt-utils/issues/768), [#769](https://github.com/dbt-labs/dbt-utils/pull/769))
 
 ## Contributors:

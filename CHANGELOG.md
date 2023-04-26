@@ -10,7 +10,7 @@
 
 # Unreleased
 ## Fixes
-- deduplicate macro for Databricks now uses the QUALIFY clause, which fixes NULL columns issues from the defualt natural join logic
+- deduplicate macro for Databricks now uses the QUALIFY clause, which fixes NULL columns issues from the default natural join logic
 
 ## Contributors:
 [@graciegoheen](https://github.com/graciegoheen) 

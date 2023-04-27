@@ -12,9 +12,12 @@
 ## Fixes
 - get_relations_by_pattern for Databricks connection with Unity catalog #768 ([#768](https://github.com/dbt-labs/dbt-utils/issues/768), [#769](https://github.com/dbt-labs/dbt-utils/pull/769))
 
+## Enhancements
+- Disable order by if not necessary in "get_column_values" #787 ([#787](https://github.com/dbt-labs/dbt-utils/pull/787))
+
 ## Contributors:
 @Harmuth94, [#768](https://github.com/dbt-labs/dbt-utils/issues/768)
-
+- [@billyio] (https://github.com/billyio) (#787)
 
 # dbt utils v1.0
 

@@ -1,4 +1,6 @@
 
+{{ config(enabled = target != 'postgres')}}
+
 {% set column_values = dbt_utils.get_column_values(ref('data_get_column_values_dropped'), 'field', default=['y', 'z'], order_by="field") %}
 
 with expected as (

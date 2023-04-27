@@ -43,7 +43,10 @@
             {% endif %}
 
             group by {{ column }}
+
+            {% if order_by is not none %}
             order by {{ order_by }}
+            {% endif %}
 
             {% if max_records is not none %}
             limit {{ max_records }}

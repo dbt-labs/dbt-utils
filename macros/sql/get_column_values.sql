@@ -18,6 +18,9 @@
     {# adapter.load_relation is a convenience wrapper to avoid building a Relation when we already have one #}
     {% set relation_exists = (load_relation(target_relation)) is not none %}
 
+    -- {{ target_relation }}
+    -- {{ relation_exists }}
+
     {%- call statement('get_column_values', fetch_result=true) %}
 
         {%- if not relation_exists and default is none -%}

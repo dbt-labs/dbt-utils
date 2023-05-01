@@ -34,6 +34,9 @@
 * ZZZ by @YYY in https://github.com/dbt-labs/dbt-utils/pull/XXX
 ## Fixes
 * Fix legacy links in README by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/796
+## Quality of life
+## Under the hood
+## Contributors:
 
 # dbt utils v1.1.0
 ## What's Changed

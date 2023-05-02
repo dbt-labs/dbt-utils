@@ -35,7 +35,7 @@
     {%- do dbt_utils._is_ephemeral(model, 'test_equality') -%}
     {%- set compare_model_columns_set = set(adapter.get_columns_in_relation(compare_model) | map(attribute='quoted')) -%}
     {% if compare_columns_set != compare_model_columns_set %}
-        {{ return("select 'b_minus_a'::text as which_diff from " ~ compare_model) }}
+        {{ return("select cast('b_minus_a' as " ~ dbt.type_string() ~") as which_diff from " ~ compare_model) }}
     {% endif %}
 {% endif %}
 

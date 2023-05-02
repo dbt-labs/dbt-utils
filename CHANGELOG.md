@@ -11,8 +11,39 @@
 # Unreleased
 ## New features
 - Add option to ignore columns in equality test ([#734](https://github.com/dbt-labs/dbt-utils/issues/734), [#737](https://github.com/dbt-labs/dbt-utils/pull/737))
+## Fixes
+## Quality of life
+## Under the hood
 ## Contributors:
 - [@brunocostalopes](https://github.com/brunocostalopes)
+
+# dbt utils v1.1.0
+## What's Changed
+### New functionality
+* Safe subtract by @dchess in https://github.com/dbt-labs/dbt-utils/pull/748
+* Add Databricks handler for get_table_types_sql.sql by @Harmuth94 in https://github.com/dbt-labs/dbt-utils/pull/769
+
+### Documentation
+* Typo fix by @AndrewLane in https://github.com/dbt-labs/dbt-utils/pull/738
+* Removed remark about Dbt 0.9.6 as utils 1.0.0 is now the the default by @ilanbenb in https://github.com/dbt-labs/dbt-utils/pull/740
+* Fix link in README by @b-per in https://github.com/dbt-labs/dbt-utils/pull/743
+* Update README.md about use `where` with `accepted_range` tests by @eitsupi in https://github.com/dbt-labs/dbt-utils/pull/739
+* doc: clarify that `union_relations()` uses `union all` by @owenprough-sift in https://github.com/dbt-labs/dbt-utils/pull/760
+* Automatically generate TOC for utils readme by @joellabes in https://github.com/dbt-labs/dbt-utils/pull/486
+
+### Behind the scenes
+* Use CircleCI contexts for environment variables by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/754
+* fix: #755 - add whitespace control to generate_surrogate_key macro by @akv-akv in https://github.com/dbt-labs/dbt-utils/pull/756
+* Fix CI by @joellabes in https://github.com/dbt-labs/dbt-utils/pull/771
+
+## New Contributors
+* @AndrewLane made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/738
+* @ilanbenb made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/740
+* @eitsupi made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/739
+* @owenprough-sift made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/760
+* @akv-akv made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/756
+* @dchess made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/748
+* @Harmuth94 made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/769
 
 # dbt utils v1.0
 

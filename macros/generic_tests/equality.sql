@@ -23,8 +23,21 @@
     {{ return('') }}
 {% endif %}
 
+
+
 -- setup
 {%- do dbt_utils._is_relation(model, 'test_equality') -%}
+
+{# Ensure there are no extra columns in the compare_model vs model #}
+{%- if not compare_columns and not ignore_columns -%}
+    {%- do dbt_utils._is_ephemeral(model, 'test_equality') -%}
+    {%- set compare_columns_set = set(adapter.get_columns_in_relation(model) | map(attribute='quoted'))  -%}
+    {%- do dbt_utils._is_ephemeral(model, 'test_equality') -%}
+    {%- set compare_model_columns_set = set(adapter.get_columns_in_relation(compare_model) | map(attribute='quoted')) -%}
+    {% if compare_columns_set != compare_model_columns_set %}
+        {{ return("select 1, 'b_minus_a' as which_diff from " ~ compare_model) }}
+    {% endif %}
+{% endif %}
 
 {%- if not precision -%}
     {#-

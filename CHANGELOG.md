@@ -9,13 +9,14 @@
 --->
 
 # Unreleased
+## New features
+- XXX ([#XXX](https://github.com/dbt-labs/dbt-utils/issues/XXX), [#XXX](https://github.com/dbt-labs/dbt-utils/pull/XXX))
 ## Fixes
-- get_relations_by_pattern for Databricks connection with Unity catalog #768 ([#768](https://github.com/dbt-labs/dbt-utils/issues/768), [#769](https://github.com/dbt-labs/dbt-utils/pull/769))
-
+## Quality of life
+## Under the hood
 ## Contributors:
 @Harmuth94, [#768](https://github.com/dbt-labs/dbt-utils/issues/768)
 @joshuahuntley, [#775](https://github.com/dbt-labs/dbt-utils/issues/775)
-
 
 # dbt utils v1.0
 

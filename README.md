@@ -824,7 +824,7 @@ This macro returns a single value from a sql query, so that you don't need to in
     select max(created_at) from {{ ref('processed_orders') }}
 {% endset %}
 
-{%- set newest_processed_order = dbt_utils.get_single_value(sql_statement) -%}
+{%- set newest_processed_order = dbt_utils.get_single_value(sql_statement, default="'2020-01-01'") -%}
 
 select
 

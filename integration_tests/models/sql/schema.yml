@@ -85,6 +85,11 @@ models:
       - dbt_utils.equality:
           compare_model: ref('data_get_column_values_where_expected')
 
+  - name: test_get_column_values_none_order
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('test_get_column_values_none_order_expected')
+
   - name: test_get_filtered_columns_in_relation
     tests:
       - dbt_utils.equality:

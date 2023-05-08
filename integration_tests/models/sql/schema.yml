@@ -158,6 +158,12 @@ models:
       - dbt_utils.equality:
           compare_model: ref('data_unpivot_bool_expected')
 
+  - name: test_unpivot_quote
+    tests:
+      - dbt_utils.equality:
+          enabled: "{{ target.name != 'redshift' }}" # redshift lowercases all columns
+          compare_model: ref('data_unpivot_quote_expected')
+
   - name: test_star
     tests:
       - dbt_utils.equality:

@@ -10,12 +10,13 @@
 
 # Unreleased
 ## New features
-* ZZZ by @YYY in https://github.com/dbt-labs/dbt-utils/pull/XXX
+- Add `quote_identifiers` parameter to `unpivot` macro to handle case sensitive columns. This parameter defaults to `False` by @error418 in https://github.com/dbt-labs/dbt-utils/pull/792
 ## Fixes
 * Fix legacy links in README by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/796
 ## Quality of life
 ## Under the hood
 ## Contributors:
+- [@error418] (https://github.com/error418) (#216)
 
 # dbt utils v1.1.0
 ## What's Changed

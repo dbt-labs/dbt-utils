@@ -1210,6 +1210,7 @@ Boolean values are replaced with the strings 'true'|'false'
 - `remove`: A list of columns to remove from the resulting table.
 - `field_name`: column name in the resulting table for field
 - `value_name`: column name in the resulting table for value
+- `quote_identifiers` (optional, default=`False`): will encase selected columns and aliases in quotes according to your adapter's implementation of `adapter.quote` (e.g. `"field_name" as "field_name"`).
 
 ### width_bucket ([source](macros/sql/width_bucket.sql))
 

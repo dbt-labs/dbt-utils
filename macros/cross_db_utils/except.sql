@@ -11,7 +11,6 @@
 
 {% macro bigquery__except() %}
 
-    except
-    distinct
+    except distinct
 
 {% endmacro %}

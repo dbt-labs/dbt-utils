@@ -11,7 +11,6 @@
 
 {% macro bigquery__intersect() %}
 
-    intersect
-    distinct
+    intersect distinct
 
 {% endmacro %}

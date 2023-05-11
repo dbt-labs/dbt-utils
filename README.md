@@ -1,3 +1,6 @@
+![A flexing ](img/the-goat.png "dbt-utils")
+
+
 This [dbt](https://github.com/dbt-labs/dbt) package contains macros that can be (re)used across dbt projects.
 
 ## Installation Instructions

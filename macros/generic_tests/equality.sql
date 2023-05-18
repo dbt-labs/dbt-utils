@@ -29,14 +29,44 @@
 {%- do dbt_utils._is_relation(model, 'test_equality') -%}
 
 {# Ensure there are no extra columns in the compare_model vs model #}
-{%- if not compare_columns and not ignore_columns -%}
+{%- if not compare_columns -%}
     {%- do dbt_utils._is_ephemeral(model, 'test_equality') -%}
-    {%- set compare_columns_set = set(adapter.get_columns_in_relation(model) | map(attribute='quoted'))  -%}
-    {%- do dbt_utils._is_ephemeral(model, 'test_equality') -%}
-    {%- set compare_model_columns_set = set(adapter.get_columns_in_relation(compare_model) | map(attribute='quoted')) -%}
+    {%- do dbt_utils._is_ephemeral(compare_model, 'test_equality') -%}
+
+    {%- set model_columns = adapter.get_columns_in_relation(model) -%}
+    {%- set compare_model_columns = adapter.get_columns_in_relation(compare_model) -%}
+
+
+    {%- if ignore_columns -%}
+        {#-- Lower case ignore columns for easier comparison --#}
+        {%- set ignore_columns = ignore_columns | map("lower") | list %}
+
+        {# Filter out the excluded columns #}
+        {%- set include_columns = [] %}
+        {%- set include_model_columns = [] %}
+        {%- for column in model_columns -%}
+            {%- if column.name | lower not in ignore_columns -%}
+                {% do include_columns.append(column) %}
+            {%- endif %}
+        {%- endfor %}
+        {%- for column in compare_model_columns -%}
+            {%- if column.name | lower not in ignore_columns -%}
+                {% do include_model_columns.append(column) %}
+            {%- endif %}
+        {%- endfor %}
+
+        {%- set compare_columns_set = set(include_columns | map(attribute='quoted')) %}
+        {%- set compare_model_columns_set = set(include_model_columns | map(attribute='quoted')) %}
+    {%- else -%}
+        {%- set compare_columns_set = set(model_columns | map(attribute='quoted')) %}
+        {%- set compare_model_columns_set = set(compare_model_columns | map(attribute='quoted')) %}
+    {%- endif -%}
+
     {% if compare_columns_set != compare_model_columns_set %}
-        {{ return("select cast('b_minus_a' as " ~ dbt.type_string() ~") as which_diff from " ~ compare_model) }}
+        {{ exceptions.raise_compiler_error(compare_model ~" has less columns than " ~ model ~ ", please ensure they have the same columns or use the `compare_columns` or `ignore_columns` arguments to subset them.") }}
     {% endif %}
+
+
 {% endif %}
 
 {%- if not precision -%}

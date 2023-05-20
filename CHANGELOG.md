@@ -11,6 +11,7 @@
 # Unreleased
 ## New features
 * ZZZ by @YYY in https://github.com/dbt-labs/dbt-utils/pull/XXX
+* Add rename argument to `star` by @haluunn in https://github.com/dbt-labs/dbt-utils/pull/799
 ## Fixes
 * Fix legacy links in README by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/796
 ## Quality of life

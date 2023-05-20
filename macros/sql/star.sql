@@ -1,8 +1,8 @@
 {% macro star(from, relation_alias=False, except=[], prefix='', suffix='', rename={}, quote_identifiers=True) -%}
-    {{ return(adapter.dispatch('star', 'dbt_utils')(from, relation_alias, except, prefix, suffix, quote_identifiers)) }}
+    {{ return(adapter.dispatch('star', 'dbt_utils')(from, relation_alias, except, prefix, suffix, rename, quote_identifiers)) }}
 {% endmacro %}
 
-{% macro default__star(from, relation_alias=False, except=[], prefix='', suffix='', quote_identifiers=True) -%}
+{% macro default__star(from, relation_alias=False, except=[], prefix='', suffix='', rename={}, quote_identifiers=True) -%}
     {%- do dbt_utils._is_relation(from, 'star') -%}
     {%- do dbt_utils._is_ephemeral(from, 'star') -%}
 

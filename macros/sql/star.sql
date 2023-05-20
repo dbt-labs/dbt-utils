@@ -16,7 +16,7 @@
     {% set lower_rename = {} %}
     {%- if rename and rename is mapping %}
         {%- for key, value in rename.items() %}
-            {%- do lower_rename.update({key.lower():value.lower()})}
+            {%- do lower_rename.update({key | lower: value | lower}) -%}
         {%- endfor -%}
     {%- endif -%}
 

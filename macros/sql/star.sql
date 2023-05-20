@@ -13,7 +13,13 @@
 
     {% set cols = dbt_utils.get_filtered_columns_in_relation(from, except) %}
 
-    {% set lower_rename = dict((k.lower(), v.lower()) for k, v in rename.items()) %}
+    {% set lower_rename = {} %}
+    {%- if rename and rename is mapping %}
+        {%- for key, value in rename.items() %}
+            {%- do lower_rename.update({key.lower():value.lower()})}
+        {%- endfor -%}
+    {%- endif -%}
+
 
     {%- if cols|length <= 0 -%}
         {% if flags.WHICH == 'compile' %}

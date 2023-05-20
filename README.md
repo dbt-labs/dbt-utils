@@ -950,6 +950,7 @@ the star macro.
 This macro also has an optional `relation_alias` argument that will prefix all generated fields with an alias (`relation_alias`.`field_name`).
 The macro also has optional `prefix` and `suffix` arguments. When one or both are provided, they will be concatenated onto each field's alias
 in the output (`prefix` ~ `field_name` ~ `suffix`). NB: This prevents the output from being used in any context other than a select statement.
+The macro also has an optional `rename` argument that will rename the columns based on
 This macro also has an optional `quote_identifiers` argument that will encase the selected columns and their aliases in double quotes.
 
 **Args:**
@@ -959,6 +960,7 @@ This macro also has an optional `quote_identifiers` argument that will encase th
 - `relation_alias` (optional, default=`''`): will prefix all generated fields with an alias (`relation_alias`.`field_name`).
 - `prefix` (optional, default=`''`): will prefix the output `field_name` (`field_name as prefix_field_name`).
 - `suffix` (optional, default=`''`): will suffix the output `field_name` (`field_name as field_name_suffix`).
+- `rename` (optional, default=`{}`): will rename the output `field_name` if existing in the keys (`field_name as new_name`) (case-insensitive)
 - `quote_identifiers` (optional, default=`True`): will encase selected columns and aliases in double quotes (`"field_name" as "field_name"`).
 
 **Usage:**
@@ -987,6 +989,13 @@ from {{ ref('my_model') }}
 ```sql
 select
 {{ dbt_utils.star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"], prefix="max_") }}
+from {{ ref('my_model') }}
+
+```
+
+```sql
+select
+  {{ dbt_utils.star(from=ref('my_model'), rename={"field_name_1":"new_name_1","few_name_2":"new_name_2"}) }}
 from {{ ref('my_model') }}
 
 ```

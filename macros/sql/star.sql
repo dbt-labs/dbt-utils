@@ -1,4 +1,4 @@
-{% macro star(from, relation_alias=False, except=[], prefix='', suffix='', quote_identifiers=True) -%}
+{% macro star(from, relation_alias=False, except=[], prefix='', suffix='', rename={}, quote_identifiers=True) -%}
     {{ return(adapter.dispatch('star', 'dbt_utils')(from, relation_alias, except, prefix, suffix, quote_identifiers)) }}
 {% endmacro %}
 
@@ -12,6 +12,8 @@
     {%- endif -%}
 
     {% set cols = dbt_utils.get_filtered_columns_in_relation(from, except) %}
+
+    {% set lower_rename = rename | map(key=lambda x: x.lower(), value=lambda x: x.lower()) if rename else {} %}
 
     {%- if cols|length <= 0 -%}
         {% if flags.WHICH == 'compile' %}
@@ -29,9 +31,9 @@ dbt compile, and exists to keep SQLFluff happy. */
         {%- for col in cols %}
             {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}
                 {%- if quote_identifiers -%}
-                    {{ adapter.quote(col)|trim }} {%- if prefix!='' or suffix!='' %} as {{ adapter.quote(prefix ~ col ~ suffix)|trim }} {%- endif -%}
+                    {{ adapter.quote(col)|trim }} {%- if prefix!='' or suffix!='' %} as {{ adapter.quote(prefix ~ col ~ suffix)|trim }} {%- else -%} {%- if col in lower_rename.keys() %} as {{ adapter.quote(lower_rename.get(col))|trim }} {%- endif -%}
                 {%- else -%}
-                    {{ col|trim }} {%- if prefix!='' or suffix!='' %} as {{ (prefix ~ col ~ suffix)|trim }} {%- endif -%}
+                    {{ col|trim }} {%- if prefix!='' or suffix!='' %} as {{ (prefix ~ col ~ suffix)|trim }} {%- else -%} {%- if col in lower_rename.keys() %} as {{ lower_rename.get(col)|trim }} {%- endif -%}
                 {% endif %}
             {%- if not loop.last %},{{ '\n  ' }}{%- endif -%}
         {%- endfor -%}

@@ -6,20 +6,19 @@
     {%- do dbt_utils._is_relation(from, 'star') -%}
     {%- do dbt_utils._is_ephemeral(from, 'star') -%}
 
-    {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
+    {# /* Prevent querying of db in parsing mode. This works because this macro does not create any new refs. */ #}
     {%- if not execute -%}
         {% do return('*') %}
     {%- endif -%}
 
-    {% set cols = dbt_utils.get_filtered_columns_in_relation(from, except) %}
-
-    {% set lower_rename = {} %}
+    {%- set lower_rename = {} %}
     {%- if rename and rename is mapping %}
         {%- for key, value in rename.items() %}
             {%- do lower_rename.update({key | lower: value | lower}) -%}
         {%- endfor -%}
     {%- endif -%}
 
+    {% set cols = dbt_utils.get_filtered_columns_in_relation(from, except) %}
 
     {%- if cols|length <= 0 -%}
         {% if flags.WHICH == 'compile' %}

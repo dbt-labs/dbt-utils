@@ -33,7 +33,10 @@
 ## New features
 * ZZZ by @YYY in https://github.com/dbt-labs/dbt-utils/pull/XXX
 ## Fixes
-* Fix legacy links in README by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/796
+- Equality test will now raise an error when the second model has less columns than the first ([#785](https://github.com/dbt-labs/dbt-utils/issues/785))
+## Contributors:
+- [@rlh1994](https://github.com/rlh1994)
+
 ## Quality of life
 ## Under the hood
 ## Contributors:

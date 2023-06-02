@@ -10,14 +10,41 @@
 
 # Unreleased
 ## New features
-* ZZZ by @YYY in https://github.com/dbt-labs/dbt-utils/pull/XXX
+* Improve the performance of the `at_least_one` test by pruning early. This is especially helpful when running against external tables. By @joshuahuntley in https://github.com/dbt-labs/dbt-utils/pull/775
 ## Fixes
 * Fix legacy links in README by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/796
 ## Quality of life
 ## Under the hood
 ## Contributors:
-@Harmuth94, [#768](https://github.com/dbt-labs/dbt-utils/issues/768)
-@joshuahuntley, [#775](https://github.com/dbt-labs/dbt-utils/issues/775)
+
+# dbt utils v1.1.0
+## What's Changed
+### New functionality
+* Safe subtract by @dchess in https://github.com/dbt-labs/dbt-utils/pull/748
+* Add Databricks handler for get_table_types_sql.sql by @Harmuth94 in https://github.com/dbt-labs/dbt-utils/pull/769
+
+### Documentation
+* Typo fix by @AndrewLane in https://github.com/dbt-labs/dbt-utils/pull/738
+* Removed remark about Dbt 0.9.6 as utils 1.0.0 is now the the default by @ilanbenb in https://github.com/dbt-labs/dbt-utils/pull/740
+* Fix link in README by @b-per in https://github.com/dbt-labs/dbt-utils/pull/743
+* Update README.md about use `where` with `accepted_range` tests by @eitsupi in https://github.com/dbt-labs/dbt-utils/pull/739
+* doc: clarify that `union_relations()` uses `union all` by @owenprough-sift in https://github.com/dbt-labs/dbt-utils/pull/760
+* Automatically generate TOC for utils readme by @joellabes in https://github.com/dbt-labs/dbt-utils/pull/486
+
+### Behind the scenes
+* Use CircleCI contexts for environment variables by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/754
+* fix: #755 - add whitespace control to generate_surrogate_key macro by @akv-akv in https://github.com/dbt-labs/dbt-utils/pull/756
+* Fix CI by @joellabes in https://github.com/dbt-labs/dbt-utils/pull/771
+
+## New Contributors
+* @AndrewLane made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/738
+* @ilanbenb made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/740
+* @eitsupi made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/739
+* @owenprough-sift made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/760
+* @akv-akv made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/756
+* @dchess made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/748
+* @Harmuth94 made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/769
+
 
 # dbt utils v1.0
 
@@ -32,7 +59,6 @@ The full migration guide is at https://docs.getdbt.com/guides/migration/versions
 ## Enhancements
 - Implemented an optional `group_by_columns` argument across many of the generic testing macros to test for properties that only pertain to group-level or are can be more rigorously conducted at the group level. Property available in `recency`, `at_least_one`, `equal_row_count`, `fewer_rows_than`, `not_constant`, `not_null_proportion`, and `sequential` tests [#633](https://github.com/dbt-labs/dbt-utils/pull/633)
 - With the addition of an on-by-default quote_identifiers flag in the star() macro, you can now disable quoting if necessary. ([#706](https://github.com/dbt-labs/dbt-utils/pull/706))
-- Improve the performance of the `at_least_one` test by pruning early. This is especially helpful when running against external tables.([#775](https://github.com/dbt-labs/dbt-utils/pull/775))
 
 ## Fixes
 - `union()` now includes/excludes columns case-insensitively
@@ -58,7 +84,6 @@ The full migration guide is at https://docs.getdbt.com/guides/migration/versions
 - [@zachoj10](https://github.com/zachoj10) (#692)
 - [@miles170](https://github.com/miles170)
 - [@emilyriederer](https://github.com/emilyriederer)
-- [@joshuahuntley](https://github.com/JoshuaHuntley)
 # 0.9.5
 ## Fixes
 - Stop showing cross-db deprecation warnings for macros who have already been migrated ([#725](https://github.com/dbt-labs/dbt-utils/pull/725))

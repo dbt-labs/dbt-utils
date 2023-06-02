@@ -45,11 +45,11 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
       * [generate_series (<a href="macros/sql/generate_series.sql">source</a>)](#generate_series-source)
       * [generate_surrogate_key (<a href="macros/sql/generate_surrogate_key.sql">source</a>)](#generate_surrogate_key-source)
       * [safe_add (<a href="macros/sql/safe_add.sql">source</a>)](#safe_add-source)
-      * [safe_divide (<a href="macros/cross_db_utils/safe_divide.sql">source</a>)](#safe_divide-source)
+      * [safe_divide (<a href="macros/sql/safe_divide.sql">source</a>)](#safe_divide-source)
       * [safe_subtract (<a href="macros/sql/safe_subtract.sql">source</a>)](#safe_subtract-source)
       * [pivot (<a href="macros/sql/pivot.sql">source</a>)](#pivot-source)
       * [unpivot (<a href="macros/sql/unpivot.sql">source</a>)](#unpivot-source)
-      * [width_bucket (<a href="macros/cross_db_utils/width_bucket.sql">source</a>)](#width_bucket-source)
+      * [width_bucket (<a href="macros/sql/width_bucket.sql">source</a>)](#width_bucket-source)
    * [Web macros](#web-macros)
       * [get_url_parameter (<a href="macros/web/get_url_parameter.sql">source</a>)](#get_url_parameter-source)
       * [get_url_host (<a href="macros/web/get_url_host.sql">source</a>)](#get_url_host-source)
@@ -1059,7 +1059,7 @@ This macro implements a cross-database way to sum nullable fields using the fiel
 {{ dbt_utils.safe_add(['field_a', 'field_b', ...]) }}
 ```
 
-### safe_divide ([source](macros/cross_db_utils/safe_divide.sql))
+### safe_divide ([source](macros/sql/safe_divide.sql))
 
 This macro performs division but returns null if the denominator is 0. 
 
@@ -1211,7 +1211,7 @@ Boolean values are replaced with the strings 'true'|'false'
 - `field_name`: column name in the resulting table for field
 - `value_name`: column name in the resulting table for value
 
-### width_bucket ([source](macros/cross_db_utils/width_bucket.sql))
+### width_bucket ([source](macros/sql/width_bucket.sql))
 
 This macro is modeled after the `width_bucket` function natively available in Snowflake.
 

@@ -1,7 +1,7 @@
 <!--- Copy, paste, and uncomment the following headers as-needed for unreleased features
 # Unreleased
 ## New features
-- XXX ([#XXX](https://github.com/dbt-labs/dbt-utils/issues/XXX), [#XXX](https://github.com/dbt-labs/dbt-utils/pull/XXX))
+* ZZZ by @YYY in https://github.com/dbt-labs/dbt-utils/pull/XXX
 ## Fixes
 ## Quality of life
 ## Under the hood
@@ -10,8 +10,9 @@
 
 # Unreleased
 ## New features
-- XXX ([#XXX](https://github.com/dbt-labs/dbt-utils/issues/XXX), [#XXX](https://github.com/dbt-labs/dbt-utils/pull/XXX))
+* ZZZ by @YYY in https://github.com/dbt-labs/dbt-utils/pull/XXX
 ## Fixes
+* Fix legacy links in README by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/796
 ## Quality of life
 ## Under the hood
 ## Contributors:

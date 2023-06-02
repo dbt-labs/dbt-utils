@@ -14,6 +14,8 @@ seeds:
       - name: field
         tests:
           - dbt_utils.at_least_one
+          - dbt_utils.at_least_one:
+              group_by_columns: ['field']
 
   - name: data_test_expression_is_true
     tests:

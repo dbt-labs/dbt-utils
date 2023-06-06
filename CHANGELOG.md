@@ -8,14 +8,11 @@
 ## Contributors:
 --->
 
-# Unreleased
+# dbt utils v1.1.1
 ## New features
 * Improve the performance of the `at_least_one` test by pruning early. This is especially helpful when running against external tables. By @joshuahuntley in https://github.com/dbt-labs/dbt-utils/pull/775
 ## Fixes
 * Fix legacy links in README by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/796
-## Quality of life
-## Under the hood
-## Contributors:
 
 # dbt utils v1.1.0
 ## What's Changed

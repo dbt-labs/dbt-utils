@@ -55,11 +55,11 @@
             {%- endif %}
         {%- endfor %}
 
-        {%- set compare_columns_set = set(include_columns | map(attribute='quoted')) %}
-        {%- set compare_model_columns_set = set(include_model_columns | map(attribute='quoted')) %}
+        {%- set compare_columns_set = set(include_columns | map(attribute='quoted') | map("lower")) %}
+        {%- set compare_model_columns_set = set(include_model_columns | map(attribute='quoted') | map("lower")) %}
     {%- else -%}
-        {%- set compare_columns_set = set(model_columns | map(attribute='quoted')) %}
-        {%- set compare_model_columns_set = set(compare_model_columns | map(attribute='quoted')) %}
+        {%- set compare_columns_set = set(model_columns | map(attribute='quoted') | map("lower")) %}
+        {%- set compare_model_columns_set = set(compare_model_columns | map(attribute='quoted') | map("lower")) %}
     {%- endif -%}
 
     {% if compare_columns_set != compare_model_columns_set %}

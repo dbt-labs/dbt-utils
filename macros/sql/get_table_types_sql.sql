@@ -6,7 +6,7 @@
             case table_type
                 when 'BASE TABLE' then 'table'
                 when 'EXTERNAL TABLE' then 'external'
-                when 'MATERIALIZED VIEW' then 'materializedview'
+                when 'MATERIALIZED VIEW' then 'materialized_view'
                 else lower(table_type)
             end as {{ adapter.quote('table_type') }}
 {% endmacro %}
@@ -16,7 +16,7 @@
             case table_type
                 when 'BASE TABLE' then 'table'
                 when 'FOREIGN' then 'external'
-                when 'MATERIALIZED VIEW' then 'materializedview'
+                when 'MATERIALIZED VIEW' then 'materialized_view'
                 else lower(table_type)
             end as {{ adapter.quote('table_type') }}
 {% endmacro %}
@@ -26,7 +26,7 @@
             case table_type
                 when 'MANAGED' then 'table'
                 when 'BASE TABLE' then 'table'
-                when 'MATERIALIZED VIEW' then 'materializedview'
+                when 'MATERIALIZED VIEW' then 'materialized_view'
                 else lower(table_type)
             end as {{ adapter.quote('table_type') }}
 {% endmacro %}

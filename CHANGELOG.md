@@ -9,12 +9,10 @@
 --->
 
 # Unreleased
-## New features
 ## Fixes
 * Fix for GEOGRAPHY datatype in Snowflake - issue #793 by @paperlinguist in https://github.com/dbt-labs/dbt-utils/pull/807
-## Quality of life
-## Under the hood
 ## Contributors:
+* @paperlinguist
 
 # dbt utils v1.1.1
 ## New features

@@ -109,10 +109,12 @@
                     {%- set col_type = column_override.get(col.column, col.data_type) %}
                     {%- set col_name = adapter.quote(col_name) if col_name in relation_columns[relation] else 'null' %}
 
-                    {#-- Special handling for GEOGRAPHY columns in Snowflake. -#}
-                    {%- if col_type == 'GEOGRAPHY'%}
-                    to_geography({{ col_name }}) as {{ col.quoted }} {% if not loop.last %},{% endif -%}
-                    {% else %}
+                    {#-- Special handling for GEOGRAPHY columns. Convert nulls to geography but leave other geo columns alone. -#}
+                    {%- if (col_type == 'GEOGRAPHY' and col_name == 'null') %}
+                    st_geogfromtext(null) as {{ col.quoted }} {% if not loop.last %},{% endif -%}
+                    {%- elif (col_type == 'GEOGRAPHY' and col_name != 'null') %}
+                    {{col_name}} as {{ col.quoted }} {% if not loop.last %},{% endif -%}
+                    {%- else %}
                     cast({{ col_name }} as {{ col_type }}) as {{ col.quoted }} {% if not loop.last %},{% endif -%}
                     {%- endif %}
     

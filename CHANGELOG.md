@@ -10,7 +10,7 @@
 
 # Unreleased
 ## Fixes
-* Fix for GEOGRAPHY datatype in Snowflake - issue #793 by @paperlinguist in https://github.com/dbt-labs/dbt-utils/pull/807
+* Fix for GEOGRAPHY datatype handling in union.sql - issue #793 by @paperlinguist in https://github.com/dbt-labs/dbt-utils/pull/807
 ## Contributors:
 * @paperlinguist
 

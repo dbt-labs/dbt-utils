@@ -8,6 +8,11 @@
 ## Contributors:
 --->
 
+# Unreleased
+## Quality of life
+* Remove column rename in mutually_exclusive_ranges test
+## Contributors:
+* @vvveracruz
 # dbt utils v1.1.1
 ## New features
 * Improve the performance of the `at_least_one` test by pruning early. This is especially helpful when running against external tables. By @joshuahuntley in https://github.com/dbt-labs/dbt-utils/pull/775

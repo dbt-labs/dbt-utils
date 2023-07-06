@@ -83,6 +83,20 @@ jobs:
     # The resource_class feature allows configuring CPU and RAM resources for each job. Different resource classes are available for different executors. https://circleci.com/docs/2.0/configuration-reference/#resourceclass    
     resource_class: large
 
+  integration-databricks:
+    docker:
+      - image: cimg/python:3.9
+    steps:
+      - checkout
+      - run: pip install --pre dbt-databricks -r dev-requirements.txt
+      - run:
+          name: "Run OG Tests - Databricks"
+          command: ./run_test.sh databricks
+      - store_artifacts:
+          path: integration_tests/logs
+      - store_artifacts:
+          path: integration_tests/target
+
 workflows:
   version: 2
   test-all:
@@ -98,5 +112,9 @@ workflows:
             - integration-postgres
       - integration-bigquery:
           context: profile-bigquery
+          requires:
+            - integration-postgres
+      - integration-databricks:
+          context: profile-databricks
           requires:
             - integration-postgres

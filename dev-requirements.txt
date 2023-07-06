@@ -6,4 +6,5 @@ git+https://github.com/dbt-labs/dbt-core.git#egg=dbt-postgres&subdirectory=plugi
 git+https://github.com/dbt-labs/dbt-redshift.git
 git+https://github.com/dbt-labs/dbt-snowflake.git
 git+https://github.com/dbt-labs/dbt-bigquery.git
+git+https://github.com/dbt-labs/dbt-databricks.git
 pytest-xdist

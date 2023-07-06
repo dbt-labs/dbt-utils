@@ -2,7 +2,7 @@
 
 .PHONY: test
 test: ## Run the integration tests.
-	@./run_test.sh $(target) $(models) $(seeds)
+	@./run_test.sh $(target)
 
 .PHONY: dev
 dev: ## Installs dbt-* packages in develop mode along with development dependencies.

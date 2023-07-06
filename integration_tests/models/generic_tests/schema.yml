@@ -89,14 +89,14 @@ seeds:
           upper_bound_column: valid_to
           partition_by: subscription_id
           zero_length_range_allowed: true
- 
+
   - name: data_unique_combination_of_columns
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - month
             - product
-  
+
   - name: data_cardinality_equality_a
     columns:
       - name: same_name
@@ -191,7 +191,7 @@ models:
             - first_name
             - last_name
             - email
-  
+
   - name: test_fewer_rows_than
     tests:
       - dbt_utils.fewer_rows_than:

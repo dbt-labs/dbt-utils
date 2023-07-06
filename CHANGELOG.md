@@ -1,7 +1,7 @@
 <!--- Copy, paste, and uncomment the following headers as-needed for unreleased features
 # Unreleased
 ## New features
-- XXX ([#XXX](https://github.com/dbt-labs/dbt-utils/issues/XXX), [#XXX](https://github.com/dbt-labs/dbt-utils/pull/XXX))
+* ZZZ by @YYY in https://github.com/dbt-labs/dbt-utils/pull/XXX
 ## Fixes
 ## Quality of life
 ## Under the hood
@@ -13,20 +13,47 @@
 - deduplicate macro for Databricks now uses the QUALIFY clause, which fixes NULL columns issues from the default natural join logic
 
 ## Contributors:
-[@graciegoheen](https://github.com/graciegoheen) 
+[@graciegoheen](https://github.com/graciegoheen)
 
-# Unreleased
+# dbt utils v1.1.1
+## New features
+* Improve the performance of the `at_least_one` test by pruning early. This is especially helpful when running against external tables. By @joshuahuntley in https://github.com/dbt-labs/dbt-utils/pull/775
 ## Fixes
-- get_relations_by_pattern for Databricks connection with Unity catalog #768 ([#768](https://github.com/dbt-labs/dbt-utils/issues/768), [#769](https://github.com/dbt-labs/dbt-utils/pull/769))
+* Fix legacy links in README by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/796
 
-## Contributors:
-@Harmuth94, [#768](https://github.com/dbt-labs/dbt-utils/issues/768)
+# dbt utils v1.1.0
+## What's Changed
+### New functionality
+* Safe subtract by @dchess in https://github.com/dbt-labs/dbt-utils/pull/748
+* Add Databricks handler for get_table_types_sql.sql by @Harmuth94 in https://github.com/dbt-labs/dbt-utils/pull/769
+
+### Documentation
+* Typo fix by @AndrewLane in https://github.com/dbt-labs/dbt-utils/pull/738
+* Removed remark about Dbt 0.9.6 as utils 1.0.0 is now the the default by @ilanbenb in https://github.com/dbt-labs/dbt-utils/pull/740
+* Fix link in README by @b-per in https://github.com/dbt-labs/dbt-utils/pull/743
+* Update README.md about use `where` with `accepted_range` tests by @eitsupi in https://github.com/dbt-labs/dbt-utils/pull/739
+* doc: clarify that `union_relations()` uses `union all` by @owenprough-sift in https://github.com/dbt-labs/dbt-utils/pull/760
+* Automatically generate TOC for utils readme by @joellabes in https://github.com/dbt-labs/dbt-utils/pull/486
+
+### Behind the scenes
+* Use CircleCI contexts for environment variables by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/754
+* fix: #755 - add whitespace control to generate_surrogate_key macro by @akv-akv in https://github.com/dbt-labs/dbt-utils/pull/756
+* Fix CI by @joellabes in https://github.com/dbt-labs/dbt-utils/pull/771
+
+## New Contributors
+* @AndrewLane made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/738
+* @ilanbenb made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/740
+* @eitsupi made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/739
+* @owenprough-sift made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/760
+* @akv-akv made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/756
+* @dchess made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/748
+* @Harmuth94 made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/769
 
 
 # dbt utils v1.0
 
-## Migration Guide 
-The full migration guide is at https://docs.getdbt.com/guides/migration/versions/upgrading-to-dbt-utils-v1.0 
+## Migration Guide
+The full migration guide is at https://docs.getdbt.com/guides/migration/versions/upgrading-to-dbt-utils-v1.0
 
 ## New features
 - New macro `get_single_value` ([#696](https://github.com/dbt-labs/dbt-utils/pull/696))
@@ -40,7 +67,7 @@ The full migration guide is at https://docs.getdbt.com/guides/migration/versions
 ## Fixes
 - `union()` now includes/excludes columns case-insensitively
 - The `expression_is_true test` doesn’t output * unless storing failures, a cost improvement for BigQuery ([#683](https://github.com/dbt-labs/dbt-utils/issues/683), [#686](https://github.com/dbt-labs/dbt-utils/pull/686))
-- Updated the `slugify` macro to prepend "_" to column names beginning with a number since most databases do not allow names to begin with numbers. 
+- Updated the `slugify` macro to prepend "_" to column names beginning with a number since most databases do not allow names to begin with numbers.
 
 ## Under the hood
 - Remove deprecated table argument from `unpivot` ([#671](https://github.com/dbt-labs/dbt-utils/pull/671))

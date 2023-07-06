@@ -29,24 +29,6 @@ seeds:
   +quote_columns: false
   dbt_utils_integration_tests:
 
-    cross_db:
-      data_date_trunc:
-        +column_types:
-          updated_at: timestamp
-          day: date
-          month: date
-
-      data_dateadd:
-        +column_types:
-          from_time: timestamp
-          result: timestamp
-
-      data_datediff:
-        +column_types:
-          first_date: timestamp
-          second_date: timestamp
-
-
     sql:
       data_events_20180103:
         +schema: events

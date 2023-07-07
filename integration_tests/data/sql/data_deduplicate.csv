@@ -1,5 +1,4 @@
-user_id,event,version,category
-1,play,a,green
-1,play,b,NULL
-1,play,NULL,green
-2,pause,a,NULL
+user_id,event,version
+1,play,1
+1,play,2
+2,pause,1

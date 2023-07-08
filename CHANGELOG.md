@@ -8,6 +8,13 @@
 ## Contributors:
 --->
 
+# Unreleased
+## Fixes
+- deduplicate macro for Databricks now uses the QUALIFY clause, which fixes NULL columns issues from the default natural join logic
+
+## Contributors:
+[@graciegoheen](https://github.com/graciegoheen)
+
 # dbt utils v1.1.1
 ## New features
 * Improve the performance of the `at_least_one` test by pruning early. This is especially helpful when running against external tables. By @joshuahuntley in https://github.com/dbt-labs/dbt-utils/pull/775

@@ -11,8 +11,11 @@
 # Unreleased
 ## Fixes
 * Fix for GEOGRAPHY datatype handling in union.sql - issue #793 by @paperlinguist in https://github.com/dbt-labs/dbt-utils/pull/807
+* Deduplicate macro for Databricks now uses the QUALIFY clause, which fixes NULL columns issues from the default natural join logic - by @graciegoheen in https://github.com/dbt-labs/dbt-utils/pull/786
+
 ## Contributors:
 * @paperlinguist
+* @graciegoheen
 
 # dbt utils v1.1.1
 ## New features

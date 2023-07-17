@@ -104,7 +104,10 @@ path: {}
     {% set row_alias = kwargs.get('row_alias') %}
     {% set columns = kwargs.get('columns') %}
 
-    {% if row_alias != None or columns != None %}
+    {% if relation.is_cte is defined and not relation.is_cte %}
+        {% set columns = dbt_utils.get_filtered_columns_in_relation(relation) %}
+        {{ dbt_utils._safe_deduplicate(relation, partition_by, order_by, columns=columns) }}
+    {% elif row_alias != None or columns != None %}
         {{ dbt_utils._safe_deduplicate(relation, partition_by, order_by, row_alias=row_alias, columns=columns) }}
     {% else %}
         {{ dbt_utils._unsafe_deduplicate(relation, partition_by, order_by) }}

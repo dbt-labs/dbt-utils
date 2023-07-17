@@ -67,11 +67,23 @@ path: {}
 -- filter (which returns an extra column):
 -- https://modern-sql.com/caniuse/qualify
 #}
-{%- macro _safe_deduplicate(relation, partition_by, order_by, row_alias="rn") -%}
+{%- macro _safe_deduplicate(relation, partition_by, order_by, row_alias="rn", columns=none) -%}
+
+    {% if not row_alias %}
+        {% set row_alias = "rn" %}
+    {% endif %}
 
     with row_numbered as (
         select
+
+        {% if columns != None %}
+            {% for column in columns %}
+            {{ column }},
+            {% endfor %}
+        {% else %}
             _inner.*,
+        {% endif %}
+
             row_number() over (
                 partition by {{ partition_by }}
                 order by {{ order_by }}
@@ -90,9 +102,10 @@ path: {}
 #}
 {%- macro default__deduplicate(relation, partition_by, order_by) -%}
     {% set row_alias = kwargs.get('row_alias') %}
+    {% set columns = kwargs.get('columns') %}
 
-    {% if row_alias != None %}
-        {{ dbt_utils._safe_deduplicate(relation, partition_by, order_by, row_alias=row_alias) }}
+    {% if row_alias != None or columns != None %}
+        {{ dbt_utils._safe_deduplicate(relation, partition_by, order_by, row_alias=row_alias, columns=columns) }}
     {% else %}
         {{ dbt_utils._unsafe_deduplicate(relation, partition_by, order_by) }}
     {% endif %}

@@ -1,8 +1,40 @@
 {%- macro deduplicate(relation, partition_by, order_by) -%}
-    {{ return(adapter.dispatch('deduplicate', 'dbt_utils')(relation, partition_by, order_by)) }}
+    {{ return(adapter.dispatch('deduplicate', 'dbt_utils')(relation, partition_by, order_by, **kwargs)) }}
 {% endmacro %}
 
-{%- macro default__deduplicate(relation, partition_by, order_by) -%}
+{#
+-- ⚠️ This macro drops rows that contain NULL values ⚠️
+
+-- The implementation below uses a natural join which avoids returning an
+-- extra column at the cost of not being null safe.
+
+-- dbt_utils._safe_deduplicate is an alternative that avoids dropping rows
+-- that contain NULL values at the cost of adding an extra column.
+#}
+{%- macro _unsafe_deduplicate(relation, partition_by, order_by) -%}
+
+{%- set error_message = "
+Warning: the implementation of the `deduplicate` macro for the `{}` adapter is not null safe. \
+
+Set `row_alias` within calls to `deduplicate` to achieve null safety (which will also add it \
+as an extra column to the output).
+
+e.g.,
+    {{
+        dbt_utils.deduplicate(
+            'my_cte',
+            partition_by='user_id',
+            order_by='version desc',
+            row_alias='rn'
+        ) | indent
+    }}
+
+Warning triggered by model: {}.{}
+dbt project / package: {}
+path: {}
+".format(target.type, model.package_name, model.name, model.package_name, model.original_file_path) -%}
+
+{%- do exceptions.warn(error_message) -%}
 
     with row_numbered as (
         select
@@ -26,6 +58,44 @@
     #}
     natural join row_numbered
     where row_numbered.rn = 1
+
+{%- endmacro -%}
+
+{#
+-- For data platforms that don't support QUALIFY or an equivalent, the
+-- best we can do to ensure null safety is to use a window function +
+-- filter (which returns an extra column):
+-- https://modern-sql.com/caniuse/qualify
+#}
+{%- macro _safe_deduplicate(relation, partition_by, order_by, row_alias="rn") -%}
+
+    with row_numbered as (
+        select
+            _inner.*,
+            row_number() over (
+                partition by {{ partition_by }}
+                order by {{ order_by }}
+            ) as {{ row_alias }}
+        from {{ relation }} as _inner
+    )
+
+    select *
+    from row_numbered
+    where {{ row_alias }} = 1
+
+{%- endmacro -%}
+
+{#
+-- ⚠️ This macro drops rows that contain NULL values unless the `row_alias` parameter is included ⚠️
+#}
+{%- macro default__deduplicate(relation, partition_by, order_by) -%}
+    {% set row_alias = kwargs.get('row_alias') %}
+
+    {% if row_alias != None %}
+        {{ dbt_utils._safe_deduplicate(relation, partition_by, order_by, row_alias=row_alias) }}
+    {% else %}
+        {{ dbt_utils._unsafe_deduplicate(relation, partition_by, order_by) }}
+    {% endif %}
 
 {%- endmacro -%}
 

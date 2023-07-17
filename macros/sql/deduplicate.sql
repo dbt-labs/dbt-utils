@@ -98,7 +98,10 @@ path: {}
 {%- endmacro -%}
 
 {#
--- ⚠️ This macro drops rows that contain NULL values unless the `row_alias` parameter is included ⚠️
+-- ⚠️ This macro drops rows that contain NULL values unless one of the following is true:
+--   - `relation` parameter is a non-CTE dbt Relation
+--   - `row_alias` parameter is included
+--   - `columns` parameter is included
 #}
 {%- macro default__deduplicate(relation, partition_by, order_by) -%}
     {% set row_alias = kwargs.get('row_alias') %}

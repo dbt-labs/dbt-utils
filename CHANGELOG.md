@@ -11,9 +11,11 @@
 # Unreleased
 ## Fixes
 - deduplicate macro for Databricks now uses the QUALIFY clause, which fixes NULL columns issues from the default natural join logic
+- deduplicate macro for Redshift now uses the QUALIFY clause, which fixes NULL columns issues from the default natural join logic
 
 ## Contributors:
 [@graciegoheen](https://github.com/graciegoheen)
+[@yauhen-sobaleu](https://github.com/yauhen-sobaleu)
 
 # dbt utils v1.1.1
 ## New features

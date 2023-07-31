@@ -108,3 +108,16 @@
     )
 
 {%- endmacro -%}
+
+{#
+-- Clickhouse supports the `DISTINCT ON` syntax:
+-- https://clickhouse.com/docs/en/sql-reference/statements/select/distinct
+#}
+{%- macro clickhouse__deduplicate(relation, partition_by, order_by) -%}
+
+    select
+        distinct on ({{ partition_by }}) *
+    from {{ relation }}
+    order by {{ partition_by }}{{ ',' ~ order_by }}
+
+{%- endmacro -%}

@@ -121,7 +121,7 @@
 
         {% if not loop.last -%}
             {% if dedupe %}
-                union
+                union distinct
             {% else %}
                 union all
             {% endif %}

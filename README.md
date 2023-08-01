@@ -993,7 +993,7 @@ from {{ ref('my_model') }}
 
 ### union_relations ([source](macros/sql/union.sql))
 
-This macro combines via `union all` (default) or `union` (when `dedupe=True`) an array of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation),
+This macro combines via `union all` (default) or `union distinct` (when `dedupe=True`) an array of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation),
 even when columns have differing orders in each Relation, and/or some columns are
 missing from some relations. Any columns exclusive to a subset of these
 relations will be filled with `null` where not present. A new column
@@ -1020,7 +1020,7 @@ e.g. `{"some_field": "varchar(100)"}`.``
 - `source_column_name` (optional, `default="_dbt_source_relation"`): The name of
 the column that records the source of this row. Pass `None` to omit this column from the results.
 - `where` (optional): Filter conditions to include in the `where` clause.
-- `dedupe` (optional): Whether to perform a `UNION` or `UNION ALL`; defaults to false (i.e. `UNION ALL`)
+- `dedupe` (optional): Whether to perform a `UNION DISTINCT` or `UNION ALL`; defaults to false (i.e. `UNION ALL`)
 
 
 ### generate_series ([source](macros/sql/generate_series.sql))

@@ -146,6 +146,8 @@ With `exclude_columns`:
             - fourth_column
 ```
 
+**Note:** The exclude columns are case-insensitive.
+
 
 ### expression_is_true ([source](macros/generic_tests/expression_is_true.sql))
 

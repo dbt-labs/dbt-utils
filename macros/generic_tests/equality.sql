@@ -33,10 +33,16 @@ information schema — this allows the model to be an ephemeral model
 {%- endif -%}
 
 {%- if exclude_columns -%}
-    {%- set compare_columns = compare_columns | reject('in', exclude_columns) | list -%}
+    {%- set final_columns = [] -%}
+    {%- for column_name in compare_columns -%}
+        {%- if column_name | lower not in exclude_columns | map('lower') -%}
+            {%- do final_columns.append(column_name) -%}
+        {%- endif -%}
+    {%- endfor -%}
+    {%- set compare_columns = final_columns -%}
 {%- endif -%}
 
-{% set compare_cols_csv = compare_columns | join(', ') %}
+{% set compare_cols_csv = get_quoted_csv(compare_columns) %}
 
 with a as (
 

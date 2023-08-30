@@ -29,20 +29,25 @@ information schema — this allows the model to be an ephemeral model
 
 {%- if not compare_columns -%}
     {%- do dbt_utils._is_ephemeral(model, 'test_equality') -%}
-    {%- set compare_columns = adapter.get_columns_in_relation(model) | map(attribute='name') | list -%}
+    {%- set compare_columns = adapter.get_columns_in_relation(model) | map(attribute='quoted') | list -%}
 {%- endif -%}
 
 {%- if exclude_columns -%}
-    {%- set final_columns = [] -%}
+    {%- set exclude_columns_lower = exclude_columns | map('lower') | list -%}
+    {%- set compare_columns_final = [] -%}
     {%- for column_name in compare_columns -%}
-        {%- if column_name | lower not in exclude_columns | map('lower') -%}
-            {%- do final_columns.append(column_name) -%}
+        {%- set column_name_bare = column_name | lower -%}
+        {%- if column_name_bare.startswith('"') and column_name_bare.endswith('"') -%}
+            {%- set column_name_bare = column_name_bare[1:-1] -%}
+        {%- endif -%}
+        {%- if column_name_bare not in exclude_columns_lower -%}
+            {%- do compare_columns_final.append(column_name) -%}
         {%- endif -%}
     {%- endfor -%}
-    {%- set compare_columns = final_columns -%}
+    {%- set compare_columns = compare_columns_final -%}
 {%- endif -%}
 
-{% set compare_cols_csv = get_quoted_csv(compare_columns) %}
+{% set compare_cols_csv = compare_columns | join(', ') %}
 
 with a as (
 

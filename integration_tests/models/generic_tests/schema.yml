@@ -192,6 +192,14 @@ models:
             - last_name
             - email
 
+  - name: test_equal_column_exclude
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_people')
+          exclude_columns:
+            - first_name
+            - last_name
+
   - name: test_fewer_rows_than
     tests:
       - dbt_utils.fewer_rows_than:

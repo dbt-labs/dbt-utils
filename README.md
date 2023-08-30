@@ -114,15 +114,20 @@ This test supports the `group_by_columns` parameter; see [Grouping in tests](#gr
 
 ### equality ([source](macros/generic_tests/equality.sql))
 
-Asserts the equality of two relations. Optionally specify a subset of columns to compare.
+Asserts the equality of two relations. Optionally specify a subset of columns to compare or to exclude.
 
 **Usage:**
 
 ```yaml
-version: 2
-
 models:
   - name: model_name
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('other_table_name')
+```
+
+With `compare_columns`:
+```yaml
     tests:
       - dbt_utils.equality:
           compare_model: ref('other_table_name')
@@ -130,6 +135,17 @@ models:
             - first_column
             - second_column
 ```
+
+With `exclude_columns`:
+```yaml
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('other_table_name')
+          exclude_columns:
+            - third_column
+            - fourth_column
+```
+
 
 ### expression_is_true ([source](macros/generic_tests/expression_is_true.sql))
 

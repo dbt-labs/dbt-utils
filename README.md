@@ -126,7 +126,7 @@ models:
           compare_model: ref('other_table_name')
 ```
 
-With `compare_columns`:
+**With `compare_columns` (optional):**
 ```yaml
     tests:
       - dbt_utils.equality:
@@ -136,7 +136,16 @@ With `compare_columns`:
             - second_column
 ```
 
-With `exclude_columns`:
+*Note:* The compare columns are case-insensitive (input uppercase or lowercase and it will work!).
+If your adapter is Snowflake and the columns of your model are quoted (bad idea!), you should quote the compare columns like so:
+```yaml
+          compare_columns:
+            - '"first_column"'
+            - '"second_column"'
+```
+
+
+**With `exclude_columns` (optional):**
 ```yaml
     tests:
       - dbt_utils.equality:
@@ -146,7 +155,7 @@ With `exclude_columns`:
             - fourth_column
 ```
 
-**Note:** The exclude columns are case-insensitive.
+*Note:* The exclude columns are case-insensitive (input uppercase or lowercase and it will work!).
 
 
 ### expression_is_true ([source](macros/generic_tests/expression_is_true.sql))

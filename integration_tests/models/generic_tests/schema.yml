@@ -183,6 +183,22 @@ models:
           compare_model: ref('test_equal_rowcount')
           group_by_columns: ['field']
 
+  - name: test_equal_rowcount_empty # Test for both the tables as empty
+    tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('test_equal_rowcount_empty')
+
+  - name: test_equal_rowcount # Test for one table as empty
+    tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('test_equal_rowcount_empty')
+          error_if: "<3"
+          warn_if: "<3"
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('test_equal_rowcount_empty')
+          group_by_columns: ['field']
+          error_if: ">0"
+
   - name: test_equal_column_subset
     tests:
       - dbt_utils.equality:

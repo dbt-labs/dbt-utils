@@ -12,6 +12,12 @@
     {{ return('') }}
 {% endif %}
 
+
+{#-- We must add a fake join key in case additional grouping variables are not provided --#}
+{#-- Redshift does not allow for dynamically created join conditions (e.g. full join on 1 = 1 --#}
+{#-- The same logic is used in fewer_rows_than. In case of changes, maintain consistent logic --#}
+{#-- Adding the if-else block for issues with both tables having zero row count --#}
+{#-- If no group by columns provided, skip the group by clause, else add the clause --#}
 {% if group_by_columns|length() > 0 %}
   {% set select_gb_cols = group_by_columns|join(', ') + ', ' %}
   {% set join_gb_cols %}
@@ -19,14 +25,10 @@
       and a.{{c}} = b.{{c}}
     {% endfor %}
   {% endset %}
-  {% set groupby_gb_cols = 'group by ' + group_by_columns|join(',') %}
+  {% set groupby_gb_cols = 'group by ' + (['id_dbtutils_test_equal_rowcount'] + group_by_columns)|join(',') %}
+{% else %}
+  {% set groupby_gb_cols = '' %}
 {% endif %}
-
-{#-- We must add a fake join key in case additional grouping variables are not provided --#}
-{#-- Redshift does not allow for dynamically created join conditions (e.g. full join on 1 = 1 --#}
-{#-- The same logic is used in fewer_rows_than. In case of changes, maintain consistent logic --#}
-{% set group_by_columns = ['id_dbtutils_test_equal_rowcount'] + group_by_columns %}
-{% set groupby_gb_cols = 'group by ' + group_by_columns|join(',') %}
 
 with a as (
 

@@ -12,10 +12,12 @@
 ## Fixes
 - deduplicate macro for Databricks now uses the QUALIFY clause, which fixes NULL columns issues from the default natural join logic
 - deduplicate macro for Redshift now uses the QUALIFY clause, which fixes NULL columns issues from the default natural join logic
+- equal_rowcount macro does not error out if both the tables are empty
 
 ## Contributors:
 [@graciegoheen](https://github.com/graciegoheen)
 [@yauhen-sobaleu](https://github.com/yauhen-sobaleu)
+[@vinit2107](https://github.com/vinit2107)
 
 # dbt utils v1.1.1
 ## New features

@@ -944,6 +944,8 @@ group by 1,2,3
 
 ### star ([source](macros/sql/star.sql))
 
+💡 In [Snowflake](https://docs.snowflake.com/en/sql-reference/sql/select) you can use the `EXCLUDE` keyword and in [BigQuery](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#select_except) you have the `EXCEPT` keyword to exclude columns from a `SELECT *` statement. This macro is not needed in those databases.
+
 This macro generates a comma-separated list of all fields that exist in the `from` relation, excluding any fields
 listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with
 the star macro.

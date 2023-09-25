@@ -11,35 +11,24 @@
 # Unreleased
 ## New features
 - The `equality` test now accepts an additional argument, `precision` to aide in comparing floating point numbers ([#757](https://github.com/dbt-labs/dbt-utils/issues/757), [#765](https://github.com/dbt-labs/dbt-utils/pull/765))
-## Contributors: 
-- [@rlh1994](https://github.com/rlh1994)
-
-# Unreleased
-## New features
 - Add option to ignore columns in equality test ([#734](https://github.com/dbt-labs/dbt-utils/issues/734), [#737](https://github.com/dbt-labs/dbt-utils/pull/737))
-## Contributors:
-- [@brunocostalopes](https://github.com/brunocostalopes)
-
-# Unreleased
 ## Fixes
 - deduplicate macro for Databricks now uses the QUALIFY clause, which fixes NULL columns issues from the default natural join logic
 - deduplicate macro for Redshift now uses the QUALIFY clause, which fixes NULL columns issues from the default natural join logic
+- Equality test will now raise an error when the second model has less columns than the first ([#785](https://github.com/dbt-labs/dbt-utils/issues/785))
 
 ## Contributors:
-[@graciegoheen](https://github.com/graciegoheen)
-[@yauhen-sobaleu](https://github.com/yauhen-sobaleu)
+- [@graciegoheen](https://github.com/graciegoheen)
+- [@yauhen-sobaleu](https://github.com/yauhen-sobaleu)
+- [@rlh1994](https://github.com/rlh1994)
+- [@brunocostalopes](https://github.com/brunocostalopes)
+
 
 # dbt utils v1.1.1
 ## New features
-* ZZZ by @YYY in https://github.com/dbt-labs/dbt-utils/pull/XXX
+* Improve the performance of the `at_least_one` test by pruning early. This is especially helpful when running against external tables. By @joshuahuntley in https://github.com/dbt-labs/dbt-utils/pull/775
 ## Fixes
-- Equality test will now raise an error when the second model has less columns than the first ([#785](https://github.com/dbt-labs/dbt-utils/issues/785))
-## Contributors:
-- [@rlh1994](https://github.com/rlh1994)
-
-## Quality of life
-## Under the hood
-## Contributors:
+* Fix legacy links in README by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/796
 
 # dbt utils v1.1.0
 ## What's Changed

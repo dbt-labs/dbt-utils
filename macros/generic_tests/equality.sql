@@ -101,7 +101,7 @@
 
 {% else %}
     {#-
-        If rounding is required, we need to get the types, so it can't be ephermeral
+        If rounding is required, we need to get the types, so it cannot be ephermeral
     -#}
     {%- do dbt_utils._is_ephemeral(model, 'test_equality') -%}
     {%- set columns = adapter.get_columns_in_relation(model) -%}

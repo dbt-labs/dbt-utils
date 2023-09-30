@@ -12,6 +12,7 @@
 ## Fixes
 - deduplicate macro for Databricks now uses the QUALIFY clause, which fixes NULL columns issues from the default natural join logic
 - deduplicate macro for Redshift now uses the QUALIFY clause, which fixes NULL columns issues from the default natural join logic
+- deduplicate macro now uses subquery instead of CTE to be able to call it directly without using CTE.
 
 ## Contributors:
 [@graciegoheen](https://github.com/graciegoheen)

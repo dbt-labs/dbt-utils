@@ -4,19 +4,14 @@
 
 {%- macro default__deduplicate(relation, partition_by, order_by) -%}
 
-    with row_numbered as (
-        select
+    select
+        distinct data.*
+    from (select
             _inner.*,
             row_number() over (
                 partition by {{ partition_by }}
-                order by {{ order_by }}
-            ) as rn
-        from {{ relation }} as _inner
-    )
-
-    select
-        distinct data.*
-    from {{ relation }} as data
+                order by {{ order_by }}) as rn
+          from {{ relation }} as _inner) row_numbered
     {#
     -- Not all DBs will support natural joins but the ones that do include:
     -- Oracle, MySQL, SQLite, Redshift, Teradata, Materialize, Databricks
@@ -24,7 +19,7 @@
     -- Those that do not appear to support natural joins include:
     -- SQLServer, Trino, Presto, Rockset, Athena
     #}
-    natural join row_numbered
+    natural join {{ relation }} data
     where row_numbered.rn = 1
 
 {%- endmacro -%}

@@ -8,9 +8,17 @@
 ## Contributors:
 --->
 
-# dbt utils v1.1.2
+
+# Unreleased
 ## Fixes
-* Use warehouse specific type for `not_null_proportion` test by @henriblancke in https://github.com/dbt-labs/dbt-utils/pull/800
+- Use warehouse specific type for `not_null_proportion` test by @henriblancke in https://github.com/dbt-labs/dbt-utils/pull/800
+- deduplicate macro for Databricks now uses the QUALIFY clause, which fixes NULL columns issues from the default natural join logic
+- deduplicate macro for Redshift now uses the QUALIFY clause, which fixes NULL columns issues from the default natural join logic
+
+## Contributors:
+[@graciegoheen](https://github.com/graciegoheen)
+[@yauhen-sobaleu](https://github.com/yauhen-sobaleu)
+[@henriblancke](https://github.com/henriblancke)
 
 # dbt utils v1.1.1
 ## New features

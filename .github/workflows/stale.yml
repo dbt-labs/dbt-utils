@@ -1,0 +1,30 @@
+# **what?**
+# For issues that have been open for awhile without activity, label
+# them as stale with a warning that they will be closed out. If
+# anyone comments to keep the issue open, it will automatically
+# remove the stale label and keep it open.
+
+# Stale label rules:
+# awaiting_response, more_information_needed -> 90 days
+# good_first_issue, help_wanted -> 360 days (a year)
+# tech_debt -> 720 (2 years)
+# all else defaults -> 180 days (6 months)
+
+# **why?**
+# To keep the repo in a clean state from issues that aren't relevant anymore
+
+# **when?**
+# Once a day
+
+name: "Close stale issues and PRs"
+on:
+  schedule:
+    - cron: "30 1 * * *"
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    uses: dbt-labs/actions/.github/workflows/stale-bot-matrix.yml@main

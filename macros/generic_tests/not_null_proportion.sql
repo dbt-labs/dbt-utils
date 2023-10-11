@@ -16,7 +16,7 @@
 with validation as (
   select
     {{select_gb_cols}}
-    sum(case when {{ column_name }} is null then 0 else 1 end) / cast(count(*) as numeric) as not_null_proportion
+    sum(case when {{ column_name }} is null then 0 else 1 end) / cast(count(*) as {{ dbt.type_numeric() }}) as not_null_proportion
   from {{ model }}
   {{groupby_gb_cols}}
 ),

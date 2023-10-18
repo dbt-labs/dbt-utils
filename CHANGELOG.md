@@ -22,6 +22,7 @@
 * Improve the performance of the `at_least_one` test by pruning early. This is especially helpful when running against external tables. By @joshuahuntley in https://github.com/dbt-labs/dbt-utils/pull/775
 ## Fixes
 * Fix legacy links in README by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/796
+* Fixed false positive in not_constant test when using groupings and a grouping has only one row by @igor-lobanov-maersk https://github.com/dbt-labs/dbt-utils/issues/848
 
 # dbt utils v1.1.0
 ## What's Changed

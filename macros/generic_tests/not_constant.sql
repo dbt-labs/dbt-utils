@@ -22,6 +22,6 @@ from {{ model }}
   {{groupby_gb_cols}}
 
 having count(distinct {{ column_name }}) = 1
-
+  and count(1) > 1
 
 {% endmacro %}

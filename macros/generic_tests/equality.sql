@@ -1,10 +1,10 @@
-{% test equality(model, compare_model, compare_columns=None, ignore_columns=None, precision = None) %}
-  {{ return(adapter.dispatch('test_equality', 'dbt_utils')(model, compare_model, compare_columns, ignore_columns, precision)) }}
+{% test equality(model, compare_model, compare_columns=None, exclude_columns=None, precision = None) %}
+  {{ return(adapter.dispatch('test_equality', 'dbt_utils')(model, compare_model, compare_columns, exclude_columns, precision)) }}
 {% endtest %}
 
-{% macro default__test_equality(model, compare_model, compare_columns=None, ignore_columns=None, precision = None) %}
+{% macro default__test_equality(model, compare_model, compare_columns=None, exclude_columns=None, precision = None) %}
 
-{%- if compare_columns and ignore_columns -%}
+{%- if compare_columns and exclude_columns -%}
     {{ exceptions.raise_compiler_error("Both a compare and an ignore list were provided to the `equality` macro. Only one is allowed") }}
 {%- endif -%}
 
@@ -37,20 +37,20 @@
     {%- set compare_model_columns = adapter.get_columns_in_relation(compare_model) -%}
 
 
-    {%- if ignore_columns -%}
+    {%- if exclude_columns -%}
         {#-- Lower case ignore columns for easier comparison --#}
-        {%- set ignore_columns = ignore_columns | map("lower") | list %}
+        {%- set exclude_columns = exclude_columns | map("lower") | list %}
 
         {# Filter out the excluded columns #}
         {%- set include_columns = [] %}
         {%- set include_model_columns = [] %}
         {%- for column in model_columns -%}
-            {%- if column.name | lower not in ignore_columns -%}
+            {%- if column.name | lower not in exclude_columns -%}
                 {% do include_columns.append(column) %}
             {%- endif %}
         {%- endfor %}
         {%- for column in compare_model_columns -%}
-            {%- if column.name | lower not in ignore_columns -%}
+            {%- if column.name | lower not in exclude_columns -%}
                 {% do include_model_columns.append(column) %}
             {%- endif %}
         {%- endfor %}
@@ -63,7 +63,7 @@
     {%- endif -%}
 
     {% if compare_columns_set != compare_model_columns_set %}
-        {{ exceptions.raise_compiler_error(compare_model ~" has less columns than " ~ model ~ ", please ensure they have the same columns or use the `compare_columns` or `ignore_columns` arguments to subset them.") }}
+        {{ exceptions.raise_compiler_error(compare_model ~" has less columns than " ~ model ~ ", please ensure they have the same columns or use the `compare_columns` or `exclude_columns` arguments to subset them.") }}
     {% endif %}
 
 
@@ -79,14 +79,14 @@
         {%- set compare_columns = adapter.get_columns_in_relation(model)-%}
 
 
-        {%- if ignore_columns -%}
+        {%- if exclude_columns -%}
             {#-- Lower case ignore columns for easier comparison --#}
-            {%- set ignore_columns = ignore_columns | map("lower") | list %}
+            {%- set exclude_columns = exclude_columns | map("lower") | list %}
 
             {# Filter out the excluded columns #}
             {%- set include_columns = [] %}
             {%- for column in compare_columns -%}
-                {%- if column.name | lower not in ignore_columns -%}
+                {%- if column.name | lower not in exclude_columns -%}
                     {% do include_columns.append(column) %}
                 {%- endif %}
             {%- endfor %}
@@ -110,7 +110,7 @@
     {%- for col in columns -%}
         {%- if (
                 (col.name|lower in compare_columns|map('lower') or not compare_columns) and
-                (col.name|lower not in ignore_columns|map('lower') or not ignore_columns)
+                (col.name|lower not in exclude_columns|map('lower') or not exclude_columns)
                 ) -%}
             {# Databricks double type is not picked up by any number type checks in dbt #}
             {%- if col.is_float() or col.is_numeric() or col.data_type == 'double' -%}

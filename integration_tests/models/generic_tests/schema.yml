@@ -157,7 +157,7 @@ seeds:
             - col_b
       - dbt_utils.equality:
           compare_model: ref('data_test_equality_b')
-          ignore_columns:
+          exclude_columns:
             - col_c
 
   - name: data_test_equality_floats_a
@@ -183,7 +183,7 @@ seeds:
           precision: 4
       - dbt_utils.equality:
           compare_model: ref('data_test_equality_floats_columns_b')
-          ignore_columns:
+          exclude_columns:
             - to_ignore
           precision: 4
     # all columns should fail even with rounding
@@ -255,5 +255,5 @@ models:
     tests:
       - dbt_utils.equality:
           compare_model: ref('data_test_equality_a')
-          ignore_columns:
+          exclude_columns:
             - col_c

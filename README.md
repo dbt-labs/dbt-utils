@@ -6,73 +6,76 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
 
 ----
 
-## Contents
+<!--This table of contents is automatically generated. Any manual changes between the ts and te tags will be overridden!-->
+<!--ts-->
+   * [Installation Instructions](#installation-instructions)
+   * [Generic Tests](#generic-tests)
+      * [equal_rowcount (<a href="macros/generic_tests/equal_rowcount.sql">source</a>)](#equal_rowcount-source)
+      * [fewer_rows_than (<a href="macros/generic_tests/fewer_rows_than.sql">source</a>)](#fewer_rows_than-source)
+      * [equality (<a href="macros/generic_tests/equality.sql">source</a>)](#equality-source)
+      * [expression_is_true (<a href="macros/generic_tests/expression_is_true.sql">source</a>)](#expression_is_true-source)
+      * [recency (<a href="macros/generic_tests/recency.sql">source</a>)](#recency-source)
+      * [at_least_one (<a href="macros/generic_tests/at_least_one.sql">source</a>)](#at_least_one-source)
+      * [not_constant (<a href="macros/generic_tests/not_constant.sql">source</a>)](#not_constant-source)
+      * [not_empty_string (<a href="macros/generic_tests/not_empty_string.sql">source</a>)](#not_empty_string-source)
+      * [cardinality_equality (<a href="macros/generic_tests/cardinality_equality.sql">source</a>)](#cardinality_equality-source)
+      * [not_null_proportion (<a href="macros/generic_tests/not_null_proportion.sql">source</a>)](#not_null_proportion-source)
+      * [not_accepted_values (<a href="macros/generic_tests/not_accepted_values.sql">source</a>)](#not_accepted_values-source)
+      * [relationships_where (<a href="macros/generic_tests/relationships_where.sql">source</a>)](#relationships_where-source)
+      * [mutually_exclusive_ranges (<a href="macros/generic_tests/mutually_exclusive_ranges.sql">source</a>)](#mutually_exclusive_ranges-source)
+      * [sequential_values (<a href="macros/generic_tests/sequential_values.sql">source</a>)](#sequential_values-source)
+      * [unique_combination_of_columns (<a href="macros/generic_tests/unique_combination_of_columns.sql">source</a>)](#unique_combination_of_columns-source)
+      * [accepted_range (<a href="macros/generic_tests/accepted_range.sql">source</a>)](#accepted_range-source)
+      * [Grouping in tests](#grouping-in-tests)
+   * [Macros](#macros)
+   * [Introspective macros](#introspective-macros)
+      * [get_column_values (<a href="macros/sql/get_column_values.sql">source</a>)](#get_column_values-source)
+      * [get_filtered_columns_in_relation (<a href="macros/sql/get_filtered_columns_in_relation.sql">source</a>)](#get_filtered_columns_in_relation-source)
+      * [get_relations_by_pattern (<a href="macros/sql/get_relations_by_pattern.sql">source</a>)](#get_relations_by_pattern-source)
+      * [get_relations_by_prefix (<a href="macros/sql/get_relations_by_prefix.sql">source</a>)](#get_relations_by_prefix-source)
+      * [get_query_results_as_dict (<a href="macros/sql/get_query_results_as_dict.sql">source</a>)](#get_query_results_as_dict-source)
+      * [get_single_value (<a href="macros/sql/get_single_value.sql">source</a>)](#get_single_value-source)
+   * [SQL generators](#sql-generators)
+      * [date_spine (<a href="macros/sql/date_spine.sql">source</a>)](#date_spine-source)
+      * [deduplicate (<a href="macros/sql/deduplicate.sql">source</a>)](#deduplicate-source)
+      * [haversine_distance (<a href="macros/sql/haversine_distance.sql">source</a>)](#haversine_distance-source)
+      * [group_by (<a href="macros/sql/groupby.sql">source</a>)](#group_by-source)
+      * [star (<a href="macros/sql/star.sql">source</a>)](#star-source)
+      * [union_relations (<a href="macros/sql/union.sql">source</a>)](#union_relations-source)
+      * [generate_series (<a href="macros/sql/generate_series.sql">source</a>)](#generate_series-source)
+      * [generate_surrogate_key (<a href="macros/sql/generate_surrogate_key.sql">source</a>)](#generate_surrogate_key-source)
+      * [safe_add (<a href="macros/sql/safe_add.sql">source</a>)](#safe_add-source)
+      * [safe_divide (<a href="macros/sql/safe_divide.sql">source</a>)](#safe_divide-source)
+      * [safe_subtract (<a href="macros/sql/safe_subtract.sql">source</a>)](#safe_subtract-source)
+      * [pivot (<a href="macros/sql/pivot.sql">source</a>)](#pivot-source)
+      * [unpivot (<a href="macros/sql/unpivot.sql">source</a>)](#unpivot-source)
+      * [width_bucket (<a href="macros/sql/width_bucket.sql">source</a>)](#width_bucket-source)
+   * [Web macros](#web-macros)
+      * [get_url_parameter (<a href="macros/web/get_url_parameter.sql">source</a>)](#get_url_parameter-source)
+      * [get_url_host (<a href="macros/web/get_url_host.sql">source</a>)](#get_url_host-source)
+      * [get_url_path (<a href="macros/web/get_url_path.sql">source</a>)](#get_url_path-source)
+   * [Cross-database macros](#cross-database-macros)
+   * [Jinja Helpers](#jinja-helpers)
+      * [pretty_time (<a href="macros/jinja_helpers/pretty_time.sql">source</a>)](#pretty_time-source)
+      * [pretty_log_format (<a href="macros/jinja_helpers/pretty_log_format.sql">source</a>)](#pretty_log_format-source)
+      * [log_info (<a href="macros/jinja_helpers/log_info.sql">source</a>)](#log_info-source)
+      * [slugify (<a href="macros/jinja_helpers/slugify.sql">source</a>)](#slugify-source)
+   * [Materializations](#materializations)
+      * [insert_by_period](#insert_by_period)
+   * [Reporting bugs and contributing code](#reporting-bugs-and-contributing-code)
+   * [Dispatch macros](#dispatch-macros)
+   * [Getting started with dbt](#getting-started-with-dbt)
+   * [Code of Conduct](#code-of-conduct)
 
-**[Generic tests](#generic-tests)**
+<!-- Created by https://github.com/ekalinin/github-markdown-toc -->
+<!-- Added by: runner, at: Thu Feb  9 00:20:43 UTC 2023 -->
 
-  - [equal_rowcount](#equal_rowcount-source)
-  - [fewer_rows_than](#fewer_rows_than-source)
-  - [equality](#equality-source)
-  - [expression_is_true](#expression_is_true-source)
-  - [recency](#recency-source)
-  - [at_least_one](#at_least_one-source)
-  - [not_constant](#not_constant-source)
-  - [not_empty_string](#not_empty_string-source)
-  - [cardinality_equality](#cardinality_equality-source)
-  - [not_null_proportion](#not_null_proportion-source)
-  - [not_accepted_values](#not_accepted_values-source)
-  - [relationships_where](#relationships_where-source)
-  - [mutually_exclusive_ranges](#mutually_exclusive_ranges-source)
-  - [unique_combination_of_columns](#unique_combination_of_columns-source)
-  - [accepted_range](#accepted_range-source)
-
-**[Macros](#macros)**
-
-- [Introspective macros](#introspective-macros):
-  - [get_column_values](#get_column_values-source)
-  - [get_filtered_columns_in_relation](#get_filtered_columns_in_relation-source)
-  - [get_relations_by_pattern](#get_relations_by_pattern-source)
-  - [get_relations_by_prefix](#get_relations_by_prefix-source)
-  - [get_query_results_as_dict](#get_query_results_as_dict-source)
-  - [get_single_value](#get_single_value)
-
-- [SQL generators](#sql-generators)
-  - [date_spine](#date_spine-source)
-  - [deduplicate](#deduplicate-source)
-  - [haversine_distance](#haversine_distance-source)
-  - [group_by](#group_by-source)
-  - [star](#star-source)
-  - [union_relations](#union_relations-source)
-  - [generate_series](#generate_series-source)
-  - [generate_surrogate_key](#generate_surrogate_key-source)
-  - [safe_add](#safe_add-source)
-  - [safe_divide](#safe_divide-source)
-  - [pivot](#pivot-source)
-  - [unpivot](#unpivot-source)
-  - [width_bucket](#width_bucket-source)
-
-- [Web macros](#web-macros)
-  - [get_url_parameter](#get_url_parameter-source)
-  - [get_url_host](#get_url_host-source)
-  - [get_url_path](#get_url_path-source)
-
-- [Cross-database macros](#cross-database-macros)
-
-- [Jinja Helpers](#jinja-helpers)
-  - [pretty_time](#pretty_time-source)
-  - [pretty_log_format](#pretty_log_format-source)
-  - [log_info](#log_info-source)
-  - [slugify](#slugify-source)
-
-[Materializations](#materializations):
-
-- [insert_by_period](#insert_by_period)
-
+<!--te-->
 ----
 
-### Generic Tests
+## Generic Tests
 
-#### equal_rowcount ([source](macros/generic_tests/equal_rowcount.sql))
+### equal_rowcount ([source](macros/generic_tests/equal_rowcount.sql))
 
 Asserts that two relations have the same number of rows.
 
@@ -91,7 +94,7 @@ models:
 
 This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
 
-#### fewer_rows_than ([source](macros/generic_tests/fewer_rows_than.sql))
+### fewer_rows_than ([source](macros/generic_tests/fewer_rows_than.sql))
 
 Asserts that the respective model has fewer rows than the model being compared.
 
@@ -109,7 +112,7 @@ models:
 
 This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
 
-#### equality ([source](macros/generic_tests/equality.sql))
+### equality ([source](macros/generic_tests/equality.sql))
 
 Asserts the equality of two relations. Optionally specify a subset of columns to compare.
 
@@ -128,7 +131,7 @@ models:
             - second_column
 ```
 
-#### expression_is_true ([source](macros/generic_tests/expression_is_true.sql))
+### expression_is_true ([source](macros/generic_tests/expression_is_true.sql))
 
 Asserts that a valid SQL expression is true for all records. This is useful when checking integrity across columns.
 Examples:
@@ -183,7 +186,7 @@ models:
                 where: col_a = 1
 ```
 
-#### recency ([source](macros/generic_tests/recency.sql))
+### recency ([source](macros/generic_tests/recency.sql))
 
 Asserts that a timestamp column in the reference model contains data that is at least as recent as the defined date interval.
 
@@ -202,7 +205,7 @@ models:
 ```
 This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
 
-#### at_least_one ([source](macros/generic_tests/at_least_one.sql))
+### at_least_one ([source](macros/generic_tests/at_least_one.sql))
 
 Asserts that a column has at least one value.
 
@@ -221,7 +224,7 @@ models:
 
 This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
 
-#### not_constant ([source](macros/generic_tests/not_constant.sql))
+### not_constant ([source](macros/generic_tests/not_constant.sql))
 
 Asserts that a column does not have the same value in all rows.
 
@@ -240,7 +243,7 @@ models:
 
 This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
 
-#### not_empty_string ([source](macros/generic_tests/not_empty_string.sql))
+### not_empty_string ([source](macros/generic_tests/not_empty_string.sql))
 Asserts that a column does not have any values equal to `''`. 
 
 **Usage:**
@@ -271,7 +274,7 @@ models:
               
 ```
 
-#### cardinality_equality ([source](macros/generic_tests/cardinality_equality.sql))
+### cardinality_equality ([source](macros/generic_tests/cardinality_equality.sql))
 
 Asserts that values in a given column have exactly the same cardinality as values from a different column in a different model.
 
@@ -291,7 +294,7 @@ models:
 ```
 
 
-#### not_null_proportion ([source](macros/generic_tests/not_null_proportion.sql))
+### not_null_proportion ([source](macros/generic_tests/not_null_proportion.sql))
 
 Asserts that the proportion of non-null values present in a column is between a specified range [`at_least`, `at_most`] where `at_most` is an optional argument (default: `1.0`).
 
@@ -311,7 +314,7 @@ models:
 
 This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
 
-#### not_accepted_values ([source](macros/generic_tests/not_accepted_values.sql))
+### not_accepted_values ([source](macros/generic_tests/not_accepted_values.sql))
 
 Asserts that there are no rows that match the given values.
 
@@ -329,7 +332,7 @@ models:
               values: ['Barcelona', 'New York']
 ```
 
-#### relationships_where ([source](macros/generic_tests/relationships_where.sql))
+### relationships_where ([source](macros/generic_tests/relationships_where.sql))
 
 Asserts the referential integrity between two relations (same as the core relationships assertions) with an added predicate to filter out some rows from the test. This is useful to exclude records such as test entities, rows created in the last X minutes/hours to account for temporary gaps due to ETL limitations, etc.
 
@@ -350,7 +353,7 @@ models:
               to_condition: created_date >= '2020-01-01'
 ```
 
-#### mutually_exclusive_ranges ([source](macros/generic_tests/mutually_exclusive_ranges.sql))
+### mutually_exclusive_ranges ([source](macros/generic_tests/mutually_exclusive_ranges.sql))
 
 Asserts that for a given lower_bound_column and upper_bound_column,
 the ranges between the lower and upper bounds do not overlap with the ranges
@@ -474,7 +477,7 @@ models:
 
 </details>
 
-#### sequential_values ([source](macros/generic_tests/sequential_values.sql))
+### sequential_values ([source](macros/generic_tests/sequential_values.sql))
 
 This test confirms that a column contains sequential values. It can be used
 for both numeric values, and datetime values, as follows:
@@ -507,7 +510,7 @@ seeds:
 
 This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
 
-#### unique_combination_of_columns ([source](macros/generic_tests/unique_combination_of_columns.sql))
+### unique_combination_of_columns ([source](macros/generic_tests/unique_combination_of_columns.sql))
 
 Asserts that the combination of columns is unique. For example, the
 combination of month and product is unique, however neither column is unique
@@ -546,7 +549,7 @@ An optional `quote_columns` argument (`default=false`) can also be used if a col
 
 ```
 
-#### accepted_range ([source](macros/generic_tests/accepted_range.sql))
+### accepted_range ([source](macros/generic_tests/accepted_range.sql))
 
 Asserts that a column's values fall inside an expected range. Any combination of `min_value` and `max_value` is allowed, and the range can be inclusive or exclusive. Provide [a `where` argument](https://docs.getdbt.com/reference/resource-configs/where) to filter to specific records only.
 
@@ -589,7 +592,7 @@ models:
 
 ----
 
-#### Grouping in tests
+### Grouping in tests
 
 Certain tests support the optional `group_by_columns` argument to provide more granularity in performing tests. This can be useful when:
 
@@ -619,11 +622,11 @@ To use this feature, the names of grouping variables can be passed as a list. Fo
 
 ## Macros
 
-### Introspective macros
+## Introspective macros
 
 These macros run a query and return the results of the query as objects. They are typically abstractions over the [statement blocks](https://docs.getdbt.com/reference/dbt-jinja-functions/statement-blocks) in dbt.
 
-#### get_column_values ([source](macros/sql/get_column_values.sql))
+### get_column_values ([source](macros/sql/get_column_values.sql))
 
 This macro returns the unique values for a column in a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation) as an array.
 
@@ -671,7 +674,7 @@ This macro returns the unique values for a column in a given [relation](https://
 ...
 ```
 
-#### get_filtered_columns_in_relation ([source](macros/sql/get_filtered_columns_in_relation.sql))
+### get_filtered_columns_in_relation ([source](macros/sql/get_filtered_columns_in_relation.sql))
 
 This macro returns an iterable Jinja list of columns for a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation), (i.e. not from a CTE)
 
@@ -698,7 +701,7 @@ to pull column names in a non-filtered fashion, also bringing along with it othe
 ...
 ```
 
-#### get_relations_by_pattern ([source](macros/sql/get_relations_by_pattern.sql))
+### get_relations_by_pattern ([source](macros/sql/get_relations_by_pattern.sql))
 
 Returns a list of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation)
 that match a given schema- or table-name pattern.
@@ -752,7 +755,7 @@ Generate drop statements for all Relations that match a naming pattern:
 {% endfor %}
 ```
 
-#### get_relations_by_prefix ([source](macros/sql/get_relations_by_prefix.sql))
+### get_relations_by_prefix ([source](macros/sql/get_relations_by_prefix.sql))
 
 > This macro will soon be deprecated in favor of the more flexible `get_relations_by_pattern` macro (above)
 
@@ -782,7 +785,7 @@ handy paired with `union_relations`.
 - `database` (optional, default = `target.database`): The database to inspect
 for relations.
 
-#### get_query_results_as_dict ([source](macros/sql/get_query_results_as_dict.sql))
+### get_query_results_as_dict ([source](macros/sql/get_query_results_as_dict.sql))
 
 This macro returns a dictionary from a sql query, so that you don't need to interact with the Agate library to operate on the result
 
@@ -810,7 +813,7 @@ select
 from {{ ref('users') }}
 ```
 
-#### get_single_value ([source](macros/sql/get_single_value.sql))
+### get_single_value ([source](macros/sql/get_single_value.sql))
 
 This macro returns a single value from a sql query, so that you don't need to interact with the Agate library to operate on the result
 
@@ -821,7 +824,7 @@ This macro returns a single value from a sql query, so that you don't need to in
     select max(created_at) from {{ ref('processed_orders') }}
 {% endset %}
 
-{%- set newest_processed_order = dbt_utils.get_single_value(sql_statement) -%}
+{%- set newest_processed_order = dbt_utils.get_single_value(sql_statement, default="'2020-01-01'") -%}
 
 select
 
@@ -831,11 +834,11 @@ select
 from {{ ref('users') }}
 ```
 
-### SQL generators
+## SQL generators
 
 These macros generate SQL (either a complete query, or a part of a query). They often implement patterns that should be easy in SQL, but for some reason are much harder than they need to be.
 
-#### date_spine ([source](macros/sql/date_spine.sql))
+### date_spine ([source](macros/sql/date_spine.sql))
 
 This macro returns the sql required to build a date spine. The spine will include the `start_date` (if it is aligned to the `datepart`), but it will not include the `end_date`.
 
@@ -850,7 +853,7 @@ This macro returns the sql required to build a date spine. The spine will includ
 }}
 ```
 
-#### deduplicate ([source](macros/sql/deduplicate.sql))
+### deduplicate ([source](macros/sql/deduplicate.sql))
 
 This macro returns the sql required to remove duplicate rows from a model, source, or CTE.
 
@@ -895,7 +898,7 @@ with my_cte as (
 }}
 ```
 
-#### haversine_distance ([source](macros/sql/haversine_distance.sql))
+### haversine_distance ([source](macros/sql/haversine_distance.sql))
 
 This macro calculates the [haversine distance](http://daynebatten.com/2015/09/latitude-longitude-distance-sql/) between a pair of x/y coordinates.
 
@@ -923,7 +926,7 @@ Optionally takes a `unit` string argument ('km' or 'mi') which defaults to miles
 - `lon3` (required): longitude of second location
 - `unit` (optional, default=`'mi'`): one of `mi` (miles) or `km` (kilometers)
 
-#### group_by ([source](macros/sql/groupby.sql))
+### group_by ([source](macros/sql/groupby.sql))
 
 This macro builds a group by statement for fields 1...N
 
@@ -939,7 +942,7 @@ Would compile to:
 group by 1,2,3
 ```
 
-#### star ([source](macros/sql/star.sql))
+### star ([source](macros/sql/star.sql))
 
 This macro generates a comma-separated list of all fields that exist in the `from` relation, excluding any fields
 listed in the `except` argument. The construction is identical to `select * from {{ref('my_model')}}`, replacing star (`*`) with
@@ -988,9 +991,9 @@ from {{ ref('my_model') }}
 
 ```
 
-#### union_relations ([source](macros/sql/union.sql))
+### union_relations ([source](macros/sql/union.sql))
 
-This macro unions together an array of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation),
+This macro combines via `union all` an array of [Relations](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation),
 even when columns have differing orders in each Relation, and/or some columns are
 missing from some relations. Any columns exclusive to a subset of these
 relations will be filled with `null` where not present. A new column
@@ -1018,7 +1021,7 @@ e.g. `{"some_field": "varchar(100)"}`.``
 the column that records the source of this row. Pass `None` to omit this column from the results.
 - `where` (optional): Filter conditions to include in the `where` clause.
 
-#### generate_series ([source](macros/sql/generate_series.sql))
+### generate_series ([source](macros/sql/generate_series.sql))
 
 This macro implements a cross-database mechanism to generate an arbitrarily long list of numbers. Specify the maximum number you'd like in your list and it will create a 1-indexed SQL result set.
 
@@ -1028,7 +1031,7 @@ This macro implements a cross-database mechanism to generate an arbitrarily long
 {{ dbt_utils.generate_series(upper_bound=1000) }}
 ```
 
-#### generate_surrogate_key ([source](macros/sql/generate_surrogate_key.sql))
+### generate_surrogate_key ([source](macros/sql/generate_surrogate_key.sql))
 
 This macro implements a cross-database way to generate a hashed surrogate key using the fields specified.
 
@@ -1046,17 +1049,17 @@ vars:
   surrogate_key_treat_nulls_as_empty_strings: true #turn on legacy behaviour
 ```
 
-#### safe_add ([source](macros/sql/safe_add.sql))
+### safe_add ([source](macros/sql/safe_add.sql))
 
 This macro implements a cross-database way to sum nullable fields using the fields specified.
 
 **Usage:**
 
 ```
-{{ dbt_utils.safe_add('field_a', 'field_b'[,...]) }}
+{{ dbt_utils.safe_add(['field_a', 'field_b', ...]) }}
 ```
 
-#### safe_divide ([source](macros/cross_db_utils/safe_divide.sql))
+### safe_divide ([source](macros/sql/safe_divide.sql))
 
 This macro performs division but returns null if the denominator is 0. 
 
@@ -1071,7 +1074,17 @@ This macro performs division but returns null if the denominator is 0.
 {{ dbt_utils.safe_divide('numerator', 'denominator') }}
 ```
 
-#### pivot ([source](macros/sql/pivot.sql))
+### safe_subtract ([source](macros/sql/safe_subtract.sql))
+
+This macro implements a cross-database way to take the difference of nullable fields using the fields specified.
+
+**Usage:**
+
+```
+{{ dbt_utils.safe_subtract(['field_a', 'field_b', ...]) }}
+```
+
+### pivot ([source](macros/sql/pivot.sql))
 
 This macro pivots values from rows to columns.
 
@@ -1151,7 +1164,7 @@ This macro pivots values from rows to columns.
 - `else_value`: Value to use if comparison fails, default is 0
 - `quote_identifiers`: Whether to surround column aliases with double quotes, default is true
 
-#### unpivot ([source](macros/sql/unpivot.sql))
+### unpivot ([source](macros/sql/unpivot.sql))
 
 This macro "un-pivots" a table from wide format to long format. Functionality is similar to pandas [melt](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.melt.html) function.
 Boolean values are replaced with the strings 'true'|'false'
@@ -1198,7 +1211,7 @@ Boolean values are replaced with the strings 'true'|'false'
 - `field_name`: column name in the resulting table for field
 - `value_name`: column name in the resulting table for value
 
-#### width_bucket ([source](macros/cross_db_utils/width_bucket.sql))
+### width_bucket ([source](macros/sql/width_bucket.sql))
 
 This macro is modeled after the `width_bucket` function natively available in Snowflake.
 
@@ -1226,9 +1239,9 @@ When an expression falls outside the range, the function returns:
 {{ dbt_utils.width_bucket(expr, min_value, max_value, num_buckets) }}
 ```
 
-### Web macros
+## Web macros
 
-#### get_url_parameter ([source](macros/web/get_url_parameter.sql))
+### get_url_parameter ([source](macros/web/get_url_parameter.sql))
 
 This macro extracts a url parameter from a column containing a url.
 
@@ -1238,7 +1251,7 @@ This macro extracts a url parameter from a column containing a url.
 {{ dbt_utils.get_url_parameter(field='page_url', url_parameter='utm_source') }}
 ```
 
-#### get_url_host ([source](macros/web/get_url_host.sql))
+### get_url_host ([source](macros/web/get_url_host.sql))
 
 This macro extracts a hostname from a column containing a url.
 
@@ -1248,7 +1261,7 @@ This macro extracts a hostname from a column containing a url.
 {{ dbt_utils.get_url_host(field='page_url') }}
 ```
 
-#### get_url_path ([source](macros/web/get_url_path.sql))
+### get_url_path ([source](macros/web/get_url_path.sql))
 
 This macro extracts a page path from a column containing a url.
 
@@ -1260,15 +1273,15 @@ This macro extracts a page path from a column containing a url.
 
 ----
 
-### Cross-database macros
+## Cross-database macros
 
 These macros were removed from `dbt_utils` version 1.0, as they have been implemented in dbt Core instead. See [https://docs.getdbt.com/reference/dbt-jinja-functions/cross-database-macros](https://docs.getdbt.com/reference/dbt-jinja-functions/cross-database-macros).
 
 ---
 
-### Jinja Helpers
+## Jinja Helpers
 
-#### pretty_time ([source](macros/jinja_helpers/pretty_time.sql))
+### pretty_time ([source](macros/jinja_helpers/pretty_time.sql))
 
 This macro returns a string of the current timestamp, optionally taking a datestring format.
 
@@ -1280,7 +1293,7 @@ This macro returns a string of the current timestamp, optionally taking a datest
 {{ dbt_utils.pretty_time(format='%Y-%m-%d %H:%M:%S') }}
 ```
 
-#### pretty_log_format ([source](macros/jinja_helpers/pretty_log_format.sql))
+### pretty_log_format ([source](macros/jinja_helpers/pretty_log_format.sql))
 
 This macro formats the input in a way that will print nicely to the command line when you `log` it.
 
@@ -1292,7 +1305,7 @@ This macro formats the input in a way that will print nicely to the command line
 {{ dbt_utils.pretty_log_format("my pretty message") }}
 ```
 
-#### log_info ([source](macros/jinja_helpers/log_info.sql))
+### log_info ([source](macros/jinja_helpers/log_info.sql))
 
 This macro logs a formatted message (with a timestamp) to the command line.
 
@@ -1305,7 +1318,7 @@ This macro logs a formatted message (with a timestamp) to the command line.
 11:07:31 + my pretty message
 ```
 
-#### slugify ([source](macros/jinja_helpers/slugify.sql))
+### slugify ([source](macros/jinja_helpers/slugify.sql))
 
 This macro is useful for transforming Jinja strings into "slugs", and can be useful when using a Jinja object as a column name, especially when that Jinja object is not hardcoded.
 
@@ -1343,14 +1356,14 @@ sum(case when payment_method = '1337pay' then amount end)
 ...
 ```
 ---
-### Materializations
+## Materializations
 
-#### insert_by_period 
+### insert_by_period 
 In dbt_utils v1.0, this materialization moved to the [experimental features repository](https://github.com/dbt-labs/dbt-labs-experimental-features/tree/main/insert_by_period). 
 
 ----
 
-### Reporting bugs and contributing code
+## Reporting bugs and contributing code
 
 - Want to report a bug or request a feature? Let us know in the `#package-ecosystem` channel on [Slack](https://getdbt.com/community), or open [an issue](https://github.com/dbt-labs/dbt-utils/issues/new)
 - Want to help us build dbt-utils? Check out the [Contributing Guide](https://github.com/dbt-labs/dbt-utils/blob/main/CONTRIBUTING.md)
@@ -1358,7 +1371,7 @@ In dbt_utils v1.0, this materialization moved to the [experimental features repo
 
 ----
 
-### Dispatch macros
+## Dispatch macros
 
 **Note:** This is primarily relevant to:
 
@@ -1397,7 +1410,7 @@ dbt_utils.default__safe_add
 
 ----
 
-### Getting started with dbt
+## Getting started with dbt
 
 - [What is dbt](https://docs.getdbt.com/docs/introduction)?
 - Read the [dbt viewpoint](https://docs.getdbt.com/docs/about/viewpoint)

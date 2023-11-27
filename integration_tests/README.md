@@ -78,16 +78,14 @@ make test target=postgres
 
 or, to run tests for a single model:
 ```shell
-make test target=[postgres|redshift|...] [models=...] [seeds=...]
+make test target=[postgres|redshift|...]
 ```
 
 or more specific:
 
 ```shell
-make test target=postgres models=sql.test_star seeds=sql.data_star
+make test target=postgres
 ```
-
-Specying `models=` and `seeds=` is optional, however _if_ you specify `seeds`, you have to specify `models` too.
 
 Where possible, targets are being run in docker containers (this works for Postgres or in the future Spark for example). For managed services like Snowflake, BigQuery and Redshift this is not possible, hence your own configuration for these services has to be provided in the appropriate env files in `integration_tests/.env/[TARGET].env`
 

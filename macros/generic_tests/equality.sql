@@ -1,8 +1,8 @@
-{% test equality(model, compare_model, compare_columns=None) %}
-  {{ return(adapter.dispatch('test_equality', 'dbt_utils')(model, compare_model, compare_columns)) }}
+{% test equality(model, compare_model, compare_columns=None, exclude_columns=None) %}
+  {{ return(adapter.dispatch('test_equality', 'dbt_utils')(model, compare_model, compare_columns, exclude_columns)) }}
 {% endtest %}
 
-{% macro default__test_equality(model, compare_model, compare_columns=None) %}
+{% macro default__test_equality(model, compare_model, compare_columns=None, exclude_columns=None) %}
 
 {% set set_diff %}
     count(*) + coalesce(abs(
@@ -27,12 +27,31 @@ If the compare_cols arg is provided, we can run this test without querying the
 information schema — this allows the model to be an ephemeral model
 -#}
 
-{%- if not compare_columns -%}
+{%- if compare_columns -%}
+    {%- set should_quote = False -%}
+{%- else -%}
     {%- do dbt_utils._is_ephemeral(model, 'test_equality') -%}
-    {%- set compare_columns = adapter.get_columns_in_relation(model) | map(attribute='quoted') -%}
+    {%- set compare_columns = adapter.get_columns_in_relation(model) | map(attribute='name') | list -%}
+    {%- set should_quote = True -%}
 {%- endif -%}
 
-{% set compare_cols_csv = compare_columns | join(', ') %}
+{%- if exclude_columns -%}
+    {%- set exclude_columns_lower = exclude_columns | map('lower') | list -%}
+    {%- set compare_columns_final = [] -%}
+    {%- for column_name in compare_columns -%}
+        {%- if column_name | lower not in exclude_columns_lower -%}
+            {%- do compare_columns_final.append(column_name) -%}
+        {%- endif -%}
+    {%- endfor -%}
+    {%- set compare_columns = compare_columns_final -%}
+{%- endif -%}
+
+{% if should_quote %}
+    {% set compare_cols_csv = get_quoted_csv(compare_columns) %}
+{% else %}
+    {% set compare_cols_csv = compare_columns | join(', ') %}
+{% endif %}
+
 
 with a as (
 

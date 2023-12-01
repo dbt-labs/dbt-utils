@@ -9,6 +9,10 @@
 --->
 
 # Unreleased
+
+## Enhancements
+- Added an optional `exclude_columns` to the `equality` test. ([#828](https://github.com/dbt-labs/dbt-utils/issues/828))
+
 ## Fixes
 - deduplicate macro for Databricks now uses the QUALIFY clause, which fixes NULL columns issues from the default natural join logic
 - deduplicate macro for Redshift now uses the QUALIFY clause, which fixes NULL columns issues from the default natural join logic

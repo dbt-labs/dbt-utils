@@ -12,6 +12,11 @@
 ## Fixes
 - deduplicate macro for Databricks now uses the QUALIFY clause, which fixes NULL columns issues from the default natural join logic
 - deduplicate macro for Redshift now uses the QUALIFY clause, which fixes NULL columns issues from the default natural join logic
+- get_tables_by_pattern_sql will now:
+  - return redshift external tables ([#752](https://github.com/dbt-labs/dbt-utils/issues/752)
+  - work with valid redshift database names that contain dashes
+## Under the hood
+- created a new dispatch redshift__get_tables_by_pattern which unions the result of the default macro and querying svv_external_tables for the same conditions (schema name, pattern, exclude pattern).
 
 ## Quality of life
 - parameterize union_relations() macro to support deduplication with UNION
@@ -20,6 +25,7 @@
 [@graciegoheen](https://github.com/graciegoheen)
 [@yauhen-sobaleu](https://github.com/yauhen-sobaleu)
 [@will-hou](https://github.com/will-hou)
+[@brendan-cook-87](https://github.com/brendan-cook-87)
 
 # dbt utils v1.1.1
 ## New features

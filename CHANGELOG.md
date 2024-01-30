@@ -18,9 +18,13 @@
 ## Under the hood
 - created a new dispatch redshift__get_tables_by_pattern which unions the result of the default macro and querying svv_external_tables for the same conditions (schema name, pattern, exclude pattern).
 
+## Quality of life
+- parameterize union_relations() macro to support deduplication with UNION
+
 ## Contributors:
 [@graciegoheen](https://github.com/graciegoheen)
 [@yauhen-sobaleu](https://github.com/yauhen-sobaleu)
+[@will-hou](https://github.com/will-hou)
 [@brendan-cook-87](https://github.com/brendan-cook-87)
 
 # dbt utils v1.1.1

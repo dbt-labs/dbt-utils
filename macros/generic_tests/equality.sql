@@ -70,14 +70,13 @@
 {% endif %}
 
 {%- if not precision -%}
-    {#-
-        If the compare_cols arg is provided, we can run this test without querying the
-        information schema — this allows the model to be an ephemeral model
-    -#}
     {%- if not compare_columns -%}
+        {# 
+            You cannot get the columns in an ephemeral model (due to not existing in the information schema),
+            so if the user does not provide an explicit list of columns we must error in the case it is ephemeral
+        #}
         {%- do dbt_utils._is_ephemeral(model, 'test_equality') -%}
         {%- set compare_columns = adapter.get_columns_in_relation(model)-%}
-
 
         {%- if exclude_columns -%}
             {#-- Lower case ignore columns for easier comparison --#}
@@ -92,16 +91,16 @@
             {%- endfor %}
 
             {%- set compare_columns = include_columns | map(attribute='quoted') %}
-        {%- else -%}
+        {%- else -%} {# Compare columns provided #}
             {%- set compare_columns = compare_columns | map(attribute='quoted') %}
         {%- endif -%}
     {%- endif -%}
 
     {% set compare_cols_csv = compare_columns | join(', ') %}
 
-{% else %}
+{% else %} {# Precision required #}
     {#-
-        If rounding is required, we need to get the types, so it cannot be ephemeral
+        If rounding is required, we need to get the types, so it cannot be ephemeral even if they provide column names
     -#}
     {%- do dbt_utils._is_ephemeral(model, 'test_equality') -%}
     {%- set columns = adapter.get_columns_in_relation(model) -%}
@@ -116,7 +115,7 @@
             {%- if col.is_float() or col.is_numeric() or col.data_type == 'double' -%}
                 {# Cast is required due to postgres not having round for a double precision number #}
                 {%- do columns_list.append('round(cast(' ~ col.quoted ~ ' as ' ~ dbt.type_numeric() ~ '),' ~ precision ~ ') as ' ~ col.quoted) -%}
-            {%- else -%}
+            {%- else -%} {# Non-numeric type #}
                 {%- do columns_list.append(col.quoted) -%}
             {%- endif -%}
         {% endif %}

@@ -142,6 +142,57 @@ seeds:
           - dbt_utils.not_null_proportion:
               at_least: 0.9
 
+  - name: data_test_equality_a
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_a')
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_b')
+          error_if: "<1" #sneaky way to ensure that the test is returning failing rows
+          warn_if: "<0"
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_b')
+          compare_columns:
+            - col_a
+            - col_b
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_b')
+          exclude_columns:
+            - col_c
+
+  - name: data_test_equality_floats_a
+    tests:
+      # test precision only
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_floats_b')
+          precision: 4
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_floats_b')
+          precision: 8
+          error_if: "<1" #sneaky way to ensure that the test is returning failing rows
+          warn_if: "<0"
+
+  - name: data_test_equality_floats_columns_a
+    tests:
+    # Positive assertion tests
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_floats_columns_b')
+          compare_columns:
+            - id
+            - float_number
+          precision: 4
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_floats_columns_b')
+          exclude_columns:
+            - to_ignore
+          precision: 4
+    # all columns should fail even with rounding
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_floats_columns_b')
+          precision: 4
+          error_if: "<1" #sneaky way to ensure that the test is returning failing rows
+          warn_if: "<0"
+
 models:
   - name: recency_time_included
     tests:
@@ -199,3 +250,10 @@ models:
       - dbt_utils.fewer_rows_than:
           compare_model: ref('data_test_fewer_rows_than_table_2')
           group_by_columns: ['col_a']
+
+  - name: equality_less_columns
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_a')
+          exclude_columns:
+            - col_c

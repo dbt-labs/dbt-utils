@@ -181,14 +181,14 @@ The call signature of `deduplicate` has changed. The previous call signature is 
 - The `relation_alias` argument has been removed as the macro now supports `relation` as a string directly. If you were using `relation_alias` to point to a CTE previously then you can now pass the alias directly to `relation`.
 
 Before:
-```jinja
+```sql
 {% macro deduplicate(relation, group_by, order_by=none, relation_alias=none) -%}
 ...
 {% endmacro %}
 ```
 
 After:
-```jinja
+```sql
 {% macro deduplicate(relation, partition_by, order_by) -%}
 ...
 {% endmacro %}
@@ -376,20 +376,20 @@ In accordance with the version upgrade, this package release includes breaking c
 The order of (optional) arguments has changed in the `get_column_values` macro.
 
 Before:
-```jinja
+```sql
 {% macro get_column_values(table, column, order_by='count(*) desc', max_records=none, default=none) -%}
 ...
 {% endmacro %}
 ```
 
 After:
-```jinja
+```sql
 {% macro get_column_values(table, column, max_records=none, default=none) -%}
 ...
 {% endmacro %}
 ```
 If you were relying on the position to match up your optional arguments, this may be a breaking change — in general, we recommend that you explicitly declare any optional arguments (if not all of your arguments!)
-```
+```sql
 -- before: This works on previous version of dbt-utils, but on 0.7.0, the `50` would be passed through as the `order_by` argument
 {% set payment_methods = dbt_utils.get_column_values(
         ref('stg_payments'),
@@ -481,7 +481,7 @@ If you were relying on the position to match up your optional arguments, this ma
 - If your project uses the `get_tables_by_prefix` macro, replace it with `get_relations_by_prefix`. All arguments have retained the same name.
 - If your project uses the `union_tables` macro, replace it with `union_relations`. While the order of arguments has stayed consistent, the `tables` argument has been renamed to `relations`. Further, the default value for the `source_column_name` argument has changed from `'_dbt_source_table'` to `'_dbt_source_relation'` — you may want to explicitly define this argument to avoid breaking changes.
 
-```
+```sql
 -- before:
 {{ dbt_utils.union_tables(
     tables=[ref('my_model'), source('my_source', 'my_table')],

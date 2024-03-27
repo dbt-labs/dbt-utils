@@ -1381,9 +1381,9 @@ In dbt_utils v1.0, this materialization moved to the [experimental features repo
 
 ## Reporting bugs and contributing code
 
-- Want to report a bug or request a feature? Let us know in the `#package-ecosystem` channel on [Slack](https://getdbt.com/community), or open [an issue](https://github.com/dbt-labs/dbt-utils/issues/new)
+- Want to report a bug or request a feature? Let us know by opening [an issue](https://github.com/dbt-labs/dbt-utils/issues/new)
 - Want to help us build dbt-utils? Check out the [Contributing Guide](https://github.com/dbt-labs/dbt-utils/blob/main/CONTRIBUTING.md)
-  - **TL;DR** Open a Pull Request with 1) your changes, 2) updated documentation for the `README.md` file, and 3) a working integration test.
+  - **TL;DR** Open a Pull Request with 1) your changes, 2) updated documentation for the `README.md` file, and 3) a working integration test. Keep in mind that [most PRs require an approved issue first](https://docs.getdbt.com/community/resources/oss-expectations#pull-requests).
 
 ----
 

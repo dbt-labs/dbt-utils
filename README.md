@@ -498,7 +498,7 @@ models:
 This test confirms that a column contains sequential values. It can be used
 for both numeric values, and datetime values, as follows:
 
-```yml
+```yaml
 version: 2
 
 seeds:
@@ -627,7 +627,7 @@ This feature is currently available for the following tests:
 
 To use this feature, the names of grouping variables can be passed as a list. For example, to test for at least one valid value by group, the `group_by_columns` argument could be used as follows:
 
-```
+```yaml
   - name: data_test_at_least_one
     columns:
       - name: field
@@ -726,7 +726,7 @@ This macro is particularly handy when paired with `union_relations`.
 
 **Usage:**
 
-```
+```sql
 -- Returns a list of relations that match schema_pattern%.table
 {% set relations = dbt_utils.get_relations_by_pattern('schema_pattern%', 'table_pattern') %}
 
@@ -781,7 +781,7 @@ handy paired with `union_relations`.
 
 **Usage:**
 
-```
+```sql
 -- Returns a list of relations that match schema.prefix%
 {% set relations = dbt_utils.get_relations_by_prefix('my_schema', 'my_prefix') %}
 
@@ -807,7 +807,7 @@ This macro returns a dictionary from a sql query, so that you don't need to inte
 
 **Usage:**
 
-```
+```sql
 {% set sql_statement %}
     select city, state from {{ ref('users') }}
 {% endset %}
@@ -835,7 +835,7 @@ This macro returns a single value from a sql query, so that you don't need to in
 
 **Usage:**
 
-```
+```sql
 {% set sql_statement %}
     select max(created_at) from {{ ref('processed_orders') }}
 {% endset %}
@@ -860,7 +860,7 @@ This macro returns the sql required to build a date spine. The spine will includ
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.date_spine(
     datepart="day",
     start_date="cast('2019-01-01' as date)",
@@ -881,7 +881,7 @@ This macro returns the sql required to remove duplicate rows from a model, sourc
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.deduplicate(
     relation=source('my_source', 'my_table'),
     partition_by='user_id, cast(timestamp as day)',
@@ -890,7 +890,7 @@ This macro returns the sql required to remove duplicate rows from a model, sourc
 }}
 ```
 
-```
+```sql
 {{ dbt_utils.deduplicate(
     relation=ref('my_model'),
     partition_by='user_id',
@@ -899,7 +899,7 @@ This macro returns the sql required to remove duplicate rows from a model, sourc
 }}
 ```
 
-```
+```sql
 with my_cte as (
     select *
     from {{ source('my_source', 'my_table') }}
@@ -922,7 +922,7 @@ Optionally takes a `unit` string argument ('km' or 'mi') which defaults to miles
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.haversine_distance(48.864716, 2.349014, 52.379189, 4.899431) }}
 
 {{ dbt_utils.haversine_distance(
@@ -948,7 +948,7 @@ This macro builds a group by statement for fields 1...N
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.group_by(n=3) }}
 ```
 
@@ -1017,7 +1017,7 @@ relations will be filled with `null` where not present. A new column
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.union_relations(
     relations=[ref('my_model'), source('my_source', 'my_table')],
     exclude=["_loaded_at"]
@@ -1043,7 +1043,7 @@ This macro implements a cross-database mechanism to generate an arbitrarily long
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.generate_series(upper_bound=1000) }}
 ```
 
@@ -1053,7 +1053,7 @@ This macro implements a cross-database way to generate a hashed surrogate key us
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.generate_surrogate_key(['field_a', 'field_b'[,...]]) }}
 ```
 
@@ -1071,7 +1071,7 @@ This macro implements a cross-database way to sum nullable fields using the fiel
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.safe_add(['field_a', 'field_b', ...]) }}
 ```
 
@@ -1086,7 +1086,7 @@ This macro performs division but returns null if the denominator is 0.
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.safe_divide('numerator', 'denominator') }}
 ```
 
@@ -1096,7 +1096,7 @@ This macro implements a cross-database way to take the difference of nullable fi
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.safe_subtract(['field_a', 'field_b', ...]) }}
 ```
 
@@ -1106,7 +1106,7 @@ This macro pivots values from rows to columns.
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.pivot(<column>, <list of values>) }}
 ```
 
@@ -1187,7 +1187,7 @@ Boolean values are replaced with the strings 'true'|'false'
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.unpivot(
   relation=ref('table_name'),
   cast_to='datatype',
@@ -1251,7 +1251,7 @@ When an expression falls outside the range, the function returns:
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.width_bucket(expr, min_value, max_value, num_buckets) }}
 ```
 
@@ -1263,7 +1263,7 @@ This macro extracts a url parameter from a column containing a url.
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.get_url_parameter(field='page_url', url_parameter='utm_source') }}
 ```
 
@@ -1273,7 +1273,7 @@ This macro extracts a hostname from a column containing a url.
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.get_url_host(field='page_url') }}
 ```
 
@@ -1283,7 +1283,7 @@ This macro extracts a page path from a column containing a url.
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.get_url_path(field='page_url') }}
 ```
 
@@ -1329,7 +1329,7 @@ This macro logs a formatted message (with a timestamp) to the command line.
 {{ dbt_utils.log_info("my pretty message") }}
 ```
 
-```
+```shell
 11:07:28 | 1 of 1 START table model analytics.fct_orders........................ [RUN]
 11:07:31 + my pretty message
 ```
@@ -1402,7 +1402,7 @@ In `dbt_project.yml`, you can define a project-level `dispatch` config that enab
 
 Set the config in `dbt_project.yml`:
 
-```yml
+```yaml
 dispatch:
   - macro_namespace: dbt_utils
     search_order:

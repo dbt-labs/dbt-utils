@@ -623,7 +623,7 @@ This feature is currently available for the following tests:
 - at_least_one()
 - not_constant()
 - sequential_values()
-- non_null_proportion()
+- not_null_proportion()
 
 To use this feature, the names of grouping variables can be passed as a list. For example, to test for at least one valid value by group, the `group_by_columns` argument could be used as follows:
 

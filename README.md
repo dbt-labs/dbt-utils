@@ -904,14 +904,16 @@ with my_cte as (
     select *
     from {{ source('my_source', 'my_table') }}
     where user_id = 1
+),
+deduplicated_cte as (
+  {{ dbt_utils.deduplicate(
+      relation='my_cte',
+      partition_by='user_id, cast(timestamp as date)',
+      order_by='timestamp desc',
+     )
+  }}
 )
-
-{{ dbt_utils.deduplicate(
-    relation='my_cte',
-    partition_by='user_id, cast(timestamp as day)',
-    order_by='timestamp desc',
-   )
-}}
+select * from deduplicated_cte
 ```
 
 ### haversine_distance ([source](macros/sql/haversine_distance.sql))

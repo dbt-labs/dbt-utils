@@ -892,7 +892,7 @@ with my_cte as (
 deduplicated_cte as (
   {{ dbt_utils.deduplicate(
       relation='my_cte',
-      partition_by='user_id, cast(timestamp as day)',
+      partition_by='user_id, cast(timestamp as date)',
       order_by='timestamp desc',
      )
   }}

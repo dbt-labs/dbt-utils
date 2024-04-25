@@ -3,10 +3,14 @@
 name: Update table of contents
 
 # Controls when the workflow will run
-on:
-  push:
-    branches: [main]
-    paths: ['README.md']
+on: []
+
+# Disabled by Doug Beatty on 2024-04-25 to fix CI
+# XXX
+# on:
+#   push:
+#     branches: [main]
+#     paths: ['README.md']
 
 jobs:
   build:

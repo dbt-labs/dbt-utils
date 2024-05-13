@@ -918,7 +918,7 @@ select * from deduplicated_cte
 
 ### haversine_distance ([source](macros/sql/haversine_distance.sql))
 
-This macro calculates the [haversine distance](http://daynebatten.com/2015/09/latitude-longitude-distance-sql/) between a pair of x/y coordinates.
+This macro calculates the [haversine distance](https://en.wikipedia.org/wiki/Haversine_formula) between a pair of x/y coordinates.
 
 Optionally takes a `unit` string argument ('km' or 'mi') which defaults to miles (imperial system).
 

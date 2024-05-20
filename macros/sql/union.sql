@@ -114,7 +114,10 @@
 
             from {{ relation }}
 
-            {% if where -%}
+            {% if where is callable -%}
+            {# Allows possibility of customizing where clause by relation, eg. in incremental runs. #}
+            {{ where(relation) }} 
+            {% elif where -%}
             where {{ where }}
             {%- endif %}
         )

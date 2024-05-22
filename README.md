@@ -615,7 +615,7 @@ Certain tests support the optional `group_by_columns` argument to provide more g
 - Some data checks can only be expressed within a group (e.g. ID values should be unique within a group but can be repeated between groups)
 - Some data checks are more precise when done by group (e.g. not only should table rowcounts be equal but the counts within each group should be equal)
 
-This feature is currently available for the following tests:
+This feature is currently available for the following data tests:
 
 - equal_rowcount()
 - fewer_rows_than()

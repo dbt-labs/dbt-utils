@@ -86,7 +86,7 @@ version: 2
 
 models:
   - name: model_name
-    tests:
+    data_tests:
       - dbt_utils.equal_rowcount:
           compare_model: ref('other_table_name')
 
@@ -105,7 +105,7 @@ version: 2
 
 models:
   - name: model_name
-    tests:
+    data_tests:
       - dbt_utils.fewer_rows_than:
           compare_model: ref('other_table_name')
 ```
@@ -124,13 +124,13 @@ version: 2
 models:
   # compare the entire table 
   - name: model_name
-    tests:
+    data_tests:
       - dbt_utils.equality:
           compare_model: ref('other_table_name')
 
   # only compare some of the columns
   - name: model_name_compare_columns
-    tests:
+    data_tests:
       - dbt_utils.equality:
           compare_model: ref('other_table_name')
           compare_columns:
@@ -140,7 +140,7 @@ models:
 
   # compare all columns except the ones on the ignore list
   - name: model_name_exclude_columns
-    tests:
+    data_tests:
       - dbt_utils.equality:
           compare_model: ref('other_table_name')
           exclude_columns:
@@ -163,7 +163,7 @@ version: 2
 
 models:
   - name: model_name
-    tests:
+    data_tests:
       - dbt_utils.expression_is_true:
           expression: "col_a + col_b = total"
 ```
@@ -178,7 +178,7 @@ version: 2
 
 models:
   - name: model_name
-    tests:
+    data_tests:
       - dbt_utils.expression_is_true:
           expression: "col_a + col_b = total"
           config:
@@ -191,11 +191,11 @@ models:
   - name: model_name
     columns:
       - name: col_a
-        tests:
+        data_tests:
           - dbt_utils.expression_is_true:
               expression: '>= 1'
       - name: col_b
-        tests:
+        data_tests:
           - dbt_utils.expression_is_true:
               expression: '= 1'
               config:
@@ -213,7 +213,7 @@ version: 2
 
 models:
   - name: model_name
-    tests:
+    data_tests:
       - dbt_utils.recency:
           datepart: day
           field: created_at
@@ -234,7 +234,7 @@ models:
   - name: model_name
     columns:
       - name: col_name
-        tests:
+        data_tests:
           - dbt_utils.at_least_one
 ```
 
@@ -253,7 +253,7 @@ models:
   - name: model_name
     columns:
       - name: column_name
-        tests:
+        data_tests:
           - dbt_utils.not_constant
 ```
 
@@ -270,7 +270,7 @@ models:
   - name: model_name
     columns:
       - name: column_name
-        tests:
+        data_tests:
           - dbt_utils.not_empty_string
 ```
 
@@ -284,7 +284,7 @@ models:
   - name: model_name
     columns:
       - name: column_name
-        tests:
+        data_tests:
           - dbt_utils.not_empty_string:
               trim_whitespace: false
               
@@ -303,7 +303,7 @@ models:
   - name: model_name
     columns:
       - name: from_column
-        tests:
+        data_tests:
           - dbt_utils.cardinality_equality:
               field: other_column_name
               to: ref('other_model_name')
@@ -323,7 +323,7 @@ models:
   - name: my_model
     columns:
       - name: id
-        tests:
+        data_tests:
           - dbt_utils.not_null_proportion:
               at_least: 0.95
 ```
@@ -343,7 +343,7 @@ models:
   - name: my_model
     columns:
       - name: city
-        tests:
+        data_tests:
           - dbt_utils.not_accepted_values:
               values: ['Barcelona', 'New York']
 ```
@@ -361,7 +361,7 @@ models:
   - name: model_name
     columns:
       - name: id
-        tests:
+        data_tests:
           - dbt_utils.relationships_where:
               to: ref('other_model_name')
               field: client_id
@@ -383,7 +383,7 @@ version: 2
 models:
   # test that age ranges do not overlap
   - name: age_brackets
-    tests:
+    data_tests:
       - dbt_utils.mutually_exclusive_ranges:
           lower_bound_column: min_age
           upper_bound_column: max_age
@@ -391,7 +391,7 @@ models:
 
   # test that each customer can only have one subscription at a time
   - name: subscriptions
-    tests:
+    data_tests:
       - dbt_utils.mutually_exclusive_ranges:
           lower_bound_column: started_at
           upper_bound_column: ended_at
@@ -400,7 +400,7 @@ models:
 
   # test that each customer can have subscriptions that start and end on the same date
   - name: subscriptions
-    tests:
+    data_tests:
       - dbt_utils.mutually_exclusive_ranges:
           lower_bound_column: started_at
           upper_bound_column: ended_at
@@ -431,7 +431,7 @@ version: 2
 
 models:
   - name: subscriptions
-    tests:
+    data_tests:
       - dbt_utils.mutually_exclusive_ranges:
           lower_bound_column: coalesce(started_at, '1900-01-01')
           upper_bound_column: coalesce(ended_at, '2099-12-31')
@@ -505,7 +505,7 @@ seeds:
   - name: util_even_numbers
     columns:
       - name: i
-        tests:
+        data_tests:
           - dbt_utils.sequential_values:
               interval: 2
 
@@ -513,7 +513,7 @@ seeds:
   - name: util_hours
     columns:
       - name: date_hour
-        tests:
+        data_tests:
           - dbt_utils.sequential_values:
               interval: 1
               datepart: 'hour'
@@ -545,7 +545,7 @@ case we recommend using this test instead.
 
 ```yaml
 - name: revenue_by_product_by_month
-  tests:
+  data_tests:
     - dbt_utils.unique_combination_of_columns:
         combination_of_columns:
           - month
@@ -556,7 +556,7 @@ An optional `quote_columns` argument (`default=false`) can also be used if a col
 
 ```yaml
 - name: revenue_by_product_by_month
-  tests:
+  data_tests:
     - dbt_utils.unique_combination_of_columns:
         combination_of_columns:
           - month
@@ -580,25 +580,25 @@ models:
   - name: model_name
     columns:
       - name: user_id
-        tests:
+        data_tests:
           - dbt_utils.accepted_range:
               min_value: 0
               inclusive: false
 
       - name: account_created_at
-        tests:
+        data_tests:
           - dbt_utils.accepted_range:
               max_value: "getdate()"
               #inclusive is true by default
 
       - name: num_returned_orders
-        tests:
+        data_tests:
           - dbt_utils.accepted_range:
               min_value: 0
               max_value: "num_orders"
 
       - name: num_web_sessions
-        tests:
+        data_tests:
           - dbt_utils.accepted_range:
               min_value: 0
               inclusive: false
@@ -615,7 +615,7 @@ Certain tests support the optional `group_by_columns` argument to provide more g
 - Some data checks can only be expressed within a group (e.g. ID values should be unique within a group but can be repeated between groups)
 - Some data checks are more precise when done by group (e.g. not only should table rowcounts be equal but the counts within each group should be equal)
 
-This feature is currently available for the following tests:
+This feature is currently available for the following data tests:
 
 - equal_rowcount()
 - fewer_rows_than()
@@ -631,7 +631,7 @@ To use this feature, the names of grouping variables can be passed as a list. Fo
   - name: data_test_at_least_one
     columns:
       - name: field
-        tests:
+        data_tests:
           - dbt_utils.at_least_one:
               group_by_columns: ['customer_segment']
 ```

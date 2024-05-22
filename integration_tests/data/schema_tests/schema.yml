@@ -4,7 +4,7 @@ seeds:
   - name: data_test_sequential_values
     columns:
       - name: my_even_sequence
-        tests:
+        data_tests:
           - dbt_utils.sequential_values:
               interval: 2
           - dbt_utils.sequential_values:
@@ -15,7 +15,7 @@ seeds:
   - name: data_test_sequential_timestamps
     columns:
       - name: my_timestamp
-        tests:
+        data_tests:
           - dbt_utils.sequential_values:
               interval: 1
               datepart: 'hour'

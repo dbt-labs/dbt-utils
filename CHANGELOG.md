@@ -19,6 +19,7 @@
 - get_tables_by_pattern_sql will now:
   - return redshift external tables ([#752](https://github.com/dbt-labs/dbt-utils/issues/752)
   - work with valid redshift database names that contain dashes
+- fix quoting of database names when using get_relations_by_prefix() [#899](https://github.com/dbt-labs/dbt-utils/pull/899)
 ## Under the hood
 - created a new dispatch redshift__get_tables_by_pattern which unions the result of the default macro and querying svv_external_tables for the same conditions (schema name, pattern, exclude pattern).
 

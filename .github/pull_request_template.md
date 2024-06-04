@@ -1,13 +1,5 @@
 resolves #
 
-This is a:
-- [ ] documentation update
-- [ ] bug fix with no breaking changes
-- [ ] new functionality
-- [ ] a breaking change
-
-All pull requests from community contributors should target the `main` branch (default).
-
 ## Description & motivation
 <!---
 Describe your changes, and why you're making them.

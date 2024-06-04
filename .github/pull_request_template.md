@@ -26,4 +26,3 @@ Describe your changes, and why you're making them.
     - [ ] using `dbt.type_*` macros instead of explicit datatypes (e.g. `dbt.type_timestamp()` instead of `TIMESTAMP`
 - [ ] I have updated the README.md (if applicable)
 - [ ] I have added tests & descriptions to my models (and macros if applicable)
-- [ ] I have added an entry to CHANGELOG.md

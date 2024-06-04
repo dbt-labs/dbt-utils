@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: test_get_single_value
-    tests:
+    data_tests:
       - assert_equal:
           actual: date_actual
           expected: date_expected
@@ -17,7 +17,7 @@ models:
           expected: string_expected
 
   - name: test_get_single_value_default
-    tests:
+    data_tests:
       - assert_equal:
           actual: date_actual
           expected: date_expected
@@ -32,71 +32,71 @@ models:
           expected: string_expected
 
   - name: test_generate_series
-    tests:
+    data_tests:
       - dbt_utils.equality:
           compare_model: ref('data_generate_series')
 
   - name: test_get_column_values
     columns:
       - name: count_a
-        tests:
+        data_tests:
           - accepted_values:
               values:
                 - '1'
 
       - name: count_b
-        tests:
+        data_tests:
           - accepted_values:
               values:
                 - '1'
 
       - name: count_c
-        tests:
+        data_tests:
           - accepted_values:
               values:
                 - '1'
 
       - name: count_d
-        tests:
+        data_tests:
           - accepted_values:
               values:
                 - '1'
 
       - name: count_e
-        tests:
+        data_tests:
           - accepted_values:
               values:
                 - '1'
 
       - name: count_f
-        tests:
+        data_tests:
           - accepted_values:
               values:
                 - '1'
 
       - name: count_g
-        tests:
+        data_tests:
           - accepted_values:
               values:
                 - '5'
 
   - name: test_get_column_values_where
-    tests:
+    data_tests:
       - dbt_utils.equality:
           compare_model: ref('data_get_column_values_where_expected')
 
   - name: test_get_filtered_columns_in_relation
-    tests:
+    data_tests:
       - dbt_utils.equality:
           compare_model: ref('data_filtered_columns_in_relation_expected')
 
   - name: test_get_relations_by_prefix_and_union
     columns:
       - name: event
-        tests:
+        data_tests:
           - not_null
       - name: user_id
-        tests:
+        data_tests:
           - dbt_utils.at_least_one
           - not_null
           - unique
@@ -104,94 +104,94 @@ models:
   - name: test_nullcheck_table
     columns:
       - name: field_1
-        tests:
+        data_tests:
           - not_empty_string
 
       - name: field_2
-        tests:
+        data_tests:
           - not_empty_string
 
       - name: field_3
-        tests:
+        data_tests:
           - not_empty_string
 
   - name: test_safe_add
-    tests:
+    data_tests:
       - assert_equal:
           actual: actual
           expected: expected
   
   - name: test_safe_subtract
-    tests:
+    data_tests:
       - assert_equal:
           actual: actual
           expected: expected
 
   - name: test_safe_divide
-    tests:
+    data_tests:
       - assert_equal:
           actual: actual
           expected: expected
 
   - name: test_pivot
-    tests:
+    data_tests:
       - dbt_utils.equality:
           compare_model: ref('data_pivot_expected')
 
   - name: test_pivot_apostrophe
-    tests:
+    data_tests:
       - dbt_utils.equality:
           compare_model: ref('data_pivot_expected_apostrophe')
 
   - name: test_unpivot_original_api
-    tests:
+    data_tests:
       - dbt_utils.equality:
           compare_model: ref('data_unpivot_original_api_expected')
 
   - name: test_unpivot
-    tests:
+    data_tests:
       - dbt_utils.equality:
           compare_model: ref('data_unpivot_expected')
 
   - name: test_unpivot_bool
-    tests:
+    data_tests:
       - dbt_utils.equality:
           compare_model: ref('data_unpivot_bool_expected')
 
   - name: test_star
-    tests:
+    data_tests:
       - dbt_utils.equality:
           compare_model: ref('data_star_expected')
 
   - name: test_star_quote_identifiers
-    tests:
+    data_tests:
       - assert_equal:
           actual: actual
           expected: expected
 
   - name: test_star_prefix_suffix
-    tests:
+    data_tests:
       - dbt_utils.equality:
           compare_model: ref('data_star_prefix_suffix_expected')
 
   - name: test_star_aggregate
-    tests:
+    data_tests:
       - dbt_utils.equality:
           compare_model: ref('data_star_aggregate_expected')
 
   - name: test_star_uppercase
-    tests:
+    data_tests:
       - dbt_utils.equality:
           compare_model: ref('data_star_expected')
 
   - name: test_star_no_columns
     columns: 
       - name: canary_column #If the no-columns state isn't hit, this table won't be queryable because there will be a missing comma
-        tests: 
+        data_tests: 
           - not_null
 
   - name: test_generate_surrogate_key
-    tests:
+    data_tests:
       - assert_equal:
           actual: actual_column_1_only
           expected: expected_column_1_only
@@ -200,49 +200,49 @@ models:
           expected: expected_all_columns
 
   - name: test_union
-    tests:
+    data_tests:
       - dbt_utils.equality:
           compare_model: ref('data_union_expected')
 
   - name: test_union_where
     columns:
       - name: id
-        tests:
+        data_tests:
           - dbt_utils.expression_is_true:
               expression: "= 1"
       - name: favorite_number
-        tests:
+        data_tests:
           - dbt_utils.not_constant
   
   - name: test_union_no_source_column
-    tests:
+    data_tests:
       - expect_table_columns_to_match_set:
           column_list: ["id", "name", "favorite_color", "favorite_number"]
 
   - name: test_union_exclude_lowercase
-    tests:
+    data_tests:
       - dbt_utils.equality:
           compare_model: ref('data_union_exclude_expected')
 
   - name: test_union_exclude_uppercase
-    tests:
+    data_tests:
       - dbt_utils.equality:
           compare_model: ref('data_union_exclude_expected')
 
   - name: test_get_relations_by_pattern
-    tests:
+    data_tests:
       - dbt_utils.equality:
           compare_model: ref('data_union_events_expected')
 
   - name: test_deduplicate
-    tests:
+    data_tests:
       - dbt_utils.equality:
           compare_model: ref('data_deduplicate_expected')
 
   - name: test_not_empty_string_failing
     columns:
       - name: string_trim_whitespace_true
-        tests:
+        data_tests:
           - dbt_utils.not_empty_string:
               config:
                 severity: error
@@ -252,15 +252,15 @@ models:
   - name: test_not_empty_string_passing
     columns:
       - name: string_trim_whitespace_true
-        tests:
+        data_tests:
           - dbt_utils.not_empty_string
       - name: string_trim_whitespace_false
-        tests:
+        data_tests:
           - dbt_utils.not_empty_string:
               trim_whitespace: false
 
   - name: test_width_bucket
-    tests:
+    data_tests:
       - assert_equal:
           actual: actual
           expected: expected

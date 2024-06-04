@@ -1,37 +1,26 @@
 # dbt-utils releases
 
-TODO - update the following content since it is not up-to-date.
-
 ## When do we release?
 There's a few scenarios that might prompt a release:
 
 | Scenario                                   | Release type |
 |--------------------------------------------|--------------|
-| New functionality¹                         | minor        |
-| Breaking changes to existing macros        | minor        |
+| Breaking changes to existing macros        | major        |
+| New functionality                          | minor        |
 | Fixes to existing macros                   | patch        |
-| dbt minor release with no breaking changes | patch        |
-| dbt minor release with breaking changes    | minor        |
 
-¹New macros were previously considered patch releases — we have brought them up to minor releases to make versioning for dependencies clearer.
+## Release process
 
-## Branching strategy
+1. Begin a new release by clicking [here](https://github.com/dbt-labs/dbt-utils/releases/new)
+1. Click "Choose a tag", then paste your version number (with no "v" in the name), then click "Create new tag: x.y.z. on publish"
+    - The “Release title” will be identical to the tag name
+1. Click the "Generate release notes" button
+1. Copy and paste the generated release notes into `CHANGELOG.md`, commit, and merge into the `main` branch
+1. Click the "Publish release" button
+    - This will automatically create an "Assets" section containing:
+        - Source code (zip)
+        - Source code (tar.gz)
 
-At any point, there should be two long-lived branches:
-- `main` (default): This reflects the most recent release of dbt-utils
-- `dev/0.x.0`: This reflects the next minor release, where `x` will be replaced with the minor version number
+## Post-release
 
-The `dev/0.x.0` branch should be merged into `main` branch when new releases are created.
-
-## Process for minor releases
-e.g. for releasing `0.x.0`
-1. Create the PR to merge `dev/0.x.0` into `main`. Also update the `CHANGELOG` as part of this PR, and merge it.
-2. Create the GitHub release from the `main` branch.
-3. Delete the `dev/0.x.0` branch, and create a new branch `dev/0.x+1.0` from `main`, adding branch protection to it.
-4. [Create a new issue](https://github.com/dbt-labs/dbt-utils/issues/new/choose) from the "dbt-utils Minor Release Follow-Up" template to also update any dependencies.
-
-## Process for patch releases
-1. Create the release.
-2. Then rebase the current `dev/0.x.0` branch on top of the `main` branch so that any fixes will be included in the next minor release.
-
-No dependent packages need to be updated for patch releases (e.g. codegen, audit-helper)
+1. Delete the automatic Zapier post ([example of one intentionally not deleted](https://getdbt.slack.com/archives/CU4MRJ7QB/p1646272037304639)) and replace it with a custom post in the `#package-ecosystem` channel in “The Community Slack” using the content from the tagged release notes (but replace GitHub handles with Slack handles) ([example](https://getdbt.slack.com/archives/CU4MRJ7QB/p1649372590957309))

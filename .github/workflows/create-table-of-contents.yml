@@ -3,17 +3,23 @@
 name: Update table of contents
 
 # Controls when the workflow will run
-on:
-  push:
-    branches: [main]
-    paths: ['README.md']
+
+# Never!
+on: []
+
+# Disabled by Doug Beatty on 2024-04-25 to fix CI
+# https://github.com/dbt-labs/dbt-utils/issues/885
+# on:
+#   push:
+#     branches: [main]
+#     paths: ['README.md']
 
 jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: |
           curl https://raw.githubusercontent.com/ekalinin/github-markdown-toc/master/gh-md-toc -o gh-md-toc
           chmod a+x gh-md-toc

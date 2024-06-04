@@ -20,9 +20,6 @@ Describe your changes, and why you're making them.
     - [ ] Postgres
     - [ ] Redshift
     - [ ] Snowflake
-- [ ] I followed guidelines to ensure that my changes will work on "non-core" adapters by:
-    - [ ] dispatching any new macro(s) so non-core adapters can also use them (e.g. [the `star()` source](https://github.com/dbt-labs/dbt-utils/blob/main/macros/sql/star.sql))
-    - [ ] using the `limit_zero()` macro in place of the literal string: `limit 0`
-    - [ ] using `dbt.type_*` macros instead of explicit datatypes (e.g. `dbt.type_timestamp()` instead of `TIMESTAMP`
+- [ ] I have read [the contributing guide](https://github.com/dbt-labs/dbt-utils/blob/main/CONTRIBUTING.md) and understand what's expected of me
 - [ ] I have updated the README.md (if applicable)
 - [ ] I have added tests & descriptions to my models (and macros if applicable)

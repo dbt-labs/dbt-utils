@@ -74,7 +74,7 @@ See here for details for running existing integration tests and adding new ones:
 
 ## Adding CHANGELOG Entry
 
-Unlike `dbt-core`, we edit the `CHANGELOG.md` directly.
+We use [automatically generated release notes](https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes) to generate `CHANGELOG` entries. **Note:** Do not edit the `CHANGELOG.md` directly. Your modifications will be lost.
 
 You don't need to worry about which `dbt-utils` version your change will go into. Just create the changelog entry at the top of CHANGELOG.md and open your PR against the `main` branch. All merged changes will be included in the next minor version of `dbt-utils`. The maintainers _may_ choose to "backport" specific changes in order to patch older minor versions. In that case, a maintainer will take care of that backport after merging your PR, before releasing the new version of `dbt-utils`.
 

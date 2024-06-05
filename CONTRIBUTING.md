@@ -12,6 +12,8 @@ Remember: all PRs (apart from cosmetic fixes like typos) should be [associated w
 1. [Adding CHANGELOG Entry](#adding-changelog-entry)
 1. [Submitting a Pull Request](#submitting-a-pull-request)
 
+Enable greater collaboration by selecting ["Allow edits from maintainers"](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/allowing-changes-to-a-pull-request-branch-created-from-a-fork#enabling-repository-maintainer-permissions-on-existing-pull-requests) which will allow commits on your PR branch.
+
 ## About this document
 
 There are many ways to contribute to the ongoing development of `dbt-utils`, such as by participating in discussions and issues. We encourage you to first read our higher-level document: ["Expectations for Open Source Contributors"](https://docs.getdbt.com/docs/contributing/oss-expectations).

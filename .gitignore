@@ -4,6 +4,15 @@ dbt_modules/
 dbt_packages/
 logs/
 venv/
-env/
-test.env
 __pycache__
+
+
+# Ignore all directories that start with 'env-' and can have any name after
+env-*/
+
+# Do not ignore .env files in any directory and do not ignore .env directories
+!.env
+!*/.env/
+
+# But explicitly ignore test.env files
+test.env

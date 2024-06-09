@@ -12,9 +12,10 @@ jobs:
     environment:
       POSTGRES_TEST_HOST: localhost
       POSTGRES_TEST_USER: root
-      POSTGRES_TEST_PASS: ''
+      DBT_ENV_SECRET_POSTGRES_TEST_PASS: ''
       POSTGRES_TEST_PORT: 5432
       POSTGRES_TEST_DBNAME: circle_test
+      POSTGRES_TEST_SCHEMA: dbt_utils_integration_tests_postgres
 
     steps:
       - checkout
@@ -92,11 +93,12 @@ workflows:
           context: profile-redshift
           requires:
             - integration-postgres
-      - integration-snowflake:
-          context: profile-snowflake
-          requires:
-            - integration-postgres
-      - integration-bigquery:
-          context: profile-bigquery
-          requires:
-            - integration-postgres
+      # TODO: Disabled until we update the env vars in circle CI
+      # - integration-snowflake:
+      #     context: profile-snowflake
+      #     requires:
+      #       - integration-postgres
+      # - integration-bigquery:
+      #     context: profile-bigquery
+      #     requires:
+      #       - integration-postgres

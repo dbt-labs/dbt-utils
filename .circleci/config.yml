@@ -93,12 +93,11 @@ workflows:
           context: profile-redshift
           requires:
             - integration-postgres
-      # TODO: Disabled until we update the env vars in circle CI
-      # - integration-snowflake:
-      #     context: profile-snowflake
-      #     requires:
-      #       - integration-postgres
-      # - integration-bigquery:
-      #     context: profile-bigquery
-      #     requires:
-      #       - integration-postgres
+      - integration-snowflake:
+          context: profile-snowflake
+          requires:
+            - integration-postgres
+      - integration-bigquery:
+          context: profile-bigquery
+          requires:
+            - integration-postgres

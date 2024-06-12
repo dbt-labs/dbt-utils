@@ -5,6 +5,8 @@ dbt_packages/
 logs/
 venv/
 __pycache__
+.tox/
+/.pytest_cache/
 
 
 # Ignore all directories that start with 'env-' and can have any name after

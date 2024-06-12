@@ -3,10 +3,6 @@
 # You should __NEVER__ check credentials into version control. That's why we use environment variables everywhere.
 # Thanks for reading :)
 
-config:
-    send_anonymous_usage_stats: False
-    use_colors: True
-
 integration_tests:
   target: postgres
   outputs:

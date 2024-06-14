@@ -8,39 +8,39 @@ integration_tests:
   outputs:
     postgres:
       type: postgres
-      host: "{{ env_var('POSTGRES_TEST_HOST') }}"
-      user: "{{ env_var('POSTGRES_TEST_USER') }}"
-      pass: "{{ env_var('DBT_ENV_SECRET_POSTGRES_TEST_PASS') }}"
-      port: "{{ env_var('POSTGRES_TEST_PORT') | as_number }}"
-      dbname: "{{ env_var('POSTGRES_TEST_DATABASE') }}"
-      schema: "{{ env_var('POSTGRES_TEST_SCHEMA') }}"
+      host: "{{ env_var('POSTGRES_HOST') }}"
+      user: "{{ env_var('POSTGRES_USER') }}"
+      pass: "{{ env_var('DBT_ENV_SECRET_POSTGRES_PASS') }}"
+      port: "{{ env_var('POSTGRES_PORT') | as_number }}"
+      dbname: "{{ env_var('POSTGRES_DATABASE') }}"
+      schema: "{{ env_var('POSTGRES_SCHEMA') }}"
       threads: 5
 
     redshift:
       type: redshift
-      host: "{{ env_var('REDSHIFT_TEST_HOST') }}"
-      user: "{{ env_var('REDSHIFT_TEST_USER') }}"
-      pass: "{{ env_var('DBT_ENV_SECRET_REDSHIFT_TEST_PASS') }}"
-      dbname: "{{ env_var('REDSHIFT_TEST_DATABASE') }}"
-      port: "{{ env_var('REDSHIFT_TEST_PORT') | as_number }}"
-      schema: "{{ env_var('REDSHIFT_TEST_SCHEMA') }}"
+      host: "{{ env_var('REDSHIFT_HOST') }}"
+      user: "{{ env_var('REDSHIFT_USER') }}"
+      pass: "{{ env_var('DBT_ENV_SECRET_REDSHIFT_PASS') }}"
+      dbname: "{{ env_var('REDSHIFT_DATABASE') }}"
+      port: "{{ env_var('REDSHIFT_PORT') | as_number }}"
+      schema: "{{ env_var('REDSHIFT_SCHEMA') }}"
       threads: 5
 
     bigquery:
       type: bigquery
-      method: service-account
-      keyfile: "{{ env_var('DBT_ENV_SECRET_BIGQUERY_SERVICE_KEY_PATH') }}"
-      project: "{{ env_var('BIGQUERY_TEST_DATABASE') }}"
-      schema: "{{ env_var('BIGQUERY_TEST_SCHEMA') }}"
+      method: service-account-json
+      project: "{{ env_var('BIGQUERY_PROJECT') }}"
+      keyfile: "{{ env_var('DBT_ENV_SECRET_BIGQUERY_KEYFILE_JSON') | as_native }}"
+      schema: "{{ env_var('BIGQUERY_SCHEMA') }}"
       threads: 10
 
     snowflake:
       type: snowflake
-      account: "{{ env_var('SNOWFLAKE_TEST_ACCOUNT') }}"
-      user: "{{ env_var('SNOWFLAKE_TEST_USER') }}"
-      password: "{{ env_var('DBT_ENV_SECRET_SNOWFLAKE_TEST_PASS') }}"
-      role: "{{ env_var('SNOWFLAKE_TEST_ROLE') }}"
-      database: "{{ env_var('SNOWFLAKE_TEST_DATABASE') }}"
-      warehouse: "{{ env_var('SNOWFLAKE_TEST_WAREHOUSE') }}"
-      schema: "{{ env_var('SNOWFLAKE_TEST_SCHEMA') }}"
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      password: "{{ env_var('DBT_ENV_SECRET_SNOWFLAKE_PASS') }}"
+      role: "{{ env_var('SNOWFLAKE_ROLE') }}"
+      database: "{{ env_var('SNOWFLAKE_DATABASE') }}"
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE') }}"
+      schema: "{{ env_var('SNOWFLAKE_SCHEMA') }}"
       threads: 10

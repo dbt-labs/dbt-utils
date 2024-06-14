@@ -12,10 +12,10 @@ jobs:
     environment:
       POSTGRES_TEST_HOST: localhost
       POSTGRES_TEST_USER: root
-      DBT_ENV_SECRET_POSTGRES_TEST_PASS: ''
+      POSTGRES_TEST_PASS: ''
       POSTGRES_TEST_PORT: 5432
-      POSTGRES_TEST_DATABASE: circle_test
-      POSTGRES_TEST_SCHEMA: dbt_utils_integration_tests_postgres
+      POSTGRES_TEST_DBNAME: circle_test
+      POSTGRES_SCHEMA: dbt_utils_integration_tests_postgres
 
     steps:
       - checkout

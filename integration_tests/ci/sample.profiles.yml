@@ -9,37 +9,37 @@ integration_tests:
       type: postgres
       host: "{{ env_var('POSTGRES_TEST_HOST') }}"
       user: "{{ env_var('POSTGRES_TEST_USER') }}"
-      pass: "{{ env_var('DBT_ENV_SECRET_POSTGRES_TEST_PASS') }}"
+      pass: "{{ env_var('POSTGRES_TEST_PASS') }}"
       port: "{{ env_var('POSTGRES_TEST_PORT') | as_number }}"
-      dbname: "{{ env_var('POSTGRES_TEST_DATABASE') }}"
-      schema: "{{ env_var('POSTGRES_TEST_SCHEMA') }}"
+      dbname: "{{ env_var('POSTGRES_TEST_DBNAME') }}"
+      schema: "dbt_utils_integration_tests_postgres"
       threads: 5
 
     redshift:
       type: redshift
       host: "{{ env_var('REDSHIFT_TEST_HOST') }}"
       user: "{{ env_var('REDSHIFT_TEST_USER') }}"
-      pass: "{{ env_var('DBT_ENV_SECRET_REDSHIFT_TEST_PASS') }}"
-      dbname: "{{ env_var('REDSHIFT_TEST_DATABASE') }}"
+      pass: "{{ env_var('REDSHIFT_TEST_PASS') }}"
+      dbname: "{{ env_var('REDSHIFT_TEST_DBNAME') }}"
       port: "{{ env_var('REDSHIFT_TEST_PORT') | as_number }}"
-      schema: "{{ env_var('REDSHIFT_TEST_SCHEMA') }}"
+      schema: "dbt_utils_integration_tests_redshift"
       threads: 5
 
     bigquery:
       type: bigquery
       method: service-account
-      keyfile: "{{ env_var('DBT_ENV_SECRET_BIGQUERY_SERVICE_KEY_PATH') }}"
+      keyfile: "{{ env_var('BIGQUERY_SERVICE_KEY_PATH') }}"
       project: "{{ env_var('BIGQUERY_TEST_DATABASE') }}"
-      schema: "{{ env_var('BIGQUERY_TEST_SCHEMA') }}"
+      schema: "dbt_utils_integration_tests_bigquery"
       threads: 10
 
     snowflake:
       type: snowflake
       account: "{{ env_var('SNOWFLAKE_TEST_ACCOUNT') }}"
       user: "{{ env_var('SNOWFLAKE_TEST_USER') }}"
-      password: "{{ env_var('DBT_ENV_SECRET_SNOWFLAKE_TEST_PASSWORD') }}"
+      password: "{{ env_var('SNOWFLAKE_TEST_PASSWORD') }}"
       role: "{{ env_var('SNOWFLAKE_TEST_ROLE') }}"
       database: "{{ env_var('SNOWFLAKE_TEST_DATABASE') }}"
       warehouse: "{{ env_var('SNOWFLAKE_TEST_WAREHOUSE') }}"
-      schema: "{{ env_var('SNOWFLAKE_TEST_SCHEMA') }}"
+      schema: "dbt_utils_integration_tests_snowflake"
       threads: 10

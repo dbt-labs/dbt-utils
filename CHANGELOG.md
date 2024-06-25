@@ -1,12 +1,50 @@
-<!--- Copy, paste, and uncomment the following headers as-needed for unreleased features
 # Unreleased
-## New features
-* ZZZ by @YYY in https://github.com/dbt-labs/dbt-utils/pull/XXX
-## Fixes
-## Quality of life
-## Under the hood
-## Contributors:
---->
+
+**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.2.0...main
+
+# dbt utils v1.2.0
+
+## What's Changed
+
+### New features
+- Add option to ignore columns in equality test by @brunocostalopes in https://github.com/dbt-labs/dbt-utils/pull/765
+- The `equality` test now accepts an additional argument, `precision` to aide in comparing floating point numbers by @rlh1994 in https://github.com/dbt-labs/dbt-utils/pull/765
+
+### Fixes
+
+* `deduplicate` macro for Databricks now uses the `QUALIFY` clause, which fixes `NULL` columns issues from the default natural join logic by @graciegoheen in https://github.com/dbt-labs/dbt-utils/pull/786
+* Use QUALIFY clause in `deduplicate` macro for Redshift by @yauhen-sobaleu in https://github.com/dbt-labs/dbt-utils/pull/811
+* get redshift external tables by @brendan-cook-87 in https://github.com/dbt-labs/dbt-utils/pull/753
+* Equality test will now raise an error when the second model has less columns than the first by @rlh1994 in https://github.com/dbt-labs/dbt-utils/pull/765
+
+### Documentation
+
+* Update documentation for `get_column_values()` to specify that the `order_by` argument must be expressed as an aggregate function by @bakerbryce in https://github.com/dbt-labs/dbt-utils/pull/872
+* Set the correct language identifier in code blocks within the documentation by @yamotech in https://github.com/dbt-labs/dbt-utils/pull/876
+* Fix typo of `not_null_proportion` in README.md by @PChambino in https://github.com/dbt-labs/dbt-utils/pull/853
+* Fix failing example for `dbt_utils.deduplicate()` in README.md by @pruoff in https://github.com/dbt-labs/dbt-utils/pull/856
+* Link to Haversine Distance article on Wikipedia by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/889
+
+### Under the hood
+
+* GitHub Action to close issues as stale as-needed by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/813
+* GitHub Action to add/remove triage labels as-needed by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/812
+* Instructions for the release process by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/821
+* Update dev-requirements for new pip syntax by @gwenwindflower in https://github.com/dbt-labs/dbt-utils/pull/870
+* Disable auto-generation of table of contents (TOC) by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/887
+* Update tests: -> data_tests: by @graciegoheen in https://github.com/dbt-labs/dbt-utils/pull/893
+
+## New Contributors
+* @yauhen-sobaleu made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/811
+* @brendan-cook-87 made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/753
+* @gwenwindflower made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/870
+* @brunocostalopes made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/765
+* @rlh1994 made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/765
+* @yamotech made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/876
+* @PChambino made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/853
+* @pruoff made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/856
+
+**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.1.1...1.2.0
 
 # dbt utils v1.1.1
 ## New features
@@ -168,14 +206,14 @@ The call signature of `deduplicate` has changed. The previous call signature is 
 - The `relation_alias` argument has been removed as the macro now supports `relation` as a string directly. If you were using `relation_alias` to point to a CTE previously then you can now pass the alias directly to `relation`.
 
 Before:
-```jinja
+```sql
 {% macro deduplicate(relation, group_by, order_by=none, relation_alias=none) -%}
 ...
 {% endmacro %}
 ```
 
 After:
-```jinja
+```sql
 {% macro deduplicate(relation, partition_by, order_by) -%}
 ...
 {% endmacro %}
@@ -363,20 +401,20 @@ In accordance with the version upgrade, this package release includes breaking c
 The order of (optional) arguments has changed in the `get_column_values` macro.
 
 Before:
-```jinja
+```sql
 {% macro get_column_values(table, column, order_by='count(*) desc', max_records=none, default=none) -%}
 ...
 {% endmacro %}
 ```
 
 After:
-```jinja
+```sql
 {% macro get_column_values(table, column, max_records=none, default=none) -%}
 ...
 {% endmacro %}
 ```
 If you were relying on the position to match up your optional arguments, this may be a breaking change — in general, we recommend that you explicitly declare any optional arguments (if not all of your arguments!)
-```
+```sql
 -- before: This works on previous version of dbt-utils, but on 0.7.0, the `50` would be passed through as the `order_by` argument
 {% set payment_methods = dbt_utils.get_column_values(
         ref('stg_payments'),
@@ -468,7 +506,7 @@ If you were relying on the position to match up your optional arguments, this ma
 - If your project uses the `get_tables_by_prefix` macro, replace it with `get_relations_by_prefix`. All arguments have retained the same name.
 - If your project uses the `union_tables` macro, replace it with `union_relations`. While the order of arguments has stayed consistent, the `tables` argument has been renamed to `relations`. Further, the default value for the `source_column_name` argument has changed from `'_dbt_source_table'` to `'_dbt_source_relation'` — you may want to explicitly define this argument to avoid breaking changes.
 
-```
+```sql
 -- before:
 {{ dbt_utils.union_tables(
     tables=[ref('my_model'), source('my_source', 'my_table')],

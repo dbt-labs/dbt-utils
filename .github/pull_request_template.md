@@ -1,29 +1,23 @@
 resolves #
 
-This is a:
-- [ ] documentation update
-- [ ] bug fix with no breaking changes
-- [ ] new functionality
-- [ ] a breaking change
+### Problem
 
-All pull requests from community contributors should target the `main` branch (default).
-
-## Description & motivation
 <!---
-Describe your changes, and why you're making them.
+  Describe the problem this PR is solving. What is the application state
+  before this PR is merged?
+-->
+
+### Solution
+
+<!---
+  Describe the way this PR solves the above problem. Add as much detail as you
+  can to help reviewers understand your changes. Include any alternatives and
+  tradeoffs you considered.
 -->
 
 ## Checklist
-- [ ] This code is associated with an Issue which has been triaged and [accepted for development](https://docs.getdbt.com/docs/contributing/oss-expectations#pull-requests). 
-- [ ] I have verified that these changes work locally on the following warehouses (Note: it's okay if you do not have access to all warehouses, this helps us understand what has been covered)
-    - [ ] BigQuery
-    - [ ] Postgres
-    - [ ] Redshift
-    - [ ] Snowflake
-- [ ] I followed guidelines to ensure that my changes will work on "non-core" adapters by:
-    - [ ] dispatching any new macro(s) so non-core adapters can also use them (e.g. [the `star()` source](https://github.com/dbt-labs/dbt-utils/blob/main/macros/sql/star.sql))
-    - [ ] using the `limit_zero()` macro in place of the literal string: `limit 0`
-    - [ ] using `dbt.type_*` macros instead of explicit datatypes (e.g. `dbt.type_timestamp()` instead of `TIMESTAMP`
+- [ ] This code is associated with an [issue](https://github.com/dbt-labs/dbt-utils/issues) which has been triaged and [accepted for development](https://docs.getdbt.com/docs/contributing/oss-expectations#pull-requests).
+- [ ] I have read [the contributing guide](https://github.com/dbt-labs/dbt-utils/blob/main/CONTRIBUTING.md) and understand what's expected of me
+- [ ] I have run this code in development and it appears to resolve the stated issue
+- [ ] This PR includes tests, or tests are not required/relevant for this PR
 - [ ] I have updated the README.md (if applicable)
-- [ ] I have added tests & descriptions to my models (and macros if applicable)
-- [ ] I have added an entry to CHANGELOG.md

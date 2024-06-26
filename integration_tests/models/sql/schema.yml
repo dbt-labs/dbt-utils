@@ -158,6 +158,11 @@ models:
       - dbt_utils.equality:
           compare_model: ref('data_unpivot_bool_expected')
 
+  - name: test_unpivot_quote
+    data_tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_unpivot_quote_expected')
+
   - name: test_star
     data_tests:
       - dbt_utils.equality:

@@ -51,6 +51,7 @@ seeds:
       
       data_unpivot_quote:
         +quote_columns: true
+
       data_unpivot_quote_expected:
         +quote_columns: true
 

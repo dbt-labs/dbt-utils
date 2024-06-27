@@ -20,6 +20,10 @@ clean-targets:         # directories to be removed by `dbt clean`
     - "dbt_modules"
     - "dbt_packages"
 
+flags:
+    send_anonymous_usage_stats: False
+    use_colors: True
+
 dispatch:
   - macro_namespace: 'dbt_utils'
     search_order: ['dbt_utils_integration_tests', 'dbt_utils']

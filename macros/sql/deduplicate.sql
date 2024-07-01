@@ -93,12 +93,19 @@
 --  clause in BigQuery:
 --  https://github.com/dbt-labs/dbt-utils/issues/335#issuecomment-788157572
 #}
-{%- macro bigquery__deduplicate(relation, partition_by, order_by) -%}
+{%- macro bigquery__deduplicate(relation, partition_by, order_by, partition_by_pass_thru=false) -%}
 
     select unique.*
+    {%- if partition_by_pass_thru %}
+    except({{ partition_by }}),
+    {{ partition_by }}
+    {%- endif %}
     from (
         select
-            array_agg (
+            {%- if partition_by_pass_thru %}
+            {{ partition_by }},
+            {%- endif %}
+            array_agg(
                 original
                 order by {{ order_by }}
                 limit 1

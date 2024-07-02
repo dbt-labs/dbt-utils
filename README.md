@@ -114,7 +114,7 @@ This test supports the `group_by_columns` parameter; see [Grouping in tests](#gr
 
 ### equality ([source](macros/generic_tests/equality.sql))
 
-Asserts the equality of two relations. Optionally specify a subset of columns to compare.
+Asserts the equality of two relations. Optionally specify a subset of columns to compare or exclude, and a precision to compare numeric columns on.
 
 **Usage:**
 
@@ -122,13 +122,29 @@ Asserts the equality of two relations. Optionally specify a subset of columns to
 version: 2
 
 models:
+  # compare the entire table 
   - name: model_name
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('other_table_name')
+
+  # only compare some of the columns
+  - name: model_name_compare_columns
     tests:
       - dbt_utils.equality:
           compare_model: ref('other_table_name')
           compare_columns:
             - first_column
             - second_column
+          precision: 4
+
+  # compare all columns except the ones on the ignore list
+  - name: model_name_exclude_columns
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('other_table_name')
+          exclude_columns:
+            - third_column
 ```
 
 ### expression_is_true ([source](macros/generic_tests/expression_is_true.sql))
@@ -207,7 +223,7 @@ This test supports the `group_by_columns` parameter; see [Grouping in tests](#gr
 
 ### at_least_one ([source](macros/generic_tests/at_least_one.sql))
 
-Asserts that a column has at least one value.
+Asserts that a column has at least one value that is not `null`.
 
 **Usage:**
 
@@ -482,7 +498,7 @@ models:
 This test confirms that a column contains sequential values. It can be used
 for both numeric values, and datetime values, as follows:
 
-```yml
+```yaml
 version: 2
 
 seeds:
@@ -599,19 +615,19 @@ Certain tests support the optional `group_by_columns` argument to provide more g
 - Some data checks can only be expressed within a group (e.g. ID values should be unique within a group but can be repeated between groups)
 - Some data checks are more precise when done by group (e.g. not only should table rowcounts be equal but the counts within each group should be equal)
 
-This feature is currently available for the following tests:
+This feature is currently available for the following data tests:
 
-- equal_rowcount()
-- fewer_rows_than()
-- recency()
-- at_least_one()
-- not_constant()
-- sequential_values()
-- non_null_proportion()
+- [equal_rowcount](#equal_rowcount-source)
+- [fewer_rows_than](#fewer_rows_than-source)
+- [recency](#recency-source)
+- [at_least_one](#at_least_one-source)
+- [not_constant](#not_constant-source)
+- [sequential_values](#sequential_values-source)
+- [not_null_proportion](#not_null_proportion-source)
 
 To use this feature, the names of grouping variables can be passed as a list. For example, to test for at least one valid value by group, the `group_by_columns` argument could be used as follows:
 
-```
+```yaml
   - name: data_test_at_least_one
     columns:
       - name: field
@@ -635,7 +651,7 @@ This macro returns the unique values for a column in a given [relation](https://
 - `table` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) that contains the list of columns you wish to select from
 - `column` (required): The name of the column you wish to find the column values of
 - `where` (optional, default=`none`): A where clause to filter the column values by.
-- `order_by` (optional, default=`'count(*) desc'`): How the results should be ordered. The default is to order by `count(*) desc`, i.e. decreasing frequency. Setting this as `'my_column'` will sort alphabetically, while `'min(created_at)'` will sort by when thevalue was first observed.
+- `order_by` (optional, default=`'count(*) desc'`): How the results should be ordered. Must be an aggregate function, i.e. count(*), max(sort_order). The default is to order by `count(*) desc`, i.e. decreasing frequency. Setting this as `'my_column'` will sort alphabetically, while `'min(created_at)'` will sort by when the value was first observed.
 - `max_records` (optional, default=`none`): The maximum number of column values you want to return
 - `default` (optional, default=`[]`): The results this macro should return if the relation has not yet been created (and therefore has no column values).
 
@@ -710,7 +726,7 @@ This macro is particularly handy when paired with `union_relations`.
 
 **Usage:**
 
-```
+```sql
 -- Returns a list of relations that match schema_pattern%.table
 {% set relations = dbt_utils.get_relations_by_pattern('schema_pattern%', 'table_pattern') %}
 
@@ -765,7 +781,7 @@ handy paired with `union_relations`.
 
 **Usage:**
 
-```
+```sql
 -- Returns a list of relations that match schema.prefix%
 {% set relations = dbt_utils.get_relations_by_prefix('my_schema', 'my_prefix') %}
 
@@ -791,7 +807,7 @@ This macro returns a dictionary from a sql query, so that you don't need to inte
 
 **Usage:**
 
-```
+```sql
 {% set sql_statement %}
     select city, state from {{ ref('users') }}
 {% endset %}
@@ -819,7 +835,7 @@ This macro returns a single value from a sql query, so that you don't need to in
 
 **Usage:**
 
-```
+```sql
 {% set sql_statement %}
     select max(created_at) from {{ ref('processed_orders') }}
 {% endset %}
@@ -844,7 +860,7 @@ This macro returns the sql required to build a date spine. The spine will includ
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.date_spine(
     datepart="day",
     start_date="cast('2019-01-01' as date)",
@@ -865,7 +881,7 @@ This macro returns the sql required to remove duplicate rows from a model, sourc
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.deduplicate(
     relation=source('my_source', 'my_table'),
     partition_by='user_id, cast(timestamp as day)',
@@ -874,7 +890,7 @@ This macro returns the sql required to remove duplicate rows from a model, sourc
 }}
 ```
 
-```
+```sql
 {{ dbt_utils.deduplicate(
     relation=ref('my_model'),
     partition_by='user_id',
@@ -883,30 +899,32 @@ This macro returns the sql required to remove duplicate rows from a model, sourc
 }}
 ```
 
-```
+```sql
 with my_cte as (
     select *
     from {{ source('my_source', 'my_table') }}
     where user_id = 1
+),
+deduplicated_cte as (
+  {{ dbt_utils.deduplicate(
+      relation='my_cte',
+      partition_by='user_id, cast(timestamp as date)',
+      order_by='timestamp desc',
+     )
+  }}
 )
-
-{{ dbt_utils.deduplicate(
-    relation='my_cte',
-    partition_by='user_id, cast(timestamp as day)',
-    order_by='timestamp desc',
-   )
-}}
+select * from deduplicated_cte
 ```
 
 ### haversine_distance ([source](macros/sql/haversine_distance.sql))
 
-This macro calculates the [haversine distance](http://daynebatten.com/2015/09/latitude-longitude-distance-sql/) between a pair of x/y coordinates.
+This macro calculates the [haversine distance](https://en.wikipedia.org/wiki/Haversine_formula) between a pair of x/y coordinates.
 
 Optionally takes a `unit` string argument ('km' or 'mi') which defaults to miles (imperial system).
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.haversine_distance(48.864716, 2.349014, 52.379189, 4.899431) }}
 
 {{ dbt_utils.haversine_distance(
@@ -932,7 +950,7 @@ This macro builds a group by statement for fields 1...N
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.group_by(n=3) }}
 ```
 
@@ -1001,7 +1019,7 @@ relations will be filled with `null` where not present. A new column
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.union_relations(
     relations=[ref('my_model'), source('my_source', 'my_table')],
     exclude=["_loaded_at"]
@@ -1027,7 +1045,7 @@ This macro implements a cross-database mechanism to generate an arbitrarily long
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.generate_series(upper_bound=1000) }}
 ```
 
@@ -1037,7 +1055,7 @@ This macro implements a cross-database way to generate a hashed surrogate key us
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.generate_surrogate_key(['field_a', 'field_b'[,...]]) }}
 ```
 
@@ -1055,7 +1073,7 @@ This macro implements a cross-database way to sum nullable fields using the fiel
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.safe_add(['field_a', 'field_b', ...]) }}
 ```
 
@@ -1070,7 +1088,7 @@ This macro performs division but returns null if the denominator is 0.
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.safe_divide('numerator', 'denominator') }}
 ```
 
@@ -1080,7 +1098,7 @@ This macro implements a cross-database way to take the difference of nullable fi
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.safe_subtract(['field_a', 'field_b', ...]) }}
 ```
 
@@ -1090,7 +1108,7 @@ This macro pivots values from rows to columns.
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.pivot(<column>, <list of values>) }}
 ```
 
@@ -1171,7 +1189,7 @@ Boolean values are replaced with the strings 'true'|'false'
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.unpivot(
   relation=ref('table_name'),
   cast_to='datatype',
@@ -1235,7 +1253,7 @@ When an expression falls outside the range, the function returns:
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.width_bucket(expr, min_value, max_value, num_buckets) }}
 ```
 
@@ -1247,7 +1265,7 @@ This macro extracts a url parameter from a column containing a url.
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.get_url_parameter(field='page_url', url_parameter='utm_source') }}
 ```
 
@@ -1257,7 +1275,7 @@ This macro extracts a hostname from a column containing a url.
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.get_url_host(field='page_url') }}
 ```
 
@@ -1267,7 +1285,7 @@ This macro extracts a page path from a column containing a url.
 
 **Usage:**
 
-```
+```sql
 {{ dbt_utils.get_url_path(field='page_url') }}
 ```
 
@@ -1313,7 +1331,7 @@ This macro logs a formatted message (with a timestamp) to the command line.
 {{ dbt_utils.log_info("my pretty message") }}
 ```
 
-```
+```shell
 11:07:28 | 1 of 1 START table model analytics.fct_orders........................ [RUN]
 11:07:31 + my pretty message
 ```
@@ -1365,9 +1383,9 @@ In dbt_utils v1.0, this materialization moved to the [experimental features repo
 
 ## Reporting bugs and contributing code
 
-- Want to report a bug or request a feature? Let us know in the `#package-ecosystem` channel on [Slack](https://getdbt.com/community), or open [an issue](https://github.com/dbt-labs/dbt-utils/issues/new)
+- Want to report a bug or request a feature? Let us know by opening [an issue](https://github.com/dbt-labs/dbt-utils/issues/new)
 - Want to help us build dbt-utils? Check out the [Contributing Guide](https://github.com/dbt-labs/dbt-utils/blob/main/CONTRIBUTING.md)
-  - **TL;DR** Open a Pull Request with 1) your changes, 2) updated documentation for the `README.md` file, and 3) a working integration test.
+  - **TL;DR** Open a Pull Request with 1) your changes, 2) updated documentation for the `README.md` file, and 3) a working integration test. Keep in mind that [most PRs require an approved issue first](https://docs.getdbt.com/community/resources/oss-expectations#pull-requests).
 
 ----
 
@@ -1386,7 +1404,7 @@ In `dbt_project.yml`, you can define a project-level `dispatch` config that enab
 
 Set the config in `dbt_project.yml`:
 
-```yml
+```yaml
 dispatch:
   - macro_namespace: dbt_utils
     search_order:

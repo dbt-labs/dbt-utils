@@ -2,19 +2,19 @@ version: 2
 
 models:
   - name: test_urls
-    tests:
+    data_tests:
       - assert_equal:
           actual: actual
           expected: expected
           
   - name: test_url_host
-    tests:
+    data_tests:
       - assert_equal:
           actual: actual
           expected: expected
           
   - name: test_url_path
-    tests:
+    data_tests:
       - assert_equal:
           actual: actual
           expected: expected

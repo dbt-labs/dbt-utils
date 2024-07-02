@@ -15,7 +15,6 @@ jobs:
       POSTGRES_TEST_PASS: ''
       POSTGRES_TEST_PORT: 5432
       POSTGRES_TEST_DBNAME: circle_test
-      POSTGRES_SCHEMA: dbt_utils_integration_tests_postgres
 
     steps:
       - checkout

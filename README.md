@@ -223,7 +223,7 @@ This test supports the `group_by_columns` parameter; see [Grouping in tests](#gr
 
 ### at_least_one ([source](macros/generic_tests/at_least_one.sql))
 
-Asserts that a column has at least one value.
+Asserts that a column has at least one value that is not `null`.
 
 **Usage:**
 

@@ -131,5 +131,5 @@ jobs:
                   REDSHIFT_PORT: 5439
                   # bigquery
                   BIGQUERY_PROJECT: ${{ vars.BIGQUERY_PROJECT }}
-                  DBT_ENV_SECRET_BIGQUERY_KEYFILE_JSON: ${{ secrets.BIGQUERY_SERVICE_ACCOUNT_JSON }}
+                  DBT_ENV_SECRET_BIGQUERY_KEYFILE_JSON: "${{ secrets.BIGQUERY_SERVICE_ACCOUNT_JSON }}"
                   BIGQUERY_SCHEMA: "dbt_utils_integration_tests_bigquery"

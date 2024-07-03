@@ -30,7 +30,8 @@ integration_tests:
       type: bigquery
       method: service-account-json
       project: "{{ env_var('BIGQUERY_PROJECT') }}"
-      keyfile_json: "{{ env_var('DBT_ENV_SECRET_BIGQUERY_KEYFILE_JSON') | as_native }}"
+      keyfile_json:
+        "{{ env_var('DBT_ENV_SECRET_BIGQUERY_KEYFILE_JSON') | as_native }}"
       dataset: "{{ env_var('BIGQUERY_SCHEMA') }}"
       threads: 10
 

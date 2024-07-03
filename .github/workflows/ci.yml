@@ -86,6 +86,14 @@ jobs:
               with:
                   python-version: ${{ env.PYTHON_VERSION }}
 
+            - name: Start PostgreSQL
+              if: matrix.adapter == 'postgres'
+              run: |
+                  sudo systemctl start postgresql.service
+                  pg_isready
+                  sudo -u postgres createuser -s -d -r -w ${{ vars.POSTGRES_USER }}
+              
+
             - name: "Install ${{ matrix.adapter }}"
               run: |
                   python -m pip install --upgrade pip

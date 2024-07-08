@@ -14,8 +14,12 @@ seeds:
       - name: field
         data_tests:
           - dbt_utils.at_least_one
+      - name: value
+        data_tests:
           - dbt_utils.at_least_one:
               group_by_columns: ['field']
+              error_if: "<1"
+              warn_if: "<0"
 
   - name: data_test_expression_is_true
     data_tests:

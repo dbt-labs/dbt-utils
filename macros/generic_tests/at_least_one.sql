@@ -26,8 +26,10 @@ from (
       select
         {{ select_pruned_cols }}
       from {{ model }}
-      where {{ column_name }} is not null
-      limit 1
+      {% if group_by_columns|length() == 0 %}
+        where {{ column_name }} is not null
+        limit 1
+      {% endif %}
     )
     select
         {# In TSQL, subquery aggregate columns need aliases #}

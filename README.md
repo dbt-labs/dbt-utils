@@ -223,7 +223,7 @@ This test supports the `group_by_columns` parameter; see [Grouping in tests](#gr
 
 ### at_least_one ([source](macros/generic_tests/at_least_one.sql))
 
-Asserts that a column has at least one value.
+Asserts that a column has at least one value that is not `null`.
 
 **Usage:**
 
@@ -617,13 +617,13 @@ Certain tests support the optional `group_by_columns` argument to provide more g
 
 This feature is currently available for the following data tests:
 
-- equal_rowcount()
-- fewer_rows_than()
-- recency()
-- at_least_one()
-- not_constant()
-- sequential_values()
-- not_null_proportion()
+- [equal_rowcount](#equal_rowcount-source)
+- [fewer_rows_than](#fewer_rows_than-source)
+- [recency](#recency-source)
+- [at_least_one](#at_least_one-source)
+- [not_constant](#not_constant-source)
+- [sequential_values](#sequential_values-source)
+- [not_null_proportion](#not_null_proportion-source)
 
 To use this feature, the names of grouping variables can be passed as a list. For example, to test for at least one valid value by group, the `group_by_columns` argument could be used as follows:
 

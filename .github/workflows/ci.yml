@@ -120,7 +120,7 @@ jobs:
                   DBT_ENV_SECRET_POSTGRES_PASS: ${{ secrets.POSTGRES_PASS }}
                   POSTGRES_PORT: 5432
                   POSTGRES_DATABASE: ${{ vars.POSTGRES_DATABASE }}
-                  POSTGRES_SCHEMA: "dbt_utils_integration_tests_postgres"
+                  POSTGRES_SCHEMA: "dbt_utils_integration_tests_postgres_${{ github.run_number }}"
                   # snowflake env vars
                   SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
                   SNOWFLAKE_USER: ${{ vars.SNOWFLAKE_USER }}
@@ -128,15 +128,15 @@ jobs:
                   SNOWFLAKE_ROLE: ${{ vars.SNOWFLAKE_ROLE }}
                   SNOWFLAKE_DATABASE: ${{ vars.SNOWFLAKE_DATABASE }}
                   SNOWFLAKE_WAREHOUSE: ${{ vars.SNOWFLAKE_WAREHOUSE }}
-                  SNOWFLAKE_SCHEMA: "dbt_utils_integration_tests_snowflake"
+                  SNOWFLAKE_SCHEMA: "dbt_utils_integration_tests_snowflake_${{ github.run_number }}"
                   # redshift
                   REDSHIFT_HOST: ${{ vars.REDSHIFT_HOST }}
                   REDSHIFT_USER: ${{ vars.REDSHIFT_USER }}
                   DBT_ENV_SECRET_REDSHIFT_PASS: ${{ secrets.REDSHIFT_PASS }}
                   REDSHIFT_DATABASE: ${{ vars.REDSHIFT_DATABASE }}
-                  REDSHIFT_SCHEMA: "dbt_utils_integration_tests_redshift_emily"
+                  REDSHIFT_SCHEMA: "dbt_utils_integration_tests_redshift_${{ github.run_number }}"
                   REDSHIFT_PORT: 5439
                   # bigquery
                   BIGQUERY_PROJECT: ${{ vars.BIGQUERY_PROJECT }}
                   DBT_ENV_SECRET_BIGQUERY_KEYFILE_JSON: "${{ secrets.BIGQUERY_SERVICE_ACCOUNT_JSON }}"
-                  BIGQUERY_SCHEMA: "dbt_utils_integration_tests_bigquery"
+                  BIGQUERY_SCHEMA: "dbt_utils_integration_tests_bigquery_${{ github.run_number }}"

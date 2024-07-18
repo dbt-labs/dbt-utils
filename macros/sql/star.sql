@@ -1,4 +1,4 @@
-{% macro star(from, relation_alias=False, except=[], prefix='', suffix='', quote_identifiers=True) -%}
+{% macro star(from, relation_alias=False, except=[], prefix='', suffix='', quote_identifiers=True, sort=False) -%}
     {{ return(adapter.dispatch('star', 'dbt_utils')(from, relation_alias, except, prefix, suffix, quote_identifiers)) }}
 {% endmacro %}
 
@@ -26,6 +26,9 @@ dbt compile, and exists to keep SQLFluff happy. */
             {% do return("/* no columns returned from star() macro */") %}
         {% endif %}
     {%- else -%}
+        {%- if sort -%}
+            {% set cols = cols|sort %}
+        {%- endif -%}
         {%- for col in cols %}
             {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}
                 {%- if quote_identifiers -%}

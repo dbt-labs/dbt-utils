@@ -7,7 +7,7 @@ integration_tests:
   target: postgres
   outputs:
     postgres:
-      type: postgres
+      type: "postgres"
       host: "{{ env_var('POSTGRES_HOST') }}"
       user: "{{ env_var('POSTGRES_USER') }}"
       pass: "{{ env_var('DBT_ENV_SECRET_POSTGRES_PASS') }}"
@@ -17,7 +17,7 @@ integration_tests:
       threads: 5
 
     redshift:
-      type: redshift
+      type: "redshift"
       host: "{{ env_var('REDSHIFT_HOST') }}"
       user: "{{ env_var('REDSHIFT_USER') }}"
       pass: "{{ env_var('DBT_ENV_SECRET_REDSHIFT_PASS') }}"
@@ -27,16 +27,17 @@ integration_tests:
       threads: 5
 
     bigquery:
-      type: bigquery
-      method: service-account-json
+      type: "bigquery"
+      method: "service-account-json"
       project: "{{ env_var('BIGQUERY_PROJECT') }}"
-      keyfile_json:
-        "{{ env_var('DBT_ENV_SECRET_BIGQUERY_KEYFILE_JSON') | as_native }}"
       dataset: "{{ env_var('BIGQUERY_SCHEMA') }}"
       threads: 10
+      keyfile_json:
+        "{{ env_var('BIGQUERY_KEYFILE_JSON') | as_native}}"
+      job_retries: 3
 
     snowflake:
-      type: snowflake
+      type: "snowflake"
       account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
       user: "{{ env_var('SNOWFLAKE_USER') }}"
       password: "{{ env_var('DBT_ENV_SECRET_SNOWFLAKE_PASS') }}"

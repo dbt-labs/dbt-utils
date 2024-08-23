@@ -10,7 +10,7 @@ __pycache__
 
 
 # Ignore all directories that start with 'env-' and can have any name after
-env-*/
+env*/
 
 # Do not ignore .env files in any directory and do not ignore .env directories
 !.env

@@ -10,11 +10,12 @@ jobs:
         environment:
           POSTGRES_USER: root
     environment:
-      POSTGRES_TEST_HOST: localhost
-      POSTGRES_TEST_USER: root
-      POSTGRES_TEST_PASS: ''
-      POSTGRES_TEST_PORT: 5432
-      POSTGRES_TEST_DBNAME: circle_test
+      POSTGRES_HOST: localhost
+      POSTGRES_USER: root
+      DBT_ENV_SECRET_POSTGRES_PASS: ''
+      POSTGRES_PORT: 5432
+      POSTGRES_DATABASE: circle_test
+      POSTGRES_SCHEMA: dbt_utils_integration_tests_postgres
 
     steps:
       - checkout
@@ -105,7 +106,8 @@ workflows:
   version: 2
   test-all:
     jobs:
-      - integration-postgres
+      - integration-postgres:
+          context: profile-postgres
       - integration-redshift:
           context: profile-redshift
           requires:

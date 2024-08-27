@@ -1,0 +1,139 @@
+# **what?**
+# Run tests for dbt-utils against supported adapters
+
+# **why?**
+# To ensure that dbt-utils works as expected with all supported adapters
+
+# **when?**
+# On every PR, and every push to main and when manually triggered
+
+name: Package Integration Tests
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+    workflow_dispatch:
+        inputs:
+            adapter:
+                description: The adapter to test against.  Defaults to all supported adapters when blank.
+                type: string
+                required: false
+
+env:
+    PYTHON_VERSION: "3.11"
+
+jobs:
+    determine-supported-adapters:
+        runs-on: ubuntu-latest
+        outputs:
+            adapters: ${{ steps.supported-adapters.outputs.adapters }}
+        steps:
+            - name: "Checkout ${{ github.event.repository }}"
+              uses: actions/checkout@v4
+
+            - name: "Set up Python ${{ env.PYTHON_VERSION }}"
+              uses: actions/setup-python@v5
+              with:
+                  python-version: ${{ env.PYTHON_VERSION }}
+
+            - name: "Install tox"
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install tox
+
+            - name: "Get list of supported adapters or use input adapter only"
+              id: list-adapters
+              run: |
+                  if [ -z "${{ inputs.adapter }}" ]; then
+                      # github adds a pip freeze and a new line we need to strip out
+                      source supported_adapters.env
+                      echo $SUPPORTED_ADAPTERS
+                      echo "test_adapters=$SUPPORTED_ADAPTERS" >> $GITHUB_OUTPUT
+                  else
+                      echo "test_adapters=${{ inputs.adapter }}" >> $GITHUB_OUTPUT
+                  fi
+
+            - name: "Format adapter list for use as the matrix"
+              id: supported-adapters
+              run: |
+                  # Convert to JSON array and output
+                  supported_adapters=$(echo "${{ steps.list-adapters.outputs.test_adapters }}" | jq -Rc 'split(",")')
+                  echo $supported_adapters
+                  echo "adapters=$supported_adapters" >> $GITHUB_OUTPUT
+
+            - name: "[ANNOTATION] ${{ github.event.repository.name }} - Testing ${{ steps.supported-adapters.outputs.adapters }}"
+              run: |
+                  title="${{ github.event.repository.name }} - adapters to test"
+                  message="The workflow will run tests for the following adapters: ${{ steps.supported-adapters.outputs.adapters }}"
+                  echo "::notice $title::$message"
+
+    run-tests:
+        runs-on: ubuntu-latest
+        needs: [determine-supported-adapters]
+        services:
+            postgres:
+                image: postgres
+                env:
+                    POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+                    POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASS }}
+                    POSTGRES_DB: ${{ vars.POSTGRES_DATABASE }}
+                    POSTGRES_HOST: ${{ vars.POSTGRES_HOST }}
+                options: >-
+                    --health-cmd pg_isready
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+                ports:
+                    - 5432:5432
+        strategy:
+            fail-fast: false
+            matrix:
+                adapter: ${{fromJson(needs.determine-supported-adapters.outputs.adapters)}}
+
+        steps:
+            - name: "Checkout ${{ github.event.repository }} "
+              uses: actions/checkout@v4
+
+            - name: "Set up Python ${{ env.PYTHON_VERSION }}"
+              uses: actions/setup-python@v5
+              with:
+                  python-version: ${{ env.PYTHON_VERSION }}
+
+            - name: "Install ${{ matrix.adapter }}"
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install dbt-${{ matrix.adapter }}
+
+            - name: "Install tox"
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install tox
+
+            - name: "Run integration tests with tox on ${{ matrix.adapter }}"
+              run: |
+                  tox -e dbt_integration_${{ matrix.adapter }}
+              env:
+                  POSTGRES_HOST: ${{ vars.POSTGRES_HOST }}
+                  POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+                  DBT_ENV_SECRET_POSTGRES_PASS: ${{ secrets.POSTGRES_PASS }}
+                  POSTGRES_PORT: 5432
+                  POSTGRES_DATABASE: ${{ vars.POSTGRES_DATABASE }}
+                  POSTGRES_SCHEMA: "dbt_utils_integration_tests_postgres_${{ github.run_number }}"
+                  SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+                  SNOWFLAKE_USER: ${{ vars.SNOWFLAKE_USER }}
+                  DBT_ENV_SECRET_SNOWFLAKE_PASS: ${{ secrets.SNOWFLAKE_PASS }}
+                  SNOWFLAKE_ROLE: ${{ vars.SNOWFLAKE_ROLE }}
+                  SNOWFLAKE_DATABASE: ${{ vars.SNOWFLAKE_DATABASE }}
+                  SNOWFLAKE_WAREHOUSE: ${{ vars.SNOWFLAKE_WAREHOUSE }}
+                  SNOWFLAKE_SCHEMA: "dbt_utils_integration_tests_snowflake_${{ github.run_number }}"
+                  REDSHIFT_HOST: ${{ vars.REDSHIFT_HOST }}
+                  REDSHIFT_USER: ${{ vars.REDSHIFT_USER }}
+                  DBT_ENV_SECRET_REDSHIFT_PASS: ${{ secrets.REDSHIFT_PASS }}
+                  REDSHIFT_DATABASE: ${{ vars.REDSHIFT_DATABASE }}
+                  REDSHIFT_SCHEMA: "dbt_utils_integration_tests_redshift_${{ github.run_number }}"
+                  REDSHIFT_PORT: 5439
+                  BIGQUERY_PROJECT: ${{ vars.BIGQUERY_PROJECT }}
+                  BIGQUERY_KEYFILE_JSON: ${{ secrets.BIGQUERY_KEYFILE_JSON }}
+                  BIGQUERY_SCHEMA: "dbt_utils_integration_tests_bigquery_${{ github.run_number }}"

@@ -8,7 +8,6 @@ dbt --version
 
 # Set the profile
 cd integration_tests
-cp ci/sample.profiles.yml profiles.yml
 export DBT_PROFILES_DIR=.
 
 # Show the location of the profiles directory and test the connection

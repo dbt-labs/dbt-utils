@@ -33,7 +33,7 @@ integration_tests:
       dataset: "{{ env_var('BIGQUERY_SCHEMA') }}"
       threads: 10
       keyfile_json:
-        "{{ env_var('BIGQUERY_KEYFILE_JSON') | as_native}}"
+        "{{ env_var('BIGQUERY_KEYFILE_JSON') | as_native }}"
       job_retries: 3
 
     snowflake:

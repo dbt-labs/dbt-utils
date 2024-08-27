@@ -72,6 +72,9 @@ jobs:
       - checkout
       - run: pip install --pre dbt-bigquery -r dev-requirements.txt
       - run:
+          name: Setup Environment Variables
+          command: echo 'export BIGQUERY_KEYFILE_JSON="$BIGQUERY_SERVICE_ACCOUNT_JSON"' >> "$BASH_ENV"
+      - run:
           name: "Run OG Tests - BigQuery"
           command: ./run_test.sh bigquery
       - store_artifacts:

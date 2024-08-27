@@ -25,17 +25,7 @@ integration_tests:
       port: "{{ env_var('REDSHIFT_PORT') | as_number }}"
       schema: "{{ env_var('REDSHIFT_SCHEMA') }}"
       threads: 5
-
-    # this is used by circleCI
-    bigquery-circleci:
-      type: bigquery
-      method: service-account
-      keyfile: "{{ env_var('BIGQUERY_SERVICE_KEY_PATH') }}"
-      project: "{{ env_var('BIGQUERY_TEST_DATABASE') }}"
-      schema: "dbt_utils_integration_tests_bigquery_circle_ci"
-      threads: 10
     
-    # This is used by GH actions
     bigquery:
       type: "bigquery"
       method: "service-account-json"

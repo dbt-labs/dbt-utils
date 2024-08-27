@@ -84,27 +84,6 @@ jobs:
     # The resource_class feature allows configuring CPU and RAM resources for each job. Different resource classes are available for different executors. https://circleci.com/docs/2.0/configuration-reference/#resourceclass    
     resource_class: large
 
-  integration-bigquery-circleci:
-    environment:
-      BIGQUERY_SERVICE_KEY_PATH: "/home/circleci/bigquery-service-key.json"
-    docker:
-      - image: cimg/python:3.9
-    steps:
-      - checkout
-      - run: pip install --pre dbt-bigquery -r dev-requirements.txt
-      - run:
-          name: "Set up credentials"
-          command: echo $BIGQUERY_SERVICE_ACCOUNT_JSON > ${HOME}/bigquery-service-key.json
-      - run:
-          name: "Run OG Tests - BigQuery"
-          command: ./run_test.sh bigquery-circleci
-      - store_artifacts:
-          path: integration_tests/logs
-      - store_artifacts:
-          path: integration_tests/target
-    # The resource_class feature allows configuring CPU and RAM resources for each job. Different resource classes are available for different executors. https://circleci.com/docs/2.0/configuration-reference/#resourceclass    
-    resource_class: large
-
 workflows:
   version: 2
   test-all:
@@ -120,10 +99,6 @@ workflows:
           requires:
             - integration-postgres
       - integration-bigquery:
-          context: profile-bigquery
-          requires:
-            - integration-postgres
-      - integration-bigquery-circleci:
           context: profile-bigquery
           requires:
             - integration-postgres

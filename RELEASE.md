@@ -15,7 +15,7 @@ There's a few scenarios that might prompt a release:
 1. Click "Choose a tag", then paste your version number (with no "v" in the name), then click "Create new tag: x.y.z. on publish"
     - The “Release title” will be identical to the tag name
 1. Click the "Generate release notes" button
-1. Copy and paste the generated release notes into `CHANGELOG.md`, commit, and merge into the `main` branch
+1. Copy and paste the generated release notes into [`CHANGELOG.md`](https://github.com/dbt-labs/dbt-utils/blob/main/CHANGELOG.md?plain=1), reformat to match previous entries, commit, and merge into the `main` branch ([example](https://github.com/dbt-labs/dbt-utils/pull/901))
 1. Click the "Publish release" button
     - This will automatically create an "Assets" section containing:
         - Source code (zip)

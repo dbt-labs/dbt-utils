@@ -19,7 +19,7 @@ on:
 
 jobs:
   run-tests:
-      uses: dbt-labs/dbt-package-testing/.github/workflows/run_tox.yml@main
+      uses: dbt-labs/dbt-package-testing/.github/workflows/run_tox.yml@v1
       with:
         # no need to pass postgres vars in.  We can just use the defaults in the local container
         # redshift

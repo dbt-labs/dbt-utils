@@ -1,5 +1,11 @@
 # Unreleased
 
+## What's Changed
+
+### fixes
+- databricks__get_table_types_sql() will now handle streaming_tables ([#861](https://github.com/dbt-labs/dbt-utils/issues/861))
+- databricks__get_table_types_sql() will now correctly handle materialized views ([#881](https://github.com/dbt-labs/dbt-utils/issues/881))
+
 **Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.3.0...main
 
 # dbt utils v1.3.0

@@ -6,7 +6,50 @@
 - databricks__get_table_types_sql() will now handle streaming_tables ([#861](https://github.com/dbt-labs/dbt-utils/issues/861))
 - databricks__get_table_types_sql() will now correctly handle materialized views ([#881](https://github.com/dbt-labs/dbt-utils/issues/881))
 
-**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.2.0...main
+**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.3.0...main
+
+# dbt utils v1.3.0
+
+## What's Changed
+
+### New features
+
+* Add `quote_identifiers` parameter to `unpivot` to handle case-sensitive column names by @error418 in https://github.com/dbt-labs/dbt-utils/pull/792
+
+### Fixes
+
+* Slugify handle empty strings by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/912
+* Update `not_null_proportion` data test to use cross-database `type_numeric()` macro by @henriblancke in https://github.com/dbt-labs/dbt-utils/pull/800
+* Fix `at_least_one` test when `group_by_columns` is configured by @katieclaiborne-duet in https://github.com/dbt-labs/dbt-utils/pull/922
+
+### Documentation
+
+* Remove "I have added an entry to CHANGELOG.md" from the PR template by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/903
+* Add a PR checklist item for "I have read the contributing guide..." as a catch-all by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/905
+* Simplify the PR checklist in relation to testing by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/907
+* Remove the PR checklist items related to the type of change by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/909
+* Align the PR description with dbt-core, dbt-adapters, etc. by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/911
+* Contributors shouldn't edit the `CHANGELOG.md` directly anymore by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/916
+* Contributing guide instructions for allowing commits from maintainers by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/917
+* Link to tests that support `group_by_columns` by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/931
+* Expand description for the `at_least_one` data test by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/933
+* Update release instructions by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/942
+
+### Under the hood
+
+* Move profiles config to project flags by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/926
+* Delete the old unused logo file by @anks2024 in https://github.com/dbt-labs/dbt-utils/pull/936
+* Add tox by @emmyoop in https://github.com/dbt-labs/dbt-utils/pull/919
+
+## New Contributors
+
+* @henriblancke made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/800
+* @katieclaiborne-duet made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/922
+* @anks2024 made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/936
+* @error418 made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/792
+* @emmyoop made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/919
+
+**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.2.0...1.3.0
 
 # dbt utils v1.2.0
 

@@ -1,8 +1,8 @@
-{% test unique_combination_of_columns(model, combination_of_columns, quote_columns=false) %}
-  {{ return(adapter.dispatch('test_unique_combination_of_columns', 'dbt_utils')(model, combination_of_columns, quote_columns)) }}
+{% test unique_combination_of_columns(model, combination_of_columns, quote_columns=false, not_null=false) %}
+  {{ return(adapter.dispatch('test_unique_combination_of_columns', 'dbt_utils')(model, combination_of_columns, quote_columns, not_null)) }}
 {% endtest %}
 
-{% macro default__test_unique_combination_of_columns(model, combination_of_columns, quote_columns=false) %}
+{% macro default__test_unique_combination_of_columns(model, combination_of_columns, quote_columns=false, not_null=false) %}
 
 {% if not quote_columns %}
     {%- set column_list=combination_of_columns %}
@@ -19,7 +19,6 @@
 
 {%- set columns_csv=column_list | join(', ') %}
 
-
 with validation_errors as (
 
     select
@@ -33,5 +32,16 @@ with validation_errors as (
 select *
 from validation_errors
 
+{% if not_null %}
+    {% for column in combination_of_columns %}
+        union all
+        select *
+        from (
+            select {{ columns_csv }}
+            from {{ model }}
+            where {{ column }} is null
+        )
+    {% endfor %}
+{% endif %}
 
 {% endmacro %}

@@ -565,6 +565,17 @@ An optional `quote_columns` argument (`default=false`) can also be used if a col
 
 ```
 
+An optional `not_null` argument (`default=false`) can also be used to test for null values in each of the provided columns.
+```yaml
+- name: revenue_by_product_by_month
+  tests:
+    - dbt_utils.unique_combination_of_columns:
+        combination_of_columns:
+          - month
+          - group
+        not_null: true
+```
+
 ### accepted_range ([source](macros/generic_tests/accepted_range.sql))
 
 Asserts that a column's values fall inside an expected range. Any combination of `min_value` and `max_value` is allowed, and the range can be inclusive or exclusive. Provide [a `where` argument](https://docs.getdbt.com/reference/resource-configs/where) to filter to specific records only.

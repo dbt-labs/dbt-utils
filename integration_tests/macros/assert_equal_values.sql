@@ -1,11 +1,10 @@
 {% macro assert_equal_values(actual_object, expected_object) %}
-{% if not execute %}
+    {% if not execute %}
 
     {# pass #}
+    {% elif actual_object != expected_object %}
 
-{% elif actual_object != expected_object %}
-
-    {% set msg %}
+        {% set msg %}
     Expected did not match actual
 
     -----------
@@ -18,15 +17,13 @@
     -----------
     --->{{ expected_object }}<---
 
-    {% endset %}
+        {% endset %}
 
-    {{ log(msg, info=True) }}
+        {{ log(msg, info=True) }}
 
-    select 'fail'
+        select 'fail'
 
-{% else %}
+    {% else %} select 'ok' {{ limit_zero() }}
 
-    select 'ok' {{ limit_zero() }}
-
-{% endif %}
+    {% endif %}
 {% endmacro %}

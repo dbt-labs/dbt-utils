@@ -6,6 +6,7 @@
 
 ## What's Changed
 
+
 ### New features
 
 * Add `quote_identifiers` parameter to `unpivot` to handle case-sensitive column names by @error418 in https://github.com/dbt-labs/dbt-utils/pull/792

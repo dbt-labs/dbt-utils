@@ -1,8 +1,9 @@
 version: "3.7"
 services:
   postgres:
-    image: cimg/postgres:9.6
+    image: cimg/postgres:13.19
     environment:
       - POSTGRES_USER=root
+      - POSTGRES_DB=dbt_utils_test
     ports:
       - "5432:5432"

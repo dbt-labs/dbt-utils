@@ -606,6 +606,38 @@ models:
                 where: "num_orders > 0"
 ```
 
+### functional_dependency ([source](macros/generic_tests/functional_dependency.sql))
+
+Asserts that one or more columns (the “determinants”) functionally determine another column (the “dependent”). For each unique combination of the determinant columns, there should be exactly one distinct value in the dependent column. If any combination of determinant columns maps to multiple dependent values, the test fails.
+
+Provide [a `where` argument](https://docs.getdbt.com/reference/resource-configs/where) to filter to specific records only (useful for partial checks).
+
+**Usage:**
+
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    columns:
+      - name: col_a
+      - name: col_b
+      - name: col_y
+        tests:
+          - dbt_utils.functional_dependency:
+              determinants:
+                - col_a
+                - col_b
+              dependent: col_y
+              # Optional filtering
+              config:
+                where: "active = true"
+```
+
+In this example, `(col_a, col_b)` together determine `col_y`. If any `(col_a, col_b)` pair is associated with more than one distinct `col_y`, the test fails. If you only need a single column as the determinant, simply pass one item in the `determinants` list. 
+
+Because the `where` clause uses the standard [dbt `config`](https://docs.getdbt.com/reference/configs-and-properties) pattern, you can further customize the scope of rows evaluated by this test (e.g., checking the dependency only for recent records).
+
 ----
 
 ### Grouping in tests

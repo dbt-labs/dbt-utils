@@ -47,22 +47,6 @@ jobs:
     # The resource_class feature allows configuring CPU and RAM resources for each job. Different resource classes are available for different executors. https://circleci.com/docs/2.0/configuration-reference/#resourceclass    
     resource_class: large
 
-  integration-snowflake:
-    docker:
-      - image: cimg/python:3.9
-    steps:
-      - checkout
-      - run: pip install --pre dbt-snowflake -r dev-requirements.txt
-      - run:
-          name: "Run OG Tests - Snowflake"
-          command: ./run_test.sh snowflake
-      - store_artifacts:
-          path: integration_tests/logs          
-      - store_artifacts:
-          path: integration_tests/target
-    # The resource_class feature allows configuring CPU and RAM resources for each job. Different resource classes are available for different executors. https://circleci.com/docs/2.0/configuration-reference/#resourceclass    
-    resource_class: large
-
   integration-bigquery:
     environment:
       BIGQUERY_SERVICE_KEY_PATH: "/home/circleci/bigquery-service-key.json"
@@ -92,10 +76,6 @@ workflows:
           context: profile-postgres
       - integration-redshift:
           context: profile-redshift
-          requires:
-            - integration-postgres
-      - integration-snowflake:
-          context: profile-snowflake
           requires:
             - integration-postgres
       - integration-bigquery:

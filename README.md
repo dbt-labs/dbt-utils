@@ -536,7 +536,14 @@ We generally recommend testing this uniqueness condition by either:
 
 - generating a [surrogate_key](#generate_surrogate_key-source) for your model and testing
 the uniqueness of said key, OR
-- passing the `unique` test a concatenation of the columns (as discussed [here](https://docs.getdbt.com/docs/building-a-dbt-project/testing-and-documentation/testing/#testing-expressions)).
+- passing the `unique` test a concatenation of the columns:
+    ```yaml
+    models:
+      - name: revenue_by_product_by_month
+        tests:
+          - unique:
+              column_name: "month || '-' || product"
+    ```
 
 However, these approaches can become non-perfomant on large data sets, in which
 case we recommend using this test instead.

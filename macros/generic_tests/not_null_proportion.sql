@@ -9,7 +9,7 @@
 {% set at_most = kwargs.get('at_most', kwargs.get('arg', 1)) %}
 
 {% if group_by_columns|length() > 0 %}
-  {% set select_gb_cols = group_by_columns|join(' ,') + ', ' %}
+  {% set select_gb_cols = group_by_columns|join(' ,') + ' as _group, ' %}
   {% set groupby_gb_cols = 'group by ' + group_by_columns|join(',') %}
 {% endif %}
 
@@ -22,7 +22,7 @@ with validation as (
 ),
 validation_errors as (
   select
-    {{select_gb_cols}}
+    {% if group_by_columns|length() > 0 %}_group,{% endif %}
     not_null_proportion
   from validation
   where not_null_proportion < {{ at_least }} or not_null_proportion > {{ at_most }}

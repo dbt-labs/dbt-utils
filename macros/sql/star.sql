@@ -14,17 +14,17 @@
     {% set cols = dbt_utils.get_filtered_columns_in_relation(from, except) %}
 
     {%- if cols|length <= 0 -%}
-        {% if flags.WHICH == 'compile' %}
-            {% set response %}
+        {%- if flags.WHICH == 'compile' -%}
+            {%- set response -%}
 *
-/* No columns were returned. Maybe the relation doesn't exist yet 
-or all columns were excluded. This star is only output during  
+/* No columns were returned. Maybe the relation doesn't exist yet
+or all columns were excluded. This star is only output during
 dbt compile, and exists to keep SQLFluff happy. */
-            {% endset %}
-            {% do return(response) %}
-        {% else %}
-            {% do return("/* no columns returned from star() macro */") %}
-        {% endif %}
+            {%- endset -%}
+            {%- do return(response) -%}
+        {%- else -%}
+            {%- do return("/* no columns returned from star() macro */") -%}
+        {%- endif -%}
     {%- else -%}
         {%- for col in cols %}
             {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}

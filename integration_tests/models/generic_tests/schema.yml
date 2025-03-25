@@ -164,6 +164,13 @@ seeds:
           exclude_columns:
             - col_c
 
+  - name: data_test_equality_condition_a
+    data_tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_condition_b')
+          model_condition: col_a <> 4
+          compare_model_condition: col_a <> 5
+
   - name: data_test_equality_floats_a
     data_tests:
       # test precision only

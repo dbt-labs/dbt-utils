@@ -1,8 +1,11 @@
-{% test equality(model, compare_model, compare_columns=None, exclude_columns=None, precision = None) %}
-  {{ return(adapter.dispatch('test_equality', 'dbt_utils')(model, compare_model, compare_columns, exclude_columns, precision)) }}
+{% test equality(model, compare_model, compare_columns=None, exclude_columns=None, precision = None, model_condition="1=1", compare_model_condition="1=1") %}
+  {{ return(adapter.dispatch('test_equality', 'dbt_utils')(model, compare_model, compare_columns, exclude_columns, precision, model_condition, compare_model_condition)) }}
 {% endtest %}
 
-{% macro default__test_equality(model, compare_model, compare_columns=None, exclude_columns=None, precision = None) %}
+{% macro default__test_equality(model, compare_model, compare_columns=None, exclude_columns=None, precision = None, model_condition="1=1", compare_model_condition="1=1") %}
+
+{# T-SQL has no boolean data type so we use 1=1 which returns TRUE #}
+{# ref https://stackoverflow.com/a/7170753/3842610 #}
 
 {%- if compare_columns and exclude_columns -%}
     {{ exceptions.raise_compiler_error("Both a compare and an ignore list were provided to the `equality` macro. Only one is allowed") }}
@@ -129,11 +132,15 @@ with a as (
 
     select * from {{ model }}
 
+    where {{ model_condition }}
+
 ),
 
 b as (
 
     select * from {{ compare_model }}
+
+    where {{ compare_model_condition }}
 
 ),
 

@@ -164,6 +164,28 @@ seeds:
           exclude_columns:
             - col_c
 
+  - name: data_test_equality_different_column_names_a
+    data_tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_different_column_names_b')
+          compare_columns:
+            - col_a
+            - [tbl_a_col_b, tbl_b_col_b]
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_different_column_names_b')
+          compare_columns:
+            - col_a
+            - [tbl_a_col_float, tbl_b_col_float]
+          precision: 4
+      - dbt_utils.equality:
+          compare_model: ref('data_test_equality_different_column_names_b')
+          compare_columns:
+            - col_a
+            - [tbl_a_col_float, tbl_b_col_float]
+          precision: 8
+          error_if: "<1" #sneaky way to ensure that the test is returning failing rows
+          warn_if: "<0"
+
   - name: data_test_equality_floats_a
     data_tests:
       # test precision only

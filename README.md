@@ -145,6 +145,18 @@ models:
           compare_model: ref('other_table_name')
           exclude_columns:
             - third_column
+
+  # if the columns to be compared have different names, you can match them up like this
+  - name: model_name_different_names
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('other_table_name')
+          compare_columns:
+            - first_column
+            # This will compare `model_name_different_names.second_column_in_model`
+            # and `other_table_name.second_column_in_other_table`
+            - [second_column_in_model, second_column_in_other_table]
+          precision: 4
 ```
 
 ### expression_is_true ([source](macros/generic_tests/expression_is_true.sql))

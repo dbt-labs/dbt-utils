@@ -114,7 +114,7 @@ This test supports the `group_by_columns` parameter; see [Grouping in tests](#gr
 
 ### equality ([source](macros/generic_tests/equality.sql))
 
-Asserts the equality of two relations. Optionally specify a subset of columns to compare or exclude, and a precision to compare numeric columns on.
+Asserts the equality of two relations. Optionally specify a subset of columns to compare or exclude, and a precision to compare numeric columns on. An optional predicate can filter out some rows from the test. This is useful to exclude records such as test entities, rows created in the last X minutes/hours to account for temporary gaps due to ETL limitations, etc.
 
 **Usage:**
 
@@ -145,6 +145,16 @@ models:
           compare_model: ref('other_table_name')
           exclude_columns:
             - third_column
+
+  # only compare some rows in model_name or other_table_name
+  - name: model_name
+    tests:
+      - dbt_utils.equality:
+          compare_model: ref('other_table_name')
+          # Exclude rows from model_name with given identifier
+          model_condition: id <> '4ca448b8-24bf-4b88-96c6-b1609499c38b'
+          # Exclude rows from other_table_name newer than the given date
+          compare_model_condition: updated_date < '2020-01-01'
 ```
 
 ### expression_is_true ([source](macros/generic_tests/expression_is_true.sql))

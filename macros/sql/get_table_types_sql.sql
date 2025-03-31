@@ -12,6 +12,18 @@
 {% endmacro %}
 
 
+{% macro clickhouse__get_table_types_sql() %}
+            case table_type
+                when 'BASE TABLE' then 'table'
+                when 'VIEW' then 'view'
+                when 'FOREIGN TABLE' then 'foreigntable'
+                when 'LOCAL TEMPORARY' then 'localtemporary'
+                when 'SYSTEM VIEW' then 'systemview'
+                else lower(table_type)
+            end as {{ adapter.quote('table_type') }}
+{% endmacro %}
+
+
 {% macro postgres__get_table_types_sql() %}
             case table_type
                 when 'BASE TABLE' then 'table'

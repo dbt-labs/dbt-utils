@@ -65,32 +65,22 @@ Arguments:
                else_value=0,
                quote_identifiers=True,
                distinct=False) %}
-
-  {# Check if values are empty or None #}
-  {% if values is none or values == [] %}
-    {{ log('Pivot: No values to pivot. Creating an empty column with the default then_value.', info=True) }}
-    {% set empty_column = prefix ~ 'empty' ~ suffix %}
-    {{ then_value }} as {{ adapter.quote(empty_column) }}
-
-  {% else %}
-    {# Regular pivot behavior with provided values #}
-    {% for value in values %}
-      {{ agg }}(
-        {% if distinct %} distinct {% endif %}
-        case
-        when {{ column }} {{ cmp }} '{{ dbt.escape_single_quotes(value) }}'
-          then {{ then_value }}
-        else {{ else_value }}
-        end
-      )
-      {% if alias %}
-        {% if quote_identifiers %}
-              as {{ adapter.quote(prefix ~ value ~ suffix) }}
-        {% else %}
-          as {{ dbt_utils.slugify(prefix ~ value ~ suffix) }}
-        {% endif %}
+  {% for value in values %}
+    {{ agg }}(
+      {% if distinct %} distinct {% endif %}
+      case
+      when {{ column }} {{ cmp }} '{{ dbt.escape_single_quotes(value) }}'
+        then {{ then_value }}
+      else {{ else_value }}
+      end
+    )
+    {% if alias %}
+      {% if quote_identifiers %}
+            as {{ adapter.quote(prefix ~ value ~ suffix) }}
+      {% else %}
+        as {{ dbt_utils.slugify(prefix ~ value ~ suffix) }}
       {% endif %}
-      {% if not loop.last %},{% endif %}
-    {% endfor %}
-  {% endif %}
+    {% endif %}
+    {% if not loop.last %},{% endif %}
+  {% endfor %}
 {% endmacro %}

@@ -17,14 +17,7 @@
     {%- if execute -%}
         {% set sql_results_table = load_result('get_query_results').table.columns %}
         {% for column_name, column in sql_results_table.items() %}
-            {% if column.values() %}
-                {% do sql_results.update({column_name: column.values()}) %}
-            {% else %}
-                {# If column is empty, assign a dummy value#}
-                {% do sql_results.update({column_name: ' '}) %}
-                {{ log('Column ' ~ column_name ~ ' has no values. Assigning empty value', info=True) }}
-            {% endif %}
-
+            {% do sql_results.update({column_name: column.values()}) %}
         {% endfor %}
     {%- endif -%}
 

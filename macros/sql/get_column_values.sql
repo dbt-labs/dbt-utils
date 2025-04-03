@@ -13,11 +13,8 @@
 
     {# Not all relations are tables. Renaming for internal clarity without breaking functionality for anyone using named arguments #}
     {# TODO: Change the method signature in a future 0.x.0 release #}
-    {%- set target_relation = table -%} 
-    {% if table is string %}
-        {{ log("target_relation" ~ target_relation ~ "is not in the valid database.schema.table format. Returning the default value: " ~ default, info=True) }}
-        {{ return(default) }}
-    {% endif %}
+    {%- set target_relation = table -%}
+
     {# adapter.load_relation is a convenience wrapper to avoid building a Relation when we already have one #}
     {% set relation_exists = (load_relation(target_relation)) is not none %}
 

@@ -14,6 +14,14 @@
     {% endif -%}
 
     {%- set column_override = column_override if column_override is not none else {} -%}
+    
+    {# Convert column_override keys to lowercase #}
+    {%- set lowercase_column_override = {} -%}
+    {%- if column_override is not none -%}
+        {%- for col, type in column_override.items() -%}
+            {%- do lowercase_column_override.update({col | lower: type | lower}) -%}
+        {%- endfor -%}
+    {%- endif -%}
 
     {%- set relation_columns = {} -%}
     {%- set column_superset = {} -%}
@@ -106,7 +114,7 @@
                 {% for col_name in ordered_column_names -%}
 
                     {%- set col = column_superset[col_name] %}
-                    {%- set col_type = column_override.get(col.column, col.data_type) %}
+                    {%- set col_type = lowercase_column_override.get(col.column | lower, col.data_type) %}
                     {%- set col_name = adapter.quote(col_name) if col_name in relation_columns[relation] else 'null' %}
                     cast({{ col_name }} as {{ col_type }}) as {{ col.quoted }} {% if not loop.last %},{% endif -%}
 

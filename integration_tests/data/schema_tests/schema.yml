@@ -19,3 +19,14 @@ seeds:
           - dbt_utils.sequential_values:
               interval: 1
               datepart: 'hour'
+
+
+  - name: data_test_functional_dependency
+    columns:
+      - name: order_id
+      - name: customer_id
+      - name: customer_name
+        data_tests:
+          - dbt_utils.functional_dependency:
+              depends_on:
+                - customer_id

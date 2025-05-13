@@ -613,6 +613,27 @@ models:
                 where: "num_orders > 0"
 ```
 
+### functional_dependency ([source](macros/generic_tests/functional_dependency.sql))
+
+This test confirms that a particular column is *functionally dependent* on one or more other columns. That is, for each distinct combination of those other columns, there should be no more than one distinct value in our particular column.
+
+This test is often useful for denormalized source data, where logical relationships between fields are implicitly expected but don't always hold, due to manual entry errors, or merges from different systems. Broken functional dependencies often surface as dupes and other anomalies downstream.
+
+*Common misunderstanding*: Functional dependency is *not* uniqueness. Functional dependency checks there is at most one distinct value (in each group), but allows that value to appear many times. Uniqueness allows many distinct values, but checks each value appears only once.
+
+**Usage:**
+
+```yaml
+models:
+  - name: orders
+    columns:
+      - name: customer_name
+        tests:
+        - dbt_utils.functional_dependency:
+            depends_on:
+              - customer_id
+```
+
 ----
 
 ### Grouping in tests

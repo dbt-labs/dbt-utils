@@ -13,7 +13,9 @@ on:
     push:
         branches:
             - main
-    pull_request_target:
+    # pull_request_target:
+    # TODO: remove -> using pull request so it runs on initial PR but needs to be PR target for forks
+    pull_request:
     workflow_dispatch:
 
 

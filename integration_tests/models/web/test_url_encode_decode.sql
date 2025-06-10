@@ -9,7 +9,7 @@ test_data as (
 final as (
 
     select
-        {{ dbt_utils.url_encode('decoded') }} as actual,
+        {{ dbt_utils.url_encode('encoded') }} as actual,
         decoded as expected
 
     from test_data
@@ -17,7 +17,7 @@ final as (
     union all
 
     select
-        {{ dbt_utils.url_decode('encoded') }} as actual,
+        {{ dbt_utils.url_decode('decoded') }} as actual,
         encoded as expected
 
     from test_data

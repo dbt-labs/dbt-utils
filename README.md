@@ -1438,7 +1438,9 @@ sources:
 Error Handling
 
 If linked_servers[source] is missing, a compile-time error is raised:
+```
 Missing linked_server for source: source. Define in dbt_project.yml vars: linked_servers
+```
 If neither target_flag nor source_name is provided correctly:
 
 

@@ -1,8 +1,14 @@
 # Unreleased
 
-**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.2.0...main
+# dbt utils v1.4.0
+**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.4.0...main
+* union_relations macro now outputs '*' in compile mode when the upstream relations haven't been built, such as when running SQLFluff on new models
+
+## New Contributors
+* @martinshjung made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/832
 
 # dbt utils v1.2.0
+**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.2.0...main
 
 ## What's Changed
 
@@ -16,7 +22,6 @@
 * Use QUALIFY clause in `deduplicate` macro for Redshift by @yauhen-sobaleu in https://github.com/dbt-labs/dbt-utils/pull/811
 * get redshift external tables by @brendan-cook-87 in https://github.com/dbt-labs/dbt-utils/pull/753
 * Equality test will now raise an error when the second model has less columns than the first by @rlh1994 in https://github.com/dbt-labs/dbt-utils/pull/765
-* union_relations macro now outputs '*' in compile mode when the upstream relations haven't been built, such as when running SQLFluff on new models
 
 ### Documentation
 
@@ -44,7 +49,6 @@
 * @yamotech made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/876
 * @PChambino made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/853
 * @pruoff made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/856
-* @martinshjung made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/832
 
 **Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.1.1...1.2.0
 

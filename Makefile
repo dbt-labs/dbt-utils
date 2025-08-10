@@ -2,7 +2,8 @@
 
 .PHONY: test
 test: ## Run the integration tests.
-	@./run_test.sh $(target)
+	@\
+	tox -e dbt_integration_$(target)
 
 .PHONY: dev
 dev: ## Installs dbt-* packages in develop mode along with development dependencies.

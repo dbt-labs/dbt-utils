@@ -223,7 +223,7 @@ This test supports the `group_by_columns` parameter; see [Grouping in tests](#gr
 
 ### at_least_one ([source](macros/generic_tests/at_least_one.sql))
 
-Asserts that a column has at least one value.
+Asserts that a column has at least one value that is not `null`.
 
 **Usage:**
 
@@ -536,7 +536,14 @@ We generally recommend testing this uniqueness condition by either:
 
 - generating a [surrogate_key](#generate_surrogate_key-source) for your model and testing
 the uniqueness of said key, OR
-- passing the `unique` test a concatenation of the columns (as discussed [here](https://docs.getdbt.com/docs/building-a-dbt-project/testing-and-documentation/testing/#testing-expressions)).
+- passing the `unique` test a concatenation of the columns:
+    ```yaml
+    models:
+      - name: revenue_by_product_by_month
+        tests:
+          - unique:
+              column_name: "month || '-' || product"
+    ```
 
 However, these approaches can become non-perfomant on large data sets, in which
 case we recommend using this test instead.
@@ -617,13 +624,13 @@ Certain tests support the optional `group_by_columns` argument to provide more g
 
 This feature is currently available for the following data tests:
 
-- equal_rowcount()
-- fewer_rows_than()
-- recency()
-- at_least_one()
-- not_constant()
-- sequential_values()
-- not_null_proportion()
+- [equal_rowcount](#equal_rowcount-source)
+- [fewer_rows_than](#fewer_rows_than-source)
+- [recency](#recency-source)
+- [at_least_one](#at_least_one-source)
+- [not_constant](#not_constant-source)
+- [sequential_values](#sequential_values-source)
+- [not_null_proportion](#not_null_proportion-source)
 
 To use this feature, the names of grouping variables can be passed as a list. For example, to test for at least one valid value by group, the `group_by_columns` argument could be used as follows:
 
@@ -1228,6 +1235,7 @@ Boolean values are replaced with the strings 'true'|'false'
 - `remove`: A list of columns to remove from the resulting table.
 - `field_name`: column name in the resulting table for field
 - `value_name`: column name in the resulting table for value
+- `quote_identifiers` (optional, default=`False`): will encase selected columns and aliases in quotes according to your adapter's implementation of `adapter.quote` (e.g. `"field_name" as "field_name"`).
 
 ### width_bucket ([source](macros/sql/width_bucket.sql))
 

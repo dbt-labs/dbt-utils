@@ -1,0 +1,44 @@
+# **what?**
+# Run tests for dbt-utils against supported adapters
+
+# **why?**
+# To ensure that dbt-utils works as expected with all supported adapters
+
+# **when?**
+# On every PR, and every push to main and when manually triggered
+
+name: Package Integration Tests
+
+on:
+    push:
+        branches:
+            - main
+    pull_request_target:
+    workflow_dispatch:
+
+
+jobs:
+  run-tests:
+      uses: dbt-labs/dbt-package-testing/.github/workflows/run_tox.yml@v1
+      with:
+        # no need to pass postgres vars in.  We can just use the defaults in the local container
+        # redshift
+        REDSHIFT_HOST: ${{ vars.REDSHIFT_HOST }}
+        REDSHIFT_USER: ${{ vars.REDSHIFT_USER }}
+        REDSHIFT_DATABASE: ${{ vars.REDSHIFT_DATABASE }}
+        REDSHIFT_SCHEMA: "dbt_utils_integration_tests_redshift_${{ github.run_number }}"
+        REDSHIFT_PORT: 5439
+        # bigquery
+        BIGQUERY_PROJECT: ${{ vars.BIGQUERY_PROJECT }}
+        BIGQUERY_SCHEMA: "dbt_utils_integration_tests_bigquery_${{ github.run_number }}"
+        # snowflake
+        SNOWFLAKE_USER: ${{ vars.SNOWFLAKE_USER }}
+        SNOWFLAKE_ROLE: ${{ vars.SNOWFLAKE_ROLE }}
+        SNOWFLAKE_DATABASE: ${{ vars.SNOWFLAKE_DATABASE }}
+        SNOWFLAKE_WAREHOUSE: ${{ vars.SNOWFLAKE_WAREHOUSE }}
+        SNOWFLAKE_SCHEMA: "dbt_utils_integration_tests_snowflake_${{ github.run_number }}"
+      secrets:
+        DBT_ENV_SECRET_REDSHIFT_PASS: ${{ secrets.REDSHIFT_PASS }}
+        BIGQUERY_KEYFILE_JSON: ${{ secrets.BIGQUERY_KEYFILE_JSON }}
+        SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+        DBT_ENV_SECRET_SNOWFLAKE_PASS: ${{ secrets.SNOWFLAKE_PASS }}

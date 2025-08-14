@@ -75,6 +75,13 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
 
 ## Generic Tests
 
+> [!NOTE]  
+> The recommended approach going forward is to nest all test arguments under `arguments:` if you use dbt Core 1.10.6 or higher. ([see information on the `require_generic_test_arguments_property` flag](https://docs.getdbt.com/reference/> global-configs/behavior-changes#generic-test-arguments-property)).
+> 
+> - If you use dbt Core < 1.10.6, remove the `arguments:` key from the examples below and list the actual test arguments directly under the test
+> - If you use dbt Core >= 1.10.6 you can set the test arguments under `arguments:` like in the examples, or at the top level
+> - If you use Fusion, the `arguments:` key must be used
+
 ### equal_rowcount ([source](macros/generic_tests/equal_rowcount.sql))
 
 Asserts that two relations have the same number of rows.
@@ -88,7 +95,8 @@ models:
   - name: model_name
     tests:
       - dbt_utils.equal_rowcount:
-          compare_model: ref('other_table_name')
+          arguments:
+            compare_model: ref('other_table_name')
 
 ```
 
@@ -107,7 +115,8 @@ models:
   - name: model_name
     tests:
       - dbt_utils.fewer_rows_than:
-          compare_model: ref('other_table_name')
+          arguments:
+            compare_model: ref('other_table_name')
 ```
 
 This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
@@ -126,25 +135,28 @@ models:
   - name: model_name
     tests:
       - dbt_utils.equality:
-          compare_model: ref('other_table_name')
+          arguments:
+            compare_model: ref('other_table_name')
 
   # only compare some of the columns
   - name: model_name_compare_columns
     tests:
       - dbt_utils.equality:
-          compare_model: ref('other_table_name')
-          compare_columns:
-            - first_column
-            - second_column
-          precision: 4
+          arguments:
+            compare_model: ref('other_table_name')
+            compare_columns:
+              - first_column
+              - second_column
+            precision: 4
 
   # compare all columns except the ones on the ignore list
   - name: model_name_exclude_columns
     tests:
       - dbt_utils.equality:
-          compare_model: ref('other_table_name')
-          exclude_columns:
-            - third_column
+          arguments:
+            compare_model: ref('other_table_name')
+            exclude_columns:
+              - third_column
 ```
 
 ### expression_is_true ([source](macros/generic_tests/expression_is_true.sql))
@@ -165,7 +177,8 @@ models:
   - name: model_name
     tests:
       - dbt_utils.expression_is_true:
-          expression: "col_a + col_b = total"
+          arguments:
+            expression: "col_a + col_b = total"
 ```
 
 The macro accepts an optional argument `where` that allows for asserting
@@ -180,7 +193,8 @@ models:
   - name: model_name
     tests:
       - dbt_utils.expression_is_true:
-          expression: "col_a + col_b = total"
+          arguments:
+            expression: "col_a + col_b = total"
           config:
             where: "created_at > '2018-12-31'"
 ```
@@ -193,11 +207,13 @@ models:
       - name: col_a
         tests:
           - dbt_utils.expression_is_true:
-              expression: '>= 1'
+              arguments:
+                expression: '>= 1'
       - name: col_b
         tests:
           - dbt_utils.expression_is_true:
-              expression: '= 1'
+              arguments:
+                expression: '= 1'
               config:
                 where: col_a = 1
 ```
@@ -215,9 +231,10 @@ models:
   - name: model_name
     tests:
       - dbt_utils.recency:
-          datepart: day
-          field: created_at
-          interval: 1
+          arguments:
+            datepart: day
+            field: created_at
+            interval: 1
 ```
 This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
 
@@ -286,7 +303,8 @@ models:
       - name: column_name
         tests:
           - dbt_utils.not_empty_string:
-              trim_whitespace: false
+              arguments:
+                trim_whitespace: false
               
 ```
 
@@ -305,8 +323,9 @@ models:
       - name: from_column
         tests:
           - dbt_utils.cardinality_equality:
-              field: other_column_name
-              to: ref('other_model_name')
+              arguments:
+                field: other_column_name
+                to: ref('other_model_name')
 ```
 
 
@@ -325,7 +344,8 @@ models:
       - name: id
         tests:
           - dbt_utils.not_null_proportion:
-              at_least: 0.95
+              arguments:
+                at_least: 0.95
 ```
 
 This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
@@ -345,7 +365,8 @@ models:
       - name: city
         tests:
           - dbt_utils.not_accepted_values:
-              values: ['Barcelona', 'New York']
+              arguments:
+                values: ['Barcelona', 'New York']
 ```
 
 ### relationships_where ([source](macros/generic_tests/relationships_where.sql))
@@ -363,10 +384,11 @@ models:
       - name: id
         tests:
           - dbt_utils.relationships_where:
-              to: ref('other_model_name')
-              field: client_id
-              from_condition: id <> '4ca448b8-24bf-4b88-96c6-b1609499c38b'
-              to_condition: created_date >= '2020-01-01'
+              arguments:
+                to: ref('other_model_name')
+                field: client_id
+                from_condition: id <> '4ca448b8-24bf-4b88-96c6-b1609499c38b'
+                to_condition: created_date >= '2020-01-01'
 ```
 
 ### mutually_exclusive_ranges ([source](macros/generic_tests/mutually_exclusive_ranges.sql))
@@ -385,27 +407,30 @@ models:
   - name: age_brackets
     tests:
       - dbt_utils.mutually_exclusive_ranges:
-          lower_bound_column: min_age
-          upper_bound_column: max_age
-          gaps: not_allowed
+          arguments:
+            lower_bound_column: min_age
+            upper_bound_column: max_age
+            gaps: not_allowed
 
   # test that each customer can only have one subscription at a time
   - name: subscriptions
     tests:
       - dbt_utils.mutually_exclusive_ranges:
-          lower_bound_column: started_at
-          upper_bound_column: ended_at
-          partition_by: customer_id
-          gaps: required
+          arguments:
+            lower_bound_column: started_at
+            upper_bound_column: ended_at
+            partition_by: customer_id
+            gaps: required
 
   # test that each customer can have subscriptions that start and end on the same date
   - name: subscriptions
     tests:
       - dbt_utils.mutually_exclusive_ranges:
-          lower_bound_column: started_at
-          upper_bound_column: ended_at
-          partition_by: customer_id
-          zero_length_range_allowed: true
+          arguments:
+            lower_bound_column: started_at
+            upper_bound_column: ended_at
+            partition_by: customer_id
+            zero_length_range_allowed: true
 ```
 
 **Args:**
@@ -433,10 +458,11 @@ models:
   - name: subscriptions
     tests:
       - dbt_utils.mutually_exclusive_ranges:
-          lower_bound_column: coalesce(started_at, '1900-01-01')
-          upper_bound_column: coalesce(ended_at, '2099-12-31')
-          partition_by: customer_id
-          gaps: allowed
+          arguments:
+            lower_bound_column: coalesce(started_at, '1900-01-01')
+            upper_bound_column: coalesce(ended_at, '2099-12-31')
+            partition_by: customer_id
+            gaps: allowed
 ```
 
 <details>
@@ -507,7 +533,8 @@ seeds:
       - name: i
         tests:
           - dbt_utils.sequential_values:
-              interval: 2
+              arguments:
+                interval: 2
 
 
   - name: util_hours
@@ -515,8 +542,9 @@ seeds:
       - name: date_hour
         tests:
           - dbt_utils.sequential_values:
-              interval: 1
-              datepart: 'hour'
+              arguments:
+                interval: 1
+                datepart: 'hour'
 ```
 
 **Args:**
@@ -554,9 +582,10 @@ case we recommend using this test instead.
 - name: revenue_by_product_by_month
   tests:
     - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - month
-          - product
+        arguments:
+          combination_of_columns:
+            - month
+            - product
 ```
 
 An optional `quote_columns` argument (`default=false`) can also be used if a column name needs to be quoted.
@@ -565,10 +594,11 @@ An optional `quote_columns` argument (`default=false`) can also be used if a col
 - name: revenue_by_product_by_month
   tests:
     - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - month
-          - group
-        quote_columns: true
+        arguments:
+          combination_of_columns:
+            - month
+            - group
+          quote_columns: true
 
 ```
 
@@ -589,26 +619,30 @@ models:
       - name: user_id
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              inclusive: false
+              arguments:
+                min_value: 0
+                inclusive: false
 
       - name: account_created_at
         tests:
           - dbt_utils.accepted_range:
-              max_value: "getdate()"
-              #inclusive is true by default
+              arguments:
+                max_value: "getdate()"
+                #inclusive is true by default
 
       - name: num_returned_orders
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: "num_orders"
+              arguments:
+                min_value: 0
+                max_value: "num_orders"
 
       - name: num_web_sessions
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              inclusive: false
+              arguments:
+                min_value: 0
+                inclusive: false
               config:
                 where: "num_orders > 0"
 ```
@@ -640,7 +674,8 @@ To use this feature, the names of grouping variables can be passed as a list. Fo
       - name: field
         tests:
           - dbt_utils.at_least_one:
-              group_by_columns: ['customer_segment']
+              arguments:
+                group_by_columns: ['customer_segment']
 ```
 
 ## Macros

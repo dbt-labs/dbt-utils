@@ -8,64 +8,64 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
 
 <!--This table of contents is automatically generated. Any manual changes between the ts and te tags will be overridden!-->
 <!--ts-->
-   * [Installation Instructions](#installation-instructions)
-   * [Generic Tests](#generic-tests)
-      * [equal_rowcount (<a href="macros/generic_tests/equal_rowcount.sql">source</a>)](#equal_rowcount-source)
-      * [fewer_rows_than (<a href="macros/generic_tests/fewer_rows_than.sql">source</a>)](#fewer_rows_than-source)
-      * [equality (<a href="macros/generic_tests/equality.sql">source</a>)](#equality-source)
-      * [expression_is_true (<a href="macros/generic_tests/expression_is_true.sql">source</a>)](#expression_is_true-source)
-      * [recency (<a href="macros/generic_tests/recency.sql">source</a>)](#recency-source)
-      * [at_least_one (<a href="macros/generic_tests/at_least_one.sql">source</a>)](#at_least_one-source)
-      * [not_constant (<a href="macros/generic_tests/not_constant.sql">source</a>)](#not_constant-source)
-      * [not_empty_string (<a href="macros/generic_tests/not_empty_string.sql">source</a>)](#not_empty_string-source)
-      * [cardinality_equality (<a href="macros/generic_tests/cardinality_equality.sql">source</a>)](#cardinality_equality-source)
-      * [not_null_proportion (<a href="macros/generic_tests/not_null_proportion.sql">source</a>)](#not_null_proportion-source)
-      * [not_accepted_values (<a href="macros/generic_tests/not_accepted_values.sql">source</a>)](#not_accepted_values-source)
-      * [relationships_where (<a href="macros/generic_tests/relationships_where.sql">source</a>)](#relationships_where-source)
-      * [mutually_exclusive_ranges (<a href="macros/generic_tests/mutually_exclusive_ranges.sql">source</a>)](#mutually_exclusive_ranges-source)
-      * [sequential_values (<a href="macros/generic_tests/sequential_values.sql">source</a>)](#sequential_values-source)
-      * [unique_combination_of_columns (<a href="macros/generic_tests/unique_combination_of_columns.sql">source</a>)](#unique_combination_of_columns-source)
-      * [accepted_range (<a href="macros/generic_tests/accepted_range.sql">source</a>)](#accepted_range-source)
-      * [Grouping in tests](#grouping-in-tests)
-   * [Macros](#macros)
-   * [Introspective macros](#introspective-macros)
-      * [get_column_values (<a href="macros/sql/get_column_values.sql">source</a>)](#get_column_values-source)
-      * [get_filtered_columns_in_relation (<a href="macros/sql/get_filtered_columns_in_relation.sql">source</a>)](#get_filtered_columns_in_relation-source)
-      * [get_relations_by_pattern (<a href="macros/sql/get_relations_by_pattern.sql">source</a>)](#get_relations_by_pattern-source)
-      * [get_relations_by_prefix (<a href="macros/sql/get_relations_by_prefix.sql">source</a>)](#get_relations_by_prefix-source)
-      * [get_query_results_as_dict (<a href="macros/sql/get_query_results_as_dict.sql">source</a>)](#get_query_results_as_dict-source)
-      * [get_single_value (<a href="macros/sql/get_single_value.sql">source</a>)](#get_single_value-source)
-   * [SQL generators](#sql-generators)
-      * [date_spine (<a href="macros/sql/date_spine.sql">source</a>)](#date_spine-source)
-      * [deduplicate (<a href="macros/sql/deduplicate.sql">source</a>)](#deduplicate-source)
-      * [haversine_distance (<a href="macros/sql/haversine_distance.sql">source</a>)](#haversine_distance-source)
-      * [group_by (<a href="macros/sql/groupby.sql">source</a>)](#group_by-source)
-      * [star (<a href="macros/sql/star.sql">source</a>)](#star-source)
-      * [union_relations (<a href="macros/sql/union.sql">source</a>)](#union_relations-source)
-      * [generate_series (<a href="macros/sql/generate_series.sql">source</a>)](#generate_series-source)
-      * [generate_surrogate_key (<a href="macros/sql/generate_surrogate_key.sql">source</a>)](#generate_surrogate_key-source)
-      * [safe_add (<a href="macros/sql/safe_add.sql">source</a>)](#safe_add-source)
-      * [safe_divide (<a href="macros/sql/safe_divide.sql">source</a>)](#safe_divide-source)
-      * [safe_subtract (<a href="macros/sql/safe_subtract.sql">source</a>)](#safe_subtract-source)
-      * [pivot (<a href="macros/sql/pivot.sql">source</a>)](#pivot-source)
-      * [unpivot (<a href="macros/sql/unpivot.sql">source</a>)](#unpivot-source)
-      * [width_bucket (<a href="macros/sql/width_bucket.sql">source</a>)](#width_bucket-source)
-   * [Web macros](#web-macros)
-      * [get_url_parameter (<a href="macros/web/get_url_parameter.sql">source</a>)](#get_url_parameter-source)
-      * [get_url_host (<a href="macros/web/get_url_host.sql">source</a>)](#get_url_host-source)
-      * [get_url_path (<a href="macros/web/get_url_path.sql">source</a>)](#get_url_path-source)
-   * [Cross-database macros](#cross-database-macros)
-   * [Jinja Helpers](#jinja-helpers)
-      * [pretty_time (<a href="macros/jinja_helpers/pretty_time.sql">source</a>)](#pretty_time-source)
-      * [pretty_log_format (<a href="macros/jinja_helpers/pretty_log_format.sql">source</a>)](#pretty_log_format-source)
-      * [log_info (<a href="macros/jinja_helpers/log_info.sql">source</a>)](#log_info-source)
-      * [slugify (<a href="macros/jinja_helpers/slugify.sql">source</a>)](#slugify-source)
-   * [Materializations](#materializations)
-      * [insert_by_period](#insert_by_period)
-   * [Reporting bugs and contributing code](#reporting-bugs-and-contributing-code)
-   * [Dispatch macros](#dispatch-macros)
-   * [Getting started with dbt](#getting-started-with-dbt)
-   * [Code of Conduct](#code-of-conduct)
+- [Installation Instructions](#installation-instructions)
+- [Generic Tests](#generic-tests)
+  - [equal\_rowcount (source)](#equal_rowcount-source)
+  - [fewer\_rows\_than (source)](#fewer_rows_than-source)
+  - [equality (source)](#equality-source)
+  - [expression\_is\_true (source)](#expression_is_true-source)
+  - [recency (source)](#recency-source)
+  - [at\_least\_one (source)](#at_least_one-source)
+  - [not\_constant (source)](#not_constant-source)
+  - [not\_empty\_string (source)](#not_empty_string-source)
+  - [cardinality\_equality (source)](#cardinality_equality-source)
+  - [not\_null\_proportion (source)](#not_null_proportion-source)
+  - [not\_accepted\_values (source)](#not_accepted_values-source)
+  - [relationships\_where (source)](#relationships_where-source)
+  - [mutually\_exclusive\_ranges (source)](#mutually_exclusive_ranges-source)
+  - [sequential\_values (source)](#sequential_values-source)
+  - [unique\_combination\_of\_columns (source)](#unique_combination_of_columns-source)
+  - [accepted\_range (source)](#accepted_range-source)
+  - [Grouping in tests](#grouping-in-tests)
+- [Macros](#macros)
+- [Introspective macros](#introspective-macros)
+  - [get\_column\_values (source)](#get_column_values-source)
+  - [get\_filtered\_columns\_in\_relation (source)](#get_filtered_columns_in_relation-source)
+  - [get\_relations\_by\_pattern (source)](#get_relations_by_pattern-source)
+  - [get\_relations\_by\_prefix (source)](#get_relations_by_prefix-source)
+  - [get\_query\_results\_as\_dict (source)](#get_query_results_as_dict-source)
+  - [get\_single\_value (source)](#get_single_value-source)
+- [SQL generators](#sql-generators)
+  - [date\_spine (source)](#date_spine-source)
+  - [deduplicate (source)](#deduplicate-source)
+  - [haversine\_distance (source)](#haversine_distance-source)
+  - [group\_by (source)](#group_by-source)
+  - [star (source)](#star-source)
+  - [union\_relations (source)](#union_relations-source)
+  - [generate\_series (source)](#generate_series-source)
+  - [generate\_surrogate\_key (source)](#generate_surrogate_key-source)
+  - [safe\_add (source)](#safe_add-source)
+  - [safe\_divide (source)](#safe_divide-source)
+  - [safe\_subtract (source)](#safe_subtract-source)
+  - [pivot (source)](#pivot-source)
+  - [unpivot (source)](#unpivot-source)
+  - [width\_bucket (source)](#width_bucket-source)
+- [Web macros](#web-macros)
+  - [get\_url\_parameter (source)](#get_url_parameter-source)
+  - [get\_url\_host (source)](#get_url_host-source)
+  - [get\_url\_path (source)](#get_url_path-source)
+- [Cross-database macros](#cross-database-macros)
+- [Jinja Helpers](#jinja-helpers)
+  - [pretty\_time (source)](#pretty_time-source)
+  - [pretty\_log\_format (source)](#pretty_log_format-source)
+  - [log\_info (source)](#log_info-source)
+  - [slugify (source)](#slugify-source)
+- [Materializations](#materializations)
+  - [insert\_by\_period](#insert_by_period)
+- [Reporting bugs and contributing code](#reporting-bugs-and-contributing-code)
+- [Dispatch macros](#dispatch-macros)
+- [Getting started with dbt](#getting-started-with-dbt)
+- [Code of Conduct](#code-of-conduct)
 
 <!-- Created by https://github.com/ekalinin/github-markdown-toc -->
 <!-- Added by: runner, at: Thu Feb  9 00:20:43 UTC 2023 -->
@@ -74,6 +74,13 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
 ----
 
 ## Generic Tests
+
+> [!NOTE]  
+> The recommended approach going forward is to nest all test arguments under `arguments:` if you use dbt Core 1.10.6 or higher. ([see information](https://docs.getdbt.com/reference/global-configs/behavior-changes#generic-test-arguments-property) on the `require_generic_test_arguments_property` flag).
+> 
+> - If you use dbt Core < 1.10.6, remove the `arguments:` key from the examples below and list the actual test arguments directly under the test
+> - If you use dbt Core >= 1.10.6 you can set the test arguments under `arguments:` like in the examples, or at the top level
+> - If you use Fusion, the `arguments:` key must be used
 
 ### equal_rowcount ([source](macros/generic_tests/equal_rowcount.sql))
 
@@ -88,7 +95,8 @@ models:
   - name: model_name
     tests:
       - dbt_utils.equal_rowcount:
-          compare_model: ref('other_table_name')
+          arguments:
+            compare_model: ref('other_table_name')
 
 ```
 
@@ -107,7 +115,8 @@ models:
   - name: model_name
     tests:
       - dbt_utils.fewer_rows_than:
-          compare_model: ref('other_table_name')
+          arguments:
+            compare_model: ref('other_table_name')
 ```
 
 This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
@@ -126,25 +135,28 @@ models:
   - name: model_name
     tests:
       - dbt_utils.equality:
-          compare_model: ref('other_table_name')
+          arguments:
+            compare_model: ref('other_table_name')
 
   # only compare some of the columns
   - name: model_name_compare_columns
     tests:
       - dbt_utils.equality:
-          compare_model: ref('other_table_name')
-          compare_columns:
-            - first_column
-            - second_column
-          precision: 4
+          arguments:
+            compare_model: ref('other_table_name')
+            compare_columns:
+              - first_column
+              - second_column
+            precision: 4
 
   # compare all columns except the ones on the ignore list
   - name: model_name_exclude_columns
     tests:
       - dbt_utils.equality:
-          compare_model: ref('other_table_name')
-          exclude_columns:
-            - third_column
+          arguments:
+            compare_model: ref('other_table_name')
+            exclude_columns:
+              - third_column
 ```
 
 ### expression_is_true ([source](macros/generic_tests/expression_is_true.sql))
@@ -165,7 +177,8 @@ models:
   - name: model_name
     tests:
       - dbt_utils.expression_is_true:
-          expression: "col_a + col_b = total"
+          arguments:
+            expression: "col_a + col_b = total"
 ```
 
 The macro accepts an optional argument `where` that allows for asserting
@@ -180,7 +193,8 @@ models:
   - name: model_name
     tests:
       - dbt_utils.expression_is_true:
-          expression: "col_a + col_b = total"
+          arguments:
+            expression: "col_a + col_b = total"
           config:
             where: "created_at > '2018-12-31'"
 ```
@@ -193,11 +207,13 @@ models:
       - name: col_a
         tests:
           - dbt_utils.expression_is_true:
-              expression: '>= 1'
+              arguments:
+                expression: '>= 1'
       - name: col_b
         tests:
           - dbt_utils.expression_is_true:
-              expression: '= 1'
+              arguments:
+                expression: '= 1'
               config:
                 where: col_a = 1
 ```
@@ -215,9 +231,10 @@ models:
   - name: model_name
     tests:
       - dbt_utils.recency:
-          datepart: day
-          field: created_at
-          interval: 1
+          arguments:
+            datepart: day
+            field: created_at
+            interval: 1
 ```
 This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
 
@@ -286,7 +303,8 @@ models:
       - name: column_name
         tests:
           - dbt_utils.not_empty_string:
-              trim_whitespace: false
+              arguments:
+                trim_whitespace: false
               
 ```
 
@@ -305,8 +323,9 @@ models:
       - name: from_column
         tests:
           - dbt_utils.cardinality_equality:
-              field: other_column_name
-              to: ref('other_model_name')
+              arguments:
+                field: other_column_name
+                to: ref('other_model_name')
 ```
 
 
@@ -325,7 +344,8 @@ models:
       - name: id
         tests:
           - dbt_utils.not_null_proportion:
-              at_least: 0.95
+              arguments:
+                at_least: 0.95
 ```
 
 This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
@@ -345,7 +365,8 @@ models:
       - name: city
         tests:
           - dbt_utils.not_accepted_values:
-              values: ['Barcelona', 'New York']
+              arguments:
+                values: ['Barcelona', 'New York']
 ```
 
 ### relationships_where ([source](macros/generic_tests/relationships_where.sql))
@@ -363,10 +384,11 @@ models:
       - name: id
         tests:
           - dbt_utils.relationships_where:
-              to: ref('other_model_name')
-              field: client_id
-              from_condition: id <> '4ca448b8-24bf-4b88-96c6-b1609499c38b'
-              to_condition: created_date >= '2020-01-01'
+              arguments:
+                to: ref('other_model_name')
+                field: client_id
+                from_condition: id <> '4ca448b8-24bf-4b88-96c6-b1609499c38b'
+                to_condition: created_date >= '2020-01-01'
 ```
 
 ### mutually_exclusive_ranges ([source](macros/generic_tests/mutually_exclusive_ranges.sql))
@@ -385,27 +407,30 @@ models:
   - name: age_brackets
     tests:
       - dbt_utils.mutually_exclusive_ranges:
-          lower_bound_column: min_age
-          upper_bound_column: max_age
-          gaps: not_allowed
+          arguments:
+            lower_bound_column: min_age
+            upper_bound_column: max_age
+            gaps: not_allowed
 
   # test that each customer can only have one subscription at a time
   - name: subscriptions
     tests:
       - dbt_utils.mutually_exclusive_ranges:
-          lower_bound_column: started_at
-          upper_bound_column: ended_at
-          partition_by: customer_id
-          gaps: required
+          arguments:
+            lower_bound_column: started_at
+            upper_bound_column: ended_at
+            partition_by: customer_id
+            gaps: required
 
   # test that each customer can have subscriptions that start and end on the same date
   - name: subscriptions
     tests:
       - dbt_utils.mutually_exclusive_ranges:
-          lower_bound_column: started_at
-          upper_bound_column: ended_at
-          partition_by: customer_id
-          zero_length_range_allowed: true
+          arguments:
+            lower_bound_column: started_at
+            upper_bound_column: ended_at
+            partition_by: customer_id
+            zero_length_range_allowed: true
 ```
 
 **Args:**
@@ -433,10 +458,11 @@ models:
   - name: subscriptions
     tests:
       - dbt_utils.mutually_exclusive_ranges:
-          lower_bound_column: coalesce(started_at, '1900-01-01')
-          upper_bound_column: coalesce(ended_at, '2099-12-31')
-          partition_by: customer_id
-          gaps: allowed
+          arguments:
+            lower_bound_column: coalesce(started_at, '1900-01-01')
+            upper_bound_column: coalesce(ended_at, '2099-12-31')
+            partition_by: customer_id
+            gaps: allowed
 ```
 
 <details>
@@ -507,7 +533,8 @@ seeds:
       - name: i
         tests:
           - dbt_utils.sequential_values:
-              interval: 2
+              arguments:
+                interval: 2
 
 
   - name: util_hours
@@ -515,8 +542,9 @@ seeds:
       - name: date_hour
         tests:
           - dbt_utils.sequential_values:
-              interval: 1
-              datepart: 'hour'
+              arguments:
+                interval: 1
+                datepart: 'hour'
 ```
 
 **Args:**
@@ -554,9 +582,10 @@ case we recommend using this test instead.
 - name: revenue_by_product_by_month
   tests:
     - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - month
-          - product
+        arguments:
+          combination_of_columns:
+            - month
+            - product
 ```
 
 An optional `quote_columns` argument (`default=false`) can also be used if a column name needs to be quoted.
@@ -565,10 +594,11 @@ An optional `quote_columns` argument (`default=false`) can also be used if a col
 - name: revenue_by_product_by_month
   tests:
     - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - month
-          - group
-        quote_columns: true
+        arguments:
+          combination_of_columns:
+            - month
+            - group
+          quote_columns: true
 
 ```
 
@@ -589,26 +619,30 @@ models:
       - name: user_id
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              inclusive: false
+              arguments:
+                min_value: 0
+                inclusive: false
 
       - name: account_created_at
         tests:
           - dbt_utils.accepted_range:
-              max_value: "getdate()"
-              #inclusive is true by default
+              arguments:
+                max_value: "getdate()"
+                #inclusive is true by default
 
       - name: num_returned_orders
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: "num_orders"
+              arguments:
+                min_value: 0
+                max_value: "num_orders"
 
       - name: num_web_sessions
         tests:
           - dbt_utils.accepted_range:
-              min_value: 0
-              inclusive: false
+              arguments:
+                min_value: 0
+                inclusive: false
               config:
                 where: "num_orders > 0"
 ```
@@ -640,7 +674,8 @@ To use this feature, the names of grouping variables can be passed as a list. Fo
       - name: field
         tests:
           - dbt_utils.at_least_one:
-              group_by_columns: ['customer_segment']
+              arguments:
+                group_by_columns: ['customer_segment']
 ```
 
 ## Macros

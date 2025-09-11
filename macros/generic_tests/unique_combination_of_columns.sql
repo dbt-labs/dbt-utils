@@ -9,7 +9,7 @@
 {% elif quote_columns %}
     {%- set column_list=[] %}
         {% for column in combination_of_columns -%}
-            {% set column_list = column_list.append( adapter.quote(column) ) %}
+            {% do column_list.append( adapter.quote(column) ) %}
         {%- endfor %}
 {% else %}
     {{ exceptions.raise_compiler_error(

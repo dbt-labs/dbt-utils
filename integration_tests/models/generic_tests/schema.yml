@@ -197,6 +197,24 @@ seeds:
           error_if: "<1" #sneaky way to ensure that the test is returning failing rows
           warn_if: "<0"
 
+  - name: data_test_functional_dependency_pass
+    data_tests:
+      - dbt_utils.functional_dependency:
+          determinants:
+            - col_a
+            - col_b
+          dependent: col_y
+
+  - name: data_test_functional_dependency_fail
+    data_tests:
+      - dbt_utils.functional_dependency:
+          determinants:
+            - col_a
+            - col_b
+          dependent: col_y
+          error_if: "<1" #sneaky way to ensure that the test is returning failing rows
+          warn_if: "<0"
+
 models:
   - name: recency_time_included
     data_tests:
@@ -261,3 +279,4 @@ models:
           compare_model: ref('data_test_equality_a')
           exclude_columns:
             - col_c
+

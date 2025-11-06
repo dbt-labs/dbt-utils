@@ -261,3 +261,19 @@ models:
           compare_model: ref('data_test_equality_a')
           exclude_columns:
             - col_c
+
+  - name: recency_with_where_filter
+    data_tests:
+      # This test should FAIL and return 0 rows (test failure) because when we filter to id = 3,
+      # no records match the where condition, so most_recent will be null.
+      # Before the fix: test would incorrectly PASS (no rows returned)
+      # After the fix: test should correctly FAIL (returns the null row)
+      - dbt_utils.recency:
+          datepart: day
+          field: created_at
+          ignore_time_component: true
+          interval: 5
+          config:
+            where: "id = 3"  # This filters to no records since only id 1,2 exist
+            error_if: "<1"
+            warn_if: "<0"

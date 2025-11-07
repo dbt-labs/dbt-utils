@@ -18,3 +18,9 @@ models:
       - assert_equal:
           actual: actual
           expected: expected
+
+  - name: test_url_encode_decode
+    data_tests:
+      - assert_equal:
+          actual: actual
+          expected: expected

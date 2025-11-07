@@ -1332,6 +1332,26 @@ This macro extracts a page path from a column containing a url.
 {{ dbt_utils.get_url_path(field='page_url') }}
 ```
 
+### url_encode ([source](macros/web/url_encode.sql))
+
+This macro encodes a string to be used in a url.
+
+**Usage:**
+
+```sql
+{{ dbt_utils.url_encode('field_to_encode') }}
+```
+
+### url_decode ([source](macros/web/url_decode.sql))
+
+This macro decodes a string that was encoded for a url use.
+
+**Usage:**
+
+```sql
+{{ dbt_utils.url_decode('field_to_decode') }}
+```
+
 ----
 
 ## Cross-database macros

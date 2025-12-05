@@ -100,7 +100,7 @@
             select
 
                 {%- if source_column_name is not none %}
-                cast({{ dbt.string_literal(relation) }} as {{ dbt.type_string() }}) as {{ source_column_name }},
+                cast({{ dbt.string_literal(relation.render()) }} as {{ dbt.type_string() }}) as {{ source_column_name }},
                 {%- endif %}
 
                 {% for col_name in ordered_column_names -%}

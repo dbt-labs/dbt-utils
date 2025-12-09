@@ -4,7 +4,7 @@
 
 # dbt utils v1.4.0
 
-* union_relations macro now outputs `*` in compile mode when the upstream relations haven't been built, such as when running SQLFluff on new models
+* union_relations macro now outputs `*` in compile mode when the upstream relations haven't been built, such as when running SQLFluff on new models.
 
 ## New Contributors
 

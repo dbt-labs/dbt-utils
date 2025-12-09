@@ -1,6 +1,16 @@
 # Unreleased
 
-**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.3.0...main
+**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.4.0...main
+
+# dbt utils v1.4.0
+
+* union_relations macro now outputs `*` in compile mode when the upstream relations haven't been built, such as when running SQLFluff on new models.
+
+## New Contributors
+
+* @martinshjung made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/832
+
+**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.3.0...1.4.0
 
 # dbt utils v1.3.0
 

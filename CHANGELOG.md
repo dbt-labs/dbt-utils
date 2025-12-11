@@ -2,15 +2,16 @@
 
 **Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.4.0...main
 
-# dbt utils v1.4.0
+# dbt utils v1.3.3
 
-* union_relations macro now outputs `*` in compile mode when the upstream relations haven't been built, such as when running SQLFluff on new models.
+* fix: Render relations to avoid including time filters in source_column_name by @harshvardhan-j in https://github.com/dbt-labs/dbt-utils/pull/1061
+* Output '*' in union_relations when no columns are found in compile mode by @martinshjung in https://github.com/dbt-labs/dbt-utils/pull/832
 
 ## New Contributors
-
+* @harshvardhan-j made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/1061
 * @martinshjung made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/832
 
-**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.3.0...1.4.0
+**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.3.2...1.3.3
 
 # dbt utils v1.3.0
 

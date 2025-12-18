@@ -2,6 +2,27 @@
     {{ return(adapter.dispatch('union_relations', 'dbt_utils')(relations, column_override, include, exclude, source_column_name, where)) }}
 {% endmacro %}
 
+{%- macro union_cast_type(data_type) -%}
+    {{ return(adapter.dispatch('union_cast_type', 'dbt_utils')(data_type)) }}
+{%- endmacro -%}
+
+{%- macro default__union_cast_type(data_type) -%}
+    {{ return(data_type) }}
+{%- endmacro -%}
+
+{%- macro snowflake__union_cast_type(data_type) -%}
+    {%- if data_type is none -%}
+        {{ return(none) }}
+    {%- endif -%}
+
+    {#-
+      Snowflake can return column types with collation metadata, e.g.
+      `varchar(100) collation 'en-ci'`. This is not valid inside `cast(... as <type>)`.
+    -#}
+    {%- set cleaned = modules.re.sub('(?i)\\s+collat(e|ion)\\s+.*$', '', data_type) -%}
+    {{ return(cleaned) }}
+{%- endmacro -%}
+
 {%- macro default__union_relations(relations, column_override=none, include=[], exclude=[], source_column_name='_dbt_source_relation', where=none) -%}
 
     {%- if exclude and include -%}
@@ -113,6 +134,7 @@
 
                     {%- set col = column_superset[col_name] %}
                     {%- set col_type = column_override.get(col.column, col.data_type) %}
+                    {%- set col_type = dbt_utils.union_cast_type(col_type) %}
                     {%- set col_name = adapter.quote(col_name) if col_name in relation_columns[relation] else 'null' %}
                     cast({{ col_name }} as {{ col_type }}) as {{ col.quoted }} {% if not loop.last %},{% endif -%}
 

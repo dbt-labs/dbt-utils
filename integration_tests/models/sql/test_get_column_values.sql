@@ -1,29 +1,34 @@
+{% set column_values = dbt_utils.get_column_values(
+    ref("data_get_column_values"), "field", default=[], order_by="field"
+) %}
 
-{% set column_values = dbt_utils.get_column_values(ref('data_get_column_values'), 'field', default=[], order_by="field") %}
 
+{% if target.type == "snowflake" %}
 
-{% if target.type == 'snowflake' %}
+    select
+        {% for val in column_values -%}
 
-select
-    {% for val in column_values -%}
+            sum(case when field = '{{ val }}' then 1 else 0 end) as count_{{ val }}
+            {%- if not loop.last %},{% endif -%}
 
-        sum(case when field = '{{ val }}' then 1 else 0 end) as count_{{ val }}
-        {%- if not loop.last %},{% endif -%}
+        {%- endfor %}
 
-    {%- endfor %}
-
-from {{ ref('data_get_column_values') }}
+    from {{ ref("data_get_column_values") }}
 
 {% else %}
 
-select
-    {% for val in column_values -%}
+    select
+        {% for val in column_values -%}
 
-        {{dbt_utils.safe_cast("sum(case when field = '" ~ val ~ "' then 1 else 0 end)", dbt_utils.type_string()) }} as count_{{ val }}
-        {%- if not loop.last %},{% endif -%}
+            {{
+                dbt_utils.safe_cast(
+                    "sum(case when field = '" ~ val ~ "' then 1 else 0 end)",
+                    dbt_utils.type_string(),
+                )
+            }} as count_{{ val }} {%- if not loop.last %},{% endif -%}
 
-    {%- endfor %}
+        {%- endfor %}
 
-from {{ ref('data_get_column_values') }}
+    from {{ ref("data_get_column_values") }}
 
 {% endif %}

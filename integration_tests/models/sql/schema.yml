@@ -206,15 +206,8 @@ models:
   
   - name: test_generate_surrogate_key_trim
     description: "Test that trim parameter correctly removes leading/trailing whitespace before hashing"
-    data_tests:
-      - dbt_utils.expression_is_true:
-          expression: "count(distinct key_with_trim) = 1"
-          config:
-            error_if: "!= 1"
-      - dbt_utils.expression_is_true:
-          expression: "count(distinct key_no_trim) = 4"
-          config:
-            error_if: "!= 1"
+    # Note: Aggregate tests are in tests/sql/test_generate_surrogate_key_trim_distinct_count.sql
+    # because expression_is_true cannot use aggregate functions in WHERE clause
 
   - name: test_union
     data_tests:

@@ -46,15 +46,3 @@ integration_tests:
       warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE') }}"
       schema: "{{ env_var('SNOWFLAKE_SCHEMA') }}"
       threads: 10 
-
-    sqlserver:
-      type: sqlserver
-      driver: 'ODBC Driver 17 for SQL Server'
-      server: AHMEDGOMAA
-      port: 1433
-      database: dbt_utils_test
-      schema: dbt_test
-      trusted_connection: true
-      encrypt: false
-      trust_server_certificate: true
-      threads: 4

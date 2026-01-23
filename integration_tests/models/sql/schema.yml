@@ -203,6 +203,18 @@ models:
       - assert_equal:
           actual: actual_all_columns_list
           expected: expected_all_columns
+  
+  - name: test_generate_surrogate_key_trim
+    description: "Test that trim parameter correctly removes leading/trailing whitespace before hashing"
+    data_tests:
+      - dbt_utils.expression_is_true:
+          expression: "count(distinct key_with_trim) = 1"
+          config:
+            error_if: "!= 1"
+      - dbt_utils.expression_is_true:
+          expression: "count(distinct key_no_trim) = 4"
+          config:
+            error_if: "!= 1"
 
   - name: test_union
     data_tests:

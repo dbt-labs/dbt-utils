@@ -26,7 +26,8 @@
             case table_type
                 when 'MANAGED' then 'table'
                 when 'BASE TABLE' then 'table'
-                when 'MATERIALIZED VIEW' then 'materializedview'
+                when 'MATERIALIZED_VIEW' then 'materialized_view'
+                when 'STREAMING_TABLE' then 'streaming_table'
                 else lower(table_type)
             end as {{ adapter.quote('table_type') }}
 {% endmacro %}

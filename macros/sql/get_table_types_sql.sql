@@ -6,7 +6,7 @@
             case table_type
                 when 'BASE TABLE' then 'table'
                 when 'EXTERNAL TABLE' then 'external'
-                when 'MATERIALIZED VIEW' then 'materializedview'
+                when 'MATERIALIZED VIEW' then 'materialized_view'
                 else lower(table_type)
             end as {{ adapter.quote('table_type') }}
 {% endmacro %}

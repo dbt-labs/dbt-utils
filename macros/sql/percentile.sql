@@ -22,3 +22,7 @@
 {% macro bigquery__percentile_disc(column, percentile_value) -%}
     percentile_disc({{ column }}, {{ percentile_value }}) over()
 {%- endmacro %}
+
+{% macro redshift__percentile_disc(column, percentile_value) -%}
+    approximate percentile_disc({{ percentile_value }}) within group (order by {{ column }})
+{%- endmacro %}

@@ -1223,6 +1223,7 @@ This macro pivots values from rows to columns.
 - `then_value`: Value to use if comparison succeeds, default is 1
 - `else_value`: Value to use if comparison fails, default is 0
 - `quote_identifiers`: Whether to surround column aliases with double quotes, default is true
+- `distinct`: Whether to use `distinct` in the aggregation, default is false
 
 ### unpivot ([source](macros/sql/unpivot.sql))
 

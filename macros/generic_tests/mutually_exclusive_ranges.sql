@@ -47,8 +47,15 @@ with window_functions as (
         {% if partition_by %}
             {% if partition_by is string %}
                 {{ partition_by }} as partition_by_col,
-            {% elif partition_by is sequence and partition_by is not string and partition_by | length > 0 %}
-                concat({{ partition_by | join(", '_', ") }}) as partition_by_col,
+            {% else %}
+                {% set concat_cols = [] %}
+                {% for col in partition_by %}
+                    {% do concat_cols.append(col) %}
+                    {% if not loop.last %}
+                        {% do concat_cols.append("'_'") %}
+                    {% endif %}
+                {% endfor %}
+                {{ dbt.concat(concat_cols) }} as partition_by_col,
             {% endif %}
         {% endif %}
         {{ lower_bound_column }} as lower_bound,

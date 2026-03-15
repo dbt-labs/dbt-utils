@@ -29,13 +29,27 @@
     ) }}
 {% endif %}
 
-{% set partition_clause="partition by " ~ partition_by if partition_by else '' %}
+{% if partition_by %}
+    {% if partition_by is string %}
+        {% set partition_clause = "partition by " ~ partition_by %}
+    {% elif partition_by is sequence and partition_by is not string and partition_by | length > 0 %}
+        {% set partition_clause = "partition by " ~ partition_by | join(', ') %}
+    {% else %}
+        {% set partition_clause = "" %}
+    {% endif %}
+{% else %}
+    {% set partition_clause = "" %}
+{% endif %}
 
 with window_functions as (
 
     select
         {% if partition_by %}
-        {{ partition_by }} as partition_by_col,
+            {% if partition_by is string %}
+                {{ partition_by }} as partition_by_col,
+            {% elif partition_by is sequence and partition_by is not string and partition_by | length > 0 %}
+                concat({{ partition_by | join(", '_', ") }}) as partition_by_col,
+            {% endif %}
         {% endif %}
         {{ lower_bound_column }} as lower_bound,
         {{ upper_bound_column }} as upper_bound,

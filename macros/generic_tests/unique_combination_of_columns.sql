@@ -4,6 +4,9 @@
 
 {% macro default__test_unique_combination_of_columns(model, combination_of_columns, quote_columns=false) %}
 
+{% set combination_of_columns = kwargs.get('combination_of_columns', combination_of_columns) %}
+{% set quote_columns = kwargs.get('quote_columns', quote_columns) %}
+
 {% if not quote_columns %}
     {%- set column_list=combination_of_columns %}
 {% elif quote_columns %}
@@ -19,19 +22,15 @@
 
 {%- set columns_csv=column_list | join(', ') %}
 
-
 with validation_errors as (
-
     select
         {{ columns_csv }}
     from {{ model }}
     group by {{ columns_csv }}
     having count(*) > 1
-
 )
 
 select *
 from validation_errors
-
 
 {% endmacro %}

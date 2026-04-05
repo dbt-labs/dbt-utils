@@ -100,6 +100,12 @@ seeds:
           combination_of_columns:
             - month
             - product
+      - dbt_utils.unique_combination_of_columns:
+          name: unique_combination_of_columns_arguments_syntax
+          arguments:
+            combination_of_columns:
+              - month
+              - product
 
   - name: data_cardinality_equality_a
     columns:

@@ -1,0 +1,15 @@
+
+- dbt_utils.unique_combination_of_columns:
+    name: unique_combination_of_columns_arguments_syntax
+    arguments:
+        combination_of_columns: ['month', 'product']
+
+- dbt_utils.unique_combination_of_columns:
+    name: unique_combination_of_columns_old_syntax
+    combination_of_columns: ['month', 'product']
+
+- dbt_utils.unique_combination_of_columns:
+    name: unique_combination_of_columns_quoted_arguments
+    arguments:
+        combination_of_columns: ['month', 'product']
+        quote_columns: true

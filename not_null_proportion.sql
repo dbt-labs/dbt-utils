@@ -3,7 +3,7 @@
 {% set column_name = kwargs.get('column_name') %}
 {% if column_name is none %}
   {{ exceptions.raise_compiler_error("column_name is required") }}
-{% endif %}
+{% endif %} 
 
 {% set at_least = kwargs.get('at_least', 0.0) %}
 {% set at_most  = kwargs.get('at_most', 1.0) %}

@@ -1,0 +1,81 @@
+
+name: 'dbt_utils_integration_tests'
+version: '1.0'
+
+profile: 'integration_tests'
+
+# require-dbt-version: inherit this from dbt-utils
+
+config-version: 2
+
+model-paths: ["models"]
+analysis-paths: ["analysis"]
+test-paths: ["tests"]
+seed-paths: ["data"]
+macro-paths: ["macros"]
+
+target-path: "target"  # directory which will store compiled SQL files
+clean-targets:         # directories to be removed by `dbt clean`
+    - "target"
+    - "dbt_modules"
+    - "dbt_packages"
+
+flags:
+    send_anonymous_usage_stats: False
+    use_colors: True
+
+dispatch:
+  - macro_namespace: 'dbt_utils'
+    search_order: ['dbt_utils_integration_tests', 'dbt_utils']
+
+seeds:
+
+  +quote_columns: false
+  dbt_utils_integration_tests:
+
+    sql:
+      data_events_20180103:
+        +schema: events
+
+      data_get_column_values_dropped:
+        # this.incorporate() to hardcode the node's type as otherwise dbt doesn't know it yet
+        +post-hook: "{% do adapter.drop_relation(this.incorporate(type='table')) %}"
+
+      data_get_single_value:
+        +column_types:
+          date_value: timestamp
+          float_value: float
+          int_value: integer
+
+      data_width_bucket:
+        +column_types:
+          num_buckets: integer
+          min_value: float
+          max_value: float
+      
+      data_unpivot_quote:
+        +quote_columns: true
+
+      data_unpivot_quote_expected:
+        +quote_columns: true
+
+    schema_tests:
+      data_test_sequential_timestamps:
+        +column_types:
+          my_timestamp: timestamp
+
+      data_test_equality_floats_a:
+        +column_types:
+          float_number: float
+
+      data_test_equality_floats_columns_a:
+        +column_types:
+          float_number: float
+
+      data_test_equality_floats_b:
+        +column_types:
+          float_number: float
+
+      data_test_equality_floats_columns_b:
+        +column_types:
+          float_number: float

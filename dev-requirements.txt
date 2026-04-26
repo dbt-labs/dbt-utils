@@ -1,0 +1,10 @@
+pytest
+pytest-dotenv
+dbt-core@git+https://github.com/dbt-labs/dbt-core.git#subdirectory=core
+dbt-tests-adapter@git+https://github.com/dbt-labs/dbt-adapters.git#subdirectory=dbt-tests-adapter
+dbt-postgres@git+https://github.com/dbt-labs/dbt-adapters.git#subdirectory=dbt-postgres
+dbt-redshift@git+https://github.com/dbt-labs/dbt-adapters.git#subdirectory=dbt-redshift
+dbt-snowflake@git+https://github.com/dbt-labs/dbt-adapters.git#subdirectory=dbt-snowflake
+dbt-bigquery@git+https://github.com/dbt-labs/dbt-adapters.git#subdirectory=dbt-bigquery
+pytest-xdist
+tox>=3.13

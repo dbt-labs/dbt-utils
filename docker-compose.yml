@@ -1,0 +1,7 @@
+services:
+  postgres:
+    image: cimg/postgres:17.5
+    environment:
+      - POSTGRES_USER=root
+    ports:
+      - "5432:5432"

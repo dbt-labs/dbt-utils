@@ -1,0 +1,4 @@
+Customer_Id,Created_At,sTaTuS,SEGMENT,Name
+123,2017-01-01,active,tier 1,name 1
+234,2017-02-01,active,tier 3,name 3
+567,2017-03-01,churned,tier 2,name 2

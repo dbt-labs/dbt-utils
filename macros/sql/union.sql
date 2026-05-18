@@ -18,6 +18,11 @@
 
     {%- set column_override = column_override if column_override is not none else {} -%}
 
+    {%- for relation in relations -%}
+        {%- do dbt_utils._is_relation(relation, 'union_relations') -%}
+        {%- do dbt_utils._is_ephemeral(relation, 'union_relations') -%}
+    {%- endfor -%}
+
     select *
         {%- if exclude %} except ({{ exclude | join(', ') }}){% endif -%}
         {%- if column_override %} replace (
@@ -27,9 +32,6 @@
         ){% endif %}
     from (
         {%- for relation in relations %}
-
-            {%- do dbt_utils._is_relation(relation, 'union_relations') -%}
-            {%- do dbt_utils._is_ephemeral(relation, 'union_relations') -%}
 
             select
                 {%- if source_column_name is not none %}

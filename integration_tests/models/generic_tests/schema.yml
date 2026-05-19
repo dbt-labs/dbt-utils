@@ -238,6 +238,18 @@ models:
           compare_model: ref('test_equal_rowcount')
           group_by_columns: ['field']
 
+  - name: test_equal_rowcount_groups
+    data_tests:
+      # Regression test for NULL handling with group_by_columns when groups are
+      # present in one model but not the other. After the full join, count_a or
+      # count_b is NULL for unmatched groups; without coalesce, diff_count
+      # collapses to NULL and the test silently passes despite a true mismatch.
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('data_test_equal_rowcount_groups_b')
+          group_by_columns: ['group_col']
+          error_if: "<1" #sneaky way to ensure that the test is returning failing rows
+          warn_if: "<0"
+
   - name: test_equal_column_subset
     data_tests:
       - dbt_utils.equality:
@@ -254,6 +266,18 @@ models:
       - dbt_utils.fewer_rows_than:
           compare_model: ref('data_test_fewer_rows_than_table_2')
           group_by_columns: ['col_a']
+
+  - name: test_fewer_rows_than_groups
+    data_tests:
+      # Regression test for NULL handling with group_by_columns when groups are
+      # present in one model but not the other. After the full join, count_our_model
+      # or count_comparison_model is NULL for unmatched groups; without coalesce,
+      # the case expression evaluates to NULL and row_count_delta is lost.
+      - dbt_utils.fewer_rows_than:
+          compare_model: ref('data_test_equal_rowcount_groups_b')
+          group_by_columns: ['group_col']
+          error_if: "<1" #sneaky way to ensure that the test is returning failing rows
+          warn_if: "<0"
 
   - name: equality_less_columns
     data_tests:

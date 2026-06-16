@@ -1020,6 +1020,8 @@ This macro also has an optional `quote_identifiers` argument that will encase th
 - `prefix` (optional, default=`''`): will prefix the output `field_name` (`field_name as prefix_field_name`).
 - `suffix` (optional, default=`''`): will suffix the output `field_name` (`field_name as field_name_suffix`).
 - `quote_identifiers` (optional, default=`True`): will encase selected columns and aliases in double quotes (`"field_name" as "field_name"`).
+- `unquote_aliases` (optional, default=`False`): when `quote_identifiers=True`, renders aliases without quotes (`"field_name" as field_name`). Useful when reading from case-sensitive sources (e.g. Polaris/Iceberg catalogs) while producing unquoted aliases for downstream models that follow default case-folding rules.
+- `rename` (optional, default=`{}`): a dictionary mapping column names to custom alias names. The alias is always rendered unquoted. Takes precedence over `unquote_aliases` and `prefix`/`suffix` for the matched column. Useful for renaming reserved-word columns that cannot safely use an unquoted alias (e.g. `rename={"comment": "ticket_comment"}`).
 
 **Usage:**
 
@@ -1048,6 +1050,19 @@ from {{ ref('my_model') }}
 select
 {{ dbt_utils.star(from=ref('my_model'), except=["exclude_field_1", "exclude_field_2"], prefix="max_") }}
 from {{ ref('my_model') }}
+
+```
+
+```sql
+-- Produces: "id" as id, "description" as description, "comment" as ticket_comment
+select
+{{ dbt_utils.star(
+    from=source('my_source', 'my_table'),
+    quote_identifiers=true,
+    unquote_aliases=true,
+    rename={"comment": "ticket_comment"}
+) }}
+from {{ source('my_source', 'my_table') }}
 
 ```
 

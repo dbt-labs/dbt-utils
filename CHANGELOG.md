@@ -1,6 +1,6 @@
 # Unreleased
 
-* fix(recency): add `fail_on_empty` parameter (default `False`) to restore pre-1.4.0 behaviour for CI environments using `dbt --empty` by @onurtashan in https://github.com/dbt-labs/dbt-utils/pull/TBD
+* fix(recency): add `fail_on_empty` parameter (default `False`) to restore pre-1.4.0 behaviour for CI environments using `dbt --empty` by @onurtashan in https://github.com/dbt-labs/dbt-utils/pull/1099
 
 **Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.4.0...main
 

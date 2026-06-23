@@ -1,3 +1,7 @@
+# Unreleased
+
+**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.4.0...main
+
 # dbt utils v1.3.3
 
 * fix: Render relations to avoid including time filters in source_column_name by @harshvardhan-j in https://github.com/dbt-labs/dbt-utils/pull/1061

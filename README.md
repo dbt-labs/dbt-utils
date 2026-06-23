@@ -218,6 +218,20 @@ models:
                 where: col_a = 1
 ```
 
+By default, rows where the expression evaluates to `NULL` pass the test (because `NOT NULL` is also `NULL`, and is filtered out by the `WHERE` clause). To treat `NULL` as a failure, set `fail_on_null` to `true`:
+
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    tests:
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "col_a + col_b = total"
+            fail_on_null: true
+```
+
 ### recency ([source](macros/generic_tests/recency.sql))
 
 Asserts that a timestamp column in the reference model contains data that is at least as recent as the defined date interval.

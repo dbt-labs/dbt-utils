@@ -13,6 +13,12 @@
 
     {% set cols = dbt_utils.get_filtered_columns_in_relation(from, except) %}
 
+    {#-- Match `rename` keys to column names case-insensitively, consistent with how `except` is handled in get_filtered_columns_in_relation. This keeps the macro adapter-agnostic: warehouses such as Snowflake fold unquoted identifiers to a different case than the keys a user typically supplies. #}
+    {%- set rename_lookup = {} -%}
+    {%- for rename_key, rename_value in rename.items() -%}
+        {%- do rename_lookup.update({rename_key | lower: rename_value}) -%}
+    {%- endfor -%}
+
     {%- if cols|length <= 0 -%}
         {% if flags.WHICH == 'compile' %}
             {% set response %}
@@ -30,13 +36,13 @@ dbt compile, and exists to keep SQLFluff happy. */
             {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}
                 {%- if quote_identifiers -%}
                     {{ adapter.quote(col)|trim }}
-                    {%- if col in rename %} as {{ rename[col] }}
+                    {%- if col | lower in rename_lookup %} as {{ rename_lookup[col | lower] }}
                     {%- elif unquote_aliases %} as {{ (prefix ~ col ~ suffix)|trim }}
                     {%- elif prefix!='' or suffix!='' %} as {{ adapter.quote(prefix ~ col ~ suffix)|trim }}
                     {%- endif -%}
                 {%- else -%}
                     {{ col|trim }}
-                    {%- if col in rename %} as {{ rename[col] }}
+                    {%- if col | lower in rename_lookup %} as {{ rename_lookup[col | lower] }}
                     {%- elif prefix!='' or suffix!='' %} as {{ (prefix ~ col ~ suffix)|trim }}
                     {%- endif -%}
                 {%- endif -%}

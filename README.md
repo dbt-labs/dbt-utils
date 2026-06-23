@@ -1021,7 +1021,7 @@ This macro also has an optional `quote_identifiers` argument that will encase th
 - `suffix` (optional, default=`''`): will suffix the output `field_name` (`field_name as field_name_suffix`).
 - `quote_identifiers` (optional, default=`True`): will encase selected columns and aliases in double quotes (`"field_name" as "field_name"`).
 - `unquote_aliases` (optional, default=`False`): when `quote_identifiers=True`, renders aliases without quotes (`"field_name" as field_name`). Useful when reading from case-sensitive sources (e.g. Polaris/Iceberg catalogs) while producing unquoted aliases for downstream models that follow default case-folding rules.
-- `rename` (optional, default=`{}`): a dictionary mapping column names to custom alias names. The alias is always rendered unquoted. Takes precedence over `unquote_aliases` and `prefix`/`suffix` for the matched column. Useful for renaming reserved-word columns that cannot safely use an unquoted alias (e.g. `rename={"comment": "ticket_comment"}`).
+- `rename` (optional, default=`{}`): a dictionary mapping column names to custom alias names. Keys are matched to column names case-insensitively (the same way `except` is), so a key works regardless of how the warehouse folds identifier case. The alias is always rendered unquoted. Takes precedence over `unquote_aliases` and `prefix`/`suffix` for the matched column. Useful for renaming reserved-word columns that cannot safely use an unquoted alias (e.g. `rename={"comment": "ticket_comment"}`).
 
 **Usage:**
 

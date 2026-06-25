@@ -13,6 +13,11 @@
 
     {% set cols = dbt_utils.get_filtered_columns_in_relation(from, except) %}
 
+    {%- set rename_lower = {} -%}
+    {%- for key, val in rename.items() -%}
+        {%- do rename_lower.update({key.lower(): val}) -%}
+    {%- endfor -%}
+
     {%- if cols|length <= 0 -%}
         {% if flags.WHICH == 'compile' %}
             {% set response %}
@@ -30,13 +35,13 @@ dbt compile, and exists to keep SQLFluff happy. */
             {%- if relation_alias %}{{ relation_alias }}.{% else %}{%- endif -%}
                 {%- if quote_identifiers -%}
                     {{ adapter.quote(col)|trim }}
-                    {%- if col in rename %} as {{ rename[col] }}
+                    {%- if col.lower() in rename_lower %} as {{ rename_lower[col.lower()] }}
                     {%- elif unquote_aliases %} as {{ (prefix ~ col ~ suffix)|trim }}
                     {%- elif prefix!='' or suffix!='' %} as {{ adapter.quote(prefix ~ col ~ suffix)|trim }}
                     {%- endif -%}
                 {%- else -%}
                     {{ col|trim }}
-                    {%- if col in rename %} as {{ rename[col] }}
+                    {%- if col.lower() in rename_lower %} as {{ rename_lower[col.lower()] }}
                     {%- elif prefix!='' or suffix!='' %} as {{ (prefix ~ col ~ suffix)|trim }}
                     {%- endif -%}
                 {%- endif -%}
@@ -44,4 +49,3 @@ dbt compile, and exists to keep SQLFluff happy. */
         {%- endfor -%}
     {% endif %}
 {%- endmacro %}
-

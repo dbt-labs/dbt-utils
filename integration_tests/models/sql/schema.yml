@@ -194,8 +194,6 @@ models:
       - assert_equal:
           actual: actual
           expected: expected
-          config:
-            enabled: "{{ target.type != 'snowflake' }}"
 
   - name: test_star_no_columns
     columns: 

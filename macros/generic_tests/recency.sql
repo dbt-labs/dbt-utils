@@ -4,6 +4,8 @@
 
 {% macro default__test_recency(model, field, datepart, interval, ignore_time_component, group_by_columns) %}
 
+{% set empty_invocation = flags.EMPTY is defined and flags.EMPTY %}
+
 {% set threshold = 'cast(' ~ dbt.dateadd(datepart, interval * -1, dbt.current_timestamp()) ~ ' as ' ~ ('date' if ignore_time_component else dbt.type_timestamp()) ~ ')'  %}
 
 {% if group_by_columns|length() > 0 %}
@@ -37,6 +39,8 @@ select
 
 from recency
 where most_recent < {{ threshold }}
+{%- if not empty_invocation %}
    or most_recent is null
+{%- endif %}
 
 {% endmacro %}

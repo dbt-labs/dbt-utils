@@ -2,6 +2,19 @@
 
 **Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.4.0...main
 
+# dbt utils v1.4.0
+
+## What's Changed
+* fix(recency): handle empty tables returning NULL by @dinaatmiro in https://github.com/dbt-labs/dbt-utils/pull/1065
+* ci: pin dbt-core install to 1.latest branch by @tauhid621 in https://github.com/dbt-labs/dbt-utils/pull/1091
+* feature/star-unquote-alias-rename by @fivetran-joemarkiewicz in https://github.com/dbt-labs/dbt-utils/pull/1094
+
+## New Contributors
+* @dinaatmiro made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/1065
+* @tauhid621 made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/1091
+
+**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.3.3...1.4.0
+
 # dbt utils v1.3.3
 
 * fix: Render relations to avoid including time filters in source_column_name by @harshvardhan-j in https://github.com/dbt-labs/dbt-utils/pull/1061

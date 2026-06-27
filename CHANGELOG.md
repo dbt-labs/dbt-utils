@@ -2,6 +2,19 @@
 
 **Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.4.0...main
 
+# dbt utils v1.4.0
+
+## What's Changed
+* fix(recency): handle empty tables returning NULL by @dinaatmiro in https://github.com/dbt-labs/dbt-utils/pull/1065
+* ci: pin dbt-core install to 1.latest branch by @tauhid621 in https://github.com/dbt-labs/dbt-utils/pull/1091
+* feature/star-unquote-alias-rename by @fivetran-joemarkiewicz in https://github.com/dbt-labs/dbt-utils/pull/1094
+
+## New Contributors
+* @dinaatmiro made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/1065
+* @tauhid621 made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/1091
+
+**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.3.3...1.4.0
+
 # dbt utils v1.3.3
 
 * fix: Render relations to avoid including time filters in source_column_name by @harshvardhan-j in https://github.com/dbt-labs/dbt-utils/pull/1061
@@ -56,6 +69,14 @@
 
 **Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.2.0...1.3.0
 
+## 1.2.1
+
+## Fixes
+- Fix Jinja list append pattern for dbt-fusion compatibility in `unique_combination_of_columns` test (#1043)
+- Update `require-dbt-version` upper bound to `<3.0.0` to support dbt 2.x
+
+**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.2.0...1.2.1
+
 # dbt utils v1.2.0
 
 ## What's Changed
@@ -100,6 +121,14 @@
 
 **Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.1.1...1.2.0
 
+## 1.1.2
+
+## Fixes
+- Fix Jinja list append pattern for dbt-fusion compatibility in `unique_combination_of_columns` test (#1043)
+- Update `require-dbt-version` upper bound to `<3.0.0` to support dbt 2.x
+
+**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.1.1...1.1.2
+
 # dbt utils v1.1.1
 ## New features
 * Improve the performance of the `at_least_one` test by pruning early. This is especially helpful when running against external tables. By @joshuahuntley in https://github.com/dbt-labs/dbt-utils/pull/775
@@ -134,8 +163,15 @@
 * @dchess made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/748
 * @Harmuth94 made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/769
 
+## 1.0.1
 
-# dbt utils v1.0
+## Fixes
+- Fix Jinja list append pattern for dbt-fusion compatibility in `unique_combination_of_columns` test (#1043)
+- Update `require-dbt-version` upper bound to `<3.0.0` to support dbt 2.x
+
+**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.0.0...1.0.1
+
+# dbt utils v1.0.0
 
 ## Migration Guide
 The full migration guide is at https://docs.getdbt.com/guides/migration/versions/upgrading-to-dbt-utils-v1.0
@@ -176,6 +212,14 @@ The full migration guide is at https://docs.getdbt.com/guides/migration/versions
 # 0.9.5
 ## Fixes
 - Stop showing cross-db deprecation warnings for macros who have already been migrated ([#725](https://github.com/dbt-labs/dbt-utils/pull/725))
+
+## 0.9.7
+
+## Fixes
+- Fix Jinja list append pattern for dbt-fusion compatibility in `unique_combination_of_columns` test (#1043)
+- Update `require-dbt-version` upper bound to `<3.0.0` to support dbt 2.x
+
+**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/0.9.6...0.9.7
 
 ## 0.9.3 and 0.9.4
 Rolled back due to accidental incompatibilities

@@ -9,11 +9,13 @@
 
 name: Package Integration Tests
 
+# Automatic triggers temporarily disabled while investigating https://github.com/dbt-labs/dbt-utils/issues/1105
+# TODO: uncomment the push and pull_request_target triggers to re-enable integration tests once the root cause is fixed
 on:
-    push:
-        branches:
-            - main
-    pull_request_target:
+    # push:
+    #     branches:
+    #         - main
+    # pull_request_target:
     workflow_dispatch:
 
 

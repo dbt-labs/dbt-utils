@@ -1,6 +1,17 @@
 # Unreleased
+**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.4.1...main
 
-**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.4.0...main
+# dbt utils v1.4.1
+
+## What's Changed
+* Pass recency tests when using the `--empty` flag by @dbeatty10 in https://github.com/dbt-labs/dbt-utils/pull/1102
+* fix/star-rename-casing by @fivetran-joemarkiewicz in https://github.com/dbt-labs/dbt-utils/pull/1107
+* fix(star): match `rename` keys to column names case-insensitively by @nnqtruong in https://github.com/dbt-labs/dbt-utils/pull/1097
+
+## New Contributors
+* @nnqtruong made their first contribution in https://github.com/dbt-labs/dbt-utils/pull/1097
+
+**Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.4.0...1.4.1
 
 # dbt utils v1.4.0
 

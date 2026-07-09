@@ -25,12 +25,11 @@
 
 
 
--- setup
-{%- do dbt_utils._is_relation(model, 'test_equality') -%}
-
 {# Ensure there are no extra columns in the compare_model vs model #}
 {%- if not compare_columns -%}
+    {%- do dbt_utils._is_relation(model, 'test_equality') -%}
     {%- do dbt_utils._is_ephemeral(model, 'test_equality') -%}
+    {%- do dbt_utils._is_relation(compare_model, 'test_equality') -%}
     {%- do dbt_utils._is_ephemeral(compare_model, 'test_equality') -%}
 
     {%- set model_columns = adapter.get_columns_in_relation(model) -%}
@@ -75,6 +74,7 @@
             You cannot get the columns in an ephemeral model (due to not existing in the information schema),
             so if the user does not provide an explicit list of columns we must error in the case it is ephemeral
         #}
+        {%- do dbt_utils._is_relation(model, 'test_equality') -%}
         {%- do dbt_utils._is_ephemeral(model, 'test_equality') -%}
         {%- set compare_columns = adapter.get_columns_in_relation(model)-%}
 
@@ -102,6 +102,7 @@
     {#-
         If rounding is required, we need to get the types, so it cannot be ephemeral even if they provide column names
     -#}
+    {%- do dbt_utils._is_relation(model, 'test_equality') -%}
     {%- do dbt_utils._is_ephemeral(model, 'test_equality') -%}
     {%- set columns = adapter.get_columns_in_relation(model) -%}
 

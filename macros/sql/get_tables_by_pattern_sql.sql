@@ -45,6 +45,25 @@
 
 {% macro bigquery__get_tables_by_pattern_sql(schema_pattern, table_pattern, exclude='', database=target.database) %}
 
+    {# When `target.location` is set, the region-qualified INFORMATION_SCHEMA.TABLES
+       exposes `table_schema` directly. That collapses a SCHEMATA lookup plus a
+       per-dataset UNION ALL into one query. Falls back to the original
+       SCHEMATA + iterate path when no location is configured. #}
+    {% if '%' in schema_pattern and target.location %}
+        {% set sql %}
+            select distinct
+                table_schema,
+                table_name,
+                {{ dbt_utils.get_table_types_sql() }}
+            from {{ adapter.quote(database) }}.`region-{{ target.location | lower }}`.INFORMATION_SCHEMA.TABLES
+            where lower(table_schema) like lower('{{ schema_pattern }}')
+                and lower(table_name) like lower('{{ table_pattern }}')
+                and lower(table_name) not like lower('{{ exclude }}')
+        {% endset %}
+
+        {{ return(sql) }}
+    {% endif %}
+
     {% if '%' in schema_pattern %}
         {% set schemata=dbt_utils._bigquery__get_matching_schemata(schema_pattern, database) %}
     {% else %}

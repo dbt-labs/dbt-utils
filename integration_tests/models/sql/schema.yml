@@ -210,6 +210,12 @@ models:
           actual: actual_all_columns_list
           expected: expected_all_columns
 
+  - name: test_generate_surrogate_key_single_field
+    data_tests:
+      - assert_equal:
+          actual: actual_key
+          expected: expected_key
+
   - name: test_union
     data_tests:
       - dbt_utils.equality:

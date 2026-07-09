@@ -236,7 +236,23 @@ models:
             field: created_at
             interval: 1
 ```
+
 This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
+
+The macro accepts an optional argument ignore_time_component , when set to true will ignore time part in timestamp. The default is `false`.
+
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    tests:
+      - dbt_utils.recency:
+          datepart: day
+          field: created_at
+          interval: 1
+          ignore_time_component: true
+```
 
 ### at_least_one ([source](macros/generic_tests/at_least_one.sql))
 

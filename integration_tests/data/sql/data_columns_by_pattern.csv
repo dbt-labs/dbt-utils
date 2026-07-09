@@ -1,0 +1,4 @@
+user_id,current_item,last_item,state,revenue_2024,cost_2024,revenue_2023,revenue_2024_archived,name
+1,apple,banana,active,1000,500,900,800,alice
+2,orange,grape,inactive,1500,700,1100,1200,bob
+3,pear,melon,active,2000,900,1300,1600,charlie

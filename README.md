@@ -983,7 +983,7 @@ Optionally takes a `unit` string argument ('km' or 'mi') which defaults to miles
 - `lat1` (required): latitude of first location
 - `lon1` (required): longitude of first location
 - `lat2` (required): latitude of second location
-- `lon3` (required): longitude of second location
+- `lon2` (required): longitude of second location
 - `unit` (optional, default=`'mi'`): one of `mi` (miles) or `km` (kilometers)
 
 ### group_by ([source](macros/sql/groupby.sql))

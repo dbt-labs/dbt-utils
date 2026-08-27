@@ -245,6 +245,11 @@ models:
       - dbt_utils.equality:
           compare_model: ref('data_union_events_expected')
 
+  - name: test_get_relations_by_pattern_escaped_underscores
+    data_tests:
+      - dbt_utils.equality:
+          compare_model: ref('data_escaped_underscores_expected')
+
   - name: test_deduplicate
     data_tests:
       - dbt_utils.equality:

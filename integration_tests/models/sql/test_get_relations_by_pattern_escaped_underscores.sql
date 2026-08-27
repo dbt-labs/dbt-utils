@@ -1,4 +1,4 @@
-{{ config(materialized = 'table') }}
+{{ config(materialized = 'table', enabled = target.type == 'snowflake') }}
 
 -- depends_on: {{ ref('data_orders_x') }}, {{ ref('data_orders__x') }}, {{ ref('data_orders___x') }}
 

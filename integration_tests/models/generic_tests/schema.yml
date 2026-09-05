@@ -261,3 +261,13 @@ models:
           compare_model: ref('data_test_equality_a')
           exclude_columns:
             - col_c
+
+  - name: test_sequential_values_ephemeral
+    columns:
+      - name: my_even_sequence
+        data_tests:
+          - dbt_utils.sequential_values:
+              interval: 2
+          - dbt_utils.sequential_values:
+              interval: 2
+              group_by_columns: ['col_a']

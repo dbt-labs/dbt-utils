@@ -22,7 +22,7 @@ with windowed as (
             {{partition_gb_cols}}
             order by {{ column_name }}
         ) as {{ previous_column_name }}
-    from {{ model }}
+    from {{ model }} as _dbt_utils_sequential_values_source
 ),
 
 validation_errors as (

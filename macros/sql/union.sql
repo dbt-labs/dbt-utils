@@ -121,7 +121,11 @@
             from {{ relation }}
 
             {% if where -%}
-            where {{ where }}
+              {% if where is string -%}
+                where {{ where }}
+              {% else %}
+                where {{ where[loop.index0] }}
+              {%- endif %}
             {%- endif %}
         )
 

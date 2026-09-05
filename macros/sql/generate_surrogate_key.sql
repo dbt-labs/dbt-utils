@@ -24,6 +24,10 @@
 
 {%- endfor -%}
 
-{{ dbt.hash(dbt.concat(fields)) }}
+{%- if fields|length > 1 -%}
+    {{ dbt.hash(dbt.concat(fields)) }}
+{%- else -%}
+    {{ dbt.hash(fields[0]) }}
+{%- endif -%}
 
 {%- endmacro -%}

@@ -21,7 +21,7 @@ on:
 
 jobs:
   run-tests:
-      uses: dbt-labs/dbt-package-testing/.github/workflows/run_tox.yml@v1
+      uses: dbt-labs/dbt-package-testing/.github/workflows/run_tox.yml@v2
       with:
         # no need to pass postgres vars in.  We can just use the defaults in the local container
         # redshift
@@ -43,4 +43,5 @@ jobs:
         DBT_ENV_SECRET_REDSHIFT_PASS: ${{ secrets.REDSHIFT_PASS }}
         BIGQUERY_KEYFILE_JSON: ${{ secrets.BIGQUERY_KEYFILE_JSON }}
         SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-        DBT_ENV_SECRET_SNOWFLAKE_PASS: ${{ secrets.SNOWFLAKE_PASS }}
+        DBT_ENV_SECRET_SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
+        DBT_ENV_SECRET_SNOWFLAKE_PRIVATE_KEY_PASSPHRASE: ${{ secrets.SNOWFLAKE_PRIVATE_KEY_PASSPHRASE }}

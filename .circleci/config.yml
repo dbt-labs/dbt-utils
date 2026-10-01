@@ -54,6 +54,11 @@ jobs:
       - checkout
       - run: pip install --pre dbt-snowflake -r dev-requirements.txt
       - run:
+          name: Setup Environment Variables
+          command: |
+            echo 'export DBT_ENV_SECRET_SNOWFLAKE_PRIVATE_KEY="$SNOWFLAKE_PRIVATE_KEY"' >> "$BASH_ENV"
+            echo 'export DBT_ENV_SECRET_SNOWFLAKE_PRIVATE_KEY_PASSPHRASE="$SNOWFLAKE_PRIVATE_KEY_PASSPHRASE"' >> "$BASH_ENV"
+      - run:
           name: "Run OG Tests - Snowflake"
           command: ./run_test.sh snowflake
       - store_artifacts:

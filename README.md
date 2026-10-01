@@ -31,6 +31,7 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
 - [Introspective macros](#introspective-macros)
   - [get\_column\_values (source)](#get_column_values-source)
   - [get\_filtered\_columns\_in\_relation (source)](#get_filtered_columns_in_relation-source)
+  - [get\_columns\_by\_pattern (source)](#get_columns_by_pattern-source)
   - [get\_relations\_by\_pattern (source)](#get_relations_by_pattern-source)
   - [get\_relations\_by\_prefix (source)](#get_relations_by_prefix-source)
   - [get\_query\_results\_as\_dict (source)](#get_query_results_as_dict-source)
@@ -757,6 +758,44 @@ to pull column names in a non-filtered fashion, also bringing along with it othe
     max({{ column_name }}) ... as max_'{{ column_name }}',
 {% endfor %}
 ...
+```
+
+### get_columns_by_pattern ([source](macros/sql/get_columns_by_pattern.sql))
+
+This macro returns an iterable Jinja list of column names from a given [relation](https://docs.getdbt.com/docs/writing-code-in-dbt/class-reference/#relation) that match a SQL LIKE pattern.
+
+- supports SQL LIKE pattern syntax (`%` for wildcard, `_` for single character)
+- optionally exclude columns matching a pattern
+- the input values are case-insensitive
+
+**Args:**
+
+- `from` (required): a [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) (a `ref` or `source`) to get columns from
+- `pattern` (required): SQL LIKE pattern to match column names (case-insensitive)
+- `exclude` (optional, default=`''`): SQL LIKE pattern to exclude matching columns
+
+**Usage:**
+
+```sql
+-- Get all columns ending with '_item'
+{% set item_columns = dbt_utils.get_columns_by_pattern(
+    from=ref('sales'),
+    pattern='%_item'
+) %}
+
+-- Get year columns (2020_, 2021_, etc.) excluding archived ones
+{% set year_columns = dbt_utils.get_columns_by_pattern(
+    from=ref('revenue'),
+    pattern='20%',
+    exclude='%_archived'
+) %}
+
+-- Use in a for loop
+select
+  {% for col in item_columns %}
+    max({{ col }}) as max_{{ col }}{% if not loop.last %},{% endif %}
+  {% endfor %}
+from {{ ref('sales') }}
 ```
 
 ### get_relations_by_pattern ([source](macros/sql/get_relations_by_pattern.sql))

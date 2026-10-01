@@ -41,44 +41,51 @@ models:
       - name: count_a
         data_tests:
           - accepted_values:
-              values:
-                - '1'
+                  arguments:
+                    values:
+                      - '1'
 
       - name: count_b
         data_tests:
           - accepted_values:
-              values:
-                - '1'
+                  arguments:
+                    values:
+                      - '1'
 
       - name: count_c
         data_tests:
           - accepted_values:
-              values:
-                - '1'
+                  arguments:
+                    values:
+                      - '1'
 
       - name: count_d
         data_tests:
           - accepted_values:
-              values:
-                - '1'
+                  arguments:
+                    values:
+                      - '1'
 
       - name: count_e
         data_tests:
           - accepted_values:
-              values:
-                - '1'
+                  arguments:
+                    values:
+                      - '1'
 
       - name: count_f
         data_tests:
           - accepted_values:
-              values:
-                - '1'
+                  arguments:
+                    values:
+                      - '1'
 
       - name: count_g
         data_tests:
           - accepted_values:
-              values:
-                - '5'
+                  arguments:
+                    values:
+                      - '5'
 
   - name: test_get_column_values_where
     data_tests:

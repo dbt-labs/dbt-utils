@@ -5,7 +5,7 @@
 {% macro default__test_equal_rowcount(model, compare_model, group_by_columns) %}
 
 {#-- Needs to be set at parse time, before we return '' below --#}
-{{ config(fail_calc = 'sum(coalesce(diff_count, 0))') }}
+{{ config(fail_calc = 'coalesce(sum(diff_count), 0)') }}
 
 {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
 {%- if not execute -%}

@@ -21,8 +21,7 @@ on:
 
 jobs:
   run-tests:
-      # TODO: switch back to @v1 once dbt-labs/dbt-package-testing#51 is merged and tagged
-      uses: dbt-labs/dbt-package-testing/.github/workflows/run_tox.yml@8c31a9c4b7ec88f190f3004f4c1b8f30f03ada03
+      uses: dbt-labs/dbt-package-testing/.github/workflows/run_tox.yml@v2
       with:
         # no need to pass postgres vars in.  We can just use the defaults in the local container
         # redshift

@@ -44,6 +44,7 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [union\_relations (source)](#union_relations-source)
   - [generate\_series (source)](#generate_series-source)
   - [generate\_surrogate\_key (source)](#generate_surrogate_key-source)
+  - [parse\_locale\_decimal (source)](#parse_locale_decimal-source)
   - [safe\_add (source)](#safe_add-source)
   - [safe\_divide (source)](#safe_divide-source)
   - [safe\_subtract (source)](#safe_subtract-source)
@@ -1122,6 +1123,22 @@ A precursor to this macro, `surrogate_key()`, treated nulls and blanks strings t
 #dbt_project.yml
 vars:
   surrogate_key_treat_nulls_as_empty_strings: true #turn on legacy behaviour
+```
+
+### parse_locale_decimal ([source](macros/sql/parse_locale_decimal.sql))
+
+This macro parses locale-formatted decimal strings that use a comma as the decimal separator and a period as the thousands separator, e.g. `"1.234,56"` → `1234.56`. This format is standard in Brazil and much of continental Europe.
+
+Values that cannot be parsed (empty strings, garbage, nulls) return `null` instead of failing the run. A leading negative sign is preserved. The result is a float — round it when comparing against exact decimal values.
+
+**Args:**
+
+- `column` (required): The string column or expression containing the locale-formatted decimals.
+
+**Usage:**
+
+```sql
+{{ dbt_utils.parse_locale_decimal('price_brl') }}
 ```
 
 ### safe_add ([source](macros/sql/safe_add.sql))

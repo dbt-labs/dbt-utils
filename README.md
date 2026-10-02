@@ -16,6 +16,7 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [expression\_is\_true (source)](#expression_is_true-source)
   - [recency (source)](#recency-source)
   - [at\_least\_one (source)](#at_least_one-source)
+  - [is\_constant (source)](#is_constant-source)
   - [not\_constant (source)](#not_constant-source)
   - [not\_empty\_string (source)](#not_empty_string-source)
   - [cardinality\_equality (source)](#cardinality_equality-source)
@@ -253,6 +254,25 @@ models:
       - name: col_name
         tests:
           - dbt_utils.at_least_one
+```
+
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
+
+### is_constant ([source](macros/generic_tests/is_constant.sql))
+
+Asserts that a column has the same value in all rows (or within each group defined by `group_by_columns`).
+
+**Usage:**
+
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    columns:
+      - name: column_name
+        tests:
+          - dbt_utils.is_constant
 ```
 
 This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
@@ -662,6 +682,7 @@ This feature is currently available for the following data tests:
 - [fewer_rows_than](#fewer_rows_than-source)
 - [recency](#recency-source)
 - [at_least_one](#at_least_one-source)
+- [is_constant](#is_constant-source)
 - [not_constant](#not_constant-source)
 - [sequential_values](#sequential_values-source)
 - [not_null_proportion](#not_null_proportion-source)

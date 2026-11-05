@@ -45,7 +45,7 @@ with window_functions as (
             order by {{ lower_bound_column }}, {{ upper_bound_column }}
         ) as next_lower_bound,
 
-        row_number() over (
+        rank() over (
             {{ partition_clause }}
             order by {{ lower_bound_column }} desc, {{ upper_bound_column }} desc
         ) = 1 as is_last_record

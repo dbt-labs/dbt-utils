@@ -5,7 +5,7 @@
 {% macro default__test_equal_rowcount(model, compare_model, group_by_columns) %}
 
 {#-- Needs to be set at parse time, before we return '' below --#}
-{{ config(fail_calc = 'sum(coalesce(diff_count, 0))') }}
+{{ config(fail_calc = 'sum(diff_count)') }}
 
 {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. #}
 {%- if not execute -%}
@@ -60,7 +60,7 @@ final as (
 
         count_a,
         count_b,
-        abs(count_a - count_b) as diff_count
+        abs(coalesce(count_a, 0) - coalesce(count_b, 0)) as diff_count
 
     from a
     full join b

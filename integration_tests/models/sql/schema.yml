@@ -209,6 +209,12 @@ models:
       - assert_equal:
           actual: actual_all_columns_list
           expected: expected_all_columns
+      - assert_equal:
+          actual: actual_with_string_literal
+          expected: expected_with_string_literal
+      - assert_equal:
+          actual: actual_with_numeric_literal
+          expected: expected_with_numeric_literal
 
   - name: test_union
     data_tests:

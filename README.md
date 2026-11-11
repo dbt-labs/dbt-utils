@@ -50,7 +50,6 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [json\_parse (source)](#json_parse-source)
   - [percentile (source)](#percentile-source)
   - [pivot (source)](#pivot-source)
-  - [pivot\_json\_extract (source)](#pivot_json_extract-source)
   - [unpivot (source)](#unpivot-source)
   - [width\_bucket (source)](#width_bucket-source)
 - [Web macros](#web-macros)
@@ -1280,23 +1279,6 @@ This macro pivots values from rows to columns.
 - `then_value`: Value to use if comparison succeeds, default is 1
 - `else_value`: Value to use if comparison fails, default is 0
 - `quote_identifiers`: Whether to surround column aliases with double quotes, default is true
-
-### pivot_json_extract ([source](macros/sql/pivot_json_extract.sql))
-
-This macro builds on [`json_parse`](#json_parse-source). It extracts a list of top-level fields from a JSON string and returns each one as its own column.
-
-**Usage:**
-
-```sql
-select
-    {{ dbt_utils.pivot_json_extract(string='properties', list_of_properties=['name', {'name': 'plan type', 'alias': 'plan'}]) }}
-from {{ ref('events') }}
-```
-
-**Args:**
-
-- `string` (required): The column that holds the JSON string.
-- `list_of_properties` (required): The fields to extract. Each item is either a field name or a dictionary with `name` and an optional `alias`. Without an alias, the column name is the field name in lowercase, with spaces and periods replaced by underscores.
 
 ### unpivot ([source](macros/sql/unpivot.sql))
 

@@ -130,15 +130,6 @@ models:
           actual: actual
           expected: expected
 
-  - name: test_pivot_json_extract
-    data_tests:
-      - assert_equal:
-          actual: name
-          expected: expected_name
-      - assert_equal:
-          actual: plan
-          expected: expected_plan
-
   - name: test_safe_add
     data_tests:
       - assert_equal:

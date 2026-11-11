@@ -1,4 +1,15 @@
 # Unreleased
+
+## What's Changed
+* Adds an optional `include_table_in_source_column` argument to `union_relations`. When `false`, the source column holds `database.schema` instead of the full quoted relation name.
+* Updates `union_relations` to give each unioned relation an alias in the `from` clause (`unioned_relation_1`, `unioned_relation_2`, and so on). This avoids errors when a table name is a reserved keyword.
+* Adds an optional `aliases` argument to `union_relations`. The macro reads column lists from `relations` but selects `from` each alias, so you can union CTEs in your model, such as CTEs with incremental filters.
+* Adds a SQL Server version of `date_spine`. SQL Server doesn't allow a nested `with` clause, so this version runs the spine query at compile time and returns the dates as a `union all` of literal values.
+* Adds the `json_parse` macro, which extracts a value from a JSON string by a path of keys.
+* Adds the `pivot_json_extract` macro, which extracts a list of top-level JSON fields into columns.
+* Adds the `percentile` macro, which calculates a continuous percentile within each partition.
+* Adds a Spark version of `get_url_parameter` that uses `regexp_extract`. Databricks also uses this version.
+
 **Full Changelog**: https://github.com/dbt-labs/dbt-utils/compare/1.4.1...main
 
 # dbt utils v1.4.1

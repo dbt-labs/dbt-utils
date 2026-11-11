@@ -115,6 +115,30 @@ models:
         data_tests:
           - not_empty_string
 
+  - name: test_json_parse
+    data_tests:
+      - assert_equal:
+          actual: actual_name
+          expected: expected_name
+      - assert_equal:
+          actual: actual_city
+          expected: expected_city
+
+  - name: test_percentile
+    data_tests:
+      - assert_equal:
+          actual: actual
+          expected: expected
+
+  - name: test_pivot_json_extract
+    data_tests:
+      - assert_equal:
+          actual: name
+          expected: expected_name
+      - assert_equal:
+          actual: plan
+          expected: expected_plan
+
   - name: test_safe_add
     data_tests:
       - assert_equal:
@@ -214,6 +238,22 @@ models:
     data_tests:
       - dbt_utils.equality:
           compare_model: ref('data_union_expected')
+
+  - name: test_union_aliases
+    columns:
+      - name: id
+        data_tests:
+          - dbt_utils.expression_is_true:
+              expression: "= 1"
+      - name: favorite_number
+        data_tests:
+          - dbt_utils.not_constant
+
+  - name: test_union_source_column_without_table
+    data_tests:
+      - assert_equal:
+          actual: actual
+          expected: expected
 
   - name: test_union_where
     columns:

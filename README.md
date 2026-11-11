@@ -47,7 +47,10 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [safe\_add (source)](#safe_add-source)
   - [safe\_divide (source)](#safe_divide-source)
   - [safe\_subtract (source)](#safe_subtract-source)
+  - [json\_parse (source)](#json_parse-source)
+  - [percentile (source)](#percentile-source)
   - [pivot (source)](#pivot-source)
+  - [pivot\_json\_extract (source)](#pivot_json_extract-source)
   - [unpivot (source)](#unpivot-source)
   - [width\_bucket (source)](#width_bucket-source)
 - [Web macros](#web-macros)
@@ -911,6 +914,8 @@ This macro returns the sql required to build a date spine. The spine will includ
 }}
 ```
 
+On SQL Server, a `with` clause can't be nested inside a subquery or CTE. So the SQL Server version runs the spine query when the model compiles and returns the dates as a `union all` of literal values.
+
 ### deduplicate ([source](macros/sql/deduplicate.sql))
 
 This macro returns the sql required to remove duplicate rows from a model, source, or CTE.
@@ -1095,6 +1100,8 @@ e.g. `{"some_field": "varchar(100)"}`.``
 - `source_column_name` (optional, `default="_dbt_source_relation"`): The name of
 the column that records the source of this row. Pass `None` to omit this column from the results.
 - `where` (optional): Filter conditions to include in the `where` clause.
+- `include_table_in_source_column` (optional, default=`true`): When `false`, the source column holds only `database.schema`, unquoted, instead of the full quoted relation name. Use it when you union the same table from several schemas and want one source value per schema.
+- `aliases` (optional): A list of names to select from instead of `relations`, in the same order. Use it to union CTEs in your model: the macro still reads column lists from `relations`, but the generated SQL selects `from` each alias. The list must have the same length as `relations`.
 
 ### generate_series ([source](macros/sql/generate_series.sql))
 
@@ -1158,6 +1165,41 @@ This macro implements a cross-database way to take the difference of nullable fi
 ```sql
 {{ dbt_utils.safe_subtract(['field_a', 'field_b', ...]) }}
 ```
+
+### json_parse ([source](macros/sql/json_parse.sql))
+
+This macro extracts a value from a JSON string. Pass the path as a list of keys, so you can reach nested values. On Snowflake and Redshift, invalid JSON returns `null` instead of raising an error.
+
+**Usage:**
+
+```sql
+{{ dbt_utils.json_parse(string='event_properties', string_path=['address', 'city']) }}
+```
+
+**Args:**
+
+- `string` (required): The column or expression that holds the JSON string.
+- `string_path` (required): A list of keys (or array indexes) that leads to the value you want.
+
+Snowflake returns a `variant`. Cast the result if you need a string.
+
+### percentile ([source](macros/sql/percentile.sql))
+
+This macro calculates a continuous percentile of a column within each partition.
+
+**Usage:**
+
+```sql
+{{ dbt_utils.percentile(percentile_field='duration_in_seconds', partition_field='survey_id', percent='0.5') }}
+```
+
+**Args:**
+
+- `percentile_field` (required): The column to calculate the percentile of.
+- `partition_field` (required): The column (or comma-separated columns) to partition by.
+- `percent` (required): The percentile to calculate, between 0 and 1. For example, `'0.5'` returns the median.
+
+On every adapter except Postgres, this macro is a window function, so each row gets the percentile for its partition. Postgres doesn't support `percentile_cont` as a window function, so on Postgres it's an aggregate and you must add `group by` for the partition columns yourself.
 
 ### pivot ([source](macros/sql/pivot.sql))
 
@@ -1238,6 +1280,23 @@ This macro pivots values from rows to columns.
 - `then_value`: Value to use if comparison succeeds, default is 1
 - `else_value`: Value to use if comparison fails, default is 0
 - `quote_identifiers`: Whether to surround column aliases with double quotes, default is true
+
+### pivot_json_extract ([source](macros/sql/pivot_json_extract.sql))
+
+This macro builds on [`json_parse`](#json_parse-source). It extracts a list of top-level fields from a JSON string and returns each one as its own column.
+
+**Usage:**
+
+```sql
+select
+    {{ dbt_utils.pivot_json_extract(string='properties', list_of_properties=['name', {'name': 'plan type', 'alias': 'plan'}]) }}
+from {{ ref('events') }}
+```
+
+**Args:**
+
+- `string` (required): The column that holds the JSON string.
+- `list_of_properties` (required): The fields to extract. Each item is either a field name or a dictionary with `name` and an optional `alias`. Without an alias, the column name is the field name in lowercase, with spaces and periods replaced by underscores.
 
 ### unpivot ([source](macros/sql/unpivot.sql))
 
@@ -1326,6 +1385,8 @@ This macro extracts a url parameter from a column containing a url.
 ```sql
 {{ dbt_utils.get_url_parameter(field='page_url', url_parameter='utm_source') }}
 ```
+
+On Spark and Databricks, this macro uses `regexp_extract` instead of `split_part`.
 
 ### get_url_host ([source](macros/web/get_url_host.sql))
 

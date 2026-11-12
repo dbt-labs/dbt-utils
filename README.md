@@ -47,8 +47,6 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [safe\_add (source)](#safe_add-source)
   - [safe\_divide (source)](#safe_divide-source)
   - [safe\_subtract (source)](#safe_subtract-source)
-  - [json\_parse (source)](#json_parse-source)
-  - [percentile (source)](#percentile-source)
   - [pivot (source)](#pivot-source)
   - [unpivot (source)](#unpivot-source)
   - [width\_bucket (source)](#width_bucket-source)
@@ -1164,41 +1162,6 @@ This macro implements a cross-database way to take the difference of nullable fi
 ```sql
 {{ dbt_utils.safe_subtract(['field_a', 'field_b', ...]) }}
 ```
-
-### json_parse ([source](macros/sql/json_parse.sql))
-
-This macro extracts a value from a JSON string. Pass the path as a list of keys, so you can reach nested values. On Snowflake and Redshift, invalid JSON returns `null` instead of raising an error.
-
-**Usage:**
-
-```sql
-{{ dbt_utils.json_parse(string='event_properties', string_path=['address', 'city']) }}
-```
-
-**Args:**
-
-- `string` (required): The column or expression that holds the JSON string.
-- `string_path` (required): A list of keys (or array indexes) that leads to the value you want.
-
-Snowflake returns a `variant`. Cast the result if you need a string.
-
-### percentile ([source](macros/sql/percentile.sql))
-
-This macro calculates a continuous percentile of a column within each partition.
-
-**Usage:**
-
-```sql
-{{ dbt_utils.percentile(percentile_field='duration_in_seconds', partition_field='survey_id', percent='0.5') }}
-```
-
-**Args:**
-
-- `percentile_field` (required): The column to calculate the percentile of.
-- `partition_field` (required): The column (or comma-separated columns) to partition by.
-- `percent` (required): The percentile to calculate, between 0 and 1. For example, `'0.5'` returns the median.
-
-On every adapter except Postgres, this macro is a window function, so each row gets the percentile for its partition. Postgres doesn't support `percentile_cont` as a window function, so on Postgres it's an aggregate and you must add `group by` for the partition columns yourself.
 
 ### pivot ([source](macros/sql/pivot.sql))
 

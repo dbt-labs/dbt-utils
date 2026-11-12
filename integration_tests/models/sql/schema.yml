@@ -115,21 +115,6 @@ models:
         data_tests:
           - not_empty_string
 
-  - name: test_json_parse
-    data_tests:
-      - assert_equal:
-          actual: actual_name
-          expected: expected_name
-      - assert_equal:
-          actual: actual_city
-          expected: expected_city
-
-  - name: test_percentile
-    data_tests:
-      - assert_equal:
-          actual: actual
-          expected: expected
-
   - name: test_safe_add
     data_tests:
       - assert_equal:

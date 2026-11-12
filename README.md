@@ -911,8 +911,6 @@ This macro returns the sql required to build a date spine. The spine will includ
 }}
 ```
 
-On SQL Server, a `with` clause can't be nested inside a subquery or CTE. So the SQL Server version runs the spine query when the model compiles and returns the dates as a `union all` of literal values.
-
 ### deduplicate ([source](macros/sql/deduplicate.sql))
 
 This macro returns the sql required to remove duplicate rows from a model, source, or CTE.

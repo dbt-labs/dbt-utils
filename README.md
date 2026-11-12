@@ -1368,8 +1368,6 @@ This macro extracts a url parameter from a column containing a url.
 {{ dbt_utils.get_url_parameter(field='page_url', url_parameter='utm_source') }}
 ```
 
-On Spark and Databricks, this macro uses `regexp_extract` instead of `split_part`.
-
 ### get_url_host ([source](macros/web/get_url_host.sql))
 
 This macro extracts a hostname from a column containing a url.

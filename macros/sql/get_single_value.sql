@@ -16,7 +16,7 @@
 
         {% set r = load_result('get_query_result').table.columns[0].values() %}
         {% if r | length == 0 %}
-            {% do print('Query `' ~ query ~ '` returned no rows. Using the default value: ' ~ default) %}
+            {{ log("Query `" ~ query ~ "` returned no rows. Using the default value: " ~ default) }}
             {% set sql_result = default %}
         {% else %}
             {% set sql_result = r[0] %}

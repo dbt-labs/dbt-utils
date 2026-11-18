@@ -100,8 +100,14 @@
             select
 
                 {%- if source_column_name is not none %}
-                cast({{ dbt.string_literal(relation) }} as {{ dbt.type_string() }}) as {{ source_column_name }},
+                cast({{ dbt.string_literal(relation.render()) }} as {{ dbt.type_string() }}) as {{ source_column_name }},
                 {%- endif %}
+
+                /* No columns from any of the relations.
+                   This star is only output during dbt compile, and exists to keep SQLFluff happy. */
+                {% if dbt_command == 'compile' and ordered_column_names|length == 0 %}
+                    *
+                {% endif %}
 
                 {% for col_name in ordered_column_names -%}
 

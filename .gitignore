@@ -18,3 +18,4 @@ env*/
 
 # But explicitly ignore test.env files
 test.env
+dbt_internal_packages/

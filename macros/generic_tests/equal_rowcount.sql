@@ -60,7 +60,7 @@ final as (
 
         count_a,
         count_b,
-        abs(count_a - count_b) as diff_count
+        abs(coalesce(count_a, 0) - coalesce(count_b, 0)) as diff_count
 
     from a
     full join b

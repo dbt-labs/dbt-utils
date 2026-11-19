@@ -242,6 +242,13 @@ models:
     data_tests:
       - dbt_utils.equal_rowcount:
           compare_model: ref('test_equal_rowcount_empty_b')
+  - name: test_equal_rowcount_groups
+    data_tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('data_test_equal_rowcount_groups_b')
+          group_by_columns: ['group_col']
+          error_if: "<1"
+          warn_if: "<0"
 
   - name: test_equal_column_subset
     data_tests:

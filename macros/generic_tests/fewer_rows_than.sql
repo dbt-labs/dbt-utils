@@ -52,8 +52,8 @@ counts as (
           b.{{c}} as {{c}}_b,
         {% endfor %}
 
-        count_our_model,
-        count_comparison_model
+        coalesce(count_our_model, 0) as count_our_model,
+        coalesce(count_comparison_model, 0) as count_comparison_model
     from a
     full join b on 
     a.id_dbtutils_test_fewer_rows_than = b.id_dbtutils_test_fewer_rows_than

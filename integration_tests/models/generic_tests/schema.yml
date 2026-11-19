@@ -255,6 +255,11 @@ models:
           compare_model: ref('data_test_fewer_rows_than_table_2')
           group_by_columns: ['col_a']
 
+  - name: test_fewer_rows_than_empty_a
+    data_tests:
+      - dbt_utils.fewer_rows_than:
+          compare_model: ref('test_fewer_rows_than_empty_b')
+
   - name: equality_less_columns
     data_tests:
       - dbt_utils.equality:

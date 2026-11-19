@@ -4,7 +4,7 @@
 
 {% macro default__test_fewer_rows_than(model, compare_model, group_by_columns) %}
 
-{{ config(fail_calc = 'sum(coalesce(row_count_delta, 0))') }}
+{{ config(fail_calc = 'coalesce(sum(row_count_delta), 0)') }}
 
 {% if group_by_columns|length() > 0 %}
   {% set select_gb_cols = group_by_columns|join(' ,') + ', ' %}

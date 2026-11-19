@@ -238,6 +238,15 @@ models:
           compare_model: ref('test_equal_rowcount')
           group_by_columns: ['field']
 
+  - name: test_equal_rowcount_empty_a
+    data_tests:
+      # Regression test for https://github.com/dbt-labs/dbt-utils/issues/973
+      # Both models have zero rows, so they are equal and the test should pass.
+      # Currently errors because fail_calc `sum(coalesce(diff_count, 0))` returns NULL
+      # over zero rows, and dbt-core rejects `failures = None`.
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('test_equal_rowcount_empty_b')
+
   - name: test_equal_column_subset
     data_tests:
       - dbt_utils.equality:

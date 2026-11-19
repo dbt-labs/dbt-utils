@@ -152,7 +152,7 @@ seeds:
           compare_model: ref('data_test_equality_a')
       - dbt_utils.equality:
           compare_model: ref('data_test_equality_b')
-          error_if: "<1"
+          error_if: "<1" #sneaky way to ensure that the test is returning failing rows
           warn_if: "<0"
       - dbt_utils.equality:
           compare_model: ref('data_test_equality_b')
@@ -173,7 +173,7 @@ seeds:
       - dbt_utils.equality:
           compare_model: ref('data_test_equality_floats_b')
           precision: 8
-          error_if: "<1"
+          error_if: "<1" #sneaky way to ensure that the test is returning failing rows
           warn_if: "<0"
 
   - name: data_test_equality_floats_columns_a
@@ -194,7 +194,7 @@ seeds:
       - dbt_utils.equality:
           compare_model: ref('data_test_equality_floats_columns_b')
           precision: 4
-          error_if: "<1"
+          error_if: "<1" #sneaky way to ensure that the test is returning failing rows
           warn_if: "<0"
 
 models:
@@ -227,7 +227,7 @@ models:
           field: created_at
           interval: 1
           ignore_time_component: false
-          error_if: "<1"
+          error_if: "<1" #sneaky way to ensure that the test is returning failing rows
           warn_if: "<0"
 
   - name: test_equal_rowcount

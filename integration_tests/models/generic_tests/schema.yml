@@ -238,6 +238,17 @@ models:
           compare_model: ref('test_equal_rowcount')
           group_by_columns: ['field']
 
+  - name: test_equal_rowcount_groups
+    data_tests:
+      # Regression test for https://github.com/dbt-labs/dbt-utils/issues/986
+      # Same group_by column, but disjoint group values ({x, y} vs {z}).
+      # No group matches, so the test should return failing rows.
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('data_test_equal_rowcount_groups_b')
+          group_by_columns: ['group_col']
+          error_if: "<1" #sneaky way to ensure that the test is returning failing rows
+          warn_if: "<0"
+
   - name: test_equal_column_subset
     data_tests:
       - dbt_utils.equality:

@@ -41,6 +41,28 @@ seeds:
               config:
                 where: col_a = 0.5
 
+  - name: data_test_expression_is_true_null
+    data_tests:
+      - dbt_utils.expression_is_true:
+          expression: col_a + col_b = 1
+      - dbt_utils.expression_is_true:
+          expression: col_a + col_b = 1
+          fail_on_null: true
+          config:
+            error_if: "<1"
+            warn_if: "<0"
+    columns:
+      - name: col_a
+        data_tests:
+          - dbt_utils.expression_is_true:
+              expression: + col_b = 1
+          - dbt_utils.expression_is_true:
+              expression: + col_b = 1
+              fail_on_null: true
+              config:
+                error_if: "<1"
+                warn_if: "<0"
+
   - name: data_people
     columns:
       - name: is_active

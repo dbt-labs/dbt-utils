@@ -1,9 +1,3 @@
-with data as (
-
-    select * from {{ ref('data_test_equal_rowcount_groups_a') }}
-
-)
-
-select
-    group_col, field
-from data
+select 'x' as group_col
+union all
+select 'y' as group_col

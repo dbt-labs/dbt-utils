@@ -238,7 +238,7 @@ models:
           compare_model: ref('test_equal_rowcount')
           group_by_columns: ['field']
 
-  - name: test_equal_rowcount_groups
+  - name: test_equal_rowcount_stored_failures
     data_tests:
       # Regression test for NULL handling with group_by_columns when groups are
       # present in one model but not the other. After the full join, count_a or
@@ -248,6 +248,16 @@ models:
           compare_model: ref('data_test_equal_rowcount_groups_b')
           group_by_columns: ['group_col']
           error_if: "<1" #sneaky way to ensure that the test is returning failing rows
+  - name: test_equal_rowcount_empty_a
+    data_tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('test_equal_rowcount_empty_b')
+  - name: test_equal_rowcount_groups
+    data_tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('data_test_equal_rowcount_groups_b')
+          group_by_columns: ['group_col']
+          error_if: "<1"
           warn_if: "<0"
 
   - name: test_equal_column_subset

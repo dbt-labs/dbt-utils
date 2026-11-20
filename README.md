@@ -1095,6 +1095,8 @@ e.g. `{"some_field": "varchar(100)"}`.``
 - `source_column_name` (optional, `default="_dbt_source_relation"`): The name of
 the column that records the source of this row. Pass `None` to omit this column from the results.
 - `where` (optional): Filter conditions to include in the `where` clause.
+- `include_table_in_source_column` (optional, default=`true`): When `false`, the source column holds only `database.schema`, unquoted, instead of the full quoted relation name. Use it when you union the same table from several schemas and want one source value per schema.
+- `aliases` (optional): A list of names to select from instead of `relations`, in the same order. Use it to union CTEs in your model: the macro still reads column lists from `relations`, but the generated SQL selects `from` each alias. The list must have the same length as `relations`.
 
 ### generate_series ([source](macros/sql/generate_series.sql))
 

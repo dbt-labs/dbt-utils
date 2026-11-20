@@ -1,11 +1,15 @@
-{%- macro union_relations(relations, column_override=none, include=[], exclude=[], source_column_name='_dbt_source_relation', where=none) -%}
-    {{ return(adapter.dispatch('union_relations', 'dbt_utils')(relations, column_override, include, exclude, source_column_name, where)) }}
+{%- macro union_relations(relations, column_override=none, include=[], exclude=[], source_column_name='_dbt_source_relation', where=none, aliases=none, include_table_in_source_column=true) -%}
+    {{ return(adapter.dispatch('union_relations', 'dbt_utils')(relations, column_override, include, exclude, source_column_name, where, aliases, include_table_in_source_column)) }}
 {% endmacro %}
 
-{%- macro default__union_relations(relations, column_override=none, include=[], exclude=[], source_column_name='_dbt_source_relation', where=none) -%}
+{%- macro default__union_relations(relations, column_override=none, include=[], exclude=[], source_column_name='_dbt_source_relation', where=none, aliases=none, include_table_in_source_column=true) -%}
 
     {%- if exclude and include -%}
         {{ exceptions.raise_compiler_error("Both an exclude and include list were provided to the `union` macro. Only one is allowed") }}
+    {%- endif -%}
+
+    {%- if aliases and aliases | length != relations | length -%}
+        {{ exceptions.raise_compiler_error("The `aliases` list must have the same length as `relations`. Got " ~ aliases | length ~ " aliases for " ~ relations | length ~ " relations.") }}
     {%- endif -%}
 
     {#-- Prevent querying of db in parsing mode. This works because this macro does not create any new refs. -#}
@@ -100,7 +104,8 @@
             select
 
                 {%- if source_column_name is not none %}
-                cast({{ dbt.string_literal(relation.render()) }} as {{ dbt.type_string() }}) as {{ source_column_name }},
+                {%- set source_value = relation.render() if include_table_in_source_column else relation.database ~ '.' ~ relation.schema %}
+                cast({{ dbt.string_literal(source_value) }} as {{ dbt.type_string() }}) as {{ source_column_name }},
                 {%- endif %}
 
                 /* No columns from any of the relations.
@@ -118,7 +123,8 @@
 
                 {%- endfor %}
 
-            from {{ relation }}
+            {# The alias avoids errors when a table name is a reserved keyword. #}
+            from {{ aliases[loop.index0] if aliases else relation }} as unioned_relation_{{ loop.index }}
 
             {% if where -%}
             where {{ where }}

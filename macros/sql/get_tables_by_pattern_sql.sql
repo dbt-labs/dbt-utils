@@ -9,7 +9,7 @@
             table_schema as {{ adapter.quote('table_schema') }},
             table_name as {{ adapter.quote('table_name') }},
             {{ dbt_utils.get_table_types_sql() }}
-        from {{ database }}.information_schema.tables
+        from {{ adapter.quote(database) }}.information_schema.tables
         where table_schema ilike '{{ schema_pattern }}'
         and table_name ilike '{{ table_pattern }}'
         and table_name not ilike '{{ exclude }}'

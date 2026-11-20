@@ -1,6 +1,33 @@
 version: 2
 
 seeds:
+  - name: data_test_is_constant
+    columns:
+      - name: time_zone
+        data_tests:
+          # constant within each territory -> passes
+          - dbt_utils.is_constant:
+              arguments:
+                group_by_columns: ['territory']
+          # not constant across the whole table -> must return failing rows
+          - dbt_utils.is_constant:
+              config:
+                error_if: "<1" # sneaky way to ensure that the test is returning failing rows
+                warn_if: "<0"
+          # not every row equals 'Europe/Berlin' -> must return failing rows
+          - dbt_utils.is_constant:
+              arguments:
+                value: 'Europe/Berlin'
+              config:
+                error_if: "<1" # sneaky way to ensure that the test is returning failing rows
+                warn_if: "<0"
+          # every APAC row equals 'Asia/Kolkata' -> passes
+          - dbt_utils.is_constant:
+              arguments:
+                value: 'Asia/Kolkata'
+              config:
+                where: "territory = 'APAC'"
+
   - name: data_test_not_constant
     columns:
       - name: field

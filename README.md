@@ -17,6 +17,7 @@ Check [dbt Hub](https://hub.getdbt.com/dbt-labs/dbt_utils/latest/) for the lates
   - [recency (source)](#recency-source)
   - [at\_least\_one (source)](#at_least_one-source)
   - [not\_constant (source)](#not_constant-source)
+  - [is\_constant (source)](#is_constant-source)
   - [not\_empty\_string (source)](#not_empty_string-source)
   - [cardinality\_equality (source)](#cardinality_equality-source)
   - [not\_null\_proportion (source)](#not_null_proportion-source)
@@ -275,6 +276,47 @@ models:
 ```
 
 This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
+
+### is_constant ([source](macros/generic_tests/is_constant.sql))
+
+Asserts that a column has the same value in all rows. This is the inverse of `not_constant`.
+
+**Usage:**
+
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    columns:
+      - name: column_name
+        tests:
+          - dbt_utils.is_constant
+```
+
+This test supports the `group_by_columns` parameter; see [Grouping in tests](#grouping-in-tests) for details.
+
+To assert that every row matches a specific value instead, pass `value`. The
+value is quoted as a string by default; set `quote: false` for numbers,
+booleans, or other SQL expressions.
+
+**Usage:**
+
+```yaml
+version: 2
+
+models:
+  - name: model_name
+    columns:
+      - name: column_name
+        tests:
+          - dbt_utils.is_constant:
+              arguments:
+                value: 'expected_value'
+```
+
+Note: `null` values are not flagged by the `value` check. Pair it with
+`not_null` when nulls should fail.
 
 ### not_empty_string ([source](macros/generic_tests/not_empty_string.sql))
 Asserts that a column does not have any values equal to `''`. 
@@ -663,6 +705,7 @@ This feature is currently available for the following data tests:
 - [recency](#recency-source)
 - [at_least_one](#at_least_one-source)
 - [not_constant](#not_constant-source)
+- [is_constant](#is_constant-source)
 - [sequential_values](#sequential_values-source)
 - [not_null_proportion](#not_null_proportion-source)
 

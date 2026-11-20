@@ -1,3 +1,5 @@
+{{ config(fail_calc = 'count(*)') }}
+
 with test_output as (
 
     {{ dbt_utils.test_equal_rowcount(
@@ -12,5 +14,3 @@ select *
 from test_output
 where count_a is null
     or count_b is null
-
-{{ config(fail_calc = 'count(*)') }}

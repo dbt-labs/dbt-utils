@@ -151,6 +151,20 @@ seeds:
       - dbt_utils.equality:
           compare_model: ref('data_test_equality_a')
       - dbt_utils.equality:
+          name: equality_test_with_where_clause
+          compare_model: |
+            (select 1 as col_a, 1 as col_b, 3 as col_c
+            union all
+            select 1 as col_a, 2 as col_b, 1 as col_c) compare_subquery
+          compare_columns:
+            - col_a
+            - col_b
+            - col_c
+          # NOTE: this 'where' syntax only works when we provide compare_columns and do not specify
+          # the precision parameter.
+          config:
+            where: col_a <> 2
+      - dbt_utils.equality:
           compare_model: ref('data_test_equality_b')
           error_if: "<1" #sneaky way to ensure that the test is returning failing rows
           warn_if: "<0"

@@ -28,14 +28,20 @@
         "`zero_length_range_allowed` argument for mutually_exclusive_ranges test must be one of [true, false] Got: '" ~ zero_length_range_allowed ~"'.'"
     ) }}
 {% endif %}
-
-{% set partition_clause="partition by " ~ partition_by if partition_by else '' %}
+  
+{% if partition_by and partition_by is string %}
+  {# For the scalar case, convert to vector so logic below only needs to handle the vector case #}
+  {% set partition_by = [partition_by] %}
+{% endif %}
+{% set partition_clause="partition by " ~ partition_by|join(", ") if partition_by else '' %}
 
 with window_functions as (
 
     select
         {% if partition_by %}
-        {{ partition_by }} as partition_by_col,
+          {% for i in partition_by %}
+            {{ i }} as partition_by_col_{{ loop.index }},
+          {% endfor %}
         {% endif %}
         {{ lower_bound_column }} as lower_bound,
         {{ upper_bound_column }} as upper_bound,

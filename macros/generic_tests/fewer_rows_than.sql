@@ -65,9 +65,9 @@ final as (
     select *,
         case
             -- fail the test if we have more rows than the reference model and return the row count delta
-            when coalesce(count_our_model, 0) > coalesce(count_comparison_model, 0) then (coalesce(count_our_model, 0) - coalesce(count_comparison_model, 0))
+            when count_our_model > count_comparison_model then (count_our_model - count_comparison_model)
             -- fail the test if they are the same number
-            when coalesce(count_our_model, 0) = coalesce(count_comparison_model, 0) then 1
+            when count_our_model = count_comparison_model then 1
             -- pass the test if the delta is positive (i.e. return the number 0)
             else 0
     end as row_count_delta

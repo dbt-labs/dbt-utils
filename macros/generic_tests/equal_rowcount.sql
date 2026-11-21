@@ -58,8 +58,8 @@ final as (
           b.{{c}} as {{c}}_b,
         {% endfor %}
 
-        count_a,
-        count_b,
+        coalesce(count_a, 0) as count_a,
+        coalesce(count_b, 0) as count_b,
         abs(coalesce(count_a, 0) - coalesce(count_b, 0)) as diff_count
 
     from a

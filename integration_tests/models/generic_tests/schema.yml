@@ -205,6 +205,25 @@ seeds:
           error_if: "<1"
           warn_if: "<0"
 
+  - name: data_test_fewer_rows_than_null_groups_a
+    data_tests:
+      - dbt_utils.fewer_rows_than:
+          compare_model: ref('data_test_fewer_rows_than_null_groups_b')
+          group_by_columns: ['group_col']
+      - dbt_utils.fewer_rows_than:
+          compare_model: ref('data_test_fewer_rows_than_null_groups_only_b')
+          group_by_columns: ['group_col']
+          error_if: "!=1"
+          warn_if: "<0"
+
+  - name: data_test_fewer_rows_than_null_groups_equal_a
+    data_tests:
+      - dbt_utils.fewer_rows_than:
+          compare_model: ref('data_test_fewer_rows_than_null_groups_b')
+          group_by_columns: ['group_col']
+          error_if: "!=1"
+          warn_if: "<0"
+
 models:
   - name: recency_time_included
     data_tests:

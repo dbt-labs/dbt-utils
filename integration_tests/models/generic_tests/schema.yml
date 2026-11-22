@@ -259,6 +259,8 @@ models:
     data_tests:
       - dbt_utils.fewer_rows_than:
           compare_model: ref('test_fewer_rows_than_empty_b')
+          error_if: "<1"
+          warn_if: "<0"
 
   - name: equality_less_columns
     data_tests:

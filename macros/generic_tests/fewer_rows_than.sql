@@ -4,7 +4,8 @@
 
 {% macro default__test_fewer_rows_than(model, compare_model, group_by_columns) %}
 
-{{ config(fail_calc = 'coalesce(sum(row_count_delta), 0)') }}
+{#-- When both models are empty there are no rows to sum, so sum() is NULL. Fall back to 1 so the test fails, matching the "same number of rows" case below. --#}
+{{ config(fail_calc = 'coalesce(sum(row_count_delta), 1)') }}
 
 {% if group_by_columns|length() > 0 %}
   {% set select_gb_cols = group_by_columns|join(' ,') + ', ' %}

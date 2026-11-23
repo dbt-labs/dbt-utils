@@ -5,7 +5,7 @@
 {% endif %}
 
 {#- Lower case the string -#}
-{% set string = string | lower %}
+{% set string = string | upper %}
 {#- Replace spaces and dashes with underscores -#}
 {% set string = modules.re.sub('[ -]+', '_', string) %}
 {#- Only take letters, numbers, and underscores -#}

@@ -17,10 +17,22 @@ on:
     workflow_dispatch:
 
 
+# Least privilege for the GITHUB_TOKEN. The integration tests do not need to write to the repo.
+permissions:
+  contents: read
+
 jobs:
   run-tests:
       uses: dbt-labs/dbt-package-testing/.github/workflows/run_tox.yml@v2
       with:
+        # SECURITY: pull_request_target exposes repository secrets (warehouse credentials) while
+        # now executing code from the PR, which may come from a fork. Require manual approval
+        # from a maintainer via a protected GitHub Environment before any PR code runs with
+        # those secrets. Reviewers MUST check the PR's head commit before approving.
+        # Only applies to PRs; pushes to main and manual dispatches are already trusted.
+        # NOTE: the `cloud-tests` environment must be configured with "Required reviewers"
+        # in the repo settings (Settings > Environments). Without that it does not gate anything.
+        environment: ${{ github.event_name == 'pull_request_target' && 'cloud-tests' || '' }}
         # pull_request_target runs in the context of the base branch, so `github.ref` is `main`
         # and the reusable workflow would otherwise check out and test `main` instead of the PR.
         # Test the PR's head commit instead. Empty for push/workflow_dispatch, which then fall

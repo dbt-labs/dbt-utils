@@ -1116,6 +1116,14 @@ This macro implements a cross-database way to generate a hashed surrogate key us
 {{ dbt_utils.generate_surrogate_key(['field_a', 'field_b'[,...]]) }}
 ```
 
+The list accepts SQL expressions, including literals. To include a static value (for example, a salt that distinguishes keys derived from the same parent ID), add a quoted SQL string literal:
+
+```sql
+{{ dbt_utils.generate_surrogate_key(['parent.id', "'monthly-sales'"]) }} as new_id
+```
+
+The double quotes delimit the Jinja string, and the single quotes make `monthly-sales` a SQL string literal. Without the single quotes, it is interpreted as SQL rather than a constant string. For a numeric constant, use its SQL expression as a string, for example `['parent.id', '42']`.
+
 A precursor to this macro, `surrogate_key()`, treated nulls and blanks strings the same. If you need to enable this incorrect behaviour for backward compatibility reasons, add the following variable to your `dbt_project.yml`: 
 
 ```yaml

@@ -19,8 +19,41 @@ on:
     workflow_dispatch:
 
 
+env:
+  CI_LABEL: "ci:approve-public-fork-ci"
+
 jobs:
+  check-run-approval:
+    # Job-level `if` cannot read `env`, so the label is spelled out here.
+    if: >-
+      github.event.action != 'labeled'
+      || (github.event.label.name == 'ci:approve-public-fork-ci'
+          && github.event.pull_request.head.repo.full_name != github.repository)
+    permissions:
+      pull-requests: write
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: "If the event is to synchronize, remove the label from the PR"
+        if: ${{ github.event_name == 'pull_request_target' && (github.event.action == 'synchronize' || github.event.action == 'reopened') && github.event.pull_request.head.repo.full_name != github.repository && contains(github.event.pull_request.labels.*.name, env.CI_LABEL) }}
+        run: |
+          echo "Synchronizing PR, removing '${{ env.CI_LABEL }}' label"
+          gh pr edit ${{ github.event.pull_request.number }} --remove-label ${{ env.CI_LABEL }} --repo ${{ github.repository }}
+          msg="All pull request updates require re-approval of CI. No CI will be run."
+          echo "::error::$msg"
+          exit 1
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Check that forks have the '${{ env.CI_LABEL }}' label"
+        if: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.full_name != github.repository && !contains(github.event.pull_request.labels.*.name, env.CI_LABEL) }}
+        run: |
+          msg="Pull request is from a public fork but does not have the '${{ env.CI_LABEL }}' label. No CI will be run."
+          echo "::error::$msg"
+          exit 1
+
   run-tests:
+      needs: check-run-approval
       uses: dbt-labs/dbt-package-testing/.github/workflows/run_tox.yml@v2
       with:
         # no need to pass postgres vars in.  We can just use the defaults in the local container

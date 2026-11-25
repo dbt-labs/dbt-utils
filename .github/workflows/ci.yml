@@ -23,6 +23,7 @@ jobs:
   run-tests:
       uses: dbt-labs/dbt-package-testing/.github/workflows/run_tox.yml@v2
       with:
+        ref: ${{ github.event.pull_request.head.sha }}
         # no need to pass postgres vars in.  We can just use the defaults in the local container
         # redshift
         REDSHIFT_HOST: ${{ vars.REDSHIFT_HOST }}

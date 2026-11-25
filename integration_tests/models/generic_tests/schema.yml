@@ -197,6 +197,25 @@ seeds:
           error_if: "<1" #sneaky way to ensure that the test is returning failing rows
           warn_if: "<0"
 
+  - name: data_test_equal_rowcount_null_groups_a
+    data_tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('data_test_equal_rowcount_null_groups_b')
+          group_by_columns: ['group_col']
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('data_test_equal_rowcount_null_groups_diff_b')
+          group_by_columns: ['group_col']
+          error_if: "!=1"
+          warn_if: "<0"
+
+  - name: data_test_equal_rowcount_null_groups_only_a
+    data_tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: ref('data_test_equal_rowcount_null_groups_only_b')
+          group_by_columns: ['group_col']
+          error_if: "!=1"
+          warn_if: "<0"
+
 models:
   - name: recency_time_included
     data_tests:

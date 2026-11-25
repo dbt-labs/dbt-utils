@@ -16,7 +16,7 @@
   {% set select_gb_cols = group_by_columns|join(', ') + ', ' %}
   {% set join_gb_cols %}
     {% for c in group_by_columns %}
-      and a.{{c}} = b.{{c}}
+      and (a.{{c}} = b.{{c}} or (a.{{c}} is null and b.{{c}} is null))
     {% endfor %}
   {% endset %}
   {% set groupby_gb_cols = 'group by ' + group_by_columns|join(',') %}

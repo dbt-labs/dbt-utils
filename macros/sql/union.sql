@@ -2,6 +2,54 @@
     {{ return(adapter.dispatch('union_relations', 'dbt_utils')(relations, column_override, include, exclude, source_column_name, where)) }}
 {% endmacro %}
 
+{%- macro bigquery__union_relations(relations, column_override=none, include=[], exclude=[], source_column_name='_dbt_source_relation', where=none) -%}
+
+    {%- if exclude and include -%}
+        {{ exceptions.raise_compiler_error("Both an exclude and include list were provided to the `union` macro. Only one is allowed") }}
+    {%- endif -%}
+
+    {#-- BigQuery has no native projector that names columns to keep, so `include`
+         still needs column enumeration. Fall back to the default path for that case. --#}
+    {%- if include -%}
+        {{ return(dbt_utils.default__union_relations(relations, column_override, include, exclude, source_column_name, where)) }}
+    {%- endif -%}
+
+    {%- if not execute -%}{{ return('') }}{%- endif -%}
+
+    {%- set column_override = column_override if column_override is not none else {} -%}
+
+    {%- for relation in relations -%}
+        {%- do dbt_utils._is_relation(relation, 'union_relations') -%}
+        {%- do dbt_utils._is_ephemeral(relation, 'union_relations') -%}
+    {%- endfor -%}
+
+    select *
+        {%- if exclude %} except ({{ exclude | join(', ') }}){% endif -%}
+        {%- if column_override %} replace (
+            {%- for col, type in column_override.items() %}
+                cast({{ adapter.quote(col) }} as {{ type }}) as {{ adapter.quote(col) }}{% if not loop.last %},{% endif %}
+            {%- endfor %}
+        ){% endif %}
+    from (
+        {%- for relation in relations %}
+
+            select
+                {%- if source_column_name is not none %}
+                cast({{ dbt.string_literal(relation.render()) }} as {{ dbt.type_string() }}) as {{ source_column_name }},
+                {%- endif %}
+                *
+            from {{ relation }}
+            {%- if where %}
+            where {{ where }}
+            {%- endif %}
+
+            {% if not loop.last %}full outer union all by name{% endif %}
+
+        {%- endfor %}
+    )
+
+{%- endmacro -%}
+
 {%- macro default__union_relations(relations, column_override=none, include=[], exclude=[], source_column_name='_dbt_source_relation', where=none) -%}
 
     {%- if exclude and include -%}

@@ -1,6 +1,13 @@
 version: 2
 
 seeds:
+  - name: data_test_is_constant
+    columns:
+      - name: field
+        data_tests:
+          - dbt_utils.is_constant:
+              group_by_columns: ['col_a']
+
   - name: data_test_not_constant
     columns:
       - name: field
@@ -8,6 +15,10 @@ seeds:
           - dbt_utils.not_constant
           - dbt_utils.not_constant:
               group_by_columns: ['col_a']
+          - dbt_utils.is_constant:
+              group_by_columns: ['col_a']
+              error_if: "<1"
+              warn_if: "<0"
 
   - name: data_test_at_least_one
     columns:

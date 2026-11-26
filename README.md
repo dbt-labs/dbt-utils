@@ -1074,6 +1074,11 @@ missing from some relations. Any columns exclusive to a subset of these
 relations will be filled with `null` where not present. A new column
 (`_dbt_source_relation`) is also added to indicate the source for each record.
 
+Each column is cast to the type it has in the first relation that contains it,
+except that string columns get the longest length and numeric columns a precision
+and scale that fit the values of every relation. Use `column_override` to choose
+the type yourself.
+
 **Usage:**
 
 ```sql

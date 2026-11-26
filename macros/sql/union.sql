@@ -60,6 +60,25 @@
 
                     {%- do column_superset.update({col.column: col}) -%}
 
+                {%- elif col.is_numeric() and stored.is_numeric() and stored.numeric_precision is not none -%}
+
+                    {%- if col.numeric_precision is none -%}
+
+                        {%- do column_superset.update({col.column: col}) -%}
+
+                    {%- else -%}
+
+                        {#- keep the integer digits and the scale of both columns, within 38 digits (the maximum of most warehouses) unless a column is already wider -#}
+                        {%- set scale = [col.numeric_scale or 0, stored.numeric_scale or 0] | max -%}
+                        {%- set integer_digits = [col.numeric_precision - (col.numeric_scale or 0), stored.numeric_precision - (stored.numeric_scale or 0)] | max -%}
+                        {%- set precision = integer_digits + scale -%}
+                        {%- if precision > 38 and [col.numeric_precision, stored.numeric_precision] | max <= 38 -%}
+                            {%- set precision = 38 -%}
+                        {%- endif -%}
+                        {%- do column_superset.update({col.column: api.Column(stored.column, stored.dtype, numeric_precision=precision, numeric_scale=scale)}) -%}
+
+                    {%- endif -%}
+
                 {%- endif %}
 
             {%- else -%}
